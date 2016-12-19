@@ -2,7 +2,6 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
-var textFit = require("textFit");
 var soundManager = require("soundmanager2").soundManager;
 
 
