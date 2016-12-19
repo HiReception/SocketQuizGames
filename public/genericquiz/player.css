@@ -1,0 +1,68 @@
+/* CSS for Player Screens */
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.box {
+  display; flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+div.playerHeader {
+  background-color: black;
+  color: white;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.playerBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  min-height: calc(100% - 40px);
+}
+
+div.playerQuestion {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  position: relative;
+  padding: 5px;
+  text-align: center;
+  width: 100%;
+}
+
+p.playerQuestion {
+  font-size: 150%;
+}
+
+p.playerQuestionDetails {
+  font-size: 100%;
+}
+
+div.buzzer {
+  background-color: red;
+  margin: 5px;
+  margin-left:auto;
+  margin-right:auto;
+  box-sizing:border-box;
+  border: none;
+  color: red;
+  height: 150px;
+  width: 150px;
+  border-radius: 75px;
+  position: relative;
+  font-size: 120%;
+  display: flex;
+  justify-content: center;  
+  cursor: pointer;
+}
