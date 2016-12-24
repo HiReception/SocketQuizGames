@@ -1,7 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
-var $ = require("jquery");
 var soundManager = require("soundmanager2").soundManager;
 
 
@@ -123,7 +122,6 @@ class DisplayContainer extends React.Component {
 			questionPanel = <DailyDoublePanel playSound={this.state.playSound}/>;
 			break;
 		case "FinalJeopardyPanel":
-			// TODO logic for whether and when sounds play
 			questionPanel = (
 				<FinalJeopardyPanel
 					final={this.state.final}
@@ -331,6 +329,7 @@ var ClueButton = React.createClass({
 			return (
 				<div 
 					className="clue-button inactive">
+					<p className="clue-button"/>
 				</div>
 			);
 		}

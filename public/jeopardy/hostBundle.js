@@ -38880,7 +38880,6 @@ class FinalJeopardyPanel extends React.Component {
 			respondingOver: true,
 			respondingOpen: false
 		});
-		// TODO send message to display to go to response mode
 		var focusResponse;
 		if (this.state.responses.some(function (r) {
 			return r.screenName === thisPanel.state.focusPlayerName;

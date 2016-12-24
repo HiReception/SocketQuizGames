@@ -190,7 +190,7 @@ div.category-clue-group {
 }
 
 div.clue-button {
-  flex: 1 1 auto;
+  flex: 1 1;
   border: 2px solid black;
   display: flex;
   align-items: center;
