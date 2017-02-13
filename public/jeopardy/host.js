@@ -3,17 +3,6 @@ var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
 
-var players = [];
-
-function getParameterByName(name, url) {
-	if (!url) url = window.location.href;
-	name = name.replace(/[\[\]]/g, "\\$&");
-	var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-		results = regex.exec(url);
-	if (!results) return null;
-	if (!results[2]) return "";
-	return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
 
 
 var gameTitle = getParameterByName("gametitle");
@@ -21,14 +10,7 @@ var gameTitle = getParameterByName("gametitle");
 var prefix = "";
 var suffix = "";
 
-var currentRound = 0;
-var cluesLeft = 0;
-var buzzersOpen = false;
 
-var rounds = [];
-var final = {};
-
-var selectingPlayer = "";
 
 
 socket.emit("start game", {
@@ -41,57 +23,400 @@ socket.on("game details", function(details) {
 	console.log(details);
 	$("#game-code").text(details.gameCode);
 	$("#game-title").text(details.gameTitle);
-	ReactDOM.render(<NoQuestionPanel/>, document.getElementById("question-panel"));
-	renderPlayerList();
-});
-
-socket.on("new player", function(playerDetails) {
-	console.log("new player:");
-	console.log(playerDetails);
-	playerDetails.score = 0;
-	players.push(playerDetails);
-	renderPlayerList();
+	ReactDOM.render(<HostConsole/>, document.getElementById("main-panel"));
 });
 
 
+class HostConsole extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			players: [],
+			detailPlayerName: "",
 
+			currentRound: 0,
+			cluesLeft: 0,
+			selectingPlayer: "",
+			playerAnswering: {},
 
-function renderPlayerList() {
-	var playerCountString = players.length === 1 ? "1 Player" : players.length + " Players";
-	$("#player-count").text(playerCountString);
-	if (players.length != 0) {
-		var playersByScore = players.sort(function(a,b) {
-			return a.score > b.score;
-		});
-		var list = [];
-		for (var i = 0; i < playersByScore.length; i++) {
-			var p = playersByScore[i];
-			list.push(<PlayerListing player={p} key={i}/>);
-		}
-		socket.emit("set state", {
-			players: players
-		});
-		ReactDOM.render(<div>{list}</div>, document.getElementById("player-list"));
+			currentPanel: "NoQuestionPanel",
+
+			finalEligiblePlayers: [],
+
+			rounds: [],
+			final: {},
+
+			currentCatNo: 0,
+			currentClueNo: 0,
+			currentClueValue: 0
+		};
+
+		this.render = this.render.bind(this);
+		this.showClue = this.showClue.bind(this);
+		this.endClue = this.endClue.bind(this);
+		this.changeCurrentPanel = this.changeCurrentPanel.bind(this);
+		this.handleNewPlayer = this.handleNewPlayer.bind(this);
+		this.changePlayerScore = this.changePlayerScore.bind(this);
+		this.showPlayerDetails = this.showPlayerDetails.bind(this);
+		this.clearPlayerDetails = this.clearPlayerDetails.bind(this);
+		this.hidePlayer = this.hidePlayer.bind(this);
+		this.unhidePlayer = this.unhidePlayer.bind(this);
+		this.goToNextRound = this.goToNextRound.bind(this);
+		this.setGameData = this.setGameData.bind(this);
+		this.setSelectingPlayer = this.setSelectingPlayer.bind(this);
+		this.setAnsweringPlayer = this.setAnsweringPlayer.bind(this);
+		this.clearAnsweringPlayer = this.clearAnsweringPlayer.bind(this);
 	}
-	
+
+	setAnsweringPlayer(screenName) {
+		console.log("HostConsole setting answering player to " + screenName);
+		this.setState({
+			playerAnswering: this.state.players.find(function(p) {
+				return p.screenName === screenName;
+			})
+		});
+	}
+
+	clearAnsweringPlayer() {
+		this.setState({
+			playerAnswering: {}
+		});
+	}
+
+	showClue(catNo, clueNo, clueValue) {
+		console.log(catNo);
+		this.setState({
+			currentCatNo: catNo,
+			currentClueNo: clueNo,
+			currentClueValue: clueValue,
+			currentPanel: "OpenQuestionPanel"
+		});
+	}
+
+	endClue() {
+		var newRounds = this.state.rounds;
+		newRounds[this.state.currentRound].categories[this.state.currentCatNo].clues[this.state.currentClueNo].active = false;
+		var newCluesLeft = this.state.cluesLeft - 1;
+		this.setState({
+			rounds: newRounds,
+			cluesLeft: newCluesLeft,
+			currentPanel: newCluesLeft === 0 ? "NextRoundPanel" : "SelectQuestionPanel"
+		});
+	}
+
+	changeCurrentPanel(panelName) {
+		this.setState({
+			currentPanel: panelName
+		});
+	}
+
+	handleNewPlayer(playerDetails) {
+		console.log("new player:");
+		console.log(playerDetails);
+		playerDetails.score = 0;
+		playerDetails.hidden = false;
+		var newPlayers = this.state.players;
+
+		newPlayers.push(playerDetails);
+		this.setState({
+			players: newPlayers
+		});
+	}
+
+	changePlayerScore(screenName, newScore) {
+		var newPlayers = this.state.players;
+		newPlayers.find(function(p) {return p.screenName === screenName;}).score = newScore;
+		this.setState({
+			players: newPlayers
+		});
+		socket.emit("set state", {
+			players: newPlayers
+		});
+	}
+
+	showPlayerDetails(name, event) {
+		console.log("showPlayerDetails(" + name + "," + event + ") called");
+		this.setState({
+			detailPlayerName: name
+		});
+	}
+
+	clearPlayerDetails() {
+		this.setState({
+			detailPlayerName: ""
+		});
+	}
+
+	hidePlayer(playerName) {
+		var newPlayers = this.state.players;
+		newPlayers.find(function(p) {return p.screenName === playerName;}).hidden = true;
+		this.setState({
+			players: newPlayers
+		});
+		socket.emit("set state", {
+			players: newPlayers
+		});
+	}
+
+	unhidePlayer(playerName) {
+		var newPlayers = this.state.players;
+		newPlayers.find(function(p) {return p.screenName === playerName;}).hidden = false;
+		this.setState({
+			players: newPlayers
+		});
+		socket.emit("set state", {
+			players: newPlayers
+		});
+	}
+
+	goToNextRound() {
+		if (this.state.currentRound === this.state.rounds.length - 1) {
+			this.setState({
+				finalEligiblePlayers: this.state.players.filter(function(p) {return p.score > 0;}),
+				currentPanel: "FinalJeopardyPanel"
+			});
+		} else {
+			var newRound = this.state.rounds[this.state.currentRound + 1];
+			this.setState({
+				currentRound: this.state.currentRound + 1,
+				cluesLeft: [].concat.apply([], newRound.categories.map(function(c){return c.clues;})).length,
+				currentPanel: "SelectQuestionPanel"
+			});
+		}
+	}
+
+	setGameData(rounds, final, firstSelectingPlayer) {
+		console.log(rounds, final, firstSelectingPlayer);
+		this.setState({
+			rounds: rounds,
+			final: final,
+			currentPanel: rounds.length > 0 ? "SelectQuestionPanel" : "FinalJeopardyPanel",
+			selectingPlayer: firstSelectingPlayer,
+			cluesLeft: [].concat.apply([], rounds[0].categories.map(function(c){return c.clues;})).length
+		});
+		socket.emit("set state", {
+			prefix: prefix,
+			suffix: suffix,
+			rounds: rounds,
+			final: final,
+			players: this.state.players,
+			currentRound: 0,
+			currentPanel: "SelectQuestionPanel"
+		});
+	}
+
+	componentDidMount() {
+		socket.on("new player", this.handleNewPlayer);
+	}
+
+	componentWillUnmount() {
+		socket.removeListener("new player", this.handleNewPlayer);
+	}
+
+	setSelectingPlayer(screenName) {
+		console.log("HostConsole.setSelectingPlayer called");
+		this.setState({
+			selectingPlayer: screenName
+		});
+	}
+
+	render() {
+		// render player list panel
+		var playerPanel;
+		var thisPanel = this;
+		if (this.state.detailPlayerName === "") {
+			var nonHiddenPlayers = this.state.players.filter(function(p) {return !p.hidden;});
+			var playerCountString = nonHiddenPlayers.length === 1 ? "1 Player" : nonHiddenPlayers.length + " Players";
+			$("#player-count").text(playerCountString);
+			if (nonHiddenPlayers.length != 0) {
+				var playersByScore = nonHiddenPlayers.sort(function(a,b) {
+					return a.score > b.score;
+				});
+				var list = [];
+				for (var i = 0; i < playersByScore.length; i++) {
+					var p = playersByScore[i];
+					list.push((
+						<PlayerListing
+							onClick={this.showPlayerDetails.bind(this, p.screenName)}
+							player={p} 
+							key={i}
+							answering={!$.isEmptyObject(this.state.playerAnswering)
+								&& this.state.playerAnswering.screenName === p.screenName}
+							lockedOut={!$.isEmptyObject(this.state.playerAnswering)
+								&& this.state.playerAnswering.screenName !== p.screenName}
+							selecting={this.state.selectingPlayer === p.screenName}
+						/>));
+				}
+				socket.emit("set state", {
+					players: this.state.players
+				});
+				playerPanel = <div>{list}</div>;
+			} else {
+				playerPanel = <div><p>No Players</p></div>;
+			}
+		} else {
+			var player = this.state.players.find(function(p) {
+				return p.screenName === thisPanel.state.detailPlayerName;
+			});
+			playerPanel = (<PlayerDetailsPanel
+				player={player}
+				clearPlayerDetails={this.clearPlayerDetails}
+				hidden={player.hidden}
+				hidePlayer={this.hidePlayer}
+				unhidePlayer={this.unhidePlayer}
+				changePlayerScore={this.changePlayerScore}
+			/>);
+		}
+
+
+
+		var mainPanel;
+		switch (this.state.currentPanel) {
+		case "NoQuestionPanel":
+			mainPanel = <NoQuestionPanel players={this.state.players} setGameData={this.setGameData}/>;
+			break;
+
+		case "NextRoundPanel":
+			mainPanel = (
+				<NextRoundPanel
+					lastRound={this.state.currentRound === this.state.rounds.length - 1}
+					callback={this.goToNextRound}
+				/>
+			);
+			break;
+
+		case "SelectQuestionPanel":
+			mainPanel = <SelectQuestionPanel round={this.state.rounds[this.state.currentRound]} callback={this.showClue}/>;
+			break;
+
+		case "OpenQuestionPanel":
+			var selectingPlayer = this.state.players.find(function(p) {return p.screenName === thisPanel.state.selectingPlayer;});
+			console.log(selectingPlayer);
+			mainPanel = (<OpenQuestionPanel
+				catName={this.state.rounds[this.state.currentRound].categories[this.state.currentCatNo].name}
+				clue={this.state.rounds[this.state.currentRound]
+					.categories[this.state.currentCatNo]
+					.clues[this.state.currentClueNo]}
+				players={this.state.players}
+				value={this.state.currentClueValue}
+				endClue={this.endClue}
+				changePlayerScore={this.changePlayerScore}
+				ddMaxWager={Math.max(...this.state.rounds[this.state.currentRound].values.amounts)}
+				selectingPlayer={selectingPlayer}
+				setSelectingPlayer={this.setSelectingPlayer}
+				setAnsweringPlayer={this.setAnsweringPlayer}
+				clearAnsweringPlayer={this.clearAnsweringPlayer}
+			/>);
+			break;
+
+		case "FinalJeopardyPanel":
+			mainPanel = (
+				<FinalJeopardyPanel
+					final={this.state.final}
+					changePlayerScore={this.changePlayerScore}
+					eligiblePlayers={this.state.finalEligiblePlayers}
+				/>
+			);
+			break;
+
+		}
+
+		return (
+			<div className="main-panel">
+				<div id="player-list" className="content">
+					{playerPanel}
+				</div>
+				<div id="question-panel" className="content">
+					{mainPanel}
+				</div>
+			</div>
+		);
+	}
 }
+
+
+var PlayerDetailsPanel = React.createClass({
+	propTypes: {
+		player: React.PropTypes.object,
+		clearPlayerDetails: React.PropTypes.func,
+		hidePlayer: React.PropTypes.func,
+		unhidePlayer: React.PropTypes.func,
+		changePlayerScore: React.PropTypes.func
+	},
+	openScoreDialog: function() {
+		var validNumber = false;
+		var newScore = "";
+		while (!validNumber) {
+			newScore = prompt("Enter a new score for " + this.props.player.screenName +
+			" (current score " + this.props.player.score + ")", this.props.player.score.toString());
+			if (!isNaN(parseInt(newScore))) {
+				this.props.changePlayerScore(this.props.player.screenName, parseInt(newScore));
+				validNumber = true;
+			}
+		}
+	},
+	render: function() {
+		var hideButton;
+		if (this.props.player.hidden) {
+			hideButton = (
+				<div
+					className="add-question-button"
+					href="#"
+					onClick={this.props.unhidePlayer.bind(this, this.props.player.screenName)}>
+					<p>Unhide Player</p>
+				</div>
+			);
+		} else {
+			hideButton = (
+				<div
+					className="cancel-question-button"
+					href="#"
+					onClick={this.props.hidePlayer.bind(this, this.props.player.screenName)}>
+					<p>Hide Player</p>
+				</div>
+			);
+		}
+		return (
+			<div className="player-details-panel">
+				<div className="player-details-name"><p className="player-details-name">{this.props.player.screenName}</p></div>
+				<div className="player-details-score"><p className="player-details-score">{this.props.player.score}</p></div>
+				<div className="add-question-button" href="#" onClick={this.openScoreDialog}><p>Change Score</p></div>
+				{hideButton}
+				<div className="player-details-back" href="#" onClick={this.props.clearPlayerDetails}>
+					<p className="player-details-back">Back</p>
+				</div>
+			</div>
+		);
+	}
+});
+
 
 var PlayerListing = React.createClass({
 	render: function() {
-		console.log(rounds);
 		var scoreString = prefix + this.props.player.score + suffix;
+		var classExt = "";
+		if (this.props.player.score < 0) {
+			classExt += " negative";
+		}
 
-		var className = this.props.player.score < 0 ? "playerListingDetails negative" : "playerListingDetails";
+		if (this.props.answering) {
+			classExt += " answering";
+		} else if (this.props.lockedOut) {
+			classExt += " locked";
+		}
 
 		console.log(scoreString);
 		
 		return (
-			<div className="playerListing">
-				<div className="playerListingName">
-					<p className="playerListingName">{this.props.player.screenName}</p>
+			<div className={"playerListing" + classExt} onClick={this.props.onClick}>
+				<div className={"playerListingName" + classExt}>
+					<p className={"playerListingName" + classExt}>
+						{this.props.player.screenName}
+						{this.props.selecting ? "*" : ""}
+					</p>
 				</div>
-				<div className="playerListingDetails">
-					<p className={className}>{scoreString}</p>
+				<div className={"playerListingDetails" + classExt}>
+					<p className={"playerListingDetails" + classExt}>{scoreString}</p>
 				</div>
 			</div>
 		);
@@ -102,41 +427,44 @@ var PlayerListing = React.createClass({
 class NoQuestionPanel extends React.Component {
 	constructor(props) {
 		super(props);
+		console.log(props);
+		console.log(props.players);
+		var playerNameList = props.players.map(function(p) {console.log(p); return p.screenName;});
+		console.log(playerNameList);
 		this.state = {
-			playerNameList: [],
-			selectedFirstPlayer: {},
-			anyFieldsEmpty: true,
+			playerNameList: playerNameList,
+			selectedFirstPlayer: props.players.length > 0 ? props.players[0].screenName : "",
+			anyFieldsEmpty: props.players.length > 0 ? false : true,
 		};
-		var thisPanel = this;
 
 		this.processFile = this.processFile.bind(this);
 		this.changeFirstPlayer = this.changeFirstPlayer.bind(this);
-
-		socket.on("new player", function(playerDetails) {
-			var playerNameListCopy = thisPanel.state.playerNameList;
-			playerNameListCopy.push(playerDetails.screenName);
-			thisPanel.setState({
-				playerNameList: playerNameListCopy,
-				selectedFirstPlayer: playerNameListCopy.length > 0 ? players[0] : {},
-				anyFieldsEmpty: !(playerNameListCopy.length > 0)
-			});
-			console.log(thisPanel.state.playerNameList);
+	}
+	componentWillReceiveProps(newProps) {
+		console.log(newProps);
+		console.log(newProps.players);
+		var playerNameList = newProps.players.map(function(p) {console.log(p); return p.screenName;});
+		console.log(playerNameList);
+		this.setState({
+			playerNameList: playerNameList,
+			selectedFirstPlayer: newProps.players.length > 0 ? newProps.players[0].screenName : "",
+			anyFieldsEmpty: newProps.players.length > 0 ? false : true
 		});
 	}
 	processFile() {
 		if (!(this.state.anyFieldsEmpty)) {
-			selectingPlayer = this.state.selectedFirstPlayer;
 			var selectedFile = document.getElementById("questionFile").files[0];
 			var reader = new FileReader();
+			var thisPanel = this;
 			reader.onload = function() {
 				console.log("reader.onload called");
 				var fileText = reader.result;
 				var fileObject = JSON.parse(fileText);
-				rounds = fileObject.rounds;
+				var rounds = fileObject.rounds;
+				var final = fileObject.final;
 				prefix = fileObject.properties.prefix;
 				suffix = fileObject.properties.suffix;
 				// TODO error handling
-				final = fileObject.final;
 				for (var round = 0; round < rounds.length; round++) {
 					for (var cat = 0; cat < rounds[round].categories.length; cat++) {
 						for (var clue = 0; clue < rounds[round].categories[cat].clues.length; clue++) {
@@ -144,26 +472,14 @@ class NoQuestionPanel extends React.Component {
 						}
 					}
 				}
-				cluesLeft = [].concat.apply([], rounds[currentRound].categories.map(function(c){return c.clues;})).length;
+				
 				socket.emit("send question", {
 					type: "buzz-in",
 					open: true
 				});
-				renderPlayerList();
-				socket.emit("set state", {
-					prefix: prefix,
-					suffix: suffix,
-					rounds: rounds,
-					final: final,
-					players: players,
-					currentRound: currentRound,
-					currentPanel: "SelectQuestionPanel"
-				});
-				if (rounds.length !== 0) {
-					ReactDOM.render(<SelectQuestionPanel roundNo={currentRound}/>, document.getElementById("question-panel"));
-				} else {
-					ReactDOM.render(<FinalJeopardyPanel/>, document.getElementById("question-panel"));
-				}
+				thisPanel.props.setGameData(rounds, final, thisPanel.state.selectedFirstPlayer);
+
+				
 				
 			};
 			reader.readAsText(selectedFile);
@@ -173,13 +489,13 @@ class NoQuestionPanel extends React.Component {
 		
 	}
 	changeFirstPlayer(event) {
-		var player = players.find(function(p) {return p.screenName === event.target.value; });
 		this.setState({
-			selectedFirstPlayer: player,
+			selectedFirstPlayer: event.target.value,
 			anyFieldsEmpty: false
 		});
 	}
 	render() {
+		// TODO make an option to either upload own file or use one of the internal test games
 		var fileInput = <input type="file" required={true} multiple={false} id="questionFile"/>;
 		var startingPlayerOptions = [];
 		console.log(this.state.playerNameList);
@@ -212,27 +528,11 @@ class NoQuestionPanel extends React.Component {
 
 // starting panel, with field to upload question file
 var NextRoundPanel = React.createClass({
-	nextRound: function() {
-		currentRound += 1;
-		if (currentRound === rounds.length) {
-			socket.emit("set state", {
-				currentPanel: "FinalJeopardyPanel"
-			});
-			ReactDOM.render(<FinalJeopardyPanel/>, document.getElementById("question-panel"));
-		} else {
-			cluesLeft = [].concat.apply([], rounds[currentRound].categories.map(function(c){return c.clues;})).length;
-			socket.emit("set state", {
-				currentRound: currentRound,
-				currentPanel: "SelectQuestionPanel"
-			});
-			ReactDOM.render(<SelectQuestionPanel/>, document.getElementById("question-panel"));
-		}
-	},
 	render: function() {
-		var buttonText = currentRound === rounds.length - 1 ? "Go to Final Jeopardy!" : "Go to Round " + (currentRound + 2);
+		var buttonText = this.props.lastRound ? "Go to Final Jeopardy!" : "Go to Next Round";
 		return (
 			<div className="no-question-panel">
-				<div className="add-question-button" href="#" onClick={this.nextRound}><p>{buttonText}</p></div>
+				<div className="add-question-button" href="#" onClick={this.props.callback}><p>{buttonText}</p></div>
 			</div>
 		);
 	}
@@ -241,11 +541,22 @@ var NextRoundPanel = React.createClass({
 
 // panel showing which categories and clues are unasked (with buttons to show them)
 var SelectQuestionPanel = React.createClass({
+	propTypes: {
+		round: React.PropTypes.object,
+		callback: React.PropTypes.func
+	},
 	render: function() {
-		var round = rounds[currentRound];
 		var catGroups = [];
-		for (var i = 0; i < round.categories.length; i++) {
-			catGroups.push(<CategoryGroup catNo={i} key={i} values={round.values.amounts}/>);
+		for (var i = 0; i < this.props.round.categories.length; i++) {
+			catGroups.push((
+				<CategoryGroup
+					catNo={i}
+					category={this.props.round.categories[i]}
+					key={i}
+					values={this.props.round.values.amounts}
+					callback={this.props.callback}
+				/>
+			));
 		}
 		return (
 			<div className="select-question-panel">
@@ -259,18 +570,29 @@ var SelectQuestionPanel = React.createClass({
 var CategoryGroup = React.createClass({
 	propTypes: {
 		catNo: React.PropTypes.number,
-		values: React.PropTypes.array
+		category: React.PropTypes.object,
+		values: React.PropTypes.array,
+		callback: React.PropTypes.func
 	},
 	render: function() {
 		var clueButtons = [];
-		for (var i = 0; i < rounds[currentRound].categories[this.props.catNo].clues.length; i++) {
-			clueButtons.push(<ClueButton catNo={this.props.catNo} clueNo={i} key={i} value={this.props.values[i]}/>);
+		for (var i = 0; i < this.props.category.clues.length; i++) {
+			clueButtons.push((
+				<ClueButton
+					active={this.props.category.clues[i].active}
+					catNo={this.props.catNo}
+					clueNo={i}
+					key={i}
+					value={this.props.values[i]}
+					callback={this.props.callback}
+				/>
+			));
 		}
 
 		return (
 			<div className="category-group">
 				<div className="category-header">
-					<p className="category-header">{rounds[currentRound].categories[this.props.catNo].name}</p>
+					<p className="category-header">{this.props.category.name}</p>
 				</div>
 				<div className="category-clue-group">
 					{clueButtons}
@@ -282,19 +604,17 @@ var CategoryGroup = React.createClass({
 
 var ClueButton = React.createClass({
 	propTypes: {
+		active: React.PropTypes.bool,
 		catNo: React.PropTypes.number,
 		clueNo: React.PropTypes.number,
-		value: React.PropTypes.number
+		value: React.PropTypes.number,
+		callback: React.PropTypes.func
 	},
 	onClick: function() {
-
-		ReactDOM.render(<OpenQuestionPanel catNo={this.props.catNo} clueNo={this.props.clueNo} value={this.props.value}/>,
-			document.getElementById("question-panel"));
-		
+		this.props.callback(this.props.catNo, this.props.clueNo, this.props.value);
 	},
 	render: function() {
-		console.log(rounds[currentRound]);
-		if (rounds[currentRound].categories[this.props.catNo].clues[this.props.clueNo].active) {
+		if (this.props.active) {
 			return (
 				<div 
 					className="clue-button active"
@@ -315,16 +635,21 @@ var ClueButton = React.createClass({
 class OpenQuestionPanel extends React.Component {
 	constructor(props) {
 		super(props);
-		var dailyDouble = rounds[currentRound].categories[this.props.catNo].clues[this.props.clueNo].dailyDouble;
+		var dailyDouble = this.props.clue.dailyDouble;
+		console.log(props.selectingPlayer);
 		this.state = {
-			playerAnswering: dailyDouble ? selectingPlayer : {},
-			value: rounds[currentRound].values.amounts[this.props.clueNo],
+			playerAnswering: dailyDouble ? props.selectingPlayer : {},
+			wrongPlayerNames: [],
+			value: props.value,
 			dailyDouble: dailyDouble,
 			ddWagerEntered: false,
 			ddWagerSubmittable: false,
 			ddWager: 0,
-			ddMaxWager: (dailyDouble ? Math.max(selectingPlayer.score, Math.max(...rounds[currentRound].values.amounts)) : 0)
+			buzzersOpen: false
 		};
+
+		
+
 
 		console.log(this.state);
 
@@ -336,8 +661,7 @@ class OpenQuestionPanel extends React.Component {
 		} else {
 			socket.emit("set state", {
 				currentPanel: "OpenQuestionPanel",
-				currentCatNo: this.props.catNo,
-				currentClueNo: this.props.clueNo
+				currentClue: this.props.clue
 			});
 		}
 		
@@ -352,22 +676,37 @@ class OpenQuestionPanel extends React.Component {
 	}
 
 	handleNewAnswer(details) {
-		if (buzzersOpen) {
-			buzzersOpen = false;
+		if (this.state.buzzersOpen 
+			&& details.player.screenName !== "" 
+			&& !this.state.wrongPlayerNames.includes(details.player.screenName)) {
+			
 			console.log("new answer:");
 			console.log(details);
 			console.log(this);
 			this.setState({
-				playerAnswering: players.find(function(p) {
+				playerAnswering: this.props.players.find(function(p) {
+					return p.screenName === details.player.screenName;
+				}),
+				buzzersOpen: false
+			});
+
+
+
+			socket.emit("set state", {
+				playerAnswering: this.props.players.find(function(p) {
 					return p.screenName === details.player.screenName;
 				})
 			});
 
-			socket.emit("set state", {
-				playerAnswering: players.find(function(p) {
-					return p.screenName === details.player.screenName;
-				})
-			});
+			this.props.setAnsweringPlayer(details.player.screenName);
+		}
+	}
+
+	componentWillMount() {
+		console.log("componentWillMount called");
+		if (this.state.dailyDouble) {
+			console.log("Setting answering player to " + this.props.selectingPlayer.screenName);
+			this.props.setAnsweringPlayer(this.props.selectingPlayer.screenName);
 		}
 	}
 
@@ -381,14 +720,20 @@ class OpenQuestionPanel extends React.Component {
 
 	wrongAnswer() {
 		if (!$.isEmptyObject(this.state.playerAnswering)) {
-			this.state.playerAnswering.score -= this.state.value;
-			renderPlayerList();
+			this.props.changePlayerScore(this.state.playerAnswering.screenName,
+				this.state.playerAnswering.score - this.state.value);
+			this.props.clearAnsweringPlayer();
 			if (this.state.dailyDouble) {
-				this.goToSelectPanel();
+				this.props.endClue();
 			} else {
+				var newWrongPlayerNames = this.state.wrongPlayerNames;
+				console.log(newWrongPlayerNames);
+				newWrongPlayerNames.push(this.state.playerAnswering.screenName);
+				this.setState({
+					wrongPlayerNames: newWrongPlayerNames
+				});
 				this.openBuzzers();
 			}
-			
 		}
 	}
 
@@ -396,17 +741,21 @@ class OpenQuestionPanel extends React.Component {
 		console.log("this.state.playerAnswering = ");
 		console.log(this.state.playerAnswering);
 		if (!$.isEmptyObject(this.state.playerAnswering)) {
-			this.state.playerAnswering.score += this.state.value;
-			renderPlayerList();
-			selectingPlayer = this.state.playerAnswering;
-			this.goToSelectPanel();
+			this.props.changePlayerScore(this.state.playerAnswering.screenName,
+				this.state.playerAnswering.score + this.state.value);
+			this.props.setSelectingPlayer(this.state.playerAnswering.screenName);
+			this.props.clearAnsweringPlayer();
+			this.props.endClue();
 		}
 	}
 
 	openBuzzers() {
-		if (!buzzersOpen) {
-			buzzersOpen = true;
-			this.setState({playerAnswering: {}});
+		if (!this.state.buzzersOpen) {
+			this.props.clearAnsweringPlayer();
+			this.setState({
+				playerAnswering: {},
+				buzzersOpen: true
+			});
 			socket.emit("set state", {
 				playerAnswering: {}
 			});
@@ -415,38 +764,14 @@ class OpenQuestionPanel extends React.Component {
 	}
 
 	goToSelectPanel() {
-		if (buzzersOpen) {
-			buzzersOpen = false;
-		}
-		renderPlayerList();
-		rounds[currentRound].categories[this.props.catNo].clues[this.props.clueNo].active = false;
-		cluesLeft--;
-
-		socket.emit("set state", {
-			rounds: rounds,
-			playerAnswering: {}
-		});
-		
-
-		if (cluesLeft === 0) {
-			socket.emit("set state", {
-				currentPanel: "NoQuestionPanel"
-			});
-			ReactDOM.render(<NextRoundPanel/>, document.getElementById("question-panel"));
-		} else {
-			socket.emit("set state", {
-				currentPanel: "SelectQuestionPanel"
-			});
-			ReactDOM.render(<SelectQuestionPanel questionCurrentlyOpen={true}/>, document.getElementById("question-panel"));
-		}
-		
+		this.props.endClue();
 	}
 
 	changeDDWager(event) {
 		var newWager = parseInt(event.target.value);
 		this.setState({
 			ddWager: newWager,
-			ddWagerSubmittable: (newWager >= 0 && newWager <= this.state.ddMaxWager)
+			ddWagerSubmittable: (newWager >= 0 && newWager <= Math.max(this.props.ddMaxWager, this.state.playerAnswering.score))
 		});
 	}
 
@@ -460,9 +785,6 @@ class OpenQuestionPanel extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.clueNo);
-		var clue = rounds[currentRound].categories[this.props.catNo].clues[this.props.clueNo];
-		console.log(clue);
 
 		var header;
 		var cluePanel;
@@ -471,11 +793,11 @@ class OpenQuestionPanel extends React.Component {
 
 
 		// Standard clue, buzzers not opened yet
-		if (!buzzersOpen && $.isEmptyObject(this.state.playerAnswering)) {
+		if (!this.state.buzzersOpen && $.isEmptyObject(this.state.playerAnswering)) {
 			
 			header = (
 				<div className="open-question-header">
-					<p className="open-question-category">{rounds[currentRound].categories[this.props.catNo].name}</p>
+					<p className="open-question-category">{this.props.catName}</p>
 					<p className="open-question-value">
 						{prefix}{this.state.value}{suffix}
 					</p>
@@ -485,7 +807,7 @@ class OpenQuestionPanel extends React.Component {
 			cluePanel = (
 				<div className="open-question-clue">
 					<p className="open-question-clue">
-						{clue.answer}
+						{this.props.clue.answer}
 					</p>
 				</div>
 			);
@@ -494,7 +816,7 @@ class OpenQuestionPanel extends React.Component {
 				<div className="open-question-correct">
 					<p className="open-question-correct">
 						Correct Response:<br/>
-						{clue.correct}
+						{this.props.clue.correct}
 					</p>
 				</div>
 			);
@@ -514,7 +836,7 @@ class OpenQuestionPanel extends React.Component {
 			});
 			header = (
 				<div className="open-question-header">
-					<p className="open-question-category">{rounds[currentRound].categories[this.props.catNo].name}</p>
+					<p className="open-question-category">{this.props.catName}</p>
 					<p className="open-question-value"></p>
 				</div>
 			);
@@ -538,7 +860,10 @@ class OpenQuestionPanel extends React.Component {
 			);
 			buzzerPanel = (
 				<div className="buzzer-panel">
-					<p className="buzzer-panel">Enter Wager for {this.state.playerAnswering.screenName} (Maximum of ${this.state.ddMaxWager})</p>
+					<p className="buzzer-panel">
+						Enter Wager for {this.state.playerAnswering.screenName} <nbsp/>
+						(Maximum of ${Math.max(this.props.ddMaxWager, this.state.playerAnswering.score)})
+					</p>
 					<div className="button-row">
 						{wagerEntry}
 						<div className="add-question-button" onClick={this.enterDDWager}>
@@ -552,7 +877,7 @@ class OpenQuestionPanel extends React.Component {
 		} else if ($.isEmptyObject(this.state.playerAnswering)) {
 			header = (
 				<div className="open-question-header">
-					<p className="open-question-category">{rounds[currentRound].categories[this.props.catNo].name}</p>
+					<p className="open-question-category">{this.props.catName}</p>
 					<p className="open-question-value">
 						{prefix}{this.state.value}{suffix}
 					</p>
@@ -562,7 +887,7 @@ class OpenQuestionPanel extends React.Component {
 			cluePanel = (
 				<div className="open-question-clue">
 					<p className="open-question-clue">
-						{clue.answer}
+						{this.props.clue.answer}
 					</p>
 				</div>
 			);
@@ -571,7 +896,7 @@ class OpenQuestionPanel extends React.Component {
 				<div className="open-question-correct">
 					<p className="open-question-correct">
 						Correct Response:<br/>
-						{clue.correct}
+						{this.props.clue.correct}
 					</p>
 				</div>
 			);
@@ -592,14 +917,13 @@ class OpenQuestionPanel extends React.Component {
 			if (this.state.dailyDouble) {
 				socket.emit("set state", {
 					currentPanel: "OpenQuestionPanel",
-					currentCatNo: this.props.catNo,
-					currentClueNo: this.props.clueNo
+					currentClue: this.props.clue
 				});
 			}
 			
 			header = (
 				<div className="open-question-header">
-					<p className="open-question-category">{rounds[currentRound].categories[this.props.catNo].name}</p>
+					<p className="open-question-category">{this.props.catName}</p>
 					<p className="open-question-value">
 						{prefix}{this.state.value}{suffix}
 					</p>
@@ -609,7 +933,7 @@ class OpenQuestionPanel extends React.Component {
 			cluePanel = (
 				<div className="open-question-clue">
 					<p className="open-question-clue">
-						{clue.answer}
+						{this.props.clue.answer}
 					</p>
 				</div>
 			);
@@ -618,7 +942,7 @@ class OpenQuestionPanel extends React.Component {
 				<div className="open-question-correct">
 					<p className="open-question-correct">
 						Correct Response:<br/>
-						{clue.correct}
+						{this.props.clue.correct}
 					</p>
 				</div>
 			);
@@ -651,20 +975,26 @@ class OpenQuestionPanel extends React.Component {
 }
 
 OpenQuestionPanel.propTypes = {
-	catNo: React.PropTypes.number,
-	clueNo: React.PropTypes.number,
-	value: React.PropTypes.number
+	players: React.PropTypes.array,
+	catName: React.PropTypes.string,
+	clue: React.PropTypes.object,
+	value: React.PropTypes.number,
+	endClue: React.PropTypes.func,
+	changePlayerScore: React.PropTypes.func,
+	ddMaxWager: React.PropTypes.number,
+	selectingPlayer: React.PropTypes.object,
+	setSelectingPlayer: React.PropTypes.func,
+	setAnsweringPlayer: React.PropTypes.func,
+	clearAnsweringPlayer: React.PropTypes.func
 };
 
 class FinalJeopardyPanel extends React.Component {
 	constructor(props) {
 		super(props);
 
-		var eligiblePlayers = players.filter(function(p) {return p.score > 0;}).sort(function(a,b) {return a.score < b.score;});
 		this.state = {
 			categoryVisible: false,
 			clueVisible: false,
-			eligiblePlayers: eligiblePlayers,
 			wagers: [],
 			wageringOpen: false,
 			allWagersIn: false,
@@ -673,7 +1003,8 @@ class FinalJeopardyPanel extends React.Component {
 			respondingTimeRemaining: 30,
 			responses: [],
 			focusPlayerNumber: 0,
-			focusPlayerName: eligiblePlayers[0].screenName,
+			focusPlayerName: this.props.eligiblePlayers[0].screenName,
+			focusResponse: "",
 			focusMode: "response",
 			focusCorrect: false
 		};
@@ -717,7 +1048,7 @@ class FinalJeopardyPanel extends React.Component {
 				});
 				thisPanel.setState({
 					wagers: newWagers,
-					allWagersIn: newWagers.length === thisPanel.state.eligiblePlayers.length
+					allWagersIn: newWagers.length === thisPanel.props.eligiblePlayers.length
 				});
 			}
 		});
@@ -731,14 +1062,14 @@ class FinalJeopardyPanel extends React.Component {
 			finalCategoryVisible: true
 		});
 
-
-		this.state.eligiblePlayers.map(function(p) {
+		var thisPanel = this;
+		this.props.eligiblePlayers.map(function(p) {
 			socket.emit("send private message", {
 				screenName: p.screenName,
 				message: {
 					type: "wager",
 					balance: p.score,
-					category: final.category,
+					category: thisPanel.props.final.category,
 					prefix: prefix,
 					suffix: suffix
 				}
@@ -761,18 +1092,18 @@ class FinalJeopardyPanel extends React.Component {
 		this.setState({
 			respondingOpen: true
 		});
-		this.state.eligiblePlayers.map(function(p) {
+		var thisPanel = this;
+		this.props.eligiblePlayers.map(function(p) {
 			socket.emit("send private message", {
 				screenName: p.screenName,
 				message: {
 					type: "final",
-					questionBody: final.answer
+					questionBody: thisPanel.props.final.answer
 				}
 			});
 		});
 		socket.emit("play sound", "final-think");
 		// send message to display to start think music
-		var thisPanel = this;
 		var timer = setInterval(function() {
 			if (thisPanel.state.respondingTimeRemaining > 1) {
 				thisPanel.setState({
@@ -793,7 +1124,9 @@ class FinalJeopardyPanel extends React.Component {
 			respondingOpen: false
 		});
 		var focusResponse;
+		
 		if (this.state.responses.some(function(r) {
+			console.log(r);
 			return r.screenName === thisPanel.state.focusPlayerName;
 		})) {
 			focusResponse = this.state.responses.find(function(r) {
@@ -802,6 +1135,11 @@ class FinalJeopardyPanel extends React.Component {
 		} else {
 			focusResponse = "";
 		}
+
+		this.setState({
+			focusResponse: focusResponse
+		});
+
 		socket.emit("set state", {
 			currentPanel: "FinalJeopardyResponsePanel",
 			finalFocusScreenName: thisPanel.state.focusPlayerName,
@@ -814,13 +1152,13 @@ class FinalJeopardyPanel extends React.Component {
 		});
 	}
 	nextFocus() {
-		if (this.state.focusPlayerNumber === this.state.eligiblePlayers.length - 1) {
+		if (this.state.focusPlayerNumber === this.props.eligiblePlayers.length - 1) {
 			// TODO proceed to end of game screen
 		} else {
 			var thisPanel = this;
 			this.setState({
 				focusPlayerNumber: this.state.focusPlayerNumber + 1,
-				focusPlayerName: this.state.eligiblePlayers[this.state.focusPlayerNumber + 1].screenName,
+				focusPlayerName: this.props.eligiblePlayers[this.state.focusPlayerNumber + 1].screenName,
 				focusMode: "response"
 			});
 
@@ -834,6 +1172,9 @@ class FinalJeopardyPanel extends React.Component {
 			} else {
 				focusResponse = "";
 			}
+			this.setState({
+				focusResponse: focusResponse
+			});
 
 			// send message to display to go to next response
 			socket.emit("set state", {
@@ -850,13 +1191,13 @@ class FinalJeopardyPanel extends React.Component {
 	}
 	wrongAnswer() {
 		var thisPanel = this;
-		players.find(function(p) {return p.screenName === thisPanel.state.focusPlayerName;}).score 
-			-= this.state.wagers.find(function(p) {return p.screenName === thisPanel.state.focusPlayerName;}).wager;
+		this.props.changePlayerScore(this.state.focusPlayerName,
+			this.props.eligiblePlayers.find(function(p) {return p.screenName === thisPanel.state.focusPlayerName;}).score
+				- this.state.wagers.find(function(p) {return p.screenName === thisPanel.state.focusPlayerName;}).wager);
 		this.setState({
 			focusMode: "wager",
 			focusCorrect: false
 		});
-		renderPlayerList();
 		// send message to display to show wager
 
 		socket.emit("set state", {
@@ -865,13 +1206,13 @@ class FinalJeopardyPanel extends React.Component {
 	}
 	rightAnswer() {
 		var thisPanel = this;
-		players.find(function(p) {return p.screenName === thisPanel.state.focusPlayerName;}).score 
-			+= this.state.wagers.find(function(p) {return p.screenName === thisPanel.state.focusPlayerName;}).wager;
+		this.props.changePlayerScore(this.state.focusPlayerName,
+			this.props.eligiblePlayers.find(function(p) {return p.screenName === thisPanel.state.focusPlayerName;}).score
+				+ this.state.wagers.find(function(p) {return p.screenName === thisPanel.state.focusPlayerName;}).wager);
 		this.setState({
 			focusMode: "wager",
 			focusCorrect: true
 		});
-		renderPlayerList();
 		// send message to display to show wager
 		socket.emit("set state", {
 			finalFocusWagerVisible: true
@@ -891,7 +1232,7 @@ class FinalJeopardyPanel extends React.Component {
 		} else {
 			categoryPanel = (
 				<div className="final-jeopardy-category">
-					<p className="final-jeopardy-category">{final.category}</p>
+					<p className="final-jeopardy-category">{this.props.final.category}</p>
 				</div>
 			);
 		}
@@ -903,7 +1244,7 @@ class FinalJeopardyPanel extends React.Component {
 			cluePanel = (
 				<div className="final-jeopardy-clue">
 					<p className="final-jeopardy-clue">
-						Waiting on wager from {this.state.eligiblePlayers.length - this.state.wagers.length} contestant(s)
+						Waiting on wager from {this.props.eligiblePlayers.length - this.state.wagers.length} contestant(s)
 					</p>
 				</div>
 			);
@@ -922,7 +1263,7 @@ class FinalJeopardyPanel extends React.Component {
 			cluePanel = (
 				<div className="final-jeopardy-clue">
 					<p className="final-jeopardy-clue">
-						{final.answer}
+						{this.props.final.answer}
 					</p>
 				</div>
 			);
@@ -954,7 +1295,7 @@ class FinalJeopardyPanel extends React.Component {
 				<div className="final-jeopardy-correct">
 					<p className="final-jeopardy-correct">
 						Correct response:<br/>
-						{final.correct}
+						{this.props.final.correct}
 					</p>
 				</div>
 			);
@@ -968,7 +1309,7 @@ class FinalJeopardyPanel extends React.Component {
 			responsePanel = <div className="final-jeopardy-response"/>;
 		} else if (this.state.focusMode === "response") {
 			console.log(this.state.responses);
-			console.log(this.state.finalFocusResponse);
+			console.log(this.state.focusResponse);
 			responsePanel = (
 				<div className="final-jeopardy-response">
 					<div className="button-row space-between">
@@ -983,7 +1324,7 @@ class FinalJeopardyPanel extends React.Component {
 						</div>
 					</div>
 					<p className="final-jeopardy-response">
-						{this.state.finalFocusResponse}
+						{this.state.focusResponse}
 					</p>
 				</div>
 			);
@@ -1023,4 +1364,22 @@ class FinalJeopardyPanel extends React.Component {
 			</div>
 		);
 	}
+}
+
+FinalJeopardyPanel.propTypes = {
+	eligiblePlayers: React.PropTypes.array,
+	final: React.PropTypes.object,
+	changePlayerScore: React.PropTypes.func
+};
+
+
+
+function getParameterByName(name, url) {
+	if (!url) url = window.location.href;
+	name = name.replace(/[\[\]]/g, "\\$&");
+	var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+		results = regex.exec(url);
+	if (!results) return null;
+	if (!results[2]) return "";
+	return decodeURIComponent(results[2].replace(/\+/g, " "));
 }

@@ -1,0 +1,18 @@
+div#scoreboard {
+	background-color: #E5218A;
+	height: 50px;
+	width: 200px;
+	color: white;
+	font-size: 200%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: "Eurostile T Black";
+}
+
+body {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}

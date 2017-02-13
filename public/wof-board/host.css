@@ -127,81 +127,115 @@ div .no-question-panel {
 	justify-content: center;
 	align-items: center;
 	background-color: #0B1885;
-}
-
-
-
-div.select-question-panel {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	justify-content: center;
-	align-items: stretch;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	background-color: #0B1885;
-}
-
-div.category-group {
-	flex: 1 1 60px;
-	display: flex;
-	flex-direction: column;
-	margin: 5px;
-}
-
-div.category-header {
-	flex: 0 0 auto;
-	height: 20px;
-	background-color: #0B1885;
-	display: flex;
-	align-items: center;
-	justify-content: left;
-	margin-left: 5px;
-	margin-right: 5px;
-}
-
-p.category-header {
-
-	text-align: left;
 	color: white;
-	text-transform: uppercase;
 }
 
-div.category-clue-group {
-	flex: 1 1 60px;
+div.letter-button-panel {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}
+
+div.letter-button {
+	flex: 1 1 auto;
+	background-color: teal;
+	margin: 5px;
+	border: none;
+	color: white;
+	height: 40px;
+	min-width: 30px;
+	max-width: 30px;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;  
+	cursor: pointer;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+div.letter-button.inactive {
+  background-color: #999999;
+}
+
+.letter-button p {
+  color: white;
+  text-align: left;
+  font-size: 150%;
+  position: relative;
+  margin: auto;
+}
+
+div.current-board-panel {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #0B1885;
+}
+
+div.puzzle-board-row {
+	flex: 1 0 40px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: stretch;
-	
 }
 
-div.clue-button {
-	flex: 1 1 20px;
-	border: 5px solid black;
+div.puzzle-board-cell {
+	border: 1px solid black;
+	background-color: white;
+	flex: 1 0 40px;
 	display: flex;
-	align-items: center;
+	flex-direction: row;
 	justify-content: center;
-	margin-left: 5px;
-	margin-right: 5px;
+	align-items: center;
 }
 
-div.clue-button.active {
-	background-color: #0B1885;
-	cursor: pointer;
+div.puzzle-board-cell.invisible {
+	border: 0;
+	opacity: 0;
+	flex: 1 0 40px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
 
-div.clue-button.inactive {
-	background-color: #0B1885;
+div.puzzle-board-cell.shaded {
+	background-color: teal;
+	color: teal;
+	flex: 1 0 40px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
 
-p.clue-button {
-	width: 100%;
-	text-align: center;
-	color: orange;
-	font-size: 200%;
-	font-family: 'Oswald Bold';
+div.puzzle-board-cell.blank {
+	color: white;
+	flex: 1 0 40px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
+
+div.puzzle-category-panel {
+	color: white;
+	font-family: Impact;
+	font-size: 150%;
+}
+
+div.puzzle-solution-panel {
+	color: white;
+}
+
+div.status-panel {
+	color: white;
+}
+
+
 
 
 div.add-question-button {
@@ -273,72 +307,7 @@ a.cancel-question-button {
 	font-size: 150%;
 }
 
-div .playerListing {
-	display: flex;
-	flex-direction: column;
-
-	margin-left: 10px;
-	margin-right: 10px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	border: 1px solid black;
-}
-
-p.playerListingName {
-	color: white;
-}
-
-div.playerListingName {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: stretch;
-	flex: 2 2 auto;
-	height: 30px;
-	background-color: #0B1885;
-	border-bottom: 1px solid black;
-	padding-right: 5px;
-}
-
-div.playerListingName.locked {
-	background-color: grey;
-}
-
-div.playerListingName.answering {
-	background-color: blue;
-}
-
-p.playerListingDetails {
-	font-family: 'Oswald Bold';
-	color: white;
-	font-size: 300%;
-	text-shadow: 2px 2px black;
-}
-
-p.playerListingDetails.negative {
-	color: red;
-}
-
-div.playerListingDetails {
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: stretch;
-	flex: 3 3 auto;
-	height: 60px;
-	background-color: #0B1885;
-}
-
-div.playerListingDetails.locked {
-	background-color: grey;
-}
-
-div.playerListingDetails.answering {
-	background-color: blue;
-}
-
-div #open-question-panel {
+div.puzzle-board-panel {
 	display: flex;
 	position: relative;
 	flex: 1 1 auto;
@@ -348,84 +317,6 @@ div #open-question-panel {
 	background-color: #0B1885;
 	padding: 5px;
 	max-width: auto;
-}
-
-div.open-question-header {
-	flex: 0 0 auto;
-	height: 30px;
-	display: flex;
-	justify-content: space-between;
-	flex-direction: row;
-	align-items: center;
-	border: 1px solid white;
-}
-
-p.open-question-category {
-	
-	color: white;
-	text-transform: uppercase;
-	font-size: 150%;
-}
-
-p.open-question-value {
-
-	color: orange;
-	font-family: 'Oswald Bold';
-	font-size: 150%;
-}
-
-div.open-question-clue {
-	flex: 1 1 50px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid white;
-}
-
-p.open-question-clue {
-	color: white;
-	text-transform: uppercase;
-	font-size: 150%;
-	font-family: 'Korinna Bold';
-}
-
-div.open-question-clue.daily-double {
-	background-color: maroon;
-}
-
-p.open-question-clue.daily-double {
-	font-size: 250%;
-	font-family: 'Oswald Bold';
-}
-
-div.open-question-correct {
-	flex: 1 1 50px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid white;
-}
-
-p.open-question-correct {
-	color: white;
-	font-family: 'Korinna Bold';
-	font-size: 150%;
-}
-
-div.buzzer-panel {
-	flex: 0 0 100px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid white;
-}
-
-p.buzzer-panel {
-	color: white;
-	font-family: 'Korinna Bold';
-	font-size: 150%;
-	margin: auto;
 }
 
 div.button-row {
@@ -442,104 +333,4 @@ div.button-row.space-between {
 
 div.button-row.recursive {
 	width: auto;
-}
-
-
-
-div #final-jeopardy-panel {
-	display: flex;
-	position: relative;
-	flex: 1 1 auto;
-	flex-direction: column;
-	align-items: stretch;
-	justify-content: center;
-	background-color: #0B1885;
-	padding: 5px;
-	max-width: auto;
-}
-
-div.final-jeopardy-header {
-	flex: 0 0 auto;
-	height: 30px;
-	display: flex;
-	justify-content: center;
-	flex-direction: row;
-	align-items: center;
-	border: 1px solid white;
-}
-
-p.final-jeopardy-header {
-	color: white;
-	font-size: 150%;
-	text-align: center;
-}
-
-div.final-jeopardy-category {
-	flex: 1 1 50px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid white;
-}
-
-p.final-jeopardy-category {
-	color: white;
-	text-transform: uppercase;
-	font-size: 150%;
-	font-family: 'Korinna Bold';
-}
-
-div.final-jeopardy-clue {
-	flex: 1 1 50px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid white;
-}
-
-p.final-jeopardy-clue {
-	color: white;
-	text-transform: uppercase;
-	font-size: 150%;
-	font-family: 'Korinna Bold';
-}
-
-div.final-jeopardy-correct {
-	flex: 1 1 50px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid white;
-}
-
-p.final-jeopardy-correct {
-	color: white;
-	font-family: 'Korinna Bold';
-	font-size: 150%;
-}
-
-div.final-jeopardy-response {
-	flex: 0 0 100px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid white;
-}
-
-p.final-jeopardy-response {
-	color: white;
-	font-family: 'Korinna Bold';
-	font-size: 150%;
-	margin: auto;
-}
-
-p.final-jeopardy-response.left {
-	color: white;
-	font-family: 'Korinna Bold';
-	font-size: 150%;
-	margin: auto;
-	text-align: left;
 }

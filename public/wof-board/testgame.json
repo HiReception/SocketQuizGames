@@ -1,0 +1,19 @@
+{
+	"puzzles": [
+		{
+			"category": "Title",
+			"answer": "Wheel of Fortune",
+			"finalBoard": ["@           @","   WHEEL OF  ","   FORTUNE   ","@           @"]
+		},
+		{
+			"category": "Phrase",
+			"answer": "You Took the Words Right Out of My Mouth",
+			"finalBoard": ["@ YOU TOOK  @","  THE WORDS  ","RIGHT OUT OF ","@  MY MOUTH @"]
+		}
+	],
+	"bonus": {
+		"category": "Thing",
+		"answer": "Leaky Faucet",
+		"finalBoard": ["@           @","   LEAKY     ","   FAUCET    ","@           @"]
+	}
+}

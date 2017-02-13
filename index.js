@@ -92,31 +92,36 @@ app.post("/play",
 
 	function checkNameNotTaken(req, res, next) {
 		console.log("checkNameNotTaken called");
-		var room = rooms.filter(function(room) { return room.gameCode === req.body.gamecode; })[0];
+		var room = rooms.filter(function(room) { return room.gameCode === req.body.gamecode.toUpperCase(); })[0];
 		var screenName = req.body.name;
-
-		// check if any other user is using this name (this can include the same person reconnecting)
-		var preExistingUserArray = room.players.filter(function(player) { return player.screenName === screenName; });
-		console.log("Number of current users with matching screenName of " + screenName + ": " + preExistingUserArray.length);
-		if (preExistingUserArray.length === 0) {
-			// no other users with this name, so continue on
-			next();
+		if (screenName === "") {
+			next("screen name cannot be blank");
 		} else {
-			// check if this user last played in the same room with the exact same name (i.e. left and came back in)
-			var matchingString = room.gameCode + "|" + screenName;
-			if (req.session.lastRoomAndName === matchingString) {
+			// check if any other user is using this name (this can include the same person reconnecting)
+			var preExistingUserArray = room.players.filter(function(player) { return player.screenName === screenName; });
+			console.log("Number of current users with matching screenName of " + screenName + ": " + preExistingUserArray.length);
+			if (preExistingUserArray.length === 0) {
+				// no other users with this name, so continue on
 				next();
-			// if they didn't, reject them
 			} else {
-				next("screen name taken");
+				// check if this user last played in the same room with the exact same name (i.e. left and came back in)
+				var matchingString = room.gameCode + "|" + screenName;
+				if (req.session.lastRoomAndName === matchingString) {
+					next();
+				// if they didn't, reject them
+				} else {
+					next("screen name taken");
+				}
 			}
 		}
+
+		
 	},
 
 	function assignCookieAndRedirect(req, res, next) {
 		console.log("assignCookieAndRedirect called");
 		req.session.lastRoomAndName = req.body.gamecode + "|" + req.body.name;
-		var room = rooms.filter(function(room) { return room.gameCode === req.body.gamecode; })[0];
+		var room = rooms.filter(function(room) { return room.gameCode === req.body.gamecode.toUpperCase(); })[0];
 		res.redirect("/" + room.type + "/play?gamecode=" + room.gameCode + "&name=" + req.body.name);
 	},
 
@@ -133,7 +138,7 @@ app.get("/displaygame", function(req, res) {
 app.post("/display",
 	function checkRoomExists(req, res, next) {
 		console.log("checkRoomExists called");
-		var roomCode = req.body.gamecode;
+		var roomCode = req.body.gamecode.toUpperCase();
 		var roomArray = rooms.filter(function(room) { return room.gameCode === roomCode; });
 		if (roomArray.length > 0) {
 			next();
@@ -144,7 +149,7 @@ app.post("/display",
 
 	function redirect(req, res, next) {
 		console.log("redirect called");
-		var room = rooms.filter(function(room) { return room.gameCode === req.body.gamecode; })[0];
+		var room = rooms.filter(function(room) { return room.gameCode === req.body.gamecode.toUpperCase(); })[0];
 		res.redirect("/" + room.type + "/display?gamecode=" + room.gameCode);
 	},
 
@@ -253,10 +258,10 @@ io.on("connection", function(socket) {
 		}
 
 		socket.on("send answer", function(details) {
-			console.log("player " + screenName + " has answered " + details.submittedAnswer
-				+ " to question " + details.questionNo + " in room " + gameCode);
-
-			var answeredQuestion = room.questions.find(function(q) {return q.questionNo === details.questionNo;});
+			console.log("answer received:");
+			console.log(details);
+			console.log("from player: ");
+			console.log(thisUser);
 
 			var answer = {
 				player: thisUser,

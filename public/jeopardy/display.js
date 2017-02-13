@@ -64,15 +64,14 @@ class DisplayContainer extends React.Component {
 
 			
 			currentPanel: "NoQuestionPanel",
-			currentCatNo: 0,
-			currentClueNo: 0,
+			currentClue: {},
 
 			playerAnswering: {},
 
 			dailyDoublePlaySound: true,
 
 			prefix: "",
-			suffix: ""
+			suffix: "",
 		};
 		
 		this.render = this.render.bind(this);
@@ -112,10 +111,7 @@ class DisplayContainer extends React.Component {
 			break;
 		case "OpenQuestionPanel":
 			questionPanel = (<OpenQuestionPanel
-				clue={this.state.rounds[this.state.currentRound]
-					.categories[this.state.currentCatNo]
-					.clues[this.state.currentClueNo]
-				}
+				clue={this.state.currentClue}
 			/>);
 			break;
 		case "DailyDoublePanel":
@@ -146,12 +142,15 @@ class DisplayContainer extends React.Component {
 		}
 
 		var playerPanel;
+		var thisPanel = this;
+		var nonHiddenPlayers = this.state.players.filter(function(p) {
+			return !p.hidden;
+		});
 
-		if (this.state.players.length != 0) {
+		if (nonHiddenPlayers.length != 0) {
 			var list = [];
-			for (var i = 0; i < this.state.players.length; i++) {
-				var p = this.state.players[i];
-
+			for (var i = 0; i < nonHiddenPlayers.length; i++) {
+				var p = nonHiddenPlayers[i];
 				// light this display up if they are answering the question
 				var answering = this.state.playerAnswering.screenName === p.screenName;
 

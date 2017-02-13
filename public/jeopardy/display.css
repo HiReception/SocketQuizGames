@@ -51,9 +51,10 @@ body {
   height: 150px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   align-items: stretch;
   background-color: brown;
+  overflow-x: auto;
 }
 
 #display-panel {
@@ -219,15 +220,14 @@ p.clue-button {
 
 div .playerContainer {
   flex: 1 1 auto;
-
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   align-items: stretch;
 }
 
 div .playerListing {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   width: 250px;
 
   display: flex;

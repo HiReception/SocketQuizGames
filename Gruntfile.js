@@ -67,6 +67,39 @@ module.exports = function(grunt) {
 						}]
 					]
 				}
+			},
+			wof_board_host: {
+				src: "public/wof-board/host.js",
+				dest: "public/wof-board/hostBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react"]
+						}]
+					]
+				}
+			},
+			tpir_wheel_display: {
+				src: "public/tpir-wheel/display.js",
+				dest: "public/tpir-wheel/displayBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react"]
+						}]
+					]
+				}
+			},
+			tpir_plinko_display: {
+				src: "public/tpir-plinko/display.js",
+				dest: "public/tpir-plinko/displayBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react"]
+						}]
+					]
+				}
 			}
 		},
 
