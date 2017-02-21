@@ -5,6 +5,7 @@ var io = require("socket.io")(http);
 var bodyParser = require("body-parser");
 var validator = require("express-validator");
 var session = require("express-session");
+var flash = require("connect-flash");
 
 var rooms = [
 	{
@@ -57,6 +58,7 @@ app.use(session({
 	resave: true,
 	saveUninitialized: false
 }));
+app.use(flash());
 
 
 
@@ -127,7 +129,7 @@ app.post("/play",
 
 	function handleErrors(err, req, res, next) {
 		console.log("handleErrors called");
-		res.send(err);
+		res.flash("error", err);
 	}
 );
 
@@ -155,7 +157,7 @@ app.post("/display",
 
 	function handleErrors(err, req, res, next) {
 		console.log("handleErrors called");
-		res.send(err);
+		res.flash("error", err);
 	}
 );
 

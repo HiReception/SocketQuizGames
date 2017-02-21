@@ -47821,17 +47821,27 @@ var Engine = Matter.Engine,
 // create an engine
 var engine = Engine.create();
 
-var pegGap = 34;
+var pegGap = 32;
+var dividerHeight = 30;
 
-var chipRadius = 14;
+var chipRadius = 13;
+var boardHeight = 13 * pegGap + dividerHeight;
+var boardWidth = pegGap * 9;
+
+var dropZoneHeight = boardHeight / 4;
+
+document.getElementById("scoreboard-container").style.height = boardHeight * 1.5 + "px";
+document.getElementById("scoreboard-container").style.minHeight = boardHeight * 1.5 + "px";
+document.getElementById("scoreboard-container").style.width = boardWidth * 1.5 + "px";
+document.getElementById("scoreboard-container").style.minWidth = boardWidth * 1.5 + "px";
 
 // create a renderer
 var render = Render.create({
 	element: document.getElementById("board"),
 	engine: engine,
 	options: {
-		width: pegGap * 9,
-		height: 560,
+		width: boardWidth,
+		height: boardHeight + dropZoneHeight,
 		hasBounds: true,
 		wireframes: false,
 		background: "white"
@@ -47866,7 +47876,7 @@ Events.on(chipSpawnConstraint, "mousedown", function (event) {
 });
 
 var leftmostPeg = pegGap / 2;
-var topmostPeg = 75;
+var topmostPeg = dropZoneHeight;
 
 var i;
 
@@ -47932,8 +47942,6 @@ for (var r = 0; r < 13; r++) {
 		}
 	}
 }
-
-var dividerHeight = 30;
 
 for (i = 0; i < 10; i++) {
 	World.add(engine.world, Bodies.rectangle(i * pegGap + leftmostPeg - pegGap / 2, topmostPeg + 13 * pegGap + dividerHeight / 2, 2, dividerHeight, {
