@@ -1,13 +1,17 @@
 div#scoreboard {
 	background-color: #E5218A;
-	height: 50px;
-	width: 200px;
+	height: 40px;
+	width: 150px;
 	color: white;
-	font-size: 200%;
+	margin-top: 20px;
+	font-size: 180%;
+	border: 1px solid black;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	font-family: "Eurostile T Black";
+	position: relative;
+	z-index: -1;
 }
 
 body {
@@ -17,7 +21,7 @@ body {
 	align-items: center;
 }
 
-#scoreboard-container {
+#board-container {
 	background-image: url("board.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -25,4 +29,25 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    position: relative;
+    z-index: -2;
+    margin-left: -75px;
+}
+
+
+#scoreboard-container {
+	background-image: url("scoreboard_background.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	margin-bottom: 150px;
+	height: 120px;
+	max-height: 120px;
+	width: 180px;
+	max-width: 180px;
+	z-index: -1;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
 }

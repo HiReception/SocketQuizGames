@@ -47,23 +47,31 @@ var boardHeight = 13 * pegGap + dividerHeight;
 var boardWidth = pegGap * 9;
 
 
-var dropZoneHeight = boardHeight/4;
+// ratio of whole board width to peg-board width (i.e. combined width either side for border)
+var widthRatio = 1.8;
 
-document.getElementById("scoreboard-container").style.height = boardHeight * 1.5 + "px";
-document.getElementById("scoreboard-container").style.minHeight = boardHeight * 1.5 + "px";
-document.getElementById("scoreboard-container").style.width = boardWidth * 1.5 + "px";
-document.getElementById("scoreboard-container").style.minWidth = boardWidth * 1.5 + "px";
+// ratio of whole board length to peg-board length (i.e. combined width either side for border)
+var heightRatio = 1.5;
+
+var dropZoneHeight = boardHeight * (heightRatio - 1)/2;
+
+document.getElementById("board-container").style.height = boardHeight * heightRatio + "px";
+document.getElementById("board-container").style.minHeight = boardHeight * heightRatio + "px";
+document.getElementById("board-container").style.width = boardWidth * widthRatio + "px";
+document.getElementById("board-container").style.minWidth = boardWidth * widthRatio + "px";
+
+
 
 // create a renderer
 var render = Render.create({
 	element: document.getElementById("board"),
 	engine: engine,
 	options: {
-		width: boardWidth,
+		width: boardWidth * widthRatio,
 		height: boardHeight + dropZoneHeight,
 		hasBounds: true,
 		wireframes: false,
-		background: "white",
+		background: "transparent",
 	}
 	
 });
@@ -100,7 +108,7 @@ Events.on(chipSpawnConstraint, "mousedown", function(event) {
 
 
 
-var leftmostPeg = pegGap/2;
+var leftmostPeg = pegGap/2 + boardWidth * (widthRatio - 1)/2;
 var topmostPeg = dropZoneHeight;
 
 var i;
