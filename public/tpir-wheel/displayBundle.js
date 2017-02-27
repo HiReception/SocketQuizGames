@@ -26916,12 +26916,8 @@ var spin = function () {
 		angle = (angle % 360 + 360) % 360;
 		ReactDOM.render(React.createElement(WheelPanel, { angle: angle }), document.getElementById("wheel-panel"));
 
-		var pointedWedge = wedgeArray.length - Math.floor((angle - wedgeSpan / 2 + 360) % 360 / wedgeSpan) - 1;
-		ReactDOM.render(React.createElement(
-			"div",
-			null,
-			wedgeValueArray[pointedWedge]
-		), document.getElementById("angle-panel"));
+		//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
+		//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
 
 		angleIncrement += maxAngleIncrement / 10;
 		if (angleIncrement >= maxAngleIncrement) {
@@ -26947,12 +26943,8 @@ var spin = function () {
 				angle = (angle % 360 + 360) % 360;
 				ReactDOM.render(React.createElement(WheelPanel, { angle: angle }), document.getElementById("wheel-panel"));
 
-				var pointedWedge = wedgeArray.length - Math.floor((angle - wedgeSpan / 2 + 360) % 360 / wedgeSpan) - 1;
-				ReactDOM.render(React.createElement(
-					"div",
-					null,
-					wedgeValueArray[pointedWedge]
-				), document.getElementById("angle-panel"));
+				//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
+				//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
 
 				angleIncrement -= slowDownAmount;
 				if (angleIncrement <= 0) {
