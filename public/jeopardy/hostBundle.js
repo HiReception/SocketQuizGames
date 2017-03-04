@@ -37948,6 +37948,7 @@ var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
 
+
 var gameTitle = getParameterByName("gametitle");
 
 var prefix = "";
@@ -38211,7 +38212,7 @@ class HostConsole extends React.Component {
 					null,
 					React.createElement(
 						"p",
-						null,
+						{ className: "no-players" },
 						"No Players"
 					)
 				);
@@ -38442,14 +38443,21 @@ class NoQuestionPanel extends React.Component {
 			console.log(p);return p.screenName;
 		});
 		console.log(playerNameList);
+		var testFiles = ["testgame-onecluethenfinal.json","testgame.json"];
 		this.state = {
 			playerNameList: playerNameList,
 			selectedFirstPlayer: props.players.length > 0 ? props.players[0].screenName : "",
-			anyFieldsEmpty: props.players.length > 0 ? false : true
+			anyFieldsEmpty: props.players.length > 0 ? false : true,
+			gameUsed: "upload",
+			testFiles: testFiles,
+			testFileSelected: "testgames/" + testFiles[0]
 		};
 
 		this.processFile = this.processFile.bind(this);
 		this.changeFirstPlayer = this.changeFirstPlayer.bind(this);
+		this.changeGameUsed = this.changeGameUsed.bind(this);
+		this.changeTestFile = this.changeTestFile.bind(this);
+		this.loadGameData = this.loadGameData.bind(this);
 	}
 	componentWillReceiveProps(newProps) {
 		console.log(newProps);
@@ -38466,36 +38474,53 @@ class NoQuestionPanel extends React.Component {
 	}
 	processFile() {
 		if (!this.state.anyFieldsEmpty) {
-			var selectedFile = document.getElementById("questionFile").files[0];
-			var reader = new FileReader();
-			var thisPanel = this;
-			reader.onload = function () {
-				console.log("reader.onload called");
-				var fileText = reader.result;
-				var fileObject = JSON.parse(fileText);
-				var rounds = fileObject.rounds;
-				var final = fileObject.final;
-				prefix = fileObject.properties.prefix;
-				suffix = fileObject.properties.suffix;
-				// TODO error handling
-				for (var round = 0; round < rounds.length; round++) {
-					for (var cat = 0; cat < rounds[round].categories.length; cat++) {
-						for (var clue = 0; clue < rounds[round].categories[cat].clues.length; clue++) {
-							rounds[round].categories[cat].clues[clue].active = true;
-						}
-					}
-				}
-
-				socket.emit("send question", {
-					type: "buzz-in",
-					open: true
+			var selectedFile;
+			if (this.state.gameUsed === "upload") {
+				selectedFile = document.getElementById("questionFile").files[0];
+				var reader = new FileReader();
+				var thisPanel = this;
+				reader.onload = function (event) {
+					thisPanel.loadGameData(JSON.parse(event.target.result));
+				};
+				reader.readAsText(selectedFile);
+				console.log("readAsText called");
+				// TODO show loading graphic until processing is done
+			} else {
+				console.log(this.state.testFileSelected);
+				$.ajax({
+					type: "GET",
+					url: this.state.testFileSelected,
+					success: this.loadGameData
 				});
-				thisPanel.props.setGameData(rounds, final, thisPanel.state.selectedFirstPlayer);
-			};
-			reader.readAsText(selectedFile);
-			console.log("readAsText called");
-			// TODO show loading graphic until processing is done
+			}
 		}
+	}
+	loadGameData(fileObject) {
+		console.log("reader.onload called");
+		console.log(fileObject);
+		var rounds = fileObject.rounds;
+		var final = fileObject.final;
+		prefix = fileObject.properties.prefix;
+		suffix = fileObject.properties.suffix;
+		// TODO error handling
+		for (var round = 0; round < rounds.length; round++) {
+			for (var cat = 0; cat < rounds[round].categories.length; cat++) {
+				for (var clue = 0; clue < rounds[round].categories[cat].clues.length; clue++) {
+					rounds[round].categories[cat].clues[clue].active = true;
+				}
+			}
+		}
+
+		socket.emit("send question", {
+			type: "buzz-in",
+			open: true
+		});
+		this.props.setGameData(rounds, final, this.state.selectedFirstPlayer);
+	}
+	changeGameUsed(event) {
+		this.setState({
+			gameUsed: event.target.value
+		});
 	}
 	changeFirstPlayer(event) {
 		this.setState({
@@ -38503,9 +38528,65 @@ class NoQuestionPanel extends React.Component {
 			anyFieldsEmpty: false
 		});
 	}
+	changeTestFile(event) {
+		console.log("changeTestFile called");
+		console.log(event);
+		this.setState({
+			testFileSelected: event.target.value
+		});
+	}
 	render() {
-		// TODO make an option to either upload own file or use one of the internal test games
-		var fileInput = React.createElement("input", { type: "file", required: true, multiple: false, id: "questionFile" });
+		var gameTypeRadioGroup = React.createElement(
+			"div",
+			{ className: "game-type-radio-group" },
+			React.createElement(
+				"label",
+				null,
+				React.createElement("input", { type: "radio", value: "upload",
+					checked: this.state.gameUsed === "upload",
+					onChange: this.changeGameUsed }),
+				React.createElement(
+					"p",
+					null,
+					"Upload your own file"
+				)
+			),
+			React.createElement(
+				"label",
+				null,
+				React.createElement("input", { type: "radio", value: "testfile",
+					checked: this.state.gameUsed === "testfile",
+					onChange: this.changeGameUsed }),
+				React.createElement(
+					"p",
+					null,
+					"Use an Internal Test Game"
+				)
+			)
+		);
+
+		var fileInputSection;
+
+		if (this.state.gameUsed === "upload") {
+			fileInputSection = React.createElement("input", { type: "file", required: true, multiple: false, id: "questionFile" });
+		} else {
+			var testGameOptions = [];
+			for (var f in this.state.testFiles) {
+				testGameOptions.push(React.createElement(
+					"option",
+					{
+						value: "testgames/" + this.state.testFiles[f],
+						key: f },
+					this.state.testFiles[f]
+				));
+			}
+			fileInputSection = React.createElement(
+				"select",
+				{ onChange: this.changeTestFile },
+				testGameOptions
+			);
+		}
+
 		var startingPlayerOptions = [];
 		console.log(this.state.playerNameList);
 		for (var i = 0; i < this.state.playerNameList.length; i++) {
@@ -38513,18 +38594,18 @@ class NoQuestionPanel extends React.Component {
 				"option",
 				{
 					value: this.state.playerNameList[i],
-					key: i,
-					onChange: this.changeFirstPlayer },
+					key: i },
 				this.state.playerNameList[i]
 			));
 		}
 		return React.createElement(
 			"div",
 			{ className: "no-question-panel" },
+			gameTypeRadioGroup,
 			React.createElement(
 				"div",
 				{ className: "upload-file-dialog" },
-				fileInput
+				fileInputSection
 			),
 			React.createElement(
 				"div",
@@ -38536,7 +38617,7 @@ class NoQuestionPanel extends React.Component {
 				),
 				React.createElement(
 					"select",
-					null,
+					{ onChange: this.changeFirstPlayer },
 					startingPlayerOptions
 				)
 			),

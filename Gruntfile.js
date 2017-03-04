@@ -20,7 +20,8 @@ module.exports = function(grunt) {
 					transform: [
 						["babelify", {
 							presets: ["react"]
-						}]
+						}],
+						"brfs"
 					]
 				}
 			},

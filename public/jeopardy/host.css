@@ -138,9 +138,31 @@ div .no-question-panel {
 	justify-content: center;
 	align-items: center;
 	background-color: #0B1885;
+	color: white;
 }
 
+div .game-type-radio-group {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
 
+div.upload-file-dialog {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+}
+
+.game-type-radio-group label {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5px;
+	margin-right: 5px;
+}
 
 div.select-question-panel {
 	display: flex;
@@ -282,6 +304,11 @@ a.cancel-question-button {
 	width: auto;
 	text-decoration: none;
 	font-size: 150%;
+}
+
+p .no-players {
+	text-align: center;
+	color: white;
 }
 
 div .playerListing {
