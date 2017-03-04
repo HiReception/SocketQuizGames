@@ -100,6 +100,17 @@ module.exports = function(grunt) {
 						}]
 					]
 				}
+			},
+			wof_wheel_display: {
+				src: "public/wof-wheel/display.js",
+				dest: "public/wof-wheel/displayBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react"]
+						}]
+					]
+				}
 			}
 		},
 
