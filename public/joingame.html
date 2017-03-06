@@ -31,10 +31,11 @@
 			<div id="errorDiv">
 			</div>
 			<div id="formDiv">
+
 				<form action="/play" method="post">
-					<input type="text" placeholder="Your Game Code" name="gamecode">
+					<input type="text" placeholder="Your Game Code" name="gamecode" id="gamecode-input">
 					<br/>
-					<input type="text" placeholder="Screen Name" name="name">
+					<input type="text" placeholder="Screen Name" name="name" id="name-input">
 					<br/>
 					<input type="submit" value="Head In">
 				</form>
@@ -43,5 +44,48 @@
 				<a href="/">BACK</a>
 			</div>
 		</div>
+
+		<script>
+			function getParameterByName(name, url) {
+				if (!url) url = window.location.href;
+				name = name.replace(/[\[\]]/g, "\\$&");
+				var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+					results = regex.exec(url);
+				if (!results) return null;
+				if (!results[2]) return "";
+				return decodeURIComponent(results[2].replace(/\+/g, " "));
+			}
+			var errorCode = getParameterByName("err");
+			var errorText;
+			switch(errorCode) {
+			case "blankRoom":
+				errorText = "Please provide a code for the game you wish to join."
+				break;
+			case "roomNotFound":
+				errorText = "We couldn't find a room with the code " + getParameterByName("gamecode") + ". Please try again.";
+				break;
+			case "screenNameTaken":
+				errorText = "Someone else in this room is using the screen name " + getParameterByName("name") +
+				". Please select another one.";
+				break;
+			case "blankScreenName":
+				errorText = "You must enter a screen name to play in this game.";
+				break;
+			}
+
+			if (errorText) {
+				document.getElementById("errorDiv").innerHTML = "<div class=\"error\"><p>" + errorText + "</p></div>";
+			}
+
+			var givenGameCode = getParameterByName("gamecode");
+			if (givenGameCode) {
+				document.getElementById("gamecode-input").value = givenGameCode;
+			}
+
+			var givenName = getParameterByName("name");
+			if (givenName) {
+				document.getElementById("name-input").value = givenName;
+			}
+		</script>
 	</body>
 </html>

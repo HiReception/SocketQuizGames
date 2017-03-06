@@ -28,9 +28,11 @@
 		</div>
 		<h1>Display a Game</h1>
 		<div class="content">
+			<div id="errorDiv">
+			</div>
 			<div id="formDiv">
 				<form action="/display" method="post">
-					<input type="text" placeholder="Your Game Code" name="gamecode">
+					<input type="text" placeholder="Your Game Code" name="gamecode" id="gamecode-input">
 					<br/>
 					<input type="submit" value="Head In">
 				</form>
@@ -39,5 +41,36 @@
 				<a href="/">BACK</a>
 			</div>
 		</div>
+
+		<script>
+			function getParameterByName(name, url) {
+				if (!url) url = window.location.href;
+				name = name.replace(/[\[\]]/g, "\\$&");
+				var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+					results = regex.exec(url);
+				if (!results) return null;
+				if (!results[2]) return "";
+				return decodeURIComponent(results[2].replace(/\+/g, " "));
+			}
+			var errorCode = getParameterByName("err");
+			var errorText;
+			switch(errorCode) {
+			case "blankRoom":
+				errorText = "Please provide a code for the game you wish to join.";
+				break;
+			case "roomNotFound":
+				errorText = "We couldn't find the room you gave us. Please try again.";
+				break;
+			}
+
+			if (errorText) {
+				document.getElementById("errorDiv").innerHTML = "<div class=\"error\"><p>" + errorText + "</p></div>";
+			}
+
+			var givenGameCode = getParameterByName("gamecode");
+			if (givenGameCode) {
+				document.getElementById("gamecode-input").value = givenGameCode;
+			}
+		</script>
 	</body>
 </html>

@@ -87,6 +87,42 @@ body {
 	text-align: center;
 }
 
+.mainpanel-enter {
+	transform: translate(100%);
+}
+
+.mainpanel-enter.mainpanel-enter-active {
+	transform: translate(0%);
+	transition: transform 500ms ease-in-out;
+}
+
+.mainpanel-leave {
+	transform: translate(0%);
+}
+
+.mainpanel-leave.mainpanel-leave-active {
+	transform: translate(-100%);
+	transition: transform 500ms ease-in-out;
+}
+
+.mainpanel-reverse-enter {
+	transform: translate(-100%);
+}
+
+.mainpanel-reverse-enter.mainpanel-reverse-enter-active {
+	transform: translate(0%);
+	transition: transform 500ms ease-in-out;
+}
+
+.mainpanel-reverse-leave {
+	transform: translate(0%);
+}
+
+.mainpanel-reverse-leave.mainpanel-reverse-leave-active {
+	transform: translate(100%);
+	transition: transform 500ms ease-in-out;
+}
+
 .header {
 	flex: 0 0 50px;
 	max-height: 50px;

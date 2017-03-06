@@ -3,6 +3,8 @@ var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
 var fs = require("fs");
+var ReactCSSTransitionReplace = require("react-css-transition-replace");
+var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 
 var gameTitle = getParameterByName("gametitle");
 
@@ -39,6 +41,7 @@ class HostConsole extends React.Component {
 			playerAnswering: {},
 
 			currentPanel: "NoQuestionPanel",
+			newPanelKey: 0,
 
 			finalEligiblePlayers: [],
 
@@ -88,7 +91,8 @@ class HostConsole extends React.Component {
 			currentCatNo: catNo,
 			currentClueNo: clueNo,
 			currentClueValue: clueValue,
-			currentPanel: "OpenQuestionPanel"
+			currentPanel: "OpenQuestionPanel",
+			newPanelKey: this.state.newPanelKey + 1
 		});
 	}
 
@@ -99,13 +103,15 @@ class HostConsole extends React.Component {
 		this.setState({
 			rounds: newRounds,
 			cluesLeft: newCluesLeft,
-			currentPanel: newCluesLeft === 0 ? "NextRoundPanel" : "SelectQuestionPanel"
+			currentPanel: newCluesLeft === 0 ? "NextRoundPanel" : "SelectQuestionPanel",
+			newPanelKey: this.state.newPanelKey + 1
 		});
 	}
 
 	changeCurrentPanel(panelName) {
 		this.setState({
-			currentPanel: panelName
+			currentPanel: panelName,
+			newPanelKey: this.state.newPanelKey + 1
 		});
 	}
 
@@ -172,14 +178,16 @@ class HostConsole extends React.Component {
 		if (this.state.currentRound === this.state.rounds.length - 1) {
 			this.setState({
 				finalEligiblePlayers: this.state.players.filter(function(p) {return p.score > 0;}),
-				currentPanel: "FinalJeopardyPanel"
+				currentPanel: "FinalJeopardyPanel",
+				newPanelKey: this.state.newPanelKey + 1
 			});
 		} else {
 			var newRound = this.state.rounds[this.state.currentRound + 1];
 			this.setState({
 				currentRound: this.state.currentRound + 1,
 				cluesLeft: [].concat.apply([], newRound.categories.map(function(c){return c.clues;})).length,
-				currentPanel: "SelectQuestionPanel"
+				currentPanel: "SelectQuestionPanel",
+				newPanelKey: this.state.newPanelKey + 1
 			});
 		}
 	}
@@ -190,6 +198,7 @@ class HostConsole extends React.Component {
 			rounds: rounds,
 			final: final,
 			currentPanel: rounds.length > 0 ? "SelectQuestionPanel" : "FinalJeopardyPanel",
+			newPanelKey: this.state.newPanelKey + 1,
 			selectingPlayer: firstSelectingPlayer,
 			cluesLeft: [].concat.apply([], rounds[0].categories.map(function(c){return c.clues;})).length
 		});
@@ -272,12 +281,13 @@ class HostConsole extends React.Component {
 		var mainPanel;
 		switch (this.state.currentPanel) {
 		case "NoQuestionPanel":
-			mainPanel = <NoQuestionPanel players={this.state.players} setGameData={this.setGameData}/>;
+			mainPanel = <NoQuestionPanel key={this.state.newPanelKey} players={this.state.players} setGameData={this.setGameData}/>;
 			break;
 
 		case "NextRoundPanel":
 			mainPanel = (
 				<NextRoundPanel
+					key={this.state.newPanelKey}
 					lastRound={this.state.currentRound === this.state.rounds.length - 1}
 					callback={this.goToNextRound}
 				/>
@@ -285,13 +295,20 @@ class HostConsole extends React.Component {
 			break;
 
 		case "SelectQuestionPanel":
-			mainPanel = <SelectQuestionPanel round={this.state.rounds[this.state.currentRound]} callback={this.showClue}/>;
+			mainPanel = (
+				<SelectQuestionPanel 
+					key={this.state.newPanelKey}
+					round={this.state.rounds[this.state.currentRound]}
+					callback={this.showClue}
+				/>
+			);
 			break;
 
 		case "OpenQuestionPanel":
 			var selectingPlayer = this.state.players.find(function(p) {return p.screenName === thisPanel.state.selectingPlayer;});
 			console.log(selectingPlayer);
 			mainPanel = (<OpenQuestionPanel
+				key={this.state.newPanelKey}
 				catName={this.state.rounds[this.state.currentRound].categories[this.state.currentCatNo].name}
 				clue={this.state.rounds[this.state.currentRound]
 					.categories[this.state.currentCatNo]
@@ -311,6 +328,7 @@ class HostConsole extends React.Component {
 		case "FinalJeopardyPanel":
 			mainPanel = (
 				<FinalJeopardyPanel
+					key={this.state.newPanelKey}
 					final={this.state.final}
 					changePlayerScore={this.changePlayerScore}
 					eligiblePlayers={this.state.finalEligiblePlayers}
@@ -325,9 +343,15 @@ class HostConsole extends React.Component {
 				<div id="player-list" className="content">
 					{playerPanel}
 				</div>
-				<div id="question-panel" className="content">
+				<ReactCSSTransitionGroup
+					component="div"
+					id="question-panel"
+					className="content"
+					transitionName={this.state.currentPanel === "SelectQuestionPanel" ? "mainpanel-reverse" : "mainpanel"}
+					transitionEnterTimeout={0}
+					transitionLeaveTimeout={0}>
 					{mainPanel}
-				</div>
+				</ReactCSSTransitionGroup>
 			</div>
 		);
 	}
@@ -707,7 +731,8 @@ class OpenQuestionPanel extends React.Component {
 			ddWagerEntered: false,
 			ddWagerSubmittable: false,
 			ddWager: 0,
-			buzzersOpen: false
+			buzzersOpen: false,
+			
 		};
 
 		

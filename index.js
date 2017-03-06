@@ -84,11 +84,15 @@ app.post("/play",
 	function checkRoomExists(req, res, next) {
 		console.log("checkRoomExists called");
 		var roomCode = req.body.gamecode.toUpperCase();
+		console.log(roomCode);
+		if (!roomCode || roomCode === "") {
+			next("blankRoom");
+		}
 		var roomArray = rooms.filter(function(room) { return room.gameCode === roomCode; });
 		if (roomArray.length > 0) {
 			next();
 		} else {
-			next("room not found");
+			next("roomNotFound");
 		}
 	},
 
@@ -97,7 +101,7 @@ app.post("/play",
 		var room = rooms.filter(function(room) { return room.gameCode === req.body.gamecode.toUpperCase(); })[0];
 		var screenName = req.body.name;
 		if (screenName === "") {
-			next("screen name cannot be blank");
+			next("blankScreenName");
 		} else {
 			// check if any other user is using this name (this can include the same person reconnecting)
 			var preExistingUserArray = room.players.filter(function(player) { return player.screenName === screenName; });
@@ -112,7 +116,7 @@ app.post("/play",
 					next();
 				// if they didn't, reject them
 				} else {
-					next("screen name taken");
+					next("screenNameTaken");
 				}
 			}
 		}
@@ -129,7 +133,7 @@ app.post("/play",
 
 	function handleErrors(err, req, res, next) {
 		console.log("handleErrors called");
-		res.flash("error", err);
+		res.redirect("/join?err=" + err + "&gamecode=" + req.body.gamecode + "&name=" + req.body.name);
 	}
 );
 
@@ -141,11 +145,15 @@ app.post("/display",
 	function checkRoomExists(req, res, next) {
 		console.log("checkRoomExists called");
 		var roomCode = req.body.gamecode.toUpperCase();
+		console.log(roomCode);
+		if (!roomCode || roomCode === "") {
+			next("blankRoom");
+		}
 		var roomArray = rooms.filter(function(room) { return room.gameCode === roomCode; });
 		if (roomArray.length > 0) {
 			next();
 		} else {
-			next("room not found");
+			next("roomNotFound");
 		}
 	},
 
@@ -157,7 +165,7 @@ app.post("/display",
 
 	function handleErrors(err, req, res, next) {
 		console.log("handleErrors called");
-		res.flash("error", err);
+		res.redirect("/displaygame?err=" + err + "&gamecode=" + req.body.gamecode);
 	}
 );
 
