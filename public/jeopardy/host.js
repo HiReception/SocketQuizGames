@@ -302,6 +302,9 @@ class HostConsole extends React.Component {
 					callback={this.showClue}
 				/>
 			);
+			socket.emit("set state", {
+				currentPanel: "SelectQuestionPanel"
+			});
 			break;
 
 		case "OpenQuestionPanel":

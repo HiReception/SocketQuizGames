@@ -1,0 +1,331 @@
+{
+	"properties": {
+		"prefix": "$",
+		"suffix": ""
+	},
+	"rounds": [
+		{
+			"values": {
+				"amounts": [200, 400, 600, 800, 1000]
+			},
+			"categories": [
+				{
+					"name": "Animals",
+					"clues": [
+						{
+							"answer": "Among bears this far northern species is the best swimmer",
+							"correct": "What is the polar bear?"
+						},
+						{
+							"answer": "Native to the Russian far east, this tiger numbered fewer than 300 in the 1990s",
+							"correct": "What is the Siberian tiger?"
+						},
+						{
+							"answer": "Named for a small Indonesian island, this huge lizard also lives on neighbouring Flores Island",
+							"correct": "What is the Komodo dragon?"
+						},
+						{
+							"answer": "Female Nile crocodiles transport their newborns to water in this way",
+							"correct": "What is in their mouths?"
+						},
+						{
+							"answer": "The spotted species of this mammal is known in the southern U.S. as the \"Hydrophobia Cat\"",
+							"correct": "What is a skunk?"
+						}
+					]
+				},
+				{
+					"name": "Classic Cinema",
+					"clues": [
+						{
+							"answer": "In \"Casablanca\" it's the song Bogart is referring to when he says, \"If she can stand it, I can!\"",
+							"correct": "What is \"As Time Goes By\"?"
+						},
+						{
+							"answer": "She asked Cary Grant, \"Why don't you come up sometime and see me? I'm home every evening\"",
+							"correct": "Who is Mae West?"
+						},
+						{
+							"answer": "Bette Davis played a deranged ex-child star in this 1962 film that co-starred Joan Crawford",
+							"correct": "What is \"Whatever Happened to Baby Jane\"?"
+						},
+						{
+							"answer": "Jeffrey Hunter played this, his most famous role, in the 1961 film \"King of Kings\"",
+							"correct": "Who is Jesus?"
+						},
+						{
+							"answer": "Laurence Olivier dyed his hair blonde for this role, which won him an Oscar as the \"Best Actor\" of 1948",
+							"correct": "Who is Hamlet?"
+						}
+					]
+				},
+				{
+					"name": "Architecture",
+					"clues": [
+						{
+							"answer": "An arched passageway, or an amusement centre where you can spend your \"penny\"s",
+							"correct": "What is an arcade?"
+						},
+						{
+							"answer": "The New South Church, built in this Massachusetts city in 1814, features a neoclassical octagonal nave",
+							"correct": "What is Boston?"
+						},
+						{
+							"answer": "When the Turks turned Hagia Sophia into a mosque, they added 4 of these towers to its exterior",
+							"correct": "What are minarets?"
+						},
+						{
+							"answer": "Catalan architect who designed the strikingly odd Casa Mila Apartment House in Barcelona",
+							"correct": "Who is Antoni Gaudi?"
+						},
+						{
+							"answer": "The decorated form of this medieval style can be seen in the Angel Choir of Lincoln Cathedral",
+							"correct": "What is Gothic?"
+						}
+					]
+				},
+				{
+					"name": "1930",
+					"clues": [
+						{
+							"answer": "This creator of Sherlock Holmes died in July",
+							"correct": "Who is Arthur Conan Doyle?"
+						},
+						{
+							"answer": "On November 2, Ras Tafari was crowned emperor of this country, renaming himself Haile Selassie",
+							"correct": "What is Ethiopia?"
+						},
+						{
+							"answer": "Sir Thomas Lipton's 31-year quest for this trophy ended when his ship, Shamrock V, lost off Newport, Rhode Island",
+							"correct": "What is the America's Cup?"
+						},
+						{
+							"dailyDouble": true,
+							"answer": "Charles Evans Hughes was confirmed in this job February 13, replacing William Howard Taft",
+							"correct": "What is Chief Justice of the Supreme Court/United States?"
+						},
+						{
+							"answer": "This country withdrew its forces from the Rhineland in June, 5 years earlier than required",
+							"correct": "What is France?"
+						}
+					]
+				},
+				{
+					"name": "Transportation",
+					"clues": [
+						{
+							"answer": "Central Railway of Peru, the world's highest standard-gauge railroad, crosses this mountain range",
+							"correct": "What are the Andes?"
+						},
+						{
+							"answer": "First used in Japan around 1870, this 2-wheeled cart usually had a hood to protect the passengers",
+							"correct": "What is a rickshaw?"
+						},
+						{
+							"answer": "Named for an English county, it's a 2-seated, 4-wheeled carriage with or without a fringed top",
+							"correct": "What is a surrey?"
+						},
+						{
+							"answer": "Lighters are a type of these flat-bottomed cargo boats used chiefly in sheltered waters",
+							"correct": "What are barges?"
+						},
+						{
+							"answer": "It's the device in a plane's \"black box\"",
+							"correct": "What is a (flight) recorder?"
+						}
+					]
+				},
+				{
+					"name": "It Had to be \"U\"",
+					"clues": [
+						{
+							"answer": "When used as a sun shade, it's usually called a parasol",
+							"correct": "What is an umbrella?"
+						},
+						{
+							"answer": "In mythology it's the Roman name for Odysseus",
+							"correct": "What is Ulysses?"
+						},
+						{
+							"answer": "Freud called this part of the mind the \"id\"",
+							"correct": "What is the unconscious?"
+						},
+						{
+							"answer": "In 1993 a car bomb was responsible for damaging over 20 paintings at this art gallery in Florence",
+							"correct": "What is the Uffizi?"
+						},
+						{
+							"answer": "From the Latin for \"hoof\", it's any hoofed mammal",
+							"correct": "What is an ungulate?"
+						}
+					]
+				}
+			]
+		},
+		{
+			"values": {
+				"amounts": [400, 800, 1200, 1600, 2000]
+			},
+			"categories": [
+				{
+					"name": "Black America",
+					"clues": [
+						{
+							"answer": "He wrote about his early days as a trumpeter in \"Satchmo: My Life in New Orleans\"",
+							"correct": "Who is Louis Armstrong?"
+						},
+						{
+							"answer": "His burial site, and the church where he served as assistant pastor, are part of a historic district in Atlanta",
+							"correct": "Who is Martin Luther King, Jr.?"
+						},
+						{
+							"answer": "Author Ernest Gaines gained fame for his 1971 fictional \"Autobiography of \" this woman",
+							"correct": "Who is Miss Jane Pittman?"
+						},
+						{
+							"answer": "In 1900 this educator founded the National Negro Business League",
+							"correct": "Who is Booker T. Washington?"
+						},
+						{
+							"answer": "In 1976 the home of this late U.N. diplomat was designated a national historic landmark",
+							"correct": "Who is Dr. Ralph Bunch?"
+						}
+					]
+				},
+				{
+					"name": "Islands",
+					"clues": [
+						{
+							"answer": "New Providence, one of the smallest ilands in this group, s the site of the capital, Nassau",
+							"correct": "What are the Bahamas?"
+						},
+						{
+							"answer": "Traditional Eskimo settlements on this largest island are still found on its northwest coast",
+							"correct": "What is Greenland?"
+						},
+						{
+							"answer": "Spanish explorer Ortiz de Retes amed this second-largest island after a place in Africa",
+							"correct": "What is New Guinea?"
+						},
+						{
+							"answer": "The Swedish island of Gotland is the largest in this sea",
+							"correct": "What is the Baltic Sea?"
+						},
+						{
+							"answer": "This U.S. territory is the largest and southernmost of the Mariana Islands",
+							"correct": "What is Guam?"
+						}
+					]
+				},
+				{
+					"name": "Food",
+					"clues": [
+						{
+							"answer": "Used as a herb and a spice, this member of the parsley family is the main flavouring agent in pickles",
+							"correct": "What is dill?"
+						},
+						{
+							"answer": "Quick breads differ from standard breads in that they're made from leavenings other than this",
+							"correct": "What is yeast?"
+						},
+						{
+							"answer": "This Louisiana chef was the first to make blackened fish that wasn't a mistake",
+							"correct": "Who is Paul Prudhomme?"
+						},
+						{
+							"answer": "Topped with strawberries and whipped cream, these European treats were a hit at the 1964 New York World's Fair",
+							"correct": "What are (Belgian) waffles?"
+						},
+						{
+							"answer": "This thickener with a French name is made by heating equal parts of butter and flour to form a paste",
+							"correct": "What is a roux?"
+						}
+					]
+				},
+				{
+					"name": "Colleges & Universities",
+					"clues": [
+						{
+							"answer": "When the Southwest Conference disbanded in 1996, all eight of its schools were located in this state",
+							"correct": "What is Texas?"
+						},
+						{
+							"answer": "In 1925 a sportswriter began using this nickname for Michigan State's teams and it stuck",
+							"correct": "What are the Spartans?"
+						},
+						{
+							"answer": "The University of Miami is in Florida, but Miami University is in Oxford, in this state",
+							"correct": "What is Ohio?"
+						},
+						{
+							"dailyDouble": true,
+							"answer": "This New England school is the only one in the Ivy League called a college, not a university",
+							"correct": "What is Dartmouth?"
+						},
+						{
+							"answer": "This Nashville school was chartered as the central university of the Methodist Episcopal Church, South",
+							"correct": "What is Vanderbilt?"
+						}
+					]
+				},
+				{
+					"name": "Science",
+					"clues": [
+						{
+							"answer": "In 1957 the symbol for this gaseous element was changed from A to Ar",
+							"correct": "What is Argon?"
+						},
+						{
+							"answer": "It's defined as sound reflected from an object back to its source",
+							"correct": "What is an echo?"
+						},
+						{
+							"answer": "From fruit fly experiments, Thomas Hunt Morgan proved that genes are located on these units",
+							"correct": "What are chromosomes?"
+						},
+						{
+							"answer": "Two flexor muscles bend the arm at the elbow: the brachialis and this one",
+							"correct": "What is the bicep?"
+						},
+						{
+							"dailyDouble": true,
+							"answer": "In ecology, the part of the Earth and its atmosphere in which all organisms live is termed this",
+							"correct": "What is the biosphere?"
+						}
+					]
+				},
+				{
+					"name": "British Authors",
+					"clues": [
+						{
+							"answer": "This author of \"Robinson Crusoe\" is regarded as one of the founders of the English novel",
+							"correct": "Who is (Daniel) DeFoe?"
+						},
+						{
+							"answer": "Her futuristic novel \"The Last Man\" is considered her finest after \"Frankenstein\"",
+							"correct": "Who is Mary Shelley?"
+						},
+						{
+							"answer": "He wrote \"She\" as well as \"King Solomon's Mines\"",
+							"correct": "Who is H. Rider Haggard?"
+						},
+						{
+							"answer": "\"Under the Greenwood Tree\" was the first of his novels set in what he would later call Wessex",
+							"correct": "Who is (Thomas) Hardy?"
+						},
+						{
+							"answer": "After leaving the office of Prime Minister in 1880, he completed his final novel, \"Endymion\"",
+							"correct": "Who is Benjamin Disraeli?"
+						}
+					]
+				}
+			]
+		}
+	],
+	"final": {
+		"category": "Ethnic Groups",
+		"answer": "46 million Americans claim this central European ancestry, making it the nation's largest ethnic group",
+		"correct": "What is German?"
+	}
+
+}

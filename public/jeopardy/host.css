@@ -93,7 +93,7 @@ body {
 
 .mainpanel-enter.mainpanel-enter-active {
 	transform: translate(0%);
-	transition: transform 500ms ease-in-out;
+	transition: transform 0ms ease-in-out;
 }
 
 .mainpanel-leave {
@@ -102,7 +102,7 @@ body {
 
 .mainpanel-leave.mainpanel-leave-active {
 	transform: translate(-100%);
-	transition: transform 500ms ease-in-out;
+	transition: transform 0ms ease-in-out;
 }
 
 .mainpanel-reverse-enter {
@@ -111,7 +111,7 @@ body {
 
 .mainpanel-reverse-enter.mainpanel-reverse-enter-active {
 	transform: translate(0%);
-	transition: transform 500ms ease-in-out;
+	transition: transform 0ms ease-in-out;
 }
 
 .mainpanel-reverse-leave {
@@ -120,7 +120,7 @@ body {
 
 .mainpanel-reverse-leave.mainpanel-reverse-leave-active {
 	transform: translate(100%);
-	transition: transform 500ms ease-in-out;
+	transition: transform 0ms ease-in-out;
 }
 
 .header {
