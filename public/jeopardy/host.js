@@ -349,15 +349,11 @@ class HostConsole extends React.Component {
 				<div id="player-list" className="content">
 					{playerPanel}
 				</div>
-				<ReactCSSTransitionGroup
-					component="div"
+				<div
 					id="question-panel"
-					className="content"
-					transitionName={this.state.currentPanel === "SelectQuestionPanel" ? "mainpanel-reverse" : "mainpanel"}
-					transitionEnterTimeout={0}
-					transitionLeaveTimeout={0}>
+					className="content">
 					{mainPanel}
-				</ReactCSSTransitionGroup>
+				</div>
 			</div>
 		);
 	}

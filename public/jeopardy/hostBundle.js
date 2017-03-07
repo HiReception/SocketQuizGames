@@ -40752,14 +40752,10 @@ class HostConsole extends React.Component {
 				playerPanel
 			),
 			React.createElement(
-				ReactCSSTransitionGroup,
+				"div",
 				{
-					component: "div",
 					id: "question-panel",
-					className: "content",
-					transitionName: this.state.currentPanel === "SelectQuestionPanel" ? "mainpanel-reverse" : "mainpanel",
-					transitionEnterTimeout: 0,
-					transitionLeaveTimeout: 0 },
+					className: "content" },
 				mainPanel
 			)
 		);
