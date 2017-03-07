@@ -187,9 +187,21 @@ class HostConsole extends React.Component {
 				currentPanel: "FinalJeopardyPanel",
 				newPanelKey: this.state.newPanelKey + 1
 			});
+			socket.emit("set state", {
+				finalEligiblePlayers: this.state.players.filter(function(p) {return p.score > 0;}),
+				currentPanel: "SelectQuestionPanel",
+				newPanelKey: this.state.newPanelKey + 1
+			});
 		} else {
 			var newRound = this.state.rounds[this.state.currentRound + 1];
 			this.setState({
+				currentRound: this.state.currentRound + 1,
+				cluesLeft: [].concat.apply([], newRound.categories.map(function(c){return c.clues;})).length,
+				currentPanel: "SelectQuestionPanel",
+				newPanelKey: this.state.newPanelKey + 1
+			});
+
+			socket.emit("set state", {
 				currentRound: this.state.currentRound + 1,
 				cluesLeft: [].concat.apply([], newRound.categories.map(function(c){return c.clues;})).length,
 				currentPanel: "SelectQuestionPanel",
