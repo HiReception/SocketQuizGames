@@ -106,6 +106,12 @@ class HostConsole extends React.Component {
 			currentPanel: newCluesLeft === 0 ? "NextRoundPanel" : "SelectQuestionPanel",
 			newPanelKey: this.state.newPanelKey + 1
 		});
+		socket.emit("set state", {
+			rounds: newRounds,
+			cluesLeft: newCluesLeft,
+			currentPanel: newCluesLeft === 0 ? "NoQuestionPanel" : "SelectQuestionPanel",
+			newPanelKey: this.state.newPanelKey + 1
+		});
 	}
 
 	changeCurrentPanel(panelName) {
@@ -302,9 +308,6 @@ class HostConsole extends React.Component {
 					callback={this.showClue}
 				/>
 			);
-			socket.emit("set state", {
-				currentPanel: "SelectQuestionPanel"
-			});
 			break;
 
 		case "OpenQuestionPanel":

@@ -40490,6 +40490,12 @@ class HostConsole extends React.Component {
 			currentPanel: newCluesLeft === 0 ? "NextRoundPanel" : "SelectQuestionPanel",
 			newPanelKey: this.state.newPanelKey + 1
 		});
+		socket.emit("set state", {
+			rounds: newRounds,
+			cluesLeft: newCluesLeft,
+			currentPanel: newCluesLeft === 0 ? "NoQuestionPanel" : "SelectQuestionPanel",
+			newPanelKey: this.state.newPanelKey + 1
+		});
 	}
 
 	changeCurrentPanel(panelName) {
@@ -40908,7 +40914,7 @@ class NoQuestionPanel extends React.Component {
 			console.log(p);return p.screenName;
 		});
 		console.log(playerNameList);
-		var testFiles = ["testgame-onecluethenfinal.json","testgame.json"];
+		var testFiles = ["testgame-onecluethenfinal.json","testgame.json","testgame2.json"];
 		this.state = {
 			playerNameList: playerNameList,
 			selectedFirstPlayer: props.players.length > 0 ? props.players[0].screenName : "",
