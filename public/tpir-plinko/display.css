@@ -14,7 +14,7 @@ div#scoreboard {
 	z-index: -1;
 }
 
-body {
+div.content {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;

@@ -70,11 +70,33 @@ app.get("/start", function(req, res) {
 	res.sendFile(__dirname + "/public/startgame.html");
 });
 
-app.post("/host", function(req, res) {
-	var format = req.body.format;
-	var title = req.body.gametitle;
-	res.redirect("/" + format + "/host?gametitle=" + title);
-});
+app.post("/host", 
+	function createGameAndRedirect(req, res, next) {
+		var gameTitle = req.body.gametitle;
+			
+		// generate four-letter unique code for game
+		var gameCode = generateGameCode();
+		var gameSettings = {
+			correctPoints: 1,
+			incorrectPoints: 0
+		};
+		// add new room with given details
+		var thisRoom = {
+			title: gameTitle,
+			type: req.body.format,
+			gameCode: gameCode,
+			settings: gameSettings,
+			state: {},
+			players: [],
+			sockets: new Map(),
+			questions: [],
+			hostSocket: null
+		};
+		rooms.push(thisRoom);
+		console.log("After push, rooms.length = " + rooms.length);
+		res.redirect("/" + thisRoom.type + "/host?gamecode=" + thisRoom.gameCode);
+	}
+);
 
 app.get("/join", function(req, res) {
 	res.sendFile(__dirname + "/public/joingame.html");
@@ -200,195 +222,108 @@ io.on("connection", function(socket) {
 		screenName = info.screenName;
 		console.log("Info: code " + gameCode + " name " + screenName);
 
-		var room = rooms.filter(function(room) { return room.gameCode === gameCode; })[0];
-		// check if this user is reconnecting from earlier
-		var preExistingUserArray = room.players.filter(function(player) { return player.screenName === screenName; });
-		console.log("Number of current users with matching screenName of " + screenName + ": " + preExistingUserArray.length);
-		if (preExistingUserArray.length === 0) {
-			// create a new user with the given data, plus a randomly-generated secret
-			var newUser = {
-				screenName: screenName,
-				correctAnswers: 0,
-				incorrectAnswers: 0,
-				score: 0,
-				active: true,
-				colour: userColourList[room.players.length % userColourList.length]
-			};
-			room.players.push(newUser);
-			room.sockets.set(screenName, socket);
-			console.log("Added new player to list");
-			room.hostSocket.emit("new player", newUser);
-			console.log("Alerted host of new player");
-			socket.join(gameCode);
-			console.log("Joined player to room " + gameCode);
-			thisUser = newUser;
-			socket.emit("flag");
-			socket.emit("accepted", newUser);
-			console.log("sent message of acceptance to user");
-			// send the latest question, or a welcome message if there aren't any
-			if (room.questions.length > 0) {
-				if (room.questions[room.questions.length-1].open) {
-					console.log("sending open question");
-					socket.emit("new question", room.questions[room.questions.length-1]);
+		try {
+			var room = rooms.find(function(room) { return room.gameCode === gameCode; });
+			// check if this user is reconnecting from earlier
+			var preExistingUserArray = room.players.filter(function(player) { return player.screenName === screenName; });
+			console.log("Number of current users with matching screenName of " + screenName + ": " + preExistingUserArray.length);
+			if (preExistingUserArray.length === 0) {
+				// create a new user with the given data, plus a randomly-generated secret
+				var newUser = {
+					screenName: screenName,
+					correctAnswers: 0,
+					incorrectAnswers: 0,
+					score: 0,
+					active: true,
+					colour: userColourList[room.players.length % userColourList.length]
+				};
+				room.players.push(newUser);
+				room.sockets.set(screenName, socket);
+				console.log("Added new player to list");
+				room.hostSocket.emit("new player", newUser);
+				console.log("Alerted host of new player");
+				socket.join(gameCode);
+				console.log("Joined player to room " + gameCode);
+				thisUser = newUser;
+				socket.emit("flag");
+				socket.emit("accepted", newUser);
+				console.log("sent message of acceptance to user");
+				// send the latest question, or a welcome message if there aren't any
+				if (room.questions.length > 0) {
+					if (room.questions[room.questions.length-1].open) {
+						console.log("sending open question");
+						socket.emit("new question", room.questions[room.questions.length-1]);
+					} else {
+						socket.emit("new message", {
+							primary: "Welcome to " + room.title + "!",
+							secondary: "As soon as the next question is in, you'll see it here. Best of luck!"
+						});
+					}
 				} else {
 					socket.emit("new message", {
 						primary: "Welcome to " + room.title + "!",
-						secondary: "As soon as the next question is in, you'll see it here. Best of luck!"
+						secondary: "The first question will appear here when the host is ready. Best of luck!"
 					});
 				}
 			} else {
-				socket.emit("new message", {
-					primary: "Welcome to " + room.title + "!",
-					secondary: "The first question will appear here when the host is ready. Best of luck!"
-				});
-			}
-		} else {
-			var preExistingUser = preExistingUserArray[0];
-			socket.emit("accepted", preExistingUser);
-			// send them the latest open question, ONLY if they haven't provided an answer to it yet
-			if (room.questions.length > 0) {
-				if (room.questions[room.questions.length-1].open) {
-					var latestQuestion = room.questions[room.questions.length-1];
-					console.log("sending open question");
-					socket.emit("new question", latestQuestion);
+				var preExistingUser = preExistingUserArray[0];
+				thisUser = preExistingUser;
+				room.sockets.set(thisUser.screenName, socket);
+				socket.emit("accepted", preExistingUser);
+				// send them the latest open question, ONLY if they haven't provided an answer to it yet
+				if (room.questions.length > 0) {
+					if (room.questions[room.questions.length-1].open) {
+						var latestQuestion = room.questions[room.questions.length-1];
+						console.log("sending open question");
+						socket.emit("new question", latestQuestion);
+					} else {
+						// if the latest question is closed, send them a welcome back message
+						socket.emit("new message", {
+							primary: "Welcome Back!",
+							secondary: "There is no open question at the moment. Stay tuned!"
+						});
+					}
 				} else {
-					// if the latest question is closed, send them a welcome back message
+					// if there are still no questions at all, send them a welcome back message
 					socket.emit("new message", {
 						primary: "Welcome Back!",
-						secondary: "There is no open question at the moment. Stay tuned!"
+						secondary: "You haven't missed anything, we're still waiting for the first question."
 					});
 				}
-			} else {
-				// if there are still no questions at all, send them a welcome back message
-				socket.emit("new message", {
-					primary: "Welcome Back!",
-					secondary: "You haven't missed anything, we're still waiting for the first question."
-				});
 			}
-		}
 
-		socket.on("send answer", function(details) {
-			console.log("answer received:");
-			console.log(details);
-			console.log("from player: ");
-			console.log(thisUser);
+			socket.on("send answer", function(details) {
+				console.log("answer received:");
+				console.log(details);
+				console.log("from player: ");
+				console.log(thisUser);
 
-			var answer = {
-				player: thisUser,
-				answer: details.submittedAnswer,
-				time: 0 // TODO keep time between receiving the question and submitting an answer
-			};
-			console.log("emitting new answer");
-			room.hostSocket.emit("new answer", answer);
-			
-		});
-
-		socket.on("send message to host", function(details) {
-			console.log("player " + screenName + "has sent a private message to the host in room " + gameCode + ":");
-			console.log(details);
-			room.hostSocket.emit("new message", {
-				player: thisUser,
-				details: details
+				var answer = {
+					player: thisUser,
+					answer: details.submittedAnswer,
+					time: 0 // TODO keep time between receiving the question and submitting an answer
+				};
+				console.log("emitting new answer");
+				room.hostSocket.emit("new answer", answer);
+				
 			});
-		});
-		
-		socket.on("disconnect", function() {
-			console.log("User " + screenName + " disconnected from room " + gameCode);
-		});	
-	});
-	
 
-
-
-	socket.on("start game", function(details) {
-		var gameTitle = details.gameTitle;
-		
-		// generate four-letter unique code for game
-		var gameCode = generateGameCode();
-		var gameSettings = {
-			correctPoints: 1,
-			incorrectPoints: 0
-		};
-		// add new room with given details
-		var thisRoom = {
-			title: gameTitle,
-			type: details.type,
-			gameCode: gameCode,
-			settings: gameSettings,
-			state: {},
-			players: [],
-			sockets: new Map(),
-			questions: [],
-			hostSocket: socket
-		};
-		rooms.push(thisRoom);
-		console.log("After push, rooms.length = " + rooms.length);
-
-		// send the host back the details of this game
-		socket.emit("game details", {
-			gameTitle: gameTitle,
-			gameCode: gameCode,
-			gameSettings: gameSettings
-		});
-		
-		socket.on("send question", function(question) {
-			// make sure last question in array is closed (if there is one)
-			console.log("new question received");
-			console.log(question);
-			if (thisRoom.questions.length > 0) {
-				var lastQuestion = thisRoom.questions[thisRoom.questions.length - 1];
-				lastQuestion.open = false;
-			}
+			socket.on("send message to host", function(details) {
+				console.log("player " + screenName + "has sent a private message to the host in room " + gameCode + ":");
+				console.log(details);
+				room.hostSocket.emit("new message", {
+					player: thisUser,
+					details: details
+				});
+			});
 			
-			// add new question to list
-			thisRoom.questions.push(question);
-			// emit new question to players
-			socket.broadcast.to(gameCode).emit("new question", question);
-		});
-
-		socket.on("send private message", function(details) {
-			var userSocket = thisRoom.sockets.get(details.screenName);
-			if (typeof userSocket === "undefined") {
-				socket.emit("User not found");
-			} else {
-				userSocket.emit("new message", details.message);
-			}
-			
-		});
-
-		socket.on("set state", function(newState) {
-			for (var propertyName in newState) {
-				if (newState.hasOwnProperty(propertyName)) {
-					thisRoom.state[propertyName] = newState[propertyName];
-				}
-			}
-			socket.broadcast.to(gameCode).emit("new game state", thisRoom.state);
-		});
-
-
-		socket.on("close question", function(questionNo) {
-			// set corresponding question in array to "closed"
-			var questionToClose = thisRoom.questions.find(function(q) {return q.questionNo === questionNo;});
-			questionToClose.open = false;
-			// emit "question closed" to all in this room
-			socket.broadcast.to(gameCode).emit("question closed", questionNo);
-		});
-		
-		socket.on("end game", function() {
-			console.log("host has ended game in room " /* + gameCode */);
-			
-			// send message to all players that game has ended
-			socket.broadcast.to(gameCode).emit("game over", {});
-			// TODO remove this room from list
-		});
-
-		socket.on("play sound", function(id) {
-			socket.broadcast.to(gameCode).emit("play sound", id);
-		});
-		
-		socket.on("update settings", function(newSettings) {
-			thisRoom.settings = newSettings;
-		});
+			socket.on("disconnect", function() {
+				console.log("User " + screenName + " disconnected from room " + gameCode);
+			});	
+		} catch (err) {
+			console.log("room not found");
+			socket.emit("room not found");
+		}
 
 	});
 
@@ -401,6 +336,99 @@ io.on("connection", function(socket) {
 		socket.join(gameCode);
 		socket.emit("accepted");
 		socket.emit("new game state", room.state);
+
+		socket.on("set state", function(newState) {
+			for (var propertyName in newState) {
+				if (newState.hasOwnProperty(propertyName)) {
+					room.state[propertyName] = newState[propertyName];
+				}
+			}
+			console.log("new game state from display:");
+			console.log(room.state);
+			socket.broadcast.to(details.gameCode).emit("new game state", room.state);
+		});
+	});
+	
+
+	socket.on("host request", function(details) {
+		try {
+			console.log(details);
+			var thisRoom = rooms.find(function(r) {
+				return r.gameCode === details.gameCode;
+			});
+			thisRoom.hostSocket = socket;
+			socket.join(details.gameCode);
+			// send the host back the details of this game
+			socket.emit("game details", {
+				gameTitle: thisRoom.title,
+				gameCode: details.gameCode,
+				gameSettings: thisRoom.settings,
+				gameState: thisRoom.state
+			});
+			
+			socket.on("send question", function(question) {
+				// make sure last question in array is closed (if there is one)
+				console.log("new question received");
+				console.log(question);
+				if (thisRoom.questions.length > 0) {
+					var lastQuestion = thisRoom.questions[thisRoom.questions.length - 1];
+					lastQuestion.open = false;
+				}
+				
+				// add new question to list
+				thisRoom.questions.push(question);
+				// emit new question to players
+				socket.broadcast.to(details.gameCode).emit("new question", question);
+			});
+
+			socket.on("send private message", function(messageDetails) {
+				var userSocket = thisRoom.sockets.get(messageDetails.screenName);
+				if (typeof userSocket === "undefined") {
+					socket.emit("User not found");
+				} else {
+					userSocket.emit("new message", messageDetails.message);
+				}
+				
+			});
+
+			socket.on("set state", function(newState) {
+				for (var propertyName in newState) {
+					if (newState.hasOwnProperty(propertyName)) {
+						thisRoom.state[propertyName] = newState[propertyName];
+					}
+				}
+				console.log("new game state from host:");
+				console.log(thisRoom.state);
+				socket.broadcast.to(details.gameCode).emit("new game state", thisRoom.state);
+			});
+
+
+			socket.on("close question", function(questionNo) {
+				// set corresponding question in array to "closed"
+				var questionToClose = thisRoom.questions.find(function(q) {return q.questionNo === questionNo;});
+				questionToClose.open = false;
+				// emit "question closed" to all in this room
+				socket.broadcast.to(details.gameCode).emit("question closed", questionNo);
+			});
+			
+			socket.on("end game", function() {
+				console.log("host has ended game in room " /* + gameCode */);
+				
+				// send message to all players that game has ended
+				socket.broadcast.to(details.gameCode).emit("game over", {});
+				// TODO remove this room from list
+			});
+
+			socket.on("play sound", function(id) {
+				socket.broadcast.to(details.gameCode).emit("play sound", id);
+			});
+			
+			socket.on("update settings", function(newSettings) {
+				thisRoom.settings = newSettings;
+			});
+		} catch (err) {
+			console.log(err);
+		}		
 	});
 });
 

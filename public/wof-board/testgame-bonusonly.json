@@ -1,0 +1,7 @@
+{
+	"bonus": {
+		"category": "Thing",
+		"answer": "Leaky Faucet",
+		"finalBoard": ["@           @","   LEAKY     ","   FAUCET    ","@           @"]
+	}
+}

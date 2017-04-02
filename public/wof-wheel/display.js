@@ -95,35 +95,147 @@ var round4Array = [
 	{value: 265, 			colour: "orange"}
 ];
 
-var wedgeArray = round2Array;
+
+var relativePointerArray = [35, 0, -35];
+
+var wheelTurnInterval = 50;
 
 
+var containerHeightWidth = 0;
 
-var diameter = 500;
-
+document.getElementById("container").style.height = containerHeightWidth + "px";
+document.getElementById("container").style.width = containerHeightWidth + "px";
+document.getElementById("container").style.top = containerHeightWidth/-24 + "px";
 
 var WheelPanel = React.createClass({
 	propTypes: {
-		angle: React.PropTypes.number
+		angle: React.PropTypes.number,
+		round: React.PropTypes.number
+	},
+	getInitialState: function() {
+		var wedgeArray;
+		switch(this.props.round) {
+		case 1:
+			wedgeArray = round1Array;
+			break;
+		case 2:
+			wedgeArray = round2Array;
+			break;
+		case 3:
+			wedgeArray = round2Array;
+			break;
+		case 4: 
+			wedgeArray = round4Array;
+			break;
+		default: 
+			wedgeArray = round1Array;
+			break;
+		}
+		return {
+			currentAngle: this.props.angle,
+			currentlySpinning: false,
+			diameter: 0,
+			wedgeArray: wedgeArray
+		};
+	},
+	updateDimensions: function() {
+		var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+		this.setState({
+			diameter: viewportHeight * 2
+		});
+		containerHeightWidth = viewportHeight * (8/3);
+
+		document.getElementById("container").style.height = containerHeightWidth + "px";
+		document.getElementById("container").style.width = containerHeightWidth + "px";
+		document.getElementById("container").style.top = containerHeightWidth/-24 + "px";
+	},
+	componentWillMount: function() {
+		this.updateDimensions();
+	},
+	componentDidMount: function() {
+		window.addEventListener("resize", this.updateDimensions);
+	},
+	componentWillUnmount: function() {
+		window.removeEventListener("resize", this.updateDimensions);
+	},
+	spin: function() {
+		var thisPanel = this;
+		var maxAngleIncrement = Math.random() * 5 + 5;
+		console.log("maxAngleIncrement = " + maxAngleIncrement);
+		var angleIncrement = 0;
+		this.setState({
+			currentlySpinning: true
+		});
+		var startWheel = setInterval(function() {
+			thisPanel.setState({
+				currentAngle: (((thisPanel.state.currentAngle + angleIncrement) % 360) + 360) % 360
+			});
+			
+			//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
+			//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
+
+			angleIncrement += maxAngleIncrement / 10;
+			if (angleIncrement >= maxAngleIncrement) {
+				clearInterval(startWheel);
+
+				var slowDownAmount = 1/Math.floor(Math.random() * 15 + 15);
+				var slowDownWheel = setInterval(function() {
+
+					thisPanel.setState({
+						currentAngle: (((thisPanel.state.currentAngle + angleIncrement) % 360) + 360) % 360
+					});
+					
+					//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
+					//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
+
+					angleIncrement -= slowDownAmount;
+					if (angleIncrement <= 0) {
+						clearInterval(slowDownWheel);
+						console.log(thisPanel.state.currentAngle);
+						thisPanel.handlePostSpin();
+					}
+			
+				}, wheelTurnInterval);
+			}
+		}, wheelTurnInterval);
+	},
+	handlePostSpin: function() {
+		var thisPanel = this;
+		this.setState({
+			currentlySpinning: false
+		});
+		var wedgeSpan = 360 / this.state.wedgeArray.length;
+		var playerLandedWedges = relativePointerArray.map(function(angle) {
+			return thisPanel.state.wedgeArray.length
+			- Math.floor(((thisPanel.state.currentAngle - wedgeSpan/2 + angle + 360) % 360) / wedgeSpan) - 1;
+		});
+		
+		for (var i in playerLandedWedges) {
+			console.log("Player " + i + " landed on Wedge #" + playerLandedWedges[i]
+				+ ", with a value of " + this.state.wedgeArray[playerLandedWedges[i]].value);
+		}
 	},
 	render: function() {
+		
 		var visibleWedges = [];
-		var wedgeImageHeight = diameter * 10/9;
+		var wedgeImageHeight = this.state.diameter * 10/9;
 		var wedgeImageWidth = wedgeImageHeight * 0.15;
-		var wedgeSpan = 360.0 / wedgeArray.length;
+		var wedgeSpan = 360.0 / this.state.wedgeArray.length;
     
 		// add pointed-to wedge to list of visible ones
-		for (var w in wedgeArray) {
-			var rotate = this.props.angle + (wedgeSpan * w);
+		for (var w in this.state.wedgeArray) {
+			var rotate = this.state.currentAngle + (wedgeSpan * w);
 			var rotateString = "rotate(" + rotate + "deg)";
 			visibleWedges.push((
 				<img
 					key={w}
 					className="wedge"
-					src={wedgeFilename(wedgeArray[w])}
+					src={wedgeFilename(this.state.wedgeArray[w])}
 					style={{
 						"height": wedgeImageHeight,
 						"width": wedgeImageWidth,
+						"top": -(wedgeImageHeight - this.state.diameter) / 2,
+						"left": (this.state.diameter - wedgeImageWidth) / 2,
 						"WebkitTransform": rotateString,
 						"MozTransform": rotateString,
 						"OTransform": rotateString,
@@ -134,67 +246,36 @@ var WheelPanel = React.createClass({
 			));
 		}
     
+		var spinButton = null;
+
+		if (!this.state.currentlySpinning) {
+			spinButton = (
+				<div
+					onClick={this.spin}
+					className="spin-button"
+					style={{
+						"left": this.state.diameter/2 - 75,
+						"top": (this.state.diameter/2) - containerHeightWidth/12 - 50 - 25
+					}}>
+					Spin
+				</div>
+			);
+		}
 		
-		return <div className="wheel">{visibleWedges}</div>;
+		return (
+			<div className="wheel"
+				style={{
+					"height": this.state.diameter,
+					"width": this.state.diameter
+				}}>
+				{visibleWedges}
+				{spinButton}
+			</div>
+		);
 	}
 });
-var angle = 0;
-ReactDOM.render(<WheelPanel angle={angle}/>, document.getElementById("wheel-panel"));
 
-var spin = function() {
-	var maxAngleIncrement = Math.random() * 5 + 5;
-	console.log("maxAngleIncrement = " + maxAngleIncrement);
-	var angleIncrement = 0;
-	var startWheel = setInterval(function() {
-		var wedgeSpan = 360 / wedgeArray.length;
-		angle += angleIncrement;
-		angle = ((angle % 360) + 360) % 360;
-		ReactDOM.render(<WheelPanel angle={angle}/>, document.getElementById("wheel-panel"));
-		
-		//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
-		//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
-
-		angleIncrement += maxAngleIncrement / 10;
-		if (angleIncrement >= maxAngleIncrement) {
-			clearInterval(startWheel);
-
-			var slowDownAmount = 1/Math.floor(Math.random() * 10 + 10);
-			var slowDownWheel = setInterval(function() {
-
-				var wedgeSpan = 360 / wedgeArray.length;
-
-				angle += angleIncrement;
-				angle = ((angle % 360) + 360) % 360;
-				ReactDOM.render(<WheelPanel angle={angle}/>, document.getElementById("wheel-panel"));
-				
-				//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
-				//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
-
-				angleIncrement -= slowDownAmount;
-				if (angleIncrement <= 0) {
-					clearInterval(slowDownWheel);
-					console.log(angle);
-					var landedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
-					handlePostSpin(landedWedge);
-				}
-		
-			}, 100);
-
-
-		}
-  
-	}, 100);
-	
-};
-
-function handlePostSpin(landedWedge) {
-	console.log("You landed on Wedge #" + landedWedge + ", with a value of " + wedgeArray[landedWedge].value);
-}
-
-
-
-document.getElementById("wheel-panel").addEventListener("click", spin);
-
+ReactDOM.render(<WheelPanel angle={0} round={1}/>, document.getElementById("wheel-panel"));
 
 function wedgeFilename(wedge) {
 	if (wedge.value === "Bankrupt") {

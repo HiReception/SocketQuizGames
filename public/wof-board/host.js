@@ -3,7 +3,6 @@ var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
 
-var players = [];
 
 function getParameterByName(name, url) {
 	if (!url) url = window.location.href;
@@ -16,12 +15,7 @@ function getParameterByName(name, url) {
 }
 
 
-var gameTitle = getParameterByName("gametitle");
-
-var currentRound = 0;
-
-var puzzles = [];
-var bonus = {};
+var gameCode = getParameterByName("gamecode");
 
 var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var consonants = "BCDFGHJKLMNPQRSTVWXYZ";
@@ -33,9 +27,19 @@ var bonusRoundVowels = 1;
 
 
 
-socket.emit("start game", {
-	gameTitle: gameTitle,
-	type: "wof-board"
+socket.on("connect_timeout", function() {
+	console.log("connection timeout");
+});
+
+socket.on("connect", function() {
+	console.log("connected");
+	socket.emit("host request", {
+		gameCode: gameCode
+	});
+});
+
+socket.on("connect_error", function(err) {
+	console.log("connection error: " + err);
 });
 
 socket.on("game details", function(details) {
@@ -43,15 +47,282 @@ socket.on("game details", function(details) {
 	console.log(details);
 	$("#game-code").text(details.gameCode);
 	$("#game-title").text(details.gameTitle);
-	ReactDOM.render(<NoPuzzlePanel/>, document.getElementById("question-panel"));
+	var state;
+	if ($.isEmptyObject(details.gameState)) {
+		state = {
+			currentPanel: "NoPuzzlePanel",
+			puzzles: [],
+			bonus: {},
+			wheels: [],
+			currentRound: -1,
+			spinning: false,
+			wheelAngle: 0,
+
+			currentBoard: [],
+			usedLetters: "",
+			lastLetterCalled: "",
+			numberOfMatchesLast: 0,
+			currentPuzzleSolved: false,
+			currentFinalBoard: [],
+			currentAnswer: "",
+			currentCategory: "",
+			uncalledConsonantsInPuzzle: "",
+
+			bonusConsonantsLeft: bonusRoundConsonants,
+			bonusVowelsLeft: bonusRoundVowels,
+			selectedLetters: [],
+			bonusAnswerRevealed: false,
+			bonusSecondsRemaining: 10,
+			bonusClockStarted: false,
+
+			players: [{
+				totalScore: 0,
+				roundScore: 0,
+				colour: "#ff0000"
+			},{
+				totalScore: 0,
+				roundScore: 0,
+				colour: "#ffff00"
+			},{
+				totalScore: 0,
+				roundScore: 0,
+				colour: "#0000ff"
+			}],
+			currentPlayer: 0,
+			selectingConsonant: false
+		};
+		socket.emit("set state", state);
+	} else {
+		state = details.gameState;
+	}
+	ReactDOM.render(<HostConsole receivedState={state}/>, document.getElementById("question-panel"));
+	
 });
 
-socket.on("new player", function(playerDetails) {
-	console.log("new player:");
-	console.log(playerDetails);
-	playerDetails.score = 0;
-	players.push(playerDetails);
-});
+class HostConsole extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = props.receivedState;
+
+		this.render = this.render.bind(this);
+		this.changeCurrentPanel = this.changeCurrentPanel.bind(this);
+		this.goToNextRound = this.goToNextRound.bind(this);
+		this.setGameData = this.setGameData.bind(this);
+		this.setGameState = this.setGameState.bind(this);
+		this.receiveNewState = this.receiveNewState.bind(this);
+		this.goToNextPlayer = this.goToNextPlayer.bind(this);
+		this.setPlayerRoundScore = this.setPlayerRoundScore.bind(this);
+		this.setPlayerTotalScore = this.setPlayerTotalScore.bind(this);
+	}
+
+	changeCurrentPanel(panelName) {
+		this.setGameState({
+			currentPanel: panelName,
+			newPanelKey: this.state.newPanelKey + 1
+		});
+	}
+
+	goToNextRound() {
+		if (this.state.currentRound === this.state.puzzles.length - 1) {
+			this.setGameState({
+				currentPanel: "BonusRoundPanel",
+				newPanelKey: this.state.newPanelKey + 1,
+				currentBoard: this.state.bonus.finalBoard.map(function(row) {
+					return Array.prototype.map.call(row, function(l) {
+						return letters.includes(l) ? "_" : l;
+					}).join("");
+				}),
+				usedLetters: "",
+				lastLetterCalled: "",
+				numberOfMatchesLast: 0,
+				currentPuzzleSolved: false,
+				currentFinalBoard: this.state.bonus.finalBoard,
+				currentAnswer: this.state.bonus.answer,
+				currentCategory: this.state.bonus.category
+			});
+		} else {
+			var newPuzzle = this.state.puzzles[this.state.currentRound + 1];
+			console.log("Setting puzzle to:");
+			console.log(newPuzzle);
+			var thisPanel = this;
+			this.setGameState({
+				currentRound: this.state.currentRound + 1,
+				currentPanel: "PuzzleBoardPanel",
+				newPanelKey: this.state.newPanelKey + 1,
+				currentBoard: newPuzzle.finalBoard.map(function(row) {
+					return Array.prototype.map.call(row, function(l) {
+						return letters.includes(l) ? "_" : l;
+					}).join("");
+				}),
+				usedLetters: "",
+				lastLetterCalled: "",
+				numberOfMatchesLast: 0,
+				currentPuzzleSolved: false,
+				currentFinalBoard: newPuzzle.finalBoard,
+				currentAnswer: newPuzzle.answer,
+				currentCategory: newPuzzle.category,
+				uncalledConsonantsInPuzzle: consonants.split("").filter(function(l) {
+					return !thisPanel.state.usedLetters.includes(l) 
+					&& thisPanel.state.currentFinalBoard.some(function(row) {
+						return row.includes(l);
+					});
+				})
+			});
+		}
+	}
+
+	setPlayerRoundScore(player, score) {
+		var newPlayers = this.state.players;
+		newPlayers[player].roundScore = score;
+		this.setGameState({
+			players: newPlayers
+		});
+	}
+
+	setPlayerTotalScore(player, score) {
+		var newPlayers = this.state.players;
+		newPlayers[player].totalScore = score;
+		this.setGameState({
+			players: newPlayers
+		});
+	}
+
+	setGameState(changedItems) {
+		this.setState(changedItems);
+		socket.emit("set state", changedItems);
+	}
+
+	setGameData(newPuzzles, newBonus, newWheels) {
+		console.log(newPuzzles, newBonus);
+		this.setGameState({
+			puzzles: newPuzzles,
+			bonus: newBonus,
+			wheels: newWheels,
+			currentRound: 0,
+			currentPanel: newPuzzles ? "PuzzleBoardPanel" : "BonusRoundPanel",
+			currentBoard: (newPuzzles ? newPuzzles[0] : newBonus).finalBoard.map(function(row) {
+				return Array.prototype.map.call(row, function(l) {
+					return letters.includes(l) ? "_" : l;
+				}).join("");
+			}),
+			usedLetters: "",
+			lastLetterCalled: "",
+			numberOfMatchesLast: 0,
+			currentPuzzleSolved: false,
+			currentFinalBoard: newPuzzles ? newPuzzles[0].finalBoard : newBonus.finalBoard,
+			currentAnswer: newPuzzles ? newPuzzles[0].answer : newBonus.answer,
+			currentCategory: newPuzzles ? newPuzzles[0].category : newBonus.category
+		});
+	}
+
+	goToNextPlayer() {
+		this.setGameState({
+			currentPlayer: (this.state.currentPlayer + 1) % this.state.players.length
+		});
+	}
+
+	receiveNewState(state) {
+		console.log("new state received:");
+		console.log(state);
+
+		var oldState = this.state;
+
+		this.setState(state);
+
+		if (state.currentWedge !== oldState.currentWedge) {
+			if (state.currentWedge === "Bankrupt") {
+				this.setPlayerRoundScore(state.currentPlayer, 0);
+			}
+			if (state.currentWedge === "Bankrupt" || state.currentWedge === "Lose a Turn") {
+				this.goToNextPlayer();
+			} else {
+				this.setGameState({
+					selectingConsonant: true
+				});
+			}
+		}
+
+		this.setGameState({
+			lastLetterCalled: ""
+		});
+
+	}
+
+	componentDidMount() {
+		//socket.on("new player", this.handleNewPlayer);
+		socket.on("new game state", this.receiveNewState);
+	}
+
+	componentWillUnmount() {
+		//socket.removeListener("new player", this.handleNewPlayer);
+		socket.removeListener("new game state", this.receiveNewState);
+	}
+
+	setSelectingPlayer(screenName) {
+		console.log("HostConsole.setSelectingPlayer called with screenName " + screenName);
+		this.setGameState({
+			selectingPlayer: screenName
+		});
+	}
+
+	render() {
+		// render player list panel
+		var mainPanel;
+
+		switch (this.state.currentPanel) {
+		case "NoPuzzlePanel":
+			mainPanel = (
+				<NoPuzzlePanel
+					key={this.state.newPanelKey}
+					setGameData={this.setGameData}
+				/>
+			);
+			break;
+
+		case "NextRoundPanel":
+			mainPanel = (
+				<NextRoundPanel
+					key={this.state.newPanelKey}
+					lastRound={this.state.currentRound === this.state.puzzles.length - 1}
+					callback={this.goToNextRound}
+				/>
+			);
+			break;
+
+		case "PuzzleBoardPanel":
+			mainPanel = (
+				<PuzzleBoardPanel
+					key={this.state.newPanelKey}
+					puzzle={this.state.puzzles[this.state.currentRound]}
+					setGameState={this.setGameState}
+					goToNextPlayer={this.goToNextPlayer}
+					setPlayerRoundScore={this.setPlayerRoundScore}
+					gameState={this.state}
+				/>
+			);
+			break;
+
+		case "BonusRoundPanel":
+			mainPanel = (
+				<BonusRoundPanel
+					key={this.state.newPanelKey}
+					bonus={this.state.bonus}
+					consonantsToSelect={bonusRoundConsonants}
+					vowelsToSelect={bonusRoundVowels}
+					setGameState={this.setGameState}
+					gameState={this.state}
+				/>
+			);
+			break;
+		}
+
+		return (
+			<div className="main-panel">
+				{mainPanel}
+			</div>
+		);
+	}
+}
 
 
 // starting panel, with field to upload puzzle file
@@ -66,28 +337,15 @@ class NoPuzzlePanel extends React.Component {
 	processFile() {
 		var selectedFile = document.getElementById("questionFile").files[0];
 		var reader = new FileReader();
+		var thisPanel = this;
 		reader.onload = function() {
 			console.log("reader.onload called");
 			var fileText = reader.result;
 			var fileObject = JSON.parse(fileText);
-			puzzles = fileObject.puzzles;
-			bonus = fileObject.bonus;
-			socket.emit("set state", {
-				puzzles: puzzles,
-				bonus: bonus,
-				currentRound: currentRound,
-				currentPanel: "PuzzleBoardPanel"
-			});
-			if (puzzles.length !== 0) {
-				ReactDOM.render(<PuzzleBoardPanel roundNo={currentRound}/>, document.getElementById("question-panel"));
-			} else {
-				ReactDOM.render((
-					<BonusRoundPanel
-						consonantsToSelect={bonusRoundConsonants}
-						vowelsToSelect={bonusRoundVowels}
-					/>
-				), document.getElementById("question-panel"));
-			}
+			var puzzles = fileObject.puzzles;
+			var bonus = fileObject.bonus;
+			var wheels = fileObject.wheels;
+			thisPanel.props.setGameData(puzzles, bonus, wheels);
 			
 		};
 		reader.readAsText(selectedFile);
@@ -110,31 +368,22 @@ class NoPuzzlePanel extends React.Component {
 
 // starting panel, with field to upload question file
 var NextRoundPanel = React.createClass({
-	nextRound: function() {
-		currentRound += 1;
-		if (currentRound === puzzles.length) {
-			socket.emit("set state", {
-				currentPanel: "BonusRoundPanel"
-			});
-			ReactDOM.render((
-				<BonusRoundPanel
-					consonantsToSelect={bonusRoundConsonants}
-					vowelsToSelect={bonusRoundVowels}
-				/>
-			), document.getElementById("question-panel"));
-		} else {
-			socket.emit("set state", {
-				currentRound: currentRound,
-				currentPanel: "PuzzleBoardPanel"
-			});
-			ReactDOM.render(<PuzzleBoardPanel roundNo={currentRound}/>, document.getElementById("question-panel"));
+	propTypes: {
+		lastRound: React.PropTypes.bool,
+		callback: React.PropTypes.func
+	},
+	handleKeyPress: function(event) {
+		var eventDetails = event;
+		console.log(eventDetails.key);
+		if (eventDetails.key === "Enter") {
+			this.props.callback();
 		}
 	},
 	render: function() {
-		var buttonText = currentRound === puzzles.length - 1 ? "Go to Bonus Round" : "Go to Round " + (currentRound + 2);
+		var buttonText = this.props.lastRound ? "Go to Bonus Round" : "Go to Next Round";
 		return (
-			<div className="no-question-panel">
-				<div className="add-question-button" href="#" onClick={this.nextRound}><p>{buttonText}</p></div>
+			<div tabIndex="0" onKeyDown={this.handleKeyPress} className="no-question-panel">
+				<div className="add-question-button" href="#" onClick={this.props.callback}><p>{buttonText}</p></div>
 			</div>
 		);
 	}
@@ -166,69 +415,104 @@ var PuzzleBoardGrid = React.createClass({
 
 // panel showing category, current board, correct answer, and letters both available and called
 var PuzzleBoardPanel = React.createClass({
-	getInitialState: function() {
-		console.log(this.props.roundNo);
-		console.log(puzzles);
-		return {
-			currentBoard: puzzles[this.props.roundNo].finalBoard.map(function(row) {
-				return Array.prototype.map.call(row, function(l) {
-					return letters.includes(l) ? "_" : l;
-				}).join("");
-			}),
-			usedLetters: "",
-			lastLetterCalled: "",
-			numberOfMatchesLast: 0,
-			solved: false,
-			finalBoard: puzzles[this.props.roundNo].finalBoard,
-			answer: puzzles[this.props.roundNo].answer,
-			category: puzzles[this.props.roundNo].category
-		};
-	},
 	propTypes: {
-		roundNo: React.PropTypes.number
+		roundNo: React.PropTypes.number,
+		setGameState: React.PropTypes.func,
+		goToNextPlayer: React.PropTypes.func,
+		setPlayerRoundScore: React.PropTypes.func,
+		gameState: React.PropTypes.object
 	},
 	selectLetter: function(letter) {
-		if (!this.state.usedLetters.includes(letter)) {
-			this.setState({
-				usedLetters: this.state.usedLetters + letter
+		if (!this.props.gameState.usedLetters || !this.props.gameState.usedLetters.includes(letter)) {
+			this.props.setGameState({
+				usedLetters: this.props.gameState.usedLetters + letter
 			});
-			var newBoard = this.state.currentBoard;
+			var newBoard = this.props.gameState.currentBoard;
 			var numberOfMatches = 0;
-			for (var row = 0; row < this.state.currentBoard.length; row++) {
-				for (var col = 0; col < this.state.currentBoard[row].length; col++) {
-					if (this.state.currentBoard[row][col] === "_" && this.state.finalBoard[row][col] === letter) {
+			for (var row = 0; row < this.props.gameState.currentBoard.length; row++) {
+				for (var col = 0; col < this.props.gameState.currentBoard[row].length; col++) {
+					if (this.props.gameState.currentBoard[row][col] === "_"
+						&& this.props.gameState.currentFinalBoard[row][col] === letter) {
 						newBoard[row] = newBoard[row].substring(0, col) + letter + newBoard[row].substring(col + 1);
 						numberOfMatches++;
 					}
 				}
-				console.log(newBoard[row]);
 			}
-			this.setState({
+
+			if (numberOfMatches === 0) {
+				this.props.goToNextPlayer();
+			} else if (vowels.includes(letter)) {
+				// deduct $50 for buying a vowel
+				this.props.setPlayerRoundScore(this.props.gameState.currentPlayer,
+					this.props.gameState.players[this.props.gameState.currentPlayer].roundScore - 50);
+			} else {
+				// give the value of the current wedge to the player
+				this.props.setPlayerRoundScore(this.props.gameState.currentPlayer,
+					this.props.gameState.players[this.props.gameState.currentPlayer].roundScore
+					+ this.props.gameState.currentWedge);
+			}
+			this.props.setGameState({
 				currentBoard: newBoard,
 				lastLetterCalled: letter,
-				numberOfMatchesLast: numberOfMatches
+				numberOfMatchesLast: numberOfMatches,
+				selectingConsonant: false,
+				currentWedge: ""
 			});
 		}
 	},
 	solvePuzzle: function() {
-		this.setState({
-			currentBoard: this.state.finalBoard,
-			solved: true
+		this.props.setGameState({
+			currentBoard: this.props.gameState.currentFinalBoard,
+			currentPuzzleSolved: true
+		});
+	},
+	spinWheel: function() {
+		this.props.setGameState({
+			spinning: true
 		});
 	},
 	goToNextRound: function() {
-		ReactDOM.render(<NextRoundPanel/>, document.getElementById("question-panel"));
+		this.props.setGameState({
+			currentPanel: "NextRoundPanel",
+		});
 	},
+
+	handleKeyPress: function(event) {
+		var eventDetails = event;
+		console.log(eventDetails.key);
+		if (eventDetails.key === "Enter") {
+			if (this.props.gameState.currentPuzzleSolved) {
+				this.goToNextRound();
+			} else {
+				this.solvePuzzle();
+			}
+			
+		} else if (letters.includes(eventDetails.key.toUpperCase()) && eventDetails.key.length === 1) {
+			this.selectLetter(eventDetails.key.toUpperCase());
+		}
+	},
+
 	render: function() {
 		var letterButtons = [];
 		var statusText;
-		if (this.state.lastLetterCalled !== "") {
-			if (this.state.numberOfMatchesLast === 0) {
-				statusText = "No " + this.state.lastLetterCalled + "s";
-			} else if (this.state.numberOfMatchesLast === 1) {
-				statusText = "1 " + this.state.lastLetterCalled;
+		if (this.props.gameState.spinning) {
+			statusText = "Player " + (+this.props.gameState.currentPlayer + 1) + " is spinning";
+		} else if (this.props.gameState.selectingConsonant && this.props.gameState.currentWedge !== "") {
+			statusText = "Player " + (+this.props.gameState.currentPlayer + 1) + " has landed on " +
+				this.props.gameState.currentWedge;
+		} else if (this.props.gameState.lastLetterCalled === ""
+			&& (this.props.gameState.currentWedge === "Bankrupt" || this.props.gameState.currentWedge === "Lose a Turn")) {
+			var previousPlayer = this.props.gameState.currentPlayer === 0 ?
+				this.props.gameState.players.length - 1 :
+				this.props.gameState.currentPlayer - 1;
+			statusText = "Player " + (previousPlayer + 1) + " has landed on " + this.props.gameState.currentWedge;
+		} else if (this.props.gameState.lastLetterCalled !== "") {
+			if (this.props.gameState.numberOfMatchesLast === 0) {
+				statusText = "No " + this.props.gameState.lastLetterCalled + "s";
+			} else if (this.props.gameState.numberOfMatchesLast === 1) {
+				statusText = "1 " + this.props.gameState.lastLetterCalled;
 			} else {
-				statusText = this.state.numberOfMatchesLast + " " + this.state.lastLetterCalled + "s";
+				statusText = this.props.gameState.numberOfMatchesLast + " " + this.props.gameState.lastLetterCalled + "s";
 			}
 		} else {
 			statusText = "Choose a letter below";
@@ -236,34 +520,118 @@ var PuzzleBoardPanel = React.createClass({
 
 		for (var i = 0; i < letters.length; i++) {
 			var l = letters[i];
-			letterButtons.push((
-				<PuzzleLetterButton
-					key={i}
-					letter={l}
-					onClick={this.selectLetter}
-					active={!this.state.usedLetters.includes(l)}
-				/>
-			));
+			var active = true;
+			if (this.props.gameState.usedLetters && this.props.gameState.usedLetters.includes(l)) {
+				active = false;
+			} else if (consonants.includes(l) && !this.props.gameState.selectingConsonant) {
+				active = false;
+			} else if (vowels.includes(l) && this.props.gameState.selectingConsonant) {
+				active = false;
+			} else if (vowels.includes(l)
+				&& this.props.gameState.players[this.props.gameState.currentPlayer].roundScore < 50) {
+				active = false;
+			} else if (this.props.gameState.spinning || this.props.gameState.currentPuzzleSolved) {
+				active = false;
+			}
+
+			if (active) {
+				letterButtons.push((
+					<PuzzleLetterButton
+						key={i}
+						letter={l}
+						onClick={this.selectLetter}
+						active={true}
+					/>
+				));
+			} else {
+				letterButtons.push((
+					<PuzzleLetterButton
+						key={i}
+						letter={l}
+						active={false}
+					/>
+				));
+			}
+			
 		}
 
 		var solveButton;
-		if (this.state.solved) {
+		var spinButton = null;
+		if (this.props.gameState.currentPuzzleSolved) {
 			solveButton = <div className="add-question-button" href="#" onClick={this.goToNextRound}><p>Continue</p></div>;
 		} else {
-			solveButton = <div className="add-question-button" href="#" onClick={this.solvePuzzle}><p>Solve</p></div>;
+			var solveDisabled = this.props.gameState.spinning || this.props.gameState.selectingConsonant;
+			if (solveDisabled) {
+				solveButton = (
+					<div
+						className="add-question-button disabled"
+						href="#">
+						<p>Solve</p>
+					</div>
+				);
+			} else {
+				solveButton = (
+					<div
+						className="add-question-button"
+						href="#"
+						onClick={this.solvePuzzle}>
+						<p>Solve</p>
+					</div>
+				);
+			}
+			
+			var spinDisabled = this.props.gameState.spinning || this.props.gameState.selectingConsonant;
+			if (spinDisabled) {
+				spinButton = (
+					<div 
+						className="add-question-button disabled"
+						href="#">
+						<p>Spin</p>
+					</div>
+				);
+			} else {
+				spinButton = (
+					<div 
+						className="add-question-button"
+						href="#"
+						onClick={this.spinWheel}>
+						<p>Spin</p>
+					</div>
+				);
+			}
 		}
-		console.log(this.state.currentBoard);
+
+		var playerPanels = [];
+		for (var p in this.props.gameState.players) {
+			var playerText = this.props.gameState.currentPlayer == p ?
+				"*" + this.props.gameState.players[p].roundScore + "*" :
+				this.props.gameState.players[p].roundScore;
+			playerPanels.push((
+				<div key={p} className="player-panel" style={{
+					backgroundColor: this.props.gameState.players[p].colour
+				}}>
+					<div className="player-panel-inner">
+						<p className="player-panel" style={{
+							color: "white"
+						}}>
+							{playerText}
+						</p>
+					</div>
+				</div>
+			));
+		}
+
 		return (
-			<div className="puzzle-board-panel">
-				<PuzzleBoardGrid currentBoard={this.state.currentBoard}/>
+			<div tabIndex="0" onKeyDown={this.handleKeyPress} className="puzzle-board-panel">
+				<PuzzleBoardGrid currentBoard={this.props.gameState.currentBoard}/>
 				<div className="puzzle-category-panel">
 					<p className="puzzle-category-panel">
-						{this.state.category.toUpperCase()}
+						{this.props.gameState.currentCategory.toUpperCase()}
 					</p>
 				</div>
 				<div className="puzzle-solution-panel">
 					<p className="puzzle-solution-panel">
-						{this.state.answer}
+						{this.props.gameState.currentAnswer}
 					</p>
 				</div>
 				<div className="status-panel">
@@ -271,11 +639,15 @@ var PuzzleBoardPanel = React.createClass({
 						{statusText}
 					</p>
 				</div>
+				<div className="player-row">
+					{playerPanels}
+				</div>
 				<div className="letter-button-panel">
 					{letterButtons}
 				</div>
-				<div className="solve-button-panel">
+				<div className="button-row">
 					{solveButton}
+					{spinButton}
 				</div>
 			</div>
 		);
@@ -311,75 +683,81 @@ var PuzzleLetterButton = React.createClass({
 
 var BonusRoundPanel = React.createClass({
 	propTypes: {
+		bonus: React.PropTypes.object,
 		consonantsToSelect: React.PropTypes.number,
-		vowelsToSelect: React.PropTypes.number
+		vowelsToSelect: React.PropTypes.number,
+		gameState: React.PropTypes.object,
+		setGameState: React.PropTypes.func
 	},
 	getInitialState: function() {
-		return {
-			currentBoard: bonus.finalBoard.map(function(row) {
-				return Array.prototype.map.call(row, function(l) {
-					return letters.includes(l) ? "_" : l;
-				}).join("");
-			}),
-			consonantsLeft: this.props.consonantsToSelect,
-			vowelsLeft: this.props.vowelsToSelect,
-			selectedLetters: [],
-			solved: false,
-			answerRevealed: false,
-			finalBoard: bonus.finalBoard,
-			answer: bonus.answer,
-			category: bonus.category,
-			secondsRemaining: 10,
-			clockStarted: false
-		};
+		return {};
 	},
 	solvePuzzle: function() {
-		this.setState({
-			currentBoard: this.state.finalBoard,
-			solved: true,
-			answerRevealed: true
+		clearInterval(this.state.timer);
+		this.props.setGameState({
+			currentBoard: this.props.gameState.currentFinalBoard,
+			currentPuzzleSolved: true,
+			bonusAnswerRevealed: true
 		});
 	},
 	revealCorrectAnswer: function() {
-		this.setState({
-			currentBoard: this.state.finalBoard,
-			answerRevealed: true
+		clearInterval(this.state.timer);
+		this.props.setGameState({
+			currentBoard: this.props.gameState.currentFinalBoard,
+			bonusAnswerRevealed: true
 		});
 	},
+	handleKeyPress: function(event) {
+		var eventDetails = event;
+		console.log(eventDetails.key);
+		if (eventDetails.key === "Enter") {
+			if (!this.props.gameState.bonusClockStarted) {
+				this.startClock();
+			} else if (!this.props.gameState.currentPuzzleSolved) {
+				this.solvePuzzle();
+			}
+			
+		} else if (letters.includes(eventDetails.key.toUpperCase()) && eventDetails.key.length === 1) {
+			this.selectLetter(eventDetails.key.toUpperCase());
+		}
+	},
 	startClock: function() {
-		this.setState({
-			clockStarted: true
+		this.props.setGameState({
+			bonusClockStarted: true
 		});
 		var thisPanel = this;
 		var timer = setInterval(function() {
-			if (thisPanel.state.secondsRemaining > 1) {
-				thisPanel.setState({
-					secondsRemaining: thisPanel.state.secondsRemaining - 1
+			if (thisPanel.props.gameState.bonusSecondsRemaining > 1) {
+				thisPanel.props.setGameState({
+					bonusSecondsRemaining: thisPanel.props.gameState.bonusSecondsRemaining - 1
 				});
 			} else {
 				console.log("time up");
-				clearInterval(timer);
+				clearInterval(thisPanel.state.timer);
 			}
 			
 		}, 1000);
+		this.setState({
+			timer: timer
+		});
 	},
 	selectLetter: function(letter) {
-		if (!this.state.selectedLetters.includes(letter)) {
-			var newSelectedLetters = this.state.selectedLetters;
+		if (!this.props.gameState.selectedLetters.includes(letter)) {
+			var newSelectedLetters = this.props.gameState.selectedLetters;
 			newSelectedLetters.push(letter);
-			var newVowelsLeft = this.state.vowelsLeft;
-			var newConsonantsLeft = this.state.consonantsLeft;
-			if (vowels.includes(letter)) {
+			var newVowelsLeft = this.props.gameState.bonusVowelsLeft;
+			var newConsonantsLeft = this.props.gameState.bonusConsonantsLeft;
+			if (vowels.includes(letter) && newVowelsLeft > 0) {
 				newVowelsLeft--;
-				this.setState({
+				this.props.setGameState({
 					selectedLetters: newSelectedLetters,
-					vowelsLeft: newVowelsLeft
+					bonusVowelsLeft: newVowelsLeft
 				});
-			} else {
+			} else if (consonants.includes(letter) && newConsonantsLeft > 0) {
 				newConsonantsLeft--;
-				this.setState({
+				this.props.setGameState({
 					selectedLetters: newSelectedLetters,
-					consonantsLeft: newConsonantsLeft
+					bonusConsonantsLeft: newConsonantsLeft
 				});
 			}
 
@@ -390,40 +768,35 @@ var BonusRoundPanel = React.createClass({
 		
 	},
 	revealSelectedLetters: function(selectedLetters) {
-		console.log(selectedLetters);
+		var newBoard = this.props.gameState.currentBoard;
 		for (var i in selectedLetters) {
 			var letter = selectedLetters[i];
-			console.log(letter);
-			var newBoard = this.state.currentBoard;
-			var numberOfMatches = 0;
-			for (var row = 0; row < this.state.currentBoard.length; row++) {
-				for (var col = 0; col < this.state.currentBoard[row].length; col++) {
-					if (this.state.currentBoard[row][col] === "_" && this.state.finalBoard[row][col] === letter) {
+			for (var row = 0; row < this.props.gameState.currentBoard.length; row++) {
+				for (var col = 0; col < this.props.gameState.currentBoard[row].length; col++) {
+					if (this.props.gameState.currentBoard[row][col] === "_" 
+						&& this.props.gameState.currentFinalBoard[row][col] === letter) {
 						newBoard[row] = newBoard[row].substring(0, col) + letter + newBoard[row].substring(col + 1);
-						numberOfMatches++;
 					}
 				}
-				console.log(newBoard[row]);
 			}
-			this.setState({
-				currentBoard: newBoard,
-				lastLetterCalled: letter,
-				numberOfMatchesLast: numberOfMatches
-			});
 		}
+		this.props.setGameState({
+			currentBoard: newBoard,
+		});
 	},
 	render: function() {
 		
 		var statusText;
-		if (this.state.consonantsLeft > 0 && this.state.vowelsLeft > 0) {
-			statusText = "Choose " + this.state.consonantsLeft + " consonant(s) and " + this.state.vowelsLeft + " vowel(s)";
-		} else if (this.state.consonantsLeft > 0) {
-			statusText = "Choose " + this.state.consonantsLeft + " consonant(s)";
-		} else if (this.state.vowelsLeft > 0) {
-			statusText = "Choose " + this.state.vowelsLeft + " vowel(s)";
-		} else if (this.state.clockStarted && this.state.secondsRemaining > 0) {
-			statusText = this.state.secondsRemaining + " second(s) remaining";
-		} else if (this.state.clockStarted) {
+		if (this.props.gameState.bonusConsonantsLeft > 0 && this.props.gameState.bonusVowelsLeft > 0) {
+			statusText = "Choose " + this.props.gameState.bonusConsonantsLeft 
+				+ " consonant(s) and " + this.props.gameState.bonusVowelsLeft + " vowel(s)";
+		} else if (this.props.gameState.bonusConsonantsLeft > 0) {
+			statusText = "Choose " + this.props.gameState.bonusConsonantsLeft + " consonant(s)";
+		} else if (this.props.gameState.bonusVowelsLeft > 0) {
+			statusText = "Choose " + this.props.gameState.bonusVowelsLeft + " vowel(s)";
+		} else if (this.props.gameState.bonusClockStarted && this.props.gameState.bonusSecondsRemaining > 0) {
+			statusText = this.props.gameState.bonusSecondsRemaining + " second(s) remaining";
+		} else if (this.props.gameState.bonusClockStarted) {
 			statusText = "Time Up";
 		} else {
 			statusText = "Click the button below to start the clock";
@@ -432,9 +805,9 @@ var BonusRoundPanel = React.createClass({
 		for (var i = 0; i < letters.length; i++) {
 			var l = letters[i];
 			var active = true;
-			if ((vowels.includes(l) && this.state.vowelsLeft === 0)
-				|| (consonants.includes(l) && this.state.consonantsLeft === 0)
-				|| (this.state.selectedLetters.includes(l))) {
+			if ((vowels.includes(l) && this.props.gameState.bonusVowelsLeft === 0)
+				|| (consonants.includes(l) && this.props.gameState.bonusConsonantsLeft === 0)
+				|| (this.props.gameState.selectedLetters.includes(l))) {
 				active = false;
 			}
 			letterButtons.push((
@@ -448,7 +821,7 @@ var BonusRoundPanel = React.createClass({
 		}
 
 		var solveButtonRow;
-		if (this.state.answerRevealed) {
+		if (this.props.gameState.bonusAnswerRevealed) {
 			solveButtonRow = (
 				<div className="solve-button-panel">
 					<div className="add-question-button" href="#" onClick={this.goToNextRound}>
@@ -456,8 +829,8 @@ var BonusRoundPanel = React.createClass({
 					</div>
 				</div>
 			);
-		} else if (!this.state.clockStarted) {
-			if (this.state.consonantsLeft !== 0 || this.state.vowelsLeft !== 0) {
+		} else if (!this.props.gameState.bonusClockStarted) {
+			if (this.props.gameState.bonusConsonantsLeft !== 0 || this.props.gameState.bonusVowelsLeft !== 0) {
 				solveButtonRow = (
 					<div className="solve-button-panel">
 						<div className="add-question-button inactive" href="#">
@@ -486,18 +859,18 @@ var BonusRoundPanel = React.createClass({
 					</div>
 				</div>);
 		}
-		console.log(this.state.currentBoard);
+
 		return (
-			<div className="puzzle-board-panel">
-				<PuzzleBoardGrid currentBoard={this.state.currentBoard}/>
+			<div className="puzzle-board-panel" tabIndex="0" onKeyDown={this.handleKeyPress}>
+				<PuzzleBoardGrid currentBoard={this.props.gameState.currentBoard}/>
 				<div className="puzzle-category-panel">
 					<p className="puzzle-category-panel">
-						{this.state.category.toUpperCase()}
+						{this.props.gameState.currentCategory.toUpperCase()}
 					</p>
 				</div>
 				<div className="puzzle-solution-panel">
 					<p className="puzzle-solution-panel">
-						{this.state.answer}
+						{this.props.gameState.currentAnswer}
 					</p>
 				</div>
 				<div className="status-panel">

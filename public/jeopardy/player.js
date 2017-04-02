@@ -22,9 +22,22 @@ var screenName = getParameterByName("name");
 // TODO add back button to header bar
 // TODO add Page button to header bar, to get attention of host
 
-socket.emit("join request", {
-	screenName: screenName,
-	gameCode: gameCode,
+
+
+socket.on("connect_timeout", function() {
+	console.log("connection timeout");
+});
+
+socket.on("connect", function() {
+	console.log("connected");
+	socket.emit("join request", {
+		screenName: screenName,
+		gameCode: gameCode,
+	});
+});
+
+socket.on("connect_error", function(err) {
+	console.log("connection error: " + err);
 });
 
 socket.on("accepted", function(newPlayerDetails) {
@@ -32,16 +45,6 @@ socket.on("accepted", function(newPlayerDetails) {
 	console.log(JSON.stringify(newPlayerDetails));
 	document.getElementById("question-window").style.backgroundColor = newPlayerDetails.colour;
 	$("#header-bar").text(screenName);
-});
-
-socket.on("room not found", function() {
-	console.log("received message room not found");
-	// TODO send Message saying that the room was not found, with a back button (or a button that leads to /join)
-});
-
-socket.on("name taken", function() {
-	console.log("received message name taken");
-	// TODO send Message saying that the screen name is taken, with a back button (or a button that leads to /join)
 });
 
 socket.on("new message", function(message) {

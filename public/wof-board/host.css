@@ -1,17 +1,3 @@
-@font-face {
-    font-family: 'Korinna Bold';
-    src: url('fonts/Korinna Bold.ttf');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-  font-family: 'Oswald Bold';
-  src: url('fonts/Oswald-Bold.ttf');
-  font-weight: normal;
-  font-style: normal;
-}
-
 body {
 	display: flex;
 	flex-direction: row;
@@ -36,7 +22,6 @@ body {
 	flex: 1 0 auto;
 	text-align: center;
 	color: white;
-	font-family: 'Korinna Bold';
 }
 
 #sidebar-header {
@@ -109,7 +94,6 @@ body {
 	flex: 1 0 auto;
 	text-align: center;
 	color: white;
-	font-family: 'Korinna Bold';
 }
 
 #game-code {
@@ -235,6 +219,16 @@ div.status-panel {
 	color: white;
 }
 
+div.main-panel {
+	display: flex;
+	position: relative;
+	flex: 1 1 auto;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	background-color: #0B1885;
+	max-width: auto;
+}
 
 
 
@@ -333,4 +327,35 @@ div.button-row.space-between {
 
 div.button-row.recursive {
 	width: auto;
+}
+
+div.player-row {
+	display: flex;
+	height: 40px;
+	flex-direction: row;
+	justify-content: center;
+	align-items: stretch;	
+}
+
+div.player-panel {
+	flex: 1 1 auto;
+	width: 100px;
+	display: flex;
+	flex-direction: column;
+	padding: 5px;
+	justify-content: center;
+	align-items: stretch;
+}
+
+div.player-panel-inner {
+	max-height: 30px;
+	height: 30px;
+	background-color: black;
+}
+
+p.player-panel {
+	font-family: EggCrate;
+	font-size: 200%;
+	margin-top: 0px;
+	text-align: right;
 }

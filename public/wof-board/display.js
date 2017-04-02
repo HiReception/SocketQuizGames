@@ -3,6 +3,10 @@ var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var soundManager = require("soundmanager2").soundManager;
 
+var wheelTurnInterval = 50;
+
+var relativePointerArray = [35, 0, -35];
+
 
 function getParameterByName(name, url) {
 	if (!url) url = window.location.href;
@@ -15,9 +19,21 @@ function getParameterByName(name, url) {
 }
 
 
-socket.emit("display request", {
-	gameCode: getParameterByName("gamecode")
+socket.on("connect_timeout", function() {
+	console.log("connection timeout");
 });
+
+socket.on("connect", function() {
+	console.log("connected");
+	socket.emit("display request", {
+		gameCode: getParameterByName("gamecode")
+	});
+});
+
+socket.on("connect_error", function(err) {
+	console.log("connection error: " + err);
+});
+
 
 socket.on("accepted", function() {
 	ReactDOM.render(<DisplayContainer/>, document.getElementById("display-panel"));
@@ -32,11 +48,14 @@ socket.on("accepted", function() {
 			// Uh-oh. No HTML5 support, SWF missing, Flash blocked or other issue
 		}
 
+
+
 	});
 
-	soundManager.createSound({id: "final-think", url: "./sounds/finalThink.mp3", autoLoad: true});
-	soundManager.createSound({id: "daily-double", url: "./sounds/dailyDouble.wav", autoLoad: true});
-	soundManager.createSound({id: "final-reveal", url: "./sounds/finalReveal.wav", autoLoad: true});
+	soundManager.createSound({id: "ding", url: "./sounds/ding.wav", autoLoad: true});
+	soundManager.createSound({id: "buzzer", url: "./sounds/buzzer.mp3", autoLoad: true});
+	soundManager.createSound({id: "showPuzzle", url: "./sounds/showPuzzle.wav", autoLoad: true});
+
 });
 
 socket.on("play sound", function(id) {
@@ -48,438 +67,520 @@ class DisplayContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentRound: 0,
-			buzzersOpen: false,
-			rounds: [],
-			players: [],
+			currentPanel: "NoPuzzlePanel",
+			puzzles: [],
+			bonus: {},
+			wheels: [],
+			currentRound: -2,
+			spinning: false,
+			wheelAngle: 0,
 
-			final: {},
-			finalCategoryVisible: false,
-			finalClueVisible: false,
-			finalFocusScreenName: "",
-			finalFocusResponse: "",
-			finalFocusResponseVisible: false,
-			finalFocusWager: "",
-			finalFocusWagerVisible: false,
+			currentBoard: [],
+			usedLetters: "",
+			lastLetterCalled: "",
+			numberOfMatchesLast: 0,
+			currentPuzzleSolved: false,
+			currentFinalBoard: [],
+			currentAnswer: "",
+			currentCategory: "",
 
-			
-			currentPanel: "NoQuestionPanel",
-			currentCatNo: 0,
-			currentClueNo: 0,
+			bonusConsonantsLeft: 0,
+			bonusVowelsLeft: 0,
+			selectedLetters: [],
+			bonusAnswerRevealed: false,
+			bonusSecondsRemaining: 10,
+			bonusClockStarted: false,
 
-			playerAnswering: {},
+			displayedBoard: [],
 
-			dailyDoublePlaySound: true,
-
-			prefix: "",
-			suffix: ""
+			players: [{
+				score: 0,
+				colour: "#ff0000"
+			},{
+				score: 0,
+				colour: "#ffff00"
+			},{
+				score: 0,
+				colour: "#0000ff"
+			}],
+			currentPlayer: 0,
+			selectingConsonant: false
 		};
 		
 		this.render = this.render.bind(this);
+		this.updateBoardByCell = this.updateBoardByCell.bind(this);
+		this.lightUpChanges = this.lightUpChanges.bind(this);
+		this.cellLightToLetter = this.cellLightToLetter.bind(this);
+		this.spin = this.spin.bind(this);
+		this.finishSpin = this.finishSpin.bind(this);
 		var thisPanel = this;
 
 		socket.on("new game state", function(state) {
-			if (thisPanel.state.currentPanel === "DailyDoublePanel") {
+			console.log("new state received");
+			// connecting before puzzles are loaded
+			if (state.currentPanel === "NoPuzzlePanel") {
 				thisPanel.setState({
-					dailyDoublePlaySound: false
+					displayedBoard: ["@           @","             ","             ","@           @"]
 				});
+
+			// new puzzle revealed (except where game is re-connecting mid-game)
+			} else if (thisPanel.state.currentRound !== -2
+				&& 
+					(state.currentRound !== thisPanel.state.currentRound || 
+					(state.currentPanel === "BonusRoundPanel" && thisPanel.state.currentPanel !== "BonusRoundPanel"))) {
+				// play puzzle reveal chime
+				soundManager.play("showPuzzle");
+				thisPanel.updateBoardByCell(thisPanel.state.displayedBoard, state.currentBoard);
+
+			// initial connection
+			} else if (thisPanel.state.currentBoard.length === 0) {
+				thisPanel.setState({
+					displayedBoard: state.currentBoard
+				});
+
+			// puzzle just solved
+			} else if (state.currentPuzzleSolved && !thisPanel.state.currentPuzzleSolved && !state.bonusAnswerRevealed) {
+				// TODO play solve theme
+				thisPanel.updateBoardByCell(thisPanel.state.displayedBoard, state.currentBoard);
+
+			// just moved to NextRoundPanel
+			} else if (state.currentPanel === "NextRoundPanel" && state.currentPanel !== thisPanel.state.currentPanel) {
+				thisPanel.updateBoardByCell(thisPanel.state.displayedBoard, 
+					["@           @","             ","             ","@           @"]);
+
+
+			// new letter called with no matches
+			} else if (state.lastLetterCalled !== thisPanel.state.lastLetterCalled
+				&& state.numberOfMatchesLast === 0
+				&& state.lastLetterCalled) {
+				// play buzzer
+				soundManager.play("buzzer");
+
+
+			// change in current board that isn't a solve - i.e. selection of letter in puzzle
+			} else if (state.currentBoard !== thisPanel.state.currentBoard && !state.currentPuzzleSolved) {
+				thisPanel.lightUpChanges(thisPanel.state.displayedBoard, state.currentBoard);
+
+			
+
+
+
+			// all other cases
 			} else {
 				thisPanel.setState({
-					dailyDoublePlaySound: true
+					displayedBoard: state.currentBoard
 				});
 			}
-			console.log("new state received");
+
+
+			// spinning wheel
+			if (state.spinning && !thisPanel.state.spinning) {
+				thisPanel.spin();
+			}
 			console.log(state);
 			thisPanel.setState(state);
 		});
 	}
 
-	render() {
-		var questionPanel;
+	setGameState(state) {
+		this.setState(state);
+		socket.emit("set state", state);
+	}
 
-		switch (this.state.currentPanel) {
-		case "NoQuestionPanel":
-			questionPanel = <NoQuestionPanel/>;
-			break;
-		case "SelectQuestionPanel":
-			questionPanel = (
-				<SelectQuestionPanel
-					round={this.state.rounds[this.state.currentRound]}
-					prefix={this.state.prefix}
-					suffix={this.state.suffix}
-				/>
-			);
-			break;
-		case "OpenQuestionPanel":
-			questionPanel = (<OpenQuestionPanel
-				clue={this.state.rounds[this.state.currentRound]
-					.categories[this.state.currentCatNo]
-					.clues[this.state.currentClueNo]
+	updateBoardByCell(oldBoard, newBoard) {
+		var changeCoordinates = [];
+		var newDisplayBoard = oldBoard;
+		for (var col in oldBoard[0]) {
+			for (var row in oldBoard) {
+				if (oldBoard[row][col] !== newBoard[row][col]) {
+					changeCoordinates.push({row: row, col: col});
 				}
-			/>);
-			break;
-		case "DailyDoublePanel":
-			questionPanel = <DailyDoublePanel playSound={this.state.playSound}/>;
-			break;
-		case "FinalJeopardyPanel":
-			questionPanel = (
-				<FinalJeopardyPanel
-					final={this.state.final}
-					categoryVisible={this.state.finalCategoryVisible}
-					clueVisible={this.state.finalClueVisible}
-					revealTone={false}
-					thinkMusicPlaying={false}
-				/>
-			);
-			break;
-		case "FinalJeopardyResponsePanel":
-			questionPanel = (
-				<FinalJeopardyResponsePanel
-					screenName={this.state.finalFocusScreenName}
-					response={this.state.finalFocusResponse}
-					responseVisible={this.state.finalFocusResponseVisible}
-					wager={this.state.finalFocusWager}
-					wagerVisible={this.state.finalFocusWagerVisible}
-				/>
-			);
-			break;
+			}
 		}
 
-		var playerPanel;
-
-		if (this.state.players.length != 0) {
-			var list = [];
-			for (var i = 0; i < this.state.players.length; i++) {
-				var p = this.state.players[i];
-
-				// light this display up if they are answering the question
-				var answering = this.state.playerAnswering.screenName === p.screenName;
-
-				// player is "locked out" if someone ELSE is answering, so grey them out
-				var lockedOut = this.state.playerAnswering.hasOwnProperty("screenName")
-					&& this.state.playerAnswering.screenName !== p.screenName;
-
-				list.push((<PlayerListing
-					player={p}
-					key={i}
-					prefix={this.state.prefix}
-					suffix={this.state.suffix}
-					answering={answering}
-					lockedOut={lockedOut}
-				/>));
+		var currentChange = 0;
+		var thisPanel = this;
+		var change = function() {
+			var r = changeCoordinates[currentChange].row;
+			var c = changeCoordinates[currentChange].col;
+			newDisplayBoard[r] = replaceChar(newDisplayBoard[r], c, newBoard[r][c]);
+			thisPanel.setState({
+				displayedBoard: newDisplayBoard
+			});
+			currentChange++;
+			if (changeCoordinates.length > currentChange) {
+				setTimeout(change, 25);
 			}
-			playerPanel = <div className="playerContainer">{list}</div>;
+		};
+		if (changeCoordinates.length > 0) {
+			change();
+		}
+	}
+
+	lightUpChanges(oldBoard, newBoard) {
+		console.log("Boards at call of lightUpChanges(): ");
+		console.log(oldBoard);
+		console.log(newBoard);
+		var changeCoordinates = [];
+		var newDisplayBoard = oldBoard;
+		for (var col in oldBoard[0]) {
+			for (var row in oldBoard) {
+				if (oldBoard[row][col] !== newBoard[row][col]) {
+					console.log("Change found at [" + row + "][" + col + "]: " + oldBoard[row][col] + " vs " + newBoard[row][col]);
+					changeCoordinates.push({row: row, col: col});
+				}
+			}
+		}
+
+		var currentChange = 0;
+		var thisPanel = this;
+		var change = function() {
+			console.log("change: currentChange = " + currentChange);
+			var r = changeCoordinates[currentChange].row;
+			var c = changeCoordinates[currentChange].col;
+			console.log("r = " + r + " c = " + c);
+			newDisplayBoard[r] = replaceChar(newDisplayBoard[r], c, "*");
+			// play ding sound
+			soundManager.play("ding");
+			thisPanel.setState({
+				displayedBoard: newDisplayBoard
+			});
+			setTimeout(function() {thisPanel.cellLightToLetter(r, c, newBoard[r][c]);}, 1500);
+			currentChange++;
+			if (changeCoordinates.length > currentChange) {
+				setTimeout(change, 1000);
+			}
+		};
+		if (changeCoordinates.length > 0) {
+			change();
+		}
+		
+	}
+
+
+	cellLightToLetter(row, col, letter) {
+		var newDisplayBoard = this.state.displayedBoard;
+		newDisplayBoard[row] = replaceChar(newDisplayBoard[row], col, letter);
+		this.setState({
+			displayedBoard: newDisplayBoard
+		});
+	}
+
+	spin() {
+		var thisPanel = this;
+		var maxAngleIncrement = Math.random() * 5 + 5;
+		console.log("maxAngleIncrement = " + maxAngleIncrement);
+		var angleIncrement = 0;
+		this.setState({
+			spinning: true
+		});
+		var startWheel = setInterval(function() {
+			thisPanel.setState({
+				wheelAngle: (((thisPanel.state.wheelAngle + angleIncrement) % 360) + 360) % 360
+			});
+			
+			//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
+			//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
+
+			angleIncrement += maxAngleIncrement / 10;
+			if (angleIncrement >= maxAngleIncrement) {
+				clearInterval(startWheel);
+
+				var slowDownAmount = 1/Math.floor(Math.random() * 15 + 15);
+				var slowDownWheel = setInterval(function() {
+
+					thisPanel.setState({
+						wheelAngle: (((thisPanel.state.wheelAngle + angleIncrement) % 360) + 360) % 360
+					});
+					
+					//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
+					//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
+
+					angleIncrement -= slowDownAmount;
+					if (angleIncrement <= 0) {
+						clearInterval(slowDownWheel);
+						console.log(thisPanel.state.wheelAngle);
+						thisPanel.finishSpin();
+					}
+			
+				}, wheelTurnInterval);
+			}
+		}, wheelTurnInterval);
+	}
+
+	finishSpin() {
+
+		var thisPanel = this;
+		var wedges = [];
+		if (this.state.currentRound < this.state.wheels.length) {
+			wedges = this.state.wheels[this.state.currentRound];
 		} else {
-			playerPanel = <div className="playerContainer"/>;
+			wedges = this.state.wheels[this.state.wheels.length - 1];
+		}
+		var wedgeSpan = 360 / wedges.length;
+		var playerLandedWedges = relativePointerArray.map(function(angle) {
+			return wedges.length
+			- Math.floor(((thisPanel.state.wheelAngle - wedgeSpan/2 + angle + 360) % 360) / wedgeSpan) - 1;
+		});
+
+		this.setGameState({
+			spinning: false,
+			currentWedge: wedges[playerLandedWedges[this.state.currentPlayer]].value,
+			wheelAngle: this.state.wheelAngle
+		});
+	}
+
+	render() {
+		var mainPanel;
+
+		switch (this.state.currentPanel) {
+		case "NoPuzzlePanel":
+		case "NextRoundPanel":
+		case "PuzzleBoardPanel":
+		case "BonusRoundPanel":
+			mainPanel = (
+				<PuzzleBoardPanel
+					key={this.state.newPanelKey}
+					puzzle={this.state.puzzles[this.state.currentRound]}
+					gameState={this.state}
+				/>
+			);
+			break;
 		}
 
 		return (
 			<div id="display-panel" className="content">
 				<div id="question-panel" className="content">
-					{questionPanel}
-				</div>		
-				<div id="player-list" className="content">
-					{playerPanel}
+					{mainPanel}
 				</div>
 			</div>
 		);
 	}
 }
 
-var PlayerListing = React.createClass({
+
+var PuzzleBoardGrid = React.createClass({
+	propTypes: {
+		currentBoard: React.PropTypes.array
+	},
 	render: function() {
-		var scoreString = this.props.prefix + this.props.player.score + this.props.suffix;
+		var boardRows = this.props.currentBoard.map(function(row, rowIndex) { 
+			var rowCells = Array.prototype.map.call(row, function(cell, cellIndex) {
+				var classModifier = "";
+				if (cell === "@") {
+					return null;
+				} else if (cell === " ") {
+					classModifier = " shaded";
+				} else if (cell === "_") {
+					classModifier = " blank";
+				} else if (cell === "*") {
+					classModifier = " lit";
+				}
+				return <div className={"puzzle-board-cell" + classModifier} key={cellIndex}>{cell}</div>;
+			});
+			return <div key={rowIndex} className="puzzle-board-row">{rowCells}</div>;
+		});
+		return <div className="current-board-panel">{boardRows}</div>;
+	}
+});
 
-		var className = this.props.player.score < 0 ? "playerListingDetails negative" : "playerListingDetails";
 
-		console.log(scoreString);
-
-		var classModifier = "";
-		if (this.props.lockedOut) {
-			classModifier = "locked-out";
-		} else if (this.props.answering) {
-			classModifier = "answering";
+// panel showing category, current board, correct answer, and letters both available and called
+var PuzzleBoardPanel = React.createClass({
+	render: function() {
+		var categoryPanel = null;
+		if (this.props.gameState.currentPanel === "PuzzleBoardPanel") {
+			categoryPanel = (
+				<div className="puzzle-category-panel">
+					<p className="puzzle-category-panel">
+						{this.props.gameState.currentCategory.toUpperCase()}
+					</p>
+				</div>
+			);
+		} else if (this.props.gameState.currentPanel === "BonusRoundPanel") {
+			categoryPanel = (
+				<div className="bonus-category-panel">
+					<p className="called-letters">
+						{this.props.gameState.selectedLetters}
+					</p>
+					<p className="puzzle-category-panel">
+						{this.props.gameState.currentCategory.toUpperCase()}
+					</p>
+				</div>
+			);
 		}
+
+		var wheelContainer = null;
+		if (this.props.gameState.currentPanel === "PuzzleBoardPanel") {
+			var wedges = [];
+			if (this.props.gameState.currentRound < this.props.gameState.wheels.length) {
+				wedges = this.props.gameState.wheels[this.props.gameState.currentRound];
+			} else {
+				wedges = this.props.gameState.wheels[this.props.gameState.wheels.length - 1];
+			}
+
+			wheelContainer = (
+				<WheelContainer
+					wedges={wedges}
+					angle={this.props.gameState.wheelAngle}
+					currentPlayer={this.props.gameState.currentPlayer}/>
+			);
+		}
+
+		var playerPanels = [];
+		for (var p in this.props.gameState.players) {
+			playerPanels.push((
+				<div key={p} className="player-panel" style={{
+					backgroundColor: this.props.gameState.players[p].colour
+				}}>
+					<div className="player-panel-inner">
+						<p className="player-panel" style={{
+							color: "white"
+						}}>
+							{this.props.gameState.players[p].roundScore}
+						</p>
+					</div>
+				</div>
+			));
+		}
+
+
 		
+
 		return (
-			<div className={"playerListing " + classModifier}>
-				<div className={"playerListingName " + classModifier}>
-					<p className={"playerListingName " + classModifier}>{this.props.player.screenName}</p>
+			<div className="puzzle-board-panel">
+			<div className="player-row">
+				{playerPanels}
+			</div>
+				<div className="above-puzzle-board" id="above-puzzle-board">
+					{wheelContainer}
 				</div>
-				<div className={"playerListingDetails " + classModifier}>
-					<p className={className}>{scoreString}</p>
+				<PuzzleBoardGrid currentBoard={this.props.gameState.displayedBoard}/>
+				<div className="below-puzzle-board">
+					{categoryPanel}
 				</div>
 			</div>
 		);
 	}
 });
 
-// starting panel, with field to upload question file
-var NoQuestionPanel = React.createClass({
+var WheelContainer = React.createClass({
+	propTypes: {
+		wedges: React.PropTypes.array,
+		angle: React.PropTypes.number,
+		currentPlayer: React.PropTypes.number
+	},
+	getInitialState: function() {
+		return {
+			diameter: 100
+		};
+	},
 	render: function() {
+		var newHeightWidth = this.state.diameter * 4/3;
 		return (
-			<div className="no-question-panel">
-				<div>
-					<p className="handwriting">Doyle's</p>
-					<img src="images/white logo.png"/>
+			<div id="wheel-viewport" className="wheel-viewport">
+				<div id="wheel-container" className="wheel-container"
+				style={{
+					top: newHeightWidth/-24 + "px",
+					height: newHeightWidth + "px",
+					width: newHeightWidth + "px",
+					backgroundImage: "url(lit-pointers/" + this.props.currentPlayer + ".png)"
+				}}>
+					<WheelPanel
+						wedges={this.props.wedges}
+						diameter={this.state.diameter}
+						angle={this.props.angle}/>
 				</div>
-			</div>
-		);
-	}
-});
-
-// panel showing which categories and clues are unasked (with buttons to show them)
-var SelectQuestionPanel = React.createClass({
-	render: function() {
-		var catGroups = [];
-		for (var i = 0; i < this.props.round.categories.length; i++) {
-			catGroups.push((
-				<CategoryGroup
-					category={this.props.round.categories[i]}
-					key={i}
-					values={this.props.round.values.amounts}
-					prefix={this.props.prefix}
-					suffix={this.props.suffix}/>));
-		}
-
-		return (
-			<div className="select-question-panel">
-				{catGroups}
 			</div>
 		);
 	},
 	componentDidMount: function() {
-		//textFit($("div.category-header"), {multiLine: false});
-		//textFit($("div.clue-button"));
-	}
-});
-
-
-var CategoryGroup = React.createClass({
-	propTypes: {
-		category: React.PropTypes.object,
-		values: React.PropTypes.array,
-		prefix: React.PropTypes.string,
-		suffix: React.PropTypes.string
+		this.updateDimensions();
+		window.addEventListener("resize", this.updateDimensions);
 	},
-	render: function() {
-		var clueButtons = [];
-		// only show the category name if there are any clues left in it
-		var showCategoryName = this.props.category.clues.some(function(clue) {
-			return clue.active;
-		});
-		for (var i = 0; i < this.props.category.clues.length; i++) {
-			clueButtons.push((
-					<ClueButton
-						clue={this.props.category.clues[i]}
-						key={i}
-						value={this.props.values[i]}
-						prefix={this.props.prefix}
-						suffix={this.props.suffix}/>
-				));
-		}
-
-		if (showCategoryName) {
-			var header = (
-				<div className="category-header">
-						<p className="category-header">{this.props.category.name}</p>
-				</div>
-			);
-			
-			return (
-				<div className="category-group">
-					{header}
-					<div className="category-clue-group">
-						{clueButtons}
-					</div>
-				</div>
-			);
-		} else {
-			return (
-				<div className="category-group">
-					<div className="category-header">
-					</div>
-					<div className="category-clue-group">
-						{clueButtons}
-					</div>
-				</div>
-			);
-		}
-		
-	}
-});
-
-var ClueButton = React.createClass({
-	propTypes: {
-		clue: React.PropTypes.object,
-		prefix: React.PropTypes.string,
-		suffix: React.PropTypes.string,
-		value: React.PropTypes.number
+	componentWillUnmount: function() {
+		window.removeEventListener("resize", this.updateDimensions);
 	},
-	render: function() {
-		if (this.props.clue.active) {
-			var button = (
-				<div 
-					className="clue-button active">
-					<p className="clue-button">{this.props.prefix}{this.props.value}{this.props.suffix}</p>
-				</div>
-			);
-			return button;
-		} else {
-			return (
-				<div 
-					className="clue-button inactive">
-					<p className="clue-button"/>
-				</div>
-			);
+	updateDimensions: function() {
+		var node = ReactDOM.findDOMNode(this);
+		if (node) {
+			var diameter = node.clientHeight * 2;
+			this.setState({
+				diameter: diameter
+			});
 		}
 		
 	}
 });
 
-
-
-class OpenQuestionPanel extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			playerAnswering: -1
-		};
-		
-		this.render = this.render.bind(this);
-	}
-	render() {
-		console.log(this.props.clue);
-
-		return (
-			<div id="open-question-panel">
-				<div className="open-question-clue">
-					<p className="open-question-clue">
-						{this.props.clue.answer}
-					</p>
-				</div>
-			</div>
-		);
-	}
+function replaceChar(string, pos, newChar) {
+	var endStart = (+newChar.length + +pos);
+	return string.substr(0, pos) + newChar + string.substr(endStart);
 }
 
-OpenQuestionPanel.propTypes = {
-	clue: React.PropTypes.object
-};
-
-
-
-var DailyDoublePanel = React.createClass({
-	render: function() {
-		return (
-			<div className="daily-double-panel">
-				<div>
-					<p className="daily">Daily</p>
-					<p className="double">DOUBLE</p>
-				</div>
-			</div>
-		);
-	}
-});
-
-var FinalJeopardyPanel = React.createClass({
+var WheelPanel = React.createClass({
 	propTypes: {
-		final: React.PropTypes.object,
-		categoryVisible: React.PropTypes.bool,
-		clueVisible: React.PropTypes.bool,
-		revealTone: React.PropTypes.bool,
-		thinkMusicPlaying: React.PropTypes.bool
+		wedges: React.PropTypes.array,
+		wheelTurnInterval: React.PropTypes.number,
+		spinCallback: React.PropTypes.func,
+		diameter: React.PropTypes.number,
+		angle: React.PropTypes.number
 	},
-	getDefaultProps: function() {
+	getInitialState: function() {
 		return {
-			categoryVisible: false,
-			clueVisible: false,
-			revealTone: false,
-			thinkMusicPlaying: false,
+			currentlySpinning: false
 		};
 	},
 	render: function() {
-		var categoryPanel;
-		if (this.props.categoryVisible) {
-			categoryPanel = (
-				<div className="final-jeopardy-category">
-					<p className="final-jeopardy-category">
-						{this.props.final.category}
-					</p>
-				</div>
-			);
-		} else {
-			categoryPanel = <FinalJeopardyLogo/>;
+		
+		var visibleWedges = [];
+		var wedgeImageHeight = this.props.diameter * 10/9;
+		var wedgeImageWidth = wedgeImageHeight * 0.15;
+		var wedgeSpan = 360.0 / this.props.wedges.length;
+    
+		// add pointed-to wedge to list of visible ones
+		for (var w in this.props.wedges) {
+			var rotate = this.props.angle + (wedgeSpan * w);
+			var rotateString = "rotate(" + rotate + "deg)";
+			visibleWedges.push((
+				<img
+					key={w}
+					className="wedge"
+					src={wedgeFilename(this.props.wedges[w])}
+					style={{
+						"height": wedgeImageHeight,
+						"width": wedgeImageWidth,
+						"top": -(wedgeImageHeight - this.props.diameter) / 2,
+						"left": (this.props.diameter - wedgeImageWidth) / 2,
+						"WebkitTransform": rotateString,
+						"MozTransform": rotateString,
+						"OTransform": rotateString,
+						"msTransform": rotateString,
+						"transform": rotateString
+					}}
+				/>
+			));
 		}
-
-		var cluePanel;
-		if (this.props.clueVisible) {
-			cluePanel = (
-				<div className="final-jeopardy-clue">
-					<p className="final-jeopardy-clue">
-						{this.props.final.answer}
-					</p>
-				</div>
-			);
-		} else {
-			cluePanel = <FinalJeopardyLogo/>;
-		}
-
+    
+		
 		return (
-			<div className="final-jeopardy-panel">
-				<div className="final-jeopardy-row">
-					<div className="final-jeopardy-blank"/>
-					{categoryPanel}
-				</div>
-				<div className="final-jeopardy-row">
-					<div className="final-jeopardy-blank"/>
-					{cluePanel}
-				</div>
+			<div className="wheel" id="wheel"
+				style={{
+					"height": this.props.diameter,
+					"width": this.props.diameter
+				}}>
+				{visibleWedges}
 			</div>
 		);
 	}
 });
 
-var FinalJeopardyLogo = React.createClass({
-	render: function() {
-		return (
-			<div className="final-jeopardy-logo">
-				<div>
-					<p className="handwriting">Final</p>
-					<img src="images/white logo.png"/>
-				</div>
-			</div>
-		);
+function wedgeFilename(wedge) {
+	if (wedge.value === "Bankrupt") {
+		return "wedges/bankrupt.png";
+	} else if (wedge.value === "Lose a Turn") {
+		return "wedges/lat-" + wedge.colour + ".png";
+	} else {
+		return "wedges/" + wedge.value + "-" + wedge.colour + ".png";
 	}
-});
-
-var FinalJeopardyResponsePanel = React.createClass({
-	propTypes: {
-		player: React.PropTypes.object,
-		responseVisible: React.PropTypes.bool,
-		wagerVisible: React.PropTypes.bool,
-		response: React.PropTypes.string,
-		wager: React.PropTypes.string
-	},
-	render: function() {
-		return (
-			<div className="final-response">
-				<div className="final-response-name">
-					<p className="final-response-name">
-						{this.props.screenName}
-					</p>
-				</div>
-				<div className="final-response-question">
-					<p className="final-response-question">
-						{this.props.responseVisible ? this.props.response : ""}
-					</p>
-				</div>
-				<div className="final-response-wager">
-					<p className="final-response-wager">
-						{this.props.wagerVisible ? this.props.wager : ""}
-					</p>
-				</div>
-			</div>
-		);
-	}
-});
+}

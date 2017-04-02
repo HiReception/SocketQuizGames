@@ -2,6 +2,7 @@
 	<head>
 		<title>TPIR Plinko</title>
 		<link rel="stylesheet" href="display.css">
+		<meta name="viewport" content="width=device-width initial-scale=1.0 user-scalable=no">
 		<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 		<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
 		<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -21,13 +22,14 @@
 		<meta name="theme-color" content="#ffffff">
 	</head>
 	<body>
-		<div id="scoreboard-container">
-			<div id="scoreboard">$0</div>
+		<div class="content">
+			<div id="scoreboard-container">
+				<div id="scoreboard">$0</div>
+			</div>
+			<div id="board-container">
+				<div id="board"></div>
+			</div>
 		</div>
-		<div id="board-container">
-			<div id="board"></div>
-		</div>
-		
 	</body>
 	<script src="displayBundle.js"></script>
 </html>
