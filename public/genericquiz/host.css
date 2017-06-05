@@ -301,6 +301,39 @@ div.button-row.recursive {
 	width: auto;
 }
 
+div.player-details-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+div.player-details-name {
+
+}
+
+div.player-details-score {
+
+}
+
+p.player-details-name {
+	color: black;
+	text-align: center;
+	font-size: 150%;
+	margin: 10px;
+}
+
+p.player-details-score {
+	color: black;
+	text-align: center;
+	font-size: 200%;
+	margin: 10px;
+}
+
+p.player-details-back {
+	color: black;
+	text-align: center;
+}
+
 div.player-panel-bar {
 	display: none;
 }
