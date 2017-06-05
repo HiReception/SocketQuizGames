@@ -39204,6 +39204,58 @@ var _initialiseProps = function _initialiseProps() {
 			}
 		}
 
+		// render player list panel
+		var playerPanel = void 0;
+		if (_this4.state.detailPlayerName === "") {
+			var nonHiddenPlayers = _this4.state.players.filter(function (player) {
+				return !player.hidden;
+			});
+			if (nonHiddenPlayers.length !== 0) {
+				var _playersByScore = nonHiddenPlayers.sort(function (p1, p2) {
+					return p1.score < p2.score;
+				});
+				var list = [];
+				for (var _i = 0; _i < _playersByScore.length; _i++) {
+					var player = _playersByScore[_i];
+					list.push(React.createElement(PlayerListing, {
+						onClick: _this4.showPlayerDetails.bind(_this4, player.screenName),
+						player: player,
+						key: _i,
+						answering: !$.isEmptyObject(_this4.state.playerAnswering) && _this4.state.playerAnswering.screenName === player.screenName,
+						lockedOut: !$.isEmptyObject(_this4.state.playerAnswering) && _this4.state.playerAnswering.screenName !== player.screenName,
+						selecting: _this4.state.selectingPlayer === player.screenName,
+						prefix: _this4.state.prefix,
+						suffix: _this4.state.suffix }));
+				}
+				playerPanel = React.createElement(
+					"div",
+					null,
+					list
+				);
+			} else {
+				playerPanel = React.createElement(
+					"div",
+					null,
+					React.createElement(
+						"p",
+						{ className: "no-players" },
+						"No Players"
+					)
+				);
+			}
+		} else {
+			var _player = _this4.state.players.find(function (player) {
+				return player.screenName === _this4.state.detailPlayerName;
+			});
+			playerPanel = React.createElement(PlayerDetailsPanel, {
+				player: _player,
+				clearPlayerDetails: _this4.clearPlayerDetails,
+				hidden: _player.hidden,
+				hidePlayer: _this4.hidePlayer,
+				unhidePlayer: _this4.unhidePlayer,
+				changePlayerScore: _this4.changePlayerScore });
+		}
+
 		return React.createElement(
 			"div",
 			null,
