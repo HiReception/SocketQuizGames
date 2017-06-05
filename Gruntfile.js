@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}],
 						"brfs"
 					]
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -86,7 +86,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -108,7 +108,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -119,7 +119,7 @@ module.exports = function(grunt) {
 				options: {
 					transform: [
 						["babelify", {
-							presets: ["react"]
+							presets: ["react", "es2015", "stage-1"]
 						}]
 					]
 				}
@@ -131,5 +131,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-watch");
 	grunt.loadNpmTasks("grunt-watchify");
 	grunt.loadNpmTasks("grunt-newer");
-	grunt.registerTask("default", ["newer:browserify"]);
+	grunt.registerTask("default", ["browserify"]);
 };

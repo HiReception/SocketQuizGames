@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
 #formDiv input[type=text] {
 	font-family: Verdana, Geneva, sans-serif;
 	border: none;
@@ -26,6 +28,16 @@
 	align-items: stretch;
 	flex-direction: column;
 	justify-content: center;
+
+}
+
+#formDiv select {
+	width: 100%;
+	height: 40px;
+	border: 0;
+	border-bottom: 2px solid teal;
+	margin-bottom: 10px;
+	font-family: Verdana, Geneva, sans-serif;
 }
 
 div.subLink {
@@ -49,6 +61,15 @@ div.content {
 
 h1 {
 	text-align: center;
+	font-family: 'Raleway', sans-serif;
+}
+
+h2 {
+	font-family: 'Raleway', sans-serif;
+}
+
+h3 {
+	font-family: 'Raleway', sans-serif;
 }
 
 body {
@@ -90,4 +111,41 @@ div.error {
 	margin-bottom: 5px;
 	color: red;
 	font-size: 75%;
+}
+
+div.about-content {
+	display: flex;
+	flex-direction: row;
+	margin: 10px 0 10px 0;
+}
+
+div.about-text {
+	margin: 0 10px 0 10px;
+}
+
+div.img-container {
+	border: 1px solid grey;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.img-container > a > img {
+	max-width: 500px;
+	max-height: 500px;
+}
+
+p.img-caption {
+	font-size: 75%;
+	font-style: italic;
+}
+
+@media screen and (max-width: 799px) {
+	div.about-content {
+		flex-direction: column;
+	}
+
+	.img-container > a > img {
+		max-width: 100%;
+		max-height: none;
+	}
 }
