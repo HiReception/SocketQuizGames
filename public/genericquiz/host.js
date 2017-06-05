@@ -1,7 +1,9 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
+var PropTypes = require("prop-types");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
+import PlayerPanelToggleBar from "../common/player-panel-bar";
 
 var players = [];
 
@@ -28,43 +30,57 @@ function shuffle(a) {
 }
 
 
-var gameTitle = getParameterByName("gametitle");
+var gameCode = getParameterByName("gamecode");
 
 shuffle(playerColours);
 
-socket.emit("start game", {
-	gameTitle: gameTitle,
-	type: "genericquiz"
+socket.on("connect_timeout", function() {
+	console.log("connection timeout");
+});
+
+socket.on("connect", function() {
+	console.log("connected");
+	socket.emit("host request", {
+		gameCode: gameCode,
+	});
+});
+
+socket.on("connect_error", function(err) {
+	console.log("connection error: " + err);
 });
 
 socket.on("game details", function(details) {
-	console.log("Game Details received");
-	console.log(details);
 	socket.emit("send question", {
 		type: "buzz-in",
 		open: true
 	});
-	ReactDOM.render(<HostPanel gameCode={details.gameCode} gameTitle={details.gameTitle}/>, document.getElementById("host-panel"));
+
+	console.log("Game Details received");
+	console.log(details);
+	var state;
+	if ($.isEmptyObject(details.gameState)) {
+		state = {
+			players: [],
+			detailPlayerName: "",
+			playerAnswering: {},
+			buzzersOpen: false
+		};
+		socket.emit("set state", state);
+	} else {
+		state = details.gameState;
+	}
+	ReactDOM.render(<HostPanel gameCode={details.gameCode} gameTitle={details.gameTitle} receivedState={state} socket={socket}/>, document.getElementById("host-panel"));
 });
 
 class HostPanel extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			players: [],
-			playerAnswering: {},
-			buzzersOpen: false
-		};
-
-		console.log(this.state);
-		this.render = this.render.bind(this);
-		this.handleNewPlayer = this.handleNewPlayer.bind(this);
-		this.handleNewAnswer = this.handleNewAnswer.bind(this);
-		this.toggleBuzzers = this.toggleBuzzers.bind(this);
-		this.modifyScore = this.modifyScore.bind(this);
+		const newState = props.receivedState;
+		newState.playerPanelHidden = true;
+		this.state = newState;
 	}
 
-	handleNewPlayer(playerDetails) {
+	handleNewPlayer = (playerDetails) => {
 		console.log("new player:");
 		console.log(playerDetails);
 		playerDetails.colour = playerColours[this.state.players.length % playerColours.length];
@@ -72,25 +88,18 @@ class HostPanel extends React.Component {
 		var newPlayers = this.state.players;
 
 		newPlayers.push(playerDetails);
-		this.setState({
+		this.setGameState({
 			players: newPlayers
 		});
-
-		socket.emit("set state", {
-			players: newPlayers
-		});
-
-		socket.emit("send private message", {
-			screenName: playerDetails.screenName,
-			message: {
-				type: "colour",
-				colour: playerDetails.colour
-			}
-		});
-
 	}
 
-	handleNewAnswer(details) {
+	setGameState = (newState) => {
+		this.setState(newState);
+
+		socket.emit("set state", newState);
+	}
+
+	handleNewAnswer = (details) => {
 		if (this.state.buzzersOpen) {
 			console.log("new answer:");
 			console.log(details);
@@ -100,12 +109,8 @@ class HostPanel extends React.Component {
 				console.log(p.screenName + " vs " + details.player.screenName);
 				return p.screenName === details.player.screenName;
 			});
-			this.setState({
+			this.setGameState({
 				buzzersOpen: false,
-				playerAnswering: newPlayerAnswering
-			});
-
-			socket.emit("set state", {
 				playerAnswering: newPlayerAnswering
 			});
 
@@ -113,19 +118,28 @@ class HostPanel extends React.Component {
 		}
 	}
 
-	toggleBuzzers() {
-		console.log(this);
-		this.setState({
-			buzzersOpen: !(this.state.buzzersOpen),
-			playerAnswering: {}
+	showPlayerDetails = (name, event) => {
+		console.log(`showPlayerDetails(${ name },${ event }) called`);
+		this.setGameState({
+			detailPlayerName: name,
 		});
-		
-		socket.emit("set state", {
+	}
+
+	clearPlayerDetails = () => {
+		this.setGameState({
+			detailPlayerName: "",
+		});
+	}
+
+	toggleBuzzers = () => {
+		console.log(this);
+		this.setGameState({
+			buzzersOpen: !(this.state.buzzersOpen),
 			playerAnswering: {}
 		});
 	}
 
-	modifyScore(screenName, scoreChange) {
+	modifyScore = (screenName, scoreChange) => {
 		var newPlayers = this.state.players;
 		console.log(this);
 		newPlayers.map(function(p) {
@@ -134,27 +148,29 @@ class HostPanel extends React.Component {
 			}
 		});
 
-		this.setState({
-			players: newPlayers
-		});
-
-		socket.emit("set state", {
+		this.setGameState({
 			players: newPlayers
 		});
 	}
 
+	togglePlayerPanel = () => {
+		this.setGameState({
+			playerPanelHidden: !this.state.playerPanelHidden,
+		});
+	}
 
-	componentDidMount() {
+
+	componentDidMount = () => {
 		socket.on("new player", this.handleNewPlayer);
 		socket.on("new answer", this.handleNewAnswer);
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount = () => {
 		socket.removeListener("new player", this.handleNewPlayer);
 		socket.removeListener("new answer", this.handleNewAnswer);
 	}
 
-	render() {
+	render = () => {
 		var playerCountString = players.length === 1 ? "1 Player" : players.length + " Players";
 		var playerList = [];
 		if (this.state.players.length != 0) {
@@ -165,47 +181,85 @@ class HostPanel extends React.Component {
 			for (var i = 0; i < playersByScore.length; i++) {
 				var p = playersByScore[i];
 				var answering = this.state.playerAnswering === p;
-				playerList.push(<PlayerListing player={p} answering={answering} key={i}/>);
+				playerList.push(<PlayerListing player={p} answering={answering} key={i} onClick={this.showPlayerDetails.bind(this, p.screenName)}/>);
 			}
 			
 		}
 
+		// render player list panel
+		let playerPanel;
+		if (this.state.detailPlayerName === "") {
+			const nonHiddenPlayers = this.state.players.filter((player) => {
+				return !player.hidden;
+			});
+			if (nonHiddenPlayers.length !== 0) {
+				const playersByScore = nonHiddenPlayers.sort((p1, p2) => {
+					return p1.score < p2.score;
+				});
+				const list = [];
+				for (let i = 0; i < playersByScore.length; i++) {
+					const player = playersByScore[i];
+					list.push((
+						<PlayerListing
+							onClick={this.showPlayerDetails.bind(this, player.screenName)}
+							player={player}
+							key={i}
+							answering={!$.isEmptyObject(this.state.playerAnswering) &&
+								this.state.playerAnswering.screenName === player.screenName}
+							lockedOut={!$.isEmptyObject(this.state.playerAnswering) &&
+								this.state.playerAnswering.screenName !== player.screenName}
+							selecting={this.state.selectingPlayer === player.screenName}
+							prefix={this.state.prefix}
+							suffix={this.state.suffix}/>));
+				}
+				playerPanel = <div>{list}</div>;
+			} else {
+				playerPanel = <div><p className='no-players'>No Players</p></div>;
+			}
+		} else {
+			const player = this.state.players.find((player) => {
+				return player.screenName === this.state.detailPlayerName;
+			});
+			playerPanel = (<PlayerDetailsPanel
+				player={player}
+				clearPlayerDetails={this.clearPlayerDetails}
+				hidden={player.hidden}
+				hidePlayer={this.hidePlayer}
+				unhidePlayer={this.unhidePlayer}
+				changePlayerScore={this.changePlayerScore}/>);
+		}
+
 		return (
-			<div className="host-panel">
-				<div id="sidebar">
-					<div id="sidebar-header" className="header">
-						<p id="player-count">{playerCountString}</p>
-					</div>
-					
-					<div id="player-list" className="content">
+			<div>
+				<div id="body-header" className="header">
+					<p id="game-title">{this.props.gameTitle}</p>
+					<p id="game-code">{this.props.gameCode}</p>
+				</div>
+				<div className="host-panel">
+					<div id="player-list" className={`content${ this.state.playerPanelHidden ?  ' hidden' : ''}`}>
 						{playerList}
 					</div>
-				</div>
-				<div id="body-panel">
-					<div id="body-header" className="header">
-						<p id="game-title">{this.props.gameTitle}</p>
-						<p id="game-code">{this.props.gameCode}</p>
+					<div id="body-panel">
+						<div id="question-panel" className="content">
+							<OpenQuestionPanel
+								modifyScore={this.modifyScore}
+								toggleBuzzers={this.toggleBuzzers}
+								buzzersOpen={this.state.buzzersOpen}
+								playerAnswering={this.state.playerAnswering}/>
+						</div>
 					</div>
+				</div>
+				<PlayerPanelToggleBar
+					currentlyHidden={this.state.playerPanelHidden}
+					toggle={this.togglePlayerPanel}/>
 
-					<div id="question-panel" className="content">
-						<OpenQuestionPanel
-							modifyScore={this.modifyScore}
-							toggleBuzzers={this.toggleBuzzers}
-							buzzersOpen={this.state.buzzersOpen}
-							playerAnswering={this.state.playerAnswering}/>
-					</div>
-				</div>
 			</div>
 		);
 	}
 }
 
-var PlayerListing = React.createClass({
-	propTypes: {
-		player: React.PropTypes.object,
-		answering: React.PropTypes.bool
-	},
-	render: function() {
+class PlayerListing extends React.Component {
+	render = () => {
 		var scoreString = this.props.player.score;
 
 		var className = "playerListingDetails";
@@ -214,7 +268,7 @@ var PlayerListing = React.createClass({
 
 		if (this.props.answering) {
 			return (
-				<div className="playerListing">
+				<div className="playerListing" onClick={this.props.onClick}>
 					<div className="playerListingName" style={{backgroundColor: "#FFFFFF"}}>
 						<p className="playerListingName" style={{color: this.props.player.colour}}>
 							{this.props.player.screenName}
@@ -227,7 +281,7 @@ var PlayerListing = React.createClass({
 			);
 		} else {
 			return (
-				<div className="playerListing">
+				<div className="playerListing"  onClick={this.props.onClick}>
 					<div className="playerListingName" style={{backgroundColor: this.props.player.colour}}>
 						<p className="playerListingName" style={{color: "#FFFFFF"}}>{this.props.player.screenName}</p>
 					</div>
@@ -238,7 +292,13 @@ var PlayerListing = React.createClass({
 			);
 		}
 	}
-});
+}
+
+PlayerListing.propTypes = {
+	player: PropTypes.object,
+	answering: PropTypes.bool,
+	onClick: PropTypes.func,
+};
 
 
 class OpenQuestionPanel extends React.Component {
@@ -250,23 +310,15 @@ class OpenQuestionPanel extends React.Component {
 		};
 
 		console.log(this.state);
-		
-		this.render = this.render.bind(this);
-		this.setCorrectValue = this.setCorrectValue.bind(this);
-		this.setIncorrectValue = this.setIncorrectValue.bind(this);
-		this.closeBuzzers = this.closeBuzzers.bind(this);
-		this.openBuzzers = this.openBuzzers.bind(this);
-		this.wrongAnswer = this.wrongAnswer.bind(this);
-		this.rightAnswer = this.rightAnswer.bind(this);
 	}
 
-	setCorrectValue(event) {
+	setCorrectValue = (event) => {
 		this.setState({
 			correctValue: parseInt(event.target.value)
 		});
 	}
 
-	setIncorrectValue(event) {
+	setIncorrectValue = (event) => {
 		this.setState({
 			incorrectValue: parseInt(event.target.value)
 		});
@@ -274,7 +326,7 @@ class OpenQuestionPanel extends React.Component {
 
 
 
-	wrongAnswer() {
+	wrongAnswer = () => {
 		if (!$.isEmptyObject(this.props.playerAnswering)) {
 			this.props.modifyScore(this.props.playerAnswering.screenName, this.state.incorrectValue * -1);
 			this.openBuzzers();
@@ -282,7 +334,7 @@ class OpenQuestionPanel extends React.Component {
 		socket.emit("play sound", "incorrect");
 	}
 
-	rightAnswer() {
+	rightAnswer = () => {
 		if (!$.isEmptyObject(this.props.playerAnswering)) {
 			this.props.modifyScore(this.props.playerAnswering.screenName, this.state.correctValue);
 			this.openBuzzers();
@@ -290,13 +342,13 @@ class OpenQuestionPanel extends React.Component {
 		socket.emit("play sound", "correct");
 	}
 
-	openBuzzers() {
+	openBuzzers = () => {
 		if (!this.props.buzzersOpen) {
 			this.props.toggleBuzzers();
 		}
 	}
 
-	closeBuzzers() {
+	closeBuzzers = () => {
 		if (this.props.buzzersOpen) {
 			this.props.toggleBuzzers();
 		}
@@ -304,7 +356,7 @@ class OpenQuestionPanel extends React.Component {
 		
 	}
 
-	render() {
+	render = () => {
 
 		var buzzerPanel;
 
@@ -369,9 +421,9 @@ class OpenQuestionPanel extends React.Component {
 }
 
 OpenQuestionPanel.propTypes = {
-	modifyScore: React.PropTypes.func,
-	toggleBuzzers: React.PropTypes.func,
-	buzzersOpen: React.PropTypes.bool,
-	playerAnswering: React.PropTypes.object
+	modifyScore: PropTypes.func,
+	toggleBuzzers: PropTypes.func,
+	buzzersOpen: PropTypes.bool,
+	playerAnswering: PropTypes.object
 };
 

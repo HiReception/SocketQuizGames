@@ -1,0 +1,26 @@
+{
+	"questions": [
+		{
+			"body": "Place these Brownlow Medallists in order of the year they won, starting with the earliest.",
+			"type": "sequence",
+			"options": [
+				{"key": "A", "text": "Shane Woewodin"},
+				{"key": "B", "text": "Carji Greeves"},
+				{"key": "C", "text": "Patrick Dangerfield"},
+				{"key": "D", "text": "Robert DiPierdomenico"}
+			],
+			"correctResponse": "BDAC"
+		},
+		{
+			"body": "Which two teams contested the 2016 NRL Grand Final?",
+			"type": "double-answer",
+			"options": [
+				{"key": "A", "text": "St. George-Illawarra Dragons"},
+				{"key": "B", "text": "Melbourne Storm"},
+				{"key": "C", "text": "Cronulla-Sutherland Sharks"},
+				{"key": "D", "text": "Newcastle Knights"}
+			],
+			"correctResponse": "BC"
+		}
+	]
+}

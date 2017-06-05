@@ -10,15 +10,12 @@ div.host-panel {
 	font-family: Verdana, Geneva, sans-serif;
 }
 
-#sidebar {
+#player-list {
+	background-color: white;
 	flex: 0 0 300px;
 	display: flex;
 	flex-direction: column;
 	border-right: 0.5px solid #999999;
-}
-
-#player-list {
-	background-color: white;
 }
 
 #player-count {
@@ -112,6 +109,7 @@ div.host-panel {
 	color: teal;
 	flex: 0 0 auto;
 	font-weight: bold;
+	font-family: Verdana, Geneva, sans-serif;
 }
 
 div .no-question-panel {
@@ -266,7 +264,7 @@ div #open-question-panel {
 	flex-direction: column;
 	align-items: stretch;
 	justify-content: center;
-	background-color: #white;
+	background-color: white;
 	padding: 5px;
 	max-width: auto;
 }
@@ -301,4 +299,51 @@ div.button-row.space-between {
 
 div.button-row.recursive {
 	width: auto;
+}
+
+div.player-panel-bar {
+	display: none;
+}
+
+@media screen and (max-width: 799px) {
+	div.player-panel-bar {
+		display: flex;
+		height: 20px;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	    background: #888888; /* For browsers that do not support gradients */
+	    background: -webkit-linear-gradient(#666666, #AAAAAA); /* For Safari 5.1 to 6.0 */
+	    background: -o-linear-gradient(#666666, #AAAAAA); /* For Opera 11.1 to 12.0 */
+	    background: -moz-linear-gradient(#666666, #AAAAAA); /* For Firefox 3.6 to 15 */
+	    background: linear-gradient(#666666, #AAAAAA); /* Standard syntax */
+	}
+
+	p.player-panel-bar {
+		color: white;
+		text-transform: uppercase;
+		font-weight: bold;
+		text-shadow: 0px 0px 2px 1px;
+		font-family: Verdana, Geneva, sans-serif;
+	}
+
+	#player-list {
+		flex-grow: 1;
+		position: absolute;
+		width: 100%;
+		z-index: 1;
+		height: calc(100% - (70px + 1px));
+	}
+
+	#player-list.hidden {
+		display: none;
+	}
+
+	div#open-question-panel {
+		height: calc(100% - (70px + 1px));
+	}
+
+	#question-panel {
+		flex-basis: calc(100% - (70px + 1px));
+	}
 }

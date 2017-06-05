@@ -1,4 +1,5 @@
 var React = require("react");
+var PropTypes = require("prop-types");
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var soundManager = require("soundmanager2").soundManager;
@@ -256,10 +257,10 @@ var SelectQuestionPanel = React.createClass({
 
 var CategoryGroup = React.createClass({
 	propTypes: {
-		category: React.PropTypes.object,
-		values: React.PropTypes.array,
-		prefix: React.PropTypes.string,
-		suffix: React.PropTypes.string
+		category: PropTypes.object,
+		values: PropTypes.array,
+		prefix: PropTypes.string,
+		suffix: PropTypes.string
 	},
 	render: function() {
 		var clueButtons = [];
@@ -310,10 +311,10 @@ var CategoryGroup = React.createClass({
 
 var ClueButton = React.createClass({
 	propTypes: {
-		clue: React.PropTypes.object,
-		prefix: React.PropTypes.string,
-		suffix: React.PropTypes.string,
-		value: React.PropTypes.number
+		clue: PropTypes.object,
+		prefix: PropTypes.string,
+		suffix: PropTypes.string,
+		value: PropTypes.number
 	},
 	render: function() {
 		if (this.props.clue.active) {
@@ -363,7 +364,7 @@ class OpenQuestionPanel extends React.Component {
 }
 
 OpenQuestionPanel.propTypes = {
-	clue: React.PropTypes.object
+	clue: PropTypes.object
 };
 
 
@@ -383,11 +384,11 @@ var DailyDoublePanel = React.createClass({
 
 var FinalJeopardyPanel = React.createClass({
 	propTypes: {
-		final: React.PropTypes.object,
-		categoryVisible: React.PropTypes.bool,
-		clueVisible: React.PropTypes.bool,
-		revealTone: React.PropTypes.bool,
-		thinkMusicPlaying: React.PropTypes.bool
+		final: PropTypes.object,
+		categoryVisible: PropTypes.bool,
+		clueVisible: PropTypes.bool,
+		revealTone: PropTypes.bool,
+		thinkMusicPlaying: PropTypes.bool
 	},
 	getDefaultProps: function() {
 		return {
@@ -454,11 +455,11 @@ var FinalJeopardyLogo = React.createClass({
 
 var FinalJeopardyResponsePanel = React.createClass({
 	propTypes: {
-		player: React.PropTypes.object,
-		responseVisible: React.PropTypes.bool,
-		wagerVisible: React.PropTypes.bool,
-		response: React.PropTypes.string,
-		wager: React.PropTypes.string
+		player: PropTypes.object,
+		responseVisible: PropTypes.bool,
+		wagerVisible: PropTypes.bool,
+		response: PropTypes.string,
+		wager: PropTypes.string
 	},
 	render: function() {
 		return (

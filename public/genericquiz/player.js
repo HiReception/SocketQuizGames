@@ -30,6 +30,7 @@ socket.emit("join request", {
 socket.on("accepted", function(newPlayerDetails) {
 	console.log("new player details received:");
 	console.log(JSON.stringify(newPlayerDetails));
+	document.getElementById("question-window").style.backgroundColor = newPlayerDetails.colour;
 	$("#header-bar").text(screenName);
 });
 

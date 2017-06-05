@@ -556,6 +556,7 @@ var PuzzleBoardPanel = React.createClass({
 		}
 
 		var solveButton;
+		var passButton = null;
 		var spinButton = null;
 		if (this.props.gameState.currentPuzzleSolved) {
 			solveButton = <div className="add-question-button" href="#" onClick={this.goToNextRound}><p>Continue</p></div>;
@@ -596,6 +597,26 @@ var PuzzleBoardPanel = React.createClass({
 						href="#"
 						onClick={this.spinWheel}>
 						<p>Spin</p>
+					</div>
+				);
+			}
+
+			var passDisabled = this.props.gameState.spinning;
+			if (passDisabled) {
+				passButton = (
+					<div
+						className="add-question-button disabled"
+						href="#">
+						<p>Pass</p>
+					</div>
+				);
+			} else {
+				passButton = (
+					<div
+						className="add-question-button"
+						href="#"
+						onClick={this.props.goToNextPlayer}>
+						<p>Pass</p>
 					</div>
 				);
 			}
@@ -648,6 +669,7 @@ var PuzzleBoardPanel = React.createClass({
 				<div className="button-row">
 					{solveButton}
 					{spinButton}
+					{passButton}
 				</div>
 			</div>
 		);
