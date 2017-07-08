@@ -41955,7 +41955,98 @@ PlayerPanelToggleBar.propTypes = {
 },{"prop-types":71,"react":239}],260:[function(require,module,exports){
 "use strict";
 
+var _hostConsole = require("./host/host-console");
+
+var _hostConsole2 = _interopRequireDefault(_hostConsole);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var React = require("react");
+var ReactDOM = require("react-dom");
+var socket = require("socket.io-client")();
+var $ = require("jquery");
+var ReactCSSTransitionReplace = require("react-css-transition-replace");
+var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
+
+var gameCode = getParameterByName("gamecode");
+
+socket.on("connect_timeout", function () {
+	console.log("connection timeout");
+});
+
+socket.on("connect", function () {
+	console.log("connected");
+	socket.emit("host request", {
+		gameCode: gameCode
+	});
+});
+
+socket.on("connect_error", function (err) {
+	console.log("connection error: " + err);
+});
+
+socket.on("game details", function (details) {
+	console.log("Game Details received");
+	console.log(details);
+	$("#game-code").text(details.gameCode);
+	$("#game-title").text(details.gameTitle);
+	var state;
+	if ($.isEmptyObject(details.gameState)) {
+		state = {
+			players: [],
+			detailPlayerName: "",
+
+			currentRound: 0,
+			cluesLeft: 0,
+			selectingPlayer: "",
+			playerAnswering: {},
+
+			currentPanel: "NoQuestionPanel",
+			newPanelKey: 0,
+
+			finalEligiblePlayers: [],
+
+			rounds: [],
+			final: {},
+
+			currentCatNo: 0,
+			currentClueNo: 0,
+			currentClueValue: 0,
+
+			prefix: "",
+			suffix: ""
+		};
+		socket.emit("set state", state);
+	} else {
+		state = details.gameState;
+	}
+	ReactDOM.render(React.createElement(_hostConsole2.default, { receivedState: state, socket: socket }), document.getElementById("main-panel"));
+});
+
+function getParameterByName(name, url) {
+	if (!url) url = window.location.href;
+	name = name.replace(/[\[\]]/g, "\\$&");
+	var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	    results = regex.exec(url);
+	if (!results) return null;
+	if (!results[2]) return "";
+	return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+},{"./host/host-console":264,"jquery":60,"react":239,"react-addons-css-transition-group":73,"react-css-transition-replace":74,"react-dom":75,"socket.io-client":240}],261:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _clueButton = require("./clue-button");
+
+var _clueButton2 = _interopRequireDefault(_clueButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41965,7 +42056,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var React = require("react");
 var PropTypes = require("prop-types");
-var ClueButton = require("./ClueButton");
 
 var CategoryGroup = function (_React$Component) {
 	_inherits(CategoryGroup, _React$Component);
@@ -41981,7 +42071,7 @@ var CategoryGroup = function (_React$Component) {
 		value: function render() {
 			var clueButtons = [];
 			for (var i = 0; i < this.props.category.clues.length; i++) {
-				clueButtons.push(React.createElement(ClueButton, {
+				clueButtons.push(React.createElement(_clueButton2.default, {
 					active: this.props.category.clues[i].active,
 					catNo: this.props.catNo,
 					clueNo: i,
@@ -42016,6 +42106,9 @@ var CategoryGroup = function (_React$Component) {
 	return CategoryGroup;
 }(React.Component);
 
+exports.default = CategoryGroup;
+
+
 CategoryGroup.propTypes = {
 	catNo: PropTypes.number,
 	category: PropTypes.object,
@@ -42025,10 +42118,12 @@ CategoryGroup.propTypes = {
 	suffix: PropTypes.string
 };
 
-module.exports = CategoryGroup;
-
-},{"./ClueButton":261,"prop-types":71,"react":239}],261:[function(require,module,exports){
+},{"./clue-button":262,"prop-types":71,"react":239}],262:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -42084,6 +42179,9 @@ var ClueButton = function (_React$Component) {
 	return ClueButton;
 }(React.Component);
 
+exports.default = ClueButton;
+
+
 ClueButton.propTypes = {
 	active: PropTypes.bool,
 	catNo: PropTypes.number,
@@ -42094,10 +42192,12 @@ ClueButton.propTypes = {
 	suffix: PropTypes.string
 };
 
-module.exports = ClueButton;
-
-},{"prop-types":71,"react":239}],262:[function(require,module,exports){
+},{"prop-types":71,"react":239}],263:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -42579,6 +42679,9 @@ var FinalJeopardyPanel = function (_React$Component) {
 	return FinalJeopardyPanel;
 }(React.Component);
 
+exports.default = FinalJeopardyPanel;
+
+
 FinalJeopardyPanel.propTypes = {
 	eligiblePlayers: PropTypes.array,
 	final: PropTypes.object,
@@ -42589,12 +42692,42 @@ FinalJeopardyPanel.propTypes = {
 	setGameState: PropTypes.func
 };
 
-module.exports = FinalJeopardyPanel;
-
-},{"prop-types":71,"react":239,"socket.io-client":240}],263:[function(require,module,exports){
+},{"prop-types":71,"react":239,"socket.io-client":240}],264:[function(require,module,exports){
 "use strict";
 
-var _playerPanelBar = require("../common/player-panel-bar");
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _playerDetailsPanel = require("./player-details-panel");
+
+var _playerDetailsPanel2 = _interopRequireDefault(_playerDetailsPanel);
+
+var _playerListing = require("./player-listing");
+
+var _playerListing2 = _interopRequireDefault(_playerListing);
+
+var _nextRoundPanel = require("./next-round-panel");
+
+var _nextRoundPanel2 = _interopRequireDefault(_nextRoundPanel);
+
+var _selectQuestionPanel = require("./select-question-panel");
+
+var _selectQuestionPanel2 = _interopRequireDefault(_selectQuestionPanel);
+
+var _noQuestionPanel = require("./no-question-panel");
+
+var _noQuestionPanel2 = _interopRequireDefault(_noQuestionPanel);
+
+var _openQuestionPanel = require("./open-question-panel");
+
+var _openQuestionPanel2 = _interopRequireDefault(_openQuestionPanel);
+
+var _finalJeopardyPanel = require("./final-jeopardy-panel");
+
+var _finalJeopardyPanel2 = _interopRequireDefault(_finalJeopardyPanel);
+
+var _playerPanelBar = require("../../common/player-panel-bar");
 
 var _playerPanelBar2 = _interopRequireDefault(_playerPanelBar);
 
@@ -42612,14 +42745,6 @@ var React = require("react");
 var io = require("socket.io-client");
 var PropTypes = require("prop-types");
 var $ = require("jquery");
-
-var PlayerDetailsPanel = require("./PlayerDetailsPanel");
-var PlayerListing = require("./PlayerListing");
-var NextRoundPanel = require("./NextRoundPanel");
-var SelectQuestionPanel = require("./SelectQuestionPanel");
-var NoQuestionPanel = require("./NoQuestionPanel");
-var OpenQuestionPanel = require("./OpenQuestionPanel");
-var FinalJeopardyPanel = require("./FinalJeopardyPanel");
 
 var HostConsole = function (_React$Component) {
 	_inherits(HostConsole, _React$Component);
@@ -42822,7 +42947,7 @@ var HostConsole = function (_React$Component) {
 					var list = [];
 					for (var i = 0; i < playersByScore.length; i++) {
 						var player = playersByScore[i];
-						list.push(React.createElement(PlayerListing, {
+						list.push(React.createElement(_playerListing2.default, {
 							onClick: _this.showPlayerDetails.bind(_this, player.screenName),
 							player: player,
 							key: i,
@@ -42852,7 +42977,7 @@ var HostConsole = function (_React$Component) {
 				var _player = _this.state.players.find(function (player) {
 					return player.screenName === _this.state.detailPlayerName;
 				});
-				playerPanel = React.createElement(PlayerDetailsPanel, {
+				playerPanel = React.createElement(_playerDetailsPanel2.default, {
 					player: _player,
 					clearPlayerDetails: _this.clearPlayerDetails,
 					hidden: _player.hidden,
@@ -42864,7 +42989,7 @@ var HostConsole = function (_React$Component) {
 			var mainPanel = void 0;
 			switch (_this.state.currentPanel) {
 				case "NoQuestionPanel":
-					mainPanel = React.createElement(NoQuestionPanel, {
+					mainPanel = React.createElement(_noQuestionPanel2.default, {
 						key: _this.state.newPanelKey,
 						players: _this.state.players,
 						setGameData: _this.setGameData,
@@ -42872,14 +42997,14 @@ var HostConsole = function (_React$Component) {
 					break;
 
 				case "NextRoundPanel":
-					mainPanel = React.createElement(NextRoundPanel, {
+					mainPanel = React.createElement(_nextRoundPanel2.default, {
 						key: _this.state.newPanelKey,
 						lastRound: _this.state.currentRound === _this.state.rounds.length - 1,
 						callback: _this.goToNextRound });
 					break;
 
 				case "SelectQuestionPanel":
-					mainPanel = React.createElement(SelectQuestionPanel, {
+					mainPanel = React.createElement(_selectQuestionPanel2.default, {
 						key: _this.state.newPanelKey,
 						round: _this.state.rounds[_this.state.currentRound],
 						callback: _this.showClue,
@@ -42893,7 +43018,7 @@ var HostConsole = function (_React$Component) {
 							return player.screenName === _this.state.selectingPlayer;
 						});
 						console.log(selectingPlayer);
-						mainPanel = React.createElement(OpenQuestionPanel, {
+						mainPanel = React.createElement(_openQuestionPanel2.default, {
 							key: _this.state.newPanelKey,
 							catName: _this.state.rounds[_this.state.currentRound].categories[_this.state.currentCatNo].name,
 							clue: _this.state.rounds[_this.state.currentRound].categories[_this.state.currentCatNo].clues[_this.state.currentClueNo],
@@ -42916,7 +43041,7 @@ var HostConsole = function (_React$Component) {
 				// so host shows normal Final panel in that scenario
 				case "FinalJeopardyPanel":
 				case "FinalJeopardyResponsePanel":
-					mainPanel = React.createElement(FinalJeopardyPanel, {
+					mainPanel = React.createElement(_finalJeopardyPanel2.default, {
 						key: _this.state.newPanelKey,
 						final: _this.state.final,
 						changePlayerScore: _this.changePlayerScore,
@@ -42967,15 +43092,20 @@ var HostConsole = function (_React$Component) {
 	return HostConsole;
 }(React.Component);
 
+exports.default = HostConsole;
+
+
 HostConsole.propTypes = {
 	receivedState: PropTypes.object,
 	socket: PropTypes.instanceOf(io.Socket)
 };
 
-module.exports = HostConsole;
-
-},{"../common/player-panel-bar":259,"./FinalJeopardyPanel":262,"./NextRoundPanel":264,"./NoQuestionPanel":265,"./OpenQuestionPanel":266,"./PlayerDetailsPanel":267,"./PlayerListing":268,"./SelectQuestionPanel":269,"jquery":60,"prop-types":71,"react":239,"socket.io-client":240}],264:[function(require,module,exports){
+},{"../../common/player-panel-bar":259,"./final-jeopardy-panel":263,"./next-round-panel":265,"./no-question-panel":266,"./open-question-panel":267,"./player-details-panel":268,"./player-listing":269,"./select-question-panel":270,"jquery":60,"prop-types":71,"react":239,"socket.io-client":240}],265:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -43025,15 +43155,20 @@ var NextRoundPanel = function (_React$Component) {
 	return NextRoundPanel;
 }(React.Component);
 
+exports.default = NextRoundPanel;
+
+
 NextRoundPanel.propTypes = {
 	lastRound: PropTypes.bool,
 	callback: PropTypes.func
 };
 
-module.exports = NextRoundPanel;
-
-},{"prop-types":71,"react":239}],265:[function(require,module,exports){
+},{"prop-types":71,"react":239}],266:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43263,16 +43398,21 @@ var _initialiseProps = function _initialiseProps() {
 	};
 };
 
+exports.default = NoQuestionPanel;
+
+
 NoQuestionPanel.propTypes = {
 	players: PropTypes.array,
 	setGameData: PropTypes.func,
 	socket: PropTypes.instanceOf(io.Socket)
 };
 
-module.exports = NoQuestionPanel;
-
-},{"jquery":60,"prop-types":71,"react":239,"socket.io-client":240}],266:[function(require,module,exports){
+},{"jquery":60,"prop-types":71,"react":239,"socket.io-client":240}],267:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43701,6 +43841,9 @@ var OpenQuestionPanel = function (_React$Component) {
 	return OpenQuestionPanel;
 }(React.Component);
 
+exports.default = OpenQuestionPanel;
+
+
 OpenQuestionPanel.propTypes = {
 	players: PropTypes.array,
 	catName: PropTypes.string,
@@ -43719,10 +43862,12 @@ OpenQuestionPanel.propTypes = {
 	suffix: PropTypes.string
 };
 
-module.exports = OpenQuestionPanel;
-
-},{"jquery":60,"prop-types":71,"react":239,"socket.io-client":240}],267:[function(require,module,exports){
+},{"jquery":60,"prop-types":71,"react":239,"socket.io-client":240}],268:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43844,6 +43989,9 @@ var PlayerDetailsPanel = function (_React$Component) {
 	return PlayerDetailsPanel;
 }(React.Component);
 
+exports.default = PlayerDetailsPanel;
+
+
 PlayerDetailsPanel.propTypes = {
 	player: PropTypes.object,
 	clearPlayerDetails: PropTypes.func,
@@ -43852,10 +44000,12 @@ PlayerDetailsPanel.propTypes = {
 	changePlayerScore: PropTypes.func
 };
 
-module.exports = PlayerDetailsPanel;
-
-},{"prop-types":71,"react":239}],268:[function(require,module,exports){
+},{"prop-types":71,"react":239}],269:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43922,6 +44072,9 @@ var PlayerListing = function (_React$Component) {
 	return PlayerListing;
 }(React.Component);
 
+exports.default = PlayerListing;
+
+
 PlayerListing.propTypes = {
 	player: PropTypes.object,
 	answering: PropTypes.bool,
@@ -43932,12 +44085,16 @@ PlayerListing.propTypes = {
 	onClick: PropTypes.func
 };
 
-module.exports = PlayerListing;
-
-},{"prop-types":71,"react":239}],269:[function(require,module,exports){
+},{"prop-types":71,"react":239}],270:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _categoryGroup = require("./category-group");
+
+var _categoryGroup2 = _interopRequireDefault(_categoryGroup);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43947,11 +44104,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var React = require("react");
 var PropTypes = require("prop-types");
-var CategoryGroup = require("./CategoryGroup");
 
 // panel showing which categories and clues are unasked
 // (with buttons to show them)
-
 var SelectQuestionPanel = function (_React$Component) {
 	_inherits(SelectQuestionPanel, _React$Component);
 
@@ -43966,7 +44121,7 @@ var SelectQuestionPanel = function (_React$Component) {
 		value: function render() {
 			var catGroups = [];
 			for (var i = 0; i < this.props.round.categories.length; i++) {
-				catGroups.push(React.createElement(CategoryGroup, {
+				catGroups.push(React.createElement(_categoryGroup2.default, {
 					catNo: i,
 					category: this.props.round.categories[i],
 					key: i,
@@ -43995,81 +44150,4 @@ SelectQuestionPanel.propTypes = {
 
 module.exports = SelectQuestionPanel;
 
-},{"./CategoryGroup":260,"prop-types":71,"react":239}],270:[function(require,module,exports){
-"use strict";
-
-var React = require("react");
-var ReactDOM = require("react-dom");
-var socket = require("socket.io-client")();
-var $ = require("jquery");
-var ReactCSSTransitionReplace = require("react-css-transition-replace");
-var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
-
-var HostConsole = require("./HostConsole");
-
-var gameCode = getParameterByName("gamecode");
-
-socket.on("connect_timeout", function () {
-	console.log("connection timeout");
-});
-
-socket.on("connect", function () {
-	console.log("connected");
-	socket.emit("host request", {
-		gameCode: gameCode
-	});
-});
-
-socket.on("connect_error", function (err) {
-	console.log("connection error: " + err);
-});
-
-socket.on("game details", function (details) {
-	console.log("Game Details received");
-	console.log(details);
-	$("#game-code").text(details.gameCode);
-	$("#game-title").text(details.gameTitle);
-	var state;
-	if ($.isEmptyObject(details.gameState)) {
-		state = {
-			players: [],
-			detailPlayerName: "",
-
-			currentRound: 0,
-			cluesLeft: 0,
-			selectingPlayer: "",
-			playerAnswering: {},
-
-			currentPanel: "NoQuestionPanel",
-			newPanelKey: 0,
-
-			finalEligiblePlayers: [],
-
-			rounds: [],
-			final: {},
-
-			currentCatNo: 0,
-			currentClueNo: 0,
-			currentClueValue: 0,
-
-			prefix: "",
-			suffix: ""
-		};
-		socket.emit("set state", state);
-	} else {
-		state = details.gameState;
-	}
-	ReactDOM.render(React.createElement(HostConsole, { receivedState: state, socket: socket }), document.getElementById("main-panel"));
-});
-
-function getParameterByName(name, url) {
-	if (!url) url = window.location.href;
-	name = name.replace(/[\[\]]/g, "\\$&");
-	var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-	    results = regex.exec(url);
-	if (!results) return null;
-	if (!results[2]) return "";
-	return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
-},{"./HostConsole":263,"jquery":60,"react":239,"react-addons-css-transition-group":73,"react-css-transition-replace":74,"react-dom":75,"socket.io-client":240}]},{},[270]);
+},{"./category-group":261,"prop-types":71,"react":239}]},{},[260]);

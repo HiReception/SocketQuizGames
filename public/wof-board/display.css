@@ -6,6 +6,14 @@
 
 }
 
+@font-face {
+    font-family: 'EggCrate';
+    src: url('fonts/EGGCRATE.TTF');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 body {
 	display: flex;
 	flex-direction: row;
@@ -386,7 +394,7 @@ div.wheel {
 
 div.wheel-viewport {
 	overflow: hidden;
-	width: 500px;
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -437,3 +445,4 @@ p.player-panel {
 	margin-top: 0px;
 	text-align: right;
 }
+

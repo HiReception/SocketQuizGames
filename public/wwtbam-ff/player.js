@@ -70,7 +70,7 @@ socket.on("new question", (question) => {
 	const optionButtons = question.options.map((option) => {
 		return (
 			<AnswerButton
-				key={option}
+				key={option.key}
 				answerKey={option.key}
 				body={option.text}/>
 
@@ -197,8 +197,8 @@ class OrderedChoiceQuestion extends Component {
 		const selectFunction = this.selectOption;
 		console.log(this.props.children);
 		const options = React.Children.map(this.props.children, (child) => {
-			console.log(`displayName = ${ child.type.displayName}`);
-			if (child.type.displayName === "AnswerButton") {
+			console.log(`name = ${ child.type.name}`);
+			if (child.type.name === "AnswerButton") {
 				console.log("adding onClick");
 				return (
 					<AnswerButton
@@ -321,8 +321,8 @@ class MultipleChoiceQuestion extends Component {
 		const selectFunction = this.selectAnswer;
 		console.log(this.props.children);
 		const options = React.Children.map(this.props.children, (child) => {
-			console.log(`displayName = ${ child.type.displayName}`);
-			if (child.type.displayName === "AnswerButton") {
+			console.log(`name = ${ child.type.name}`);
+			if (child.type.name === "AnswerButton") {
 				console.log("adding onClick");
 				return (
 					<AnswerButton

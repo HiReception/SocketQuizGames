@@ -38993,17 +38993,11 @@ PlayerPanelToggleBar.propTypes = {
 },{"prop-types":64,"react":217}],238:[function(require,module,exports){
 "use strict";
 
-var _playerPanelBar = require("../common/player-panel-bar");
+var _hostPanel = require("./host/host-panel");
 
-var _playerPanelBar2 = _interopRequireDefault(_playerPanelBar);
+var _hostPanel2 = _interopRequireDefault(_hostPanel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require("react");
 var ReactDOM = require("react-dom");
@@ -39011,8 +39005,6 @@ var PropTypes = require("prop-types");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
 
-
-var players = [];
 
 function getParameterByName(name, url) {
 	if (!url) url = window.location.href;
@@ -39038,20 +39030,19 @@ function shuffle(a) {
 
 var gameCode = getParameterByName("gamecode");
 
-shuffle(playerColours);
-
 socket.on("connect_timeout", function () {
+	// TODO
 	console.log("connection timeout");
 });
 
 socket.on("connect", function () {
-	console.log("connected");
 	socket.emit("host request", {
 		gameCode: gameCode
 	});
 });
 
 socket.on("connect_error", function (err) {
+	// TODO
 	console.log("connection error: " + err);
 });
 
@@ -39061,22 +39052,62 @@ socket.on("game details", function (details) {
 		open: true
 	});
 
-	console.log("Game Details received");
-	console.log(details);
 	var state;
 	if ($.isEmptyObject(details.gameState)) {
+		shuffle(playerColours);
 		state = {
 			players: [],
 			detailPlayerName: "",
 			playerAnswering: {},
-			buzzersOpen: false
+			buzzersOpen: false,
+			playerColours: playerColours
 		};
 		socket.emit("set state", state);
 	} else {
 		state = details.gameState;
 	}
-	ReactDOM.render(React.createElement(HostPanel, { gameCode: details.gameCode, gameTitle: details.gameTitle, receivedState: state, socket: socket }), document.getElementById("host-panel"));
+	ReactDOM.render(React.createElement(_hostPanel2.default, {
+		gameCode: details.gameCode,
+		gameTitle: details.gameTitle,
+		receivedState: state,
+		socket: socket }), document.getElementById("host-panel"));
 });
+
+},{"./host/host-panel":239,"jquery":53,"prop-types":64,"react":217,"react-dom":66,"socket.io-client":218}],239:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _playerPanelBar = require("../../common/player-panel-bar");
+
+var _playerPanelBar2 = _interopRequireDefault(_playerPanelBar);
+
+var _playerDetailsPanel = require("./player-details-panel");
+
+var _playerDetailsPanel2 = _interopRequireDefault(_playerDetailsPanel);
+
+var _playerListing = require("./player-listing");
+
+var _playerListing2 = _interopRequireDefault(_playerListing);
+
+var _openQuestionPanel = require("./open-question-panel");
+
+var _openQuestionPanel2 = _interopRequireDefault(_openQuestionPanel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var $ = require("jquery");
+var React = require("react");
+var PropTypes = require("prop-types");
+var io = require("socket.io-client");
 
 var HostPanel = function (_React$Component) {
 	_inherits(HostPanel, _React$Component);
@@ -39098,147 +39129,136 @@ var HostPanel = function (_React$Component) {
 }(React.Component);
 
 var _initialiseProps = function _initialiseProps() {
-	var _this5 = this;
+	var _this2 = this;
 
 	this.handleNewPlayer = function (playerDetails) {
-		console.log("new player:");
-		console.log(playerDetails);
-		playerDetails.colour = playerColours[_this5.state.players.length % playerColours.length];
+		playerDetails.colour = _this2.state.playerColours[_this2.state.players.length % _this2.state.playerColours.length];
 		playerDetails.score = 0;
-		var newPlayers = _this5.state.players;
+		var newPlayers = _this2.state.players;
 
 		newPlayers.push(playerDetails);
-		_this5.setGameState({
+		_this2.setGameState({
 			players: newPlayers
 		});
 	};
 
 	this.setGameState = function (newState) {
-		_this5.setState(newState);
+		_this2.setState(newState);
 
-		socket.emit("set state", newState);
+		_this2.props.socket.emit("set state", newState);
 	};
 
 	this.handleNewAnswer = function (details) {
-		if (_this5.state.buzzersOpen) {
-			console.log("new answer:");
-			console.log(details);
-			console.log(_this5);
+		if (_this2.state.buzzersOpen) {
 
-			var newPlayerAnswering = _this5.state.players.find(function (p) {
-				console.log(p.screenName + " vs " + details.player.screenName);
+			var newPlayerAnswering = _this2.state.players.find(function (p) {
 				return p.screenName === details.player.screenName;
 			});
-			_this5.setGameState({
+			_this2.setGameState({
 				buzzersOpen: false,
 				playerAnswering: newPlayerAnswering
 			});
 
-			socket.emit("play sound", "buzz-in");
+			_this2.props.socket.emit("play sound", "buzz-in");
 		}
 	};
 
-	this.showPlayerDetails = function (name, event) {
-		console.log("showPlayerDetails(" + name + "," + event + ") called");
-		_this5.setGameState({
+	this.showPlayerDetails = function (name) {
+		_this2.setGameState({
 			detailPlayerName: name
 		});
 	};
 
 	this.clearPlayerDetails = function () {
-		_this5.setGameState({
+		_this2.setGameState({
 			detailPlayerName: ""
 		});
 	};
 
 	this.hidePlayer = function (playerName) {
-		var newPlayers = _this5.state.players;
+		var newPlayers = _this2.state.players;
 		newPlayers.find(function (player) {
 			return player.screenName === playerName;
 		}).hidden = true;
-		_this5.setGameState({
+		_this2.setGameState({
 			players: newPlayers
 		});
 	};
 
 	this.unhidePlayer = function (playerName) {
-		var newPlayers = _this5.state.players;
+		var newPlayers = _this2.state.players;
 		newPlayers.find(function (player) {
 			return player.screenName === playerName;
 		}).hidden = false;
-		_this5.setGameState({
+		_this2.setGameState({
 			players: newPlayers
 		});
 	};
 
 	this.changePlayerScore = function (screenName, newScore) {
-		var newPlayers = _this5.state.players;
+		var newPlayers = _this2.state.players;
 		newPlayers.find(function (player) {
 			return player.screenName === screenName;
 		}).score = newScore;
-		_this5.setGameState({
+		_this2.setGameState({
 			players: newPlayers
 		});
 	};
 
 	this.toggleBuzzers = function () {
-		console.log(_this5);
-		_this5.setGameState({
-			buzzersOpen: !_this5.state.buzzersOpen,
+		_this2.setGameState({
+			buzzersOpen: !_this2.state.buzzersOpen,
 			playerAnswering: {}
 		});
 	};
 
 	this.modifyScore = function (screenName, scoreChange) {
-		var newPlayers = _this5.state.players;
-		console.log(_this5);
+		var newPlayers = _this2.state.players;
 		newPlayers.map(function (p) {
 			if (p.screenName === screenName) {
 				p.score += scoreChange;
 			}
 		});
 
-		_this5.setGameState({
+		_this2.setGameState({
 			players: newPlayers
 		});
 	};
 
 	this.togglePlayerPanel = function () {
-		_this5.setGameState({
-			playerPanelHidden: !_this5.state.playerPanelHidden
+		_this2.setGameState({
+			playerPanelHidden: !_this2.state.playerPanelHidden
 		});
 	};
 
 	this.componentDidMount = function () {
-		socket.on("new player", _this5.handleNewPlayer);
-		socket.on("new answer", _this5.handleNewAnswer);
+		_this2.props.socket.on("new player", _this2.handleNewPlayer);
+		_this2.props.socket.on("new answer", _this2.handleNewAnswer);
 	};
 
 	this.componentWillUnmount = function () {
-		socket.removeListener("new player", _this5.handleNewPlayer);
-		socket.removeListener("new answer", _this5.handleNewAnswer);
+		_this2.props.socket.removeListener("new player", _this2.handleNewPlayer);
+		_this2.props.socket.removeListener("new answer", _this2.handleNewAnswer);
 	};
 
 	this.render = function () {
-		var playerCountString = players.length === 1 ? "1 Player" : players.length + " Players";
 		var playerList = [];
-		if (_this5.state.players.length != 0) {
-			var playersByScore = _this5.state.players.sort(function (a, b) {
+		if (_this2.state.players.length != 0) {
+			var playersByScore = _this2.state.players.sort(function (a, b) {
 				return a.score > b.score;
 			});
 
 			for (var i = 0; i < playersByScore.length; i++) {
 				var p = playersByScore[i];
-				var answering = _this5.state.playerAnswering === p;
-				playerList.push(React.createElement(PlayerListing, { player: p, answering: answering, key: i, onClick: _this5.showPlayerDetails.bind(_this5, p.screenName) }));
+				var answering = _this2.state.playerAnswering === p;
+				playerList.push(React.createElement(_playerListing2.default, { player: p, answering: answering, key: i, onClick: _this2.showPlayerDetails.bind(_this2, p.screenName) }));
 			}
 		}
 
 		// render player list panel
 		var playerPanel = void 0;
-		console.log(_this5.state.detailPlayerName);
-		if (_this5.state.detailPlayerName === "") {
-			var nonHiddenPlayers = _this5.state.players.filter(function (player) {
+		if (_this2.state.detailPlayerName === "") {
+			var nonHiddenPlayers = _this2.state.players.filter(function (player) {
 				return !player.hidden;
 			});
 			if (nonHiddenPlayers.length !== 0) {
@@ -39248,15 +39268,15 @@ var _initialiseProps = function _initialiseProps() {
 				var list = [];
 				for (var _i = 0; _i < _playersByScore.length; _i++) {
 					var player = _playersByScore[_i];
-					list.push(React.createElement(PlayerListing, {
-						onClick: _this5.showPlayerDetails.bind(_this5, player.screenName),
+					list.push(React.createElement(_playerListing2.default, {
+						onClick: _this2.showPlayerDetails.bind(_this2, player.screenName),
 						player: player,
 						key: _i,
-						answering: !$.isEmptyObject(_this5.state.playerAnswering) && _this5.state.playerAnswering.screenName === player.screenName,
-						lockedOut: !$.isEmptyObject(_this5.state.playerAnswering) && _this5.state.playerAnswering.screenName !== player.screenName,
-						selecting: _this5.state.selectingPlayer === player.screenName,
-						prefix: _this5.state.prefix,
-						suffix: _this5.state.suffix }));
+						answering: !$.isEmptyObject(_this2.state.playerAnswering) && _this2.state.playerAnswering.screenName === player.screenName,
+						lockedOut: !$.isEmptyObject(_this2.state.playerAnswering) && _this2.state.playerAnswering.screenName !== player.screenName,
+						selecting: _this2.state.selectingPlayer === player.screenName,
+						prefix: _this2.state.prefix,
+						suffix: _this2.state.suffix }));
 				}
 				playerPanel = React.createElement(
 					"div",
@@ -39275,16 +39295,16 @@ var _initialiseProps = function _initialiseProps() {
 				);
 			}
 		} else {
-			var _player = _this5.state.players.find(function (player) {
-				return player.screenName === _this5.state.detailPlayerName;
+			var _player = _this2.state.players.find(function (player) {
+				return player.screenName === _this2.state.detailPlayerName;
 			});
-			playerPanel = React.createElement(PlayerDetailsPanel, {
+			playerPanel = React.createElement(_playerDetailsPanel2.default, {
 				player: _player,
-				clearPlayerDetails: _this5.clearPlayerDetails,
+				clearPlayerDetails: _this2.clearPlayerDetails,
 				hidden: _player.hidden,
-				hidePlayer: _this5.hidePlayer,
-				unhidePlayer: _this5.unhidePlayer,
-				changePlayerScore: _this5.changePlayerScore });
+				hidePlayer: _this2.hidePlayer,
+				unhidePlayer: _this2.unhidePlayer,
+				changePlayerScore: _this2.changePlayerScore });
 		}
 
 		return React.createElement(
@@ -39296,12 +39316,12 @@ var _initialiseProps = function _initialiseProps() {
 				React.createElement(
 					"p",
 					{ id: "game-title" },
-					_this5.props.gameTitle
+					_this2.props.gameTitle
 				),
 				React.createElement(
 					"p",
 					{ id: "game-code" },
-					_this5.props.gameCode
+					_this2.props.gameCode
 				)
 			),
 			React.createElement(
@@ -39309,7 +39329,7 @@ var _initialiseProps = function _initialiseProps() {
 				{ className: "host-panel" },
 				React.createElement(
 					"div",
-					{ id: "player-list", className: "content" + (_this5.state.playerPanelHidden ? ' hidden' : '') },
+					{ id: "player-list", className: "content" + (_this2.state.playerPanelHidden ? " hidden" : "") },
 					playerPanel
 				),
 				React.createElement(
@@ -39318,280 +39338,110 @@ var _initialiseProps = function _initialiseProps() {
 					React.createElement(
 						"div",
 						{ id: "question-panel", className: "content" },
-						React.createElement(OpenQuestionPanel, {
-							modifyScore: _this5.modifyScore,
-							toggleBuzzers: _this5.toggleBuzzers,
-							buzzersOpen: _this5.state.buzzersOpen,
-							playerAnswering: _this5.state.playerAnswering })
+						React.createElement(_openQuestionPanel2.default, {
+							modifyScore: _this2.modifyScore,
+							toggleBuzzers: _this2.toggleBuzzers,
+							buzzersOpen: _this2.state.buzzersOpen,
+							playerAnswering: _this2.state.playerAnswering,
+							socket: _this2.props.socket })
 					)
 				)
 			),
 			React.createElement(_playerPanelBar2.default, {
-				currentlyHidden: _this5.state.playerPanelHidden,
-				toggle: _this5.togglePlayerPanel })
+				currentlyHidden: _this2.state.playerPanelHidden,
+				toggle: _this2.togglePlayerPanel })
 		);
 	};
 };
 
-var PlayerDetailsPanel = function (_React$Component2) {
-	_inherits(PlayerDetailsPanel, _React$Component2);
+exports.default = HostPanel;
 
-	function PlayerDetailsPanel(props) {
-		_classCallCheck(this, PlayerDetailsPanel);
 
-		var _this2 = _possibleConstructorReturn(this, (PlayerDetailsPanel.__proto__ || Object.getPrototypeOf(PlayerDetailsPanel)).call(this, props));
-
-		_this2.openScoreDialog = function () {
-			var validNumber = false;
-			var newScore = "";
-			while (!validNumber) {
-				newScore = prompt("Enter a new score for " + _this2.props.player.screenName + " (current score " + _this2.props.player.score + ")", _this2.props.player.score.toString());
-				if (!isNaN(parseInt(newScore, 10))) {
-					_this2.props.changePlayerScore(_this2.props.player.screenName, parseInt(newScore, 10));
-					validNumber = true;
-				}
-			}
-		};
-
-		_this2.render = function () {
-			var hideButton = void 0;
-			if (_this2.props.player.hidden) {
-				hideButton = React.createElement(
-					"div",
-					{
-						className: "add-question-button",
-						href: "#",
-						onClick: function onClick() {
-							return _this2.props.unhidePlayer(_this2.props.player.screenName);
-						} },
-					React.createElement(
-						"p",
-						null,
-						"Unhide Player"
-					)
-				);
-			} else {
-				hideButton = React.createElement(
-					"div",
-					{
-						className: "cancel-question-button",
-						href: "#",
-						onClick: function onClick() {
-							return _this2.props.hidePlayer(_this2.props.player.screenName);
-						} },
-					React.createElement(
-						"p",
-						null,
-						"Hide Player"
-					)
-				);
-			}
-			return React.createElement(
-				"div",
-				{ className: "player-details-panel" },
-				React.createElement(
-					"div",
-					{ className: "player-details-name" },
-					React.createElement(
-						"p",
-						{ className: "player-details-name" },
-						_this2.props.player.screenName
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "player-details-score" },
-					React.createElement(
-						"p",
-						{ className: "player-details-score" },
-						_this2.props.player.score
-					)
-				),
-				React.createElement(
-					"div",
-					{
-						className: "add-question-button",
-						href: "#",
-						onClick: _this2.openScoreDialog },
-					React.createElement(
-						"p",
-						null,
-						"Change Score"
-					)
-				),
-				hideButton,
-				React.createElement(
-					"div",
-					{
-						className: "player-details-back",
-						href: "#",
-						onClick: function onClick() {
-							return _this2.props.clearPlayerDetails(_this2);
-						} },
-					React.createElement(
-						"p",
-						{ className: "player-details-back" },
-						"Back"
-					)
-				)
-			);
-		};
-
-		_this2.openScoreDialog = _this2.openScoreDialog.bind(_this2);
-		return _this2;
-	}
-
-	return PlayerDetailsPanel;
-}(React.Component);
-
-PlayerDetailsPanel.propTypes = {
-	player: PropTypes.object,
-	clearPlayerDetails: PropTypes.func,
-	hidePlayer: PropTypes.func,
-	unhidePlayer: PropTypes.func,
-	changePlayerScore: PropTypes.func
+HostPanel.propTypes = {
+	gameCode: PropTypes.string,
+	gameTitle: PropTypes.string,
+	receivedState: PropTypes.object,
+	socket: PropTypes.instanceOf(io.Socket)
 };
 
-var PlayerListing = function (_React$Component3) {
-	_inherits(PlayerListing, _React$Component3);
+},{"../../common/player-panel-bar":237,"./open-question-panel":240,"./player-details-panel":241,"./player-listing":242,"jquery":53,"prop-types":64,"react":217,"socket.io-client":218}],240:[function(require,module,exports){
+"use strict";
 
-	function PlayerListing() {
-		var _ref;
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
-		var _temp, _this3, _ret;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-		_classCallCheck(this, PlayerListing);
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-			args[_key] = arguments[_key];
-		}
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-		return _ret = (_temp = (_this3 = _possibleConstructorReturn(this, (_ref = PlayerListing.__proto__ || Object.getPrototypeOf(PlayerListing)).call.apply(_ref, [this].concat(args))), _this3), _this3.render = function () {
-			var scoreString = _this3.props.player.score;
+var React = require("react");
+var PropTypes = require("prop-types");
+var $ = require("jquery");
+var io = require("socket.io-client");
 
-			var className = "playerListingDetails";
-
-			console.log(scoreString);
-
-			if (_this3.props.answering) {
-				return React.createElement(
-					"div",
-					{ className: "playerListing", onClick: _this3.props.onClick },
-					React.createElement(
-						"div",
-						{ className: "playerListingName", style: { backgroundColor: "#FFFFFF" } },
-						React.createElement(
-							"p",
-							{ className: "playerListingName", style: { color: _this3.props.player.colour } },
-							_this3.props.player.screenName
-						)
-					),
-					React.createElement(
-						"div",
-						{ className: "playerListingDetails", style: { backgroundColor: "#FFFFFF" } },
-						React.createElement(
-							"p",
-							{ className: className, style: { color: _this3.props.player.colour } },
-							scoreString
-						)
-					)
-				);
-			} else {
-				return React.createElement(
-					"div",
-					{ className: "playerListing", onClick: _this3.props.onClick },
-					React.createElement(
-						"div",
-						{ className: "playerListingName", style: { backgroundColor: _this3.props.player.colour } },
-						React.createElement(
-							"p",
-							{ className: "playerListingName", style: { color: "#FFFFFF" } },
-							_this3.props.player.screenName
-						)
-					),
-					React.createElement(
-						"div",
-						{ className: "playerListingDetails", style: { backgroundColor: _this3.props.player.colour } },
-						React.createElement(
-							"p",
-							{ className: className, style: { color: "#FFFFFF" } },
-							scoreString
-						)
-					)
-				);
-			}
-		}, _temp), _possibleConstructorReturn(_this3, _ret);
-	}
-
-	return PlayerListing;
-}(React.Component);
-
-PlayerListing.propTypes = {
-	player: PropTypes.object,
-	answering: PropTypes.bool,
-	onClick: PropTypes.func
-};
-
-var OpenQuestionPanel = function (_React$Component4) {
-	_inherits(OpenQuestionPanel, _React$Component4);
+var OpenQuestionPanel = function (_React$Component) {
+	_inherits(OpenQuestionPanel, _React$Component);
 
 	function OpenQuestionPanel(props) {
 		_classCallCheck(this, OpenQuestionPanel);
 
-		var _this4 = _possibleConstructorReturn(this, (OpenQuestionPanel.__proto__ || Object.getPrototypeOf(OpenQuestionPanel)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (OpenQuestionPanel.__proto__ || Object.getPrototypeOf(OpenQuestionPanel)).call(this, props));
 
-		_this4.setCorrectValue = function (event) {
-			_this4.setState({
+		_this.setCorrectValue = function (event) {
+			_this.setState({
 				correctValue: parseInt(event.target.value)
 			});
 		};
 
-		_this4.setIncorrectValue = function (event) {
-			_this4.setState({
+		_this.setIncorrectValue = function (event) {
+			_this.setState({
 				incorrectValue: parseInt(event.target.value)
 			});
 		};
 
-		_this4.wrongAnswer = function () {
-			if (!$.isEmptyObject(_this4.props.playerAnswering)) {
-				_this4.props.modifyScore(_this4.props.playerAnswering.screenName, _this4.state.incorrectValue * -1);
-				_this4.openBuzzers();
+		_this.wrongAnswer = function () {
+			if (!$.isEmptyObject(_this.props.playerAnswering)) {
+				_this.props.modifyScore(_this.props.playerAnswering.screenName, _this.state.incorrectValue * -1);
+				_this.openBuzzers();
 			}
-			socket.emit("play sound", "incorrect");
+			_this.props.socket.emit("play sound", "incorrect");
 		};
 
-		_this4.rightAnswer = function () {
-			if (!$.isEmptyObject(_this4.props.playerAnswering)) {
-				_this4.props.modifyScore(_this4.props.playerAnswering.screenName, _this4.state.correctValue);
-				_this4.openBuzzers();
+		_this.rightAnswer = function () {
+			if (!$.isEmptyObject(_this.props.playerAnswering)) {
+				_this.props.modifyScore(_this.props.playerAnswering.screenName, _this.state.correctValue);
+				_this.openBuzzers();
 			}
-			socket.emit("play sound", "correct");
+			_this.props.socket.emit("play sound", "correct");
 		};
 
-		_this4.openBuzzers = function () {
-			if (!_this4.props.buzzersOpen) {
-				_this4.props.toggleBuzzers();
-			}
-		};
-
-		_this4.closeBuzzers = function () {
-			if (_this4.props.buzzersOpen) {
-				_this4.props.toggleBuzzers();
+		_this.openBuzzers = function () {
+			if (!_this.props.buzzersOpen) {
+				_this.props.toggleBuzzers();
 			}
 		};
 
-		_this4.render = function () {
+		_this.closeBuzzers = function () {
+			if (_this.props.buzzersOpen) {
+				_this.props.toggleBuzzers();
+			}
+		};
+
+		_this.render = function () {
 
 			var buzzerPanel;
 
 			// Buzzers closed
-			if (!_this4.props.buzzersOpen && $.isEmptyObject(_this4.props.playerAnswering)) {
+			if (!_this.props.buzzersOpen && $.isEmptyObject(_this.props.playerAnswering)) {
 				buzzerPanel = React.createElement(
 					"div",
 					{ className: "buzzer-panel" },
 					React.createElement(
 						"div",
-						{ className: "add-question-button", onClick: _this4.openBuzzers },
+						{ className: "add-question-button", onClick: _this.openBuzzers },
 						React.createElement(
 							"p",
 							null,
@@ -39601,14 +39451,14 @@ var OpenQuestionPanel = function (_React$Component4) {
 				);
 
 				// Buzzers open
-			} else if ($.isEmptyObject(_this4.props.playerAnswering)) {
+			} else if ($.isEmptyObject(_this.props.playerAnswering)) {
 
 				buzzerPanel = React.createElement(
 					"div",
 					{ className: "buzzer-panel" },
 					React.createElement(
 						"div",
-						{ className: "cancel-question-button", onClick: _this4.closeBuzzers },
+						{ className: "cancel-question-button", onClick: _this.closeBuzzers },
 						React.createElement(
 							"p",
 							null,
@@ -39625,7 +39475,7 @@ var OpenQuestionPanel = function (_React$Component4) {
 					React.createElement(
 						"p",
 						{ className: "buzzer-panel" },
-						_this4.props.playerAnswering.screenName,
+						_this.props.playerAnswering.screenName,
 						" is answering"
 					),
 					React.createElement(
@@ -39633,7 +39483,7 @@ var OpenQuestionPanel = function (_React$Component4) {
 						{ className: "button-row" },
 						React.createElement(
 							"div",
-							{ className: "add-question-button", onClick: _this4.rightAnswer },
+							{ className: "add-question-button", onClick: _this.rightAnswer },
 							React.createElement(
 								"p",
 								null,
@@ -39642,7 +39492,7 @@ var OpenQuestionPanel = function (_React$Component4) {
 						),
 						React.createElement(
 							"div",
-							{ className: "add-question-button", onClick: _this4.wrongAnswer },
+							{ className: "add-question-button", onClick: _this.wrongAnswer },
 							React.createElement(
 								"p",
 								null,
@@ -39667,7 +39517,7 @@ var OpenQuestionPanel = function (_React$Component4) {
 							null,
 							"Points added for correct answer:"
 						),
-						React.createElement("input", { type: "number", onChange: _this4.setCorrectValue, value: _this4.state.correctValue })
+						React.createElement("input", { type: "number", onChange: _this.setCorrectValue, value: _this.state.correctValue })
 					),
 					React.createElement(
 						"div",
@@ -39677,30 +39527,268 @@ var OpenQuestionPanel = function (_React$Component4) {
 							null,
 							"Points deducted for incorrect answer:"
 						),
-						React.createElement("input", { type: "number", onChange: _this4.setIncorrectValue, value: _this4.state.incorrectValue })
+						React.createElement("input", { type: "number", onChange: _this.setIncorrectValue, value: _this.state.incorrectValue })
 					)
 				),
 				buzzerPanel
 			);
 		};
 
-		_this4.state = {
+		_this.state = {
 			correctValue: 1,
 			incorrectValue: 1
 		};
 
-		console.log(_this4.state);
-		return _this4;
+		return _this;
 	}
 
 	return OpenQuestionPanel;
 }(React.Component);
 
+exports.default = OpenQuestionPanel;
+
+
 OpenQuestionPanel.propTypes = {
 	modifyScore: PropTypes.func,
 	toggleBuzzers: PropTypes.func,
 	buzzersOpen: PropTypes.bool,
-	playerAnswering: PropTypes.object
+	playerAnswering: PropTypes.object,
+	socket: PropTypes.instanceOf(io.Socket)
 };
 
-},{"../common/player-panel-bar":237,"jquery":53,"prop-types":64,"react":217,"react-dom":66,"socket.io-client":218}]},{},[238]);
+},{"jquery":53,"prop-types":64,"react":217,"socket.io-client":218}],241:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+
+var PlayerDetailsPanel = function (_React$Component) {
+	_inherits(PlayerDetailsPanel, _React$Component);
+
+	function PlayerDetailsPanel(props) {
+		_classCallCheck(this, PlayerDetailsPanel);
+
+		var _this = _possibleConstructorReturn(this, (PlayerDetailsPanel.__proto__ || Object.getPrototypeOf(PlayerDetailsPanel)).call(this, props));
+
+		_this.openScoreDialog = function () {
+			var validNumber = false;
+			var newScore = "";
+			while (!validNumber) {
+				newScore = prompt("Enter a new score for " + _this.props.player.screenName + " (current score " + _this.props.player.score + ")", _this.props.player.score.toString());
+				if (!isNaN(parseInt(newScore, 10))) {
+					_this.props.changePlayerScore(_this.props.player.screenName, parseInt(newScore, 10));
+					validNumber = true;
+				}
+			}
+		};
+
+		_this.render = function () {
+			var hideButton = void 0;
+			if (_this.props.player.hidden) {
+				hideButton = React.createElement(
+					"div",
+					{
+						className: "add-question-button",
+						href: "#",
+						onClick: function onClick() {
+							return _this.props.unhidePlayer(_this.props.player.screenName);
+						} },
+					React.createElement(
+						"p",
+						null,
+						"Unhide Player"
+					)
+				);
+			} else {
+				hideButton = React.createElement(
+					"div",
+					{
+						className: "cancel-question-button",
+						href: "#",
+						onClick: function onClick() {
+							return _this.props.hidePlayer(_this.props.player.screenName);
+						} },
+					React.createElement(
+						"p",
+						null,
+						"Hide Player"
+					)
+				);
+			}
+			return React.createElement(
+				"div",
+				{ className: "player-details-panel" },
+				React.createElement(
+					"div",
+					{ className: "player-details-name" },
+					React.createElement(
+						"p",
+						{ className: "player-details-name" },
+						_this.props.player.screenName
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "player-details-score" },
+					React.createElement(
+						"p",
+						{ className: "player-details-score" },
+						_this.props.player.score
+					)
+				),
+				React.createElement(
+					"div",
+					{
+						className: "add-question-button",
+						href: "#",
+						onClick: _this.openScoreDialog },
+					React.createElement(
+						"p",
+						null,
+						"Change Score"
+					)
+				),
+				hideButton,
+				React.createElement(
+					"div",
+					{
+						className: "player-details-back",
+						href: "#",
+						onClick: function onClick() {
+							return _this.props.clearPlayerDetails(_this);
+						} },
+					React.createElement(
+						"p",
+						{ className: "player-details-back" },
+						"Back"
+					)
+				)
+			);
+		};
+
+		_this.openScoreDialog = _this.openScoreDialog.bind(_this);
+		return _this;
+	}
+
+	return PlayerDetailsPanel;
+}(React.Component);
+
+exports.default = PlayerDetailsPanel;
+
+
+PlayerDetailsPanel.propTypes = {
+	player: PropTypes.object,
+	clearPlayerDetails: PropTypes.func,
+	hidePlayer: PropTypes.func,
+	unhidePlayer: PropTypes.func,
+	changePlayerScore: PropTypes.func
+};
+
+},{"prop-types":64,"react":217}],242:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+
+var PlayerListing = function (_React$Component) {
+	_inherits(PlayerListing, _React$Component);
+
+	function PlayerListing() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, PlayerListing);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PlayerListing.__proto__ || Object.getPrototypeOf(PlayerListing)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+			var scoreString = _this.props.player.score;
+
+			var className = "playerListingDetails";
+
+			if (_this.props.answering) {
+				return React.createElement(
+					"div",
+					{ className: "playerListing", onClick: _this.props.onClick },
+					React.createElement(
+						"div",
+						{ className: "playerListingName", style: { backgroundColor: "#FFFFFF" } },
+						React.createElement(
+							"p",
+							{ className: "playerListingName", style: { color: _this.props.player.colour } },
+							_this.props.player.screenName
+						)
+					),
+					React.createElement(
+						"div",
+						{ className: "playerListingDetails", style: { backgroundColor: "#FFFFFF" } },
+						React.createElement(
+							"p",
+							{ className: className, style: { color: _this.props.player.colour } },
+							scoreString
+						)
+					)
+				);
+			} else {
+				return React.createElement(
+					"div",
+					{ className: "playerListing", onClick: _this.props.onClick },
+					React.createElement(
+						"div",
+						{ className: "playerListingName", style: { backgroundColor: _this.props.player.colour } },
+						React.createElement(
+							"p",
+							{ className: "playerListingName", style: { color: "#FFFFFF" } },
+							_this.props.player.screenName
+						)
+					),
+					React.createElement(
+						"div",
+						{ className: "playerListingDetails", style: { backgroundColor: _this.props.player.colour } },
+						React.createElement(
+							"p",
+							{ className: className, style: { color: "#FFFFFF" } },
+							scoreString
+						)
+					)
+				);
+			}
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	return PlayerListing;
+}(React.Component);
+
+exports.default = PlayerListing;
+
+
+PlayerListing.propTypes = {
+	player: PropTypes.object,
+	answering: PropTypes.bool,
+	onClick: PropTypes.func
+};
+
+},{"prop-types":64,"react":217}]},{},[238]);

@@ -5,7 +5,7 @@ var $ = require("jquery");
 var ReactCSSTransitionReplace = require("react-css-transition-replace");
 var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 
-var HostConsole = require("./HostConsole");
+import HostConsole from "./host/host-console";
 
 var gameCode = getParameterByName("gamecode");
 

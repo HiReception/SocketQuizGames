@@ -175,10 +175,7 @@ class HostConsole extends Component {
 							onClick={this.showPlayerDetails.bind(this, player.screenName)}
 							player={player}
 							key={player}
-							answering={!$.isEmptyObject(playerAnswering) &&
-								playerAnswering.screenName === player.screenName}
-							lockedOut={!$.isEmptyObject(playerAnswering) &&
-								playerAnswering.screenName !== player.screenName}/>
+							waitingForAnswer={!player.answeredCurrentQuestion}/>
 					);
 				});
 				playerPanel = <div>{list}</div>;
@@ -339,10 +336,8 @@ class PlayerListing extends Component {
 			classExt += " negative";
 		}
 
-		if (this.props.answering) {
-			classExt += " answering";
-		} else if (this.props.lockedOut) {
-			classExt += " locked";
+		if (this.props.waitingForAnswer) {
+			classExt += " waiting";
 		}
 
 		console.log(scoreString);
@@ -365,8 +360,7 @@ class PlayerListing extends Component {
 PlayerListing.propTypes = {
 	player: PropTypes.object,
 	answering: PropTypes.bool,
-	lockedOut: PropTypes.bool,
-	onClick: PropTypes.func,
+	waitingForAnswer: PropTypes.bool,
 };
 
 
@@ -522,7 +516,7 @@ class OpenQuestionPanel extends Component {
 		super(props);
 		const playerStats = this.props.players.map((player) => {
 			return {
-				name: player.name,
+				name: player.screenName,
 				currentQuestionAnswer: "",
 				answeredCurrentQuestion: false,
 				answeredCurrentQuestionCorrectly: false,
@@ -588,7 +582,6 @@ class OpenQuestionPanel extends Component {
 	// TODO
 	render = () => {
 		const { question, gameState, players } = this.props;
-		let remainingPlayersPanel;
 		let buzzerPanel;
 
 
@@ -625,36 +618,17 @@ class OpenQuestionPanel extends Component {
 		);
 
 		if (gameState.buzzersOpen) {
+			const numRemainingPlayers = players.filter((p) => {return !p.answeredCurrentQuestion;}).length;
 			buzzerPanel = (
 				<div className='buzzer-panel'>
-					<p className='buzzer-panel'>Response Lines are Open</p>
+					<p className='buzzer-panel'>Waiting on {numRemainingPlayers} players</p>
 					<div className='add-question-button' onClick={this.goToResultsPanel}>
 						<p>End Question and Go To Results</p>
 					</div>
 				</div>
 			);
-
-			const remainingPlayers = players.filter((player) => {
-				return !player.answeredCurrentQuestion;
-			}).map((player) => {
-				return (
-					<div key={player} className='remaining-player'>
-						<p className='remaining-player'>{player.name}</p>
-					</div>
-				);
-			});
-
-			remainingPlayersPanel = (
-				<div className='remaining-players-panel'>
-					<div className='remaining-players-header'>
-						<p>
-							Waiting on {remainingPlayers.length} players of {players.length}
-						</p>
-					</div>
-					{remainingPlayers}
-				</div>
-			);
 		} else {
+			
 			buzzerPanel = (
 				<div className='buzzer-panel'>
 					<div className='add-question-button' onClick={this.openBuzzers}>
@@ -662,7 +636,6 @@ class OpenQuestionPanel extends Component {
 					</div>
 				</div>
 			);
-			remainingPlayersPanel = <div className='remaining-players-panel'/>;
 		}
 
 		return (
@@ -671,9 +644,6 @@ class OpenQuestionPanel extends Component {
 					{header}
 					{questionPanel}
 					{optionsPanel}
-				</div>
-				<div className='column'>
-					{remainingPlayersPanel}
 					{buzzerPanel}
 				</div>
 			</div>

@@ -59,6 +59,7 @@ app.use(session({
 	saveUninitialized: false
 }));
 app.use(flash());
+app.use(express.static("icons"));
 
 
 
@@ -191,6 +192,10 @@ app.post("/display",
 	}
 );
 
+app.get("/minigames", function(req, res) {
+	res.sendFile(__dirname + "/public/minigames.html");
+});
+
 
 
 
@@ -301,7 +306,7 @@ io.on("connection", function(socket) {
 				var answer = {
 					player: thisUser,
 					answer: details.submittedAnswer,
-					time: 0 // TODO keep time between receiving the question and submitting an answer
+					time: details.timeTaken,
 				};
 				console.log("emitting new answer");
 				room.hostSocket.emit("new answer", answer);

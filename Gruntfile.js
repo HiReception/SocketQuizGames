@@ -2,6 +2,17 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 		browserify: {
+			sotc_cashcard: {
+				src: "public/sotc/cashcard.js",
+				dest: "public/sotc/cashcardBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}]
+					]
+				}
+			},
 			jeopardy_player: {
 				src: "public/jeopardy/player.js",
 				dest: "public/jeopardy/playerBundle.js",
@@ -121,6 +132,29 @@ module.exports = function(grunt) {
 						["babelify", {
 							presets: ["react", "es2015", "stage-1"]
 						}]
+					]
+				}
+			},
+			wwtbam_ff_player: {
+				src: "public/wwtbam-ff/player.js",
+				dest: "public/wwtbam-ff/playerBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}]
+					]
+				}
+			},
+			wwtbam_ff_host: {
+				src: "public/wwtbam-ff/host.js",
+				dest: "public/wwtbam-ff/hostBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}],
+						"brfs"
 					]
 				}
 			}

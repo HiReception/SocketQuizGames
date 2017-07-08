@@ -1,56 +1,37 @@
 module.exports = {
-    "globals": {
-        "__dirname": true
-    },
-    "ecmaFeatures": {
-        "jsx": true,
-        "modules": true
-    },
     "env": {
         "browser": true,
         "commonjs": true,
-        "es6": true
+        "es6": true,
+        "node": true,
     },
     "extends": "eslint:recommended",
+    "parser": "babel-eslint",
+    "plugins": [
+        "react",
+    ],
     "parserOptions": {
-    	"ecmaVersion": 6,
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
             "jsx": true
         },
+        "ecmaVersion": 2017,
         "sourceType": "module"
     },
-    "plugins": [
-        "react"
-    ],
     "rules": {
         "indent": [
             "error",
             "tab"
         ],
+        "react/jsx-uses-vars": [2],
         "linebreak-style": [
             "error",
             "unix"
         ],
         "quotes": [
-            "warn",
+            "error",
             "double"
         ],
-        "semi": [
-            "warn",
-            "always"
-        ],
-        "no-console":0,
-        "no-unused-vars": [
-            "warn",
-            {
-                "vars": "all",
-                "args": "after-used"
-            }
-        ],
-        "react/jsx-uses-react": 2,
-        "react/jsx-uses-vars": 2,
-        "react/react-in-jsx-scope": 2
-
+        "strict": [2],
     }
 };

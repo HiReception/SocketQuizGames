@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'EggCrate';
+    src: url('fonts/EGGCRATE.TTF');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 body {
 	display: flex;
 	flex-direction: row;
@@ -177,32 +185,17 @@ div.puzzle-board-cell {
 }
 
 div.puzzle-board-cell.invisible {
-	border: 0;
+	border: 1px solid transparent;
 	opacity: 0;
-	flex: 1 0 40px;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
 }
 
 div.puzzle-board-cell.shaded {
 	background-color: teal;
 	color: teal;
-	flex: 1 0 40px;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
 }
 
 div.puzzle-board-cell.blank {
 	color: white;
-	flex: 1 0 40px;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
 }
 
 div.puzzle-category-panel {
@@ -358,4 +351,29 @@ p.player-panel {
 	font-size: 200%;
 	margin-top: 0px;
 	text-align: right;
+}
+
+@media screen and (max-width: 799px) {
+	div.letter-button {
+		margin: 2.5px;
+		height: 40px;
+		min-width: 20px;
+		max-width: 20px;
+		font-size: 75%;
+	}
+
+	div.current-board-panel {
+		align-items: stretch;
+	}
+
+	div.puzzle-board-cell {
+		flex-shrink: 1;
+		max-width: 40px;
+	}
+
+	p.player-panel {
+		font-size: 125%;
+		margin-top: 6px;
+	}
+
 }

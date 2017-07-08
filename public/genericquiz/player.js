@@ -2,6 +2,8 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
+import Message from "../common/player-message";
+import BuzzInQuestion from "../common/buzz-in-question";
 
 function getParameterByName(name, url) {
 	if (!url) url = window.location.href;
@@ -61,33 +63,7 @@ socket.on("new question", function(question) {
 	console.log("New question received, type " + question.type);
 	console.log(question);
 	if (question.type === "buzz-in") {
-		ReactDOM.render(<BuzzInQuestion/>, document.getElementById("question-window"));
+		ReactDOM.render(<BuzzInQuestion socket={socket}/>, document.getElementById("question-window"));
 	}
 });
 
-var Message = React.createClass({
-	render: function() {
-		return (
-			<div className="playerQuestion">
-				<p className="playerQuestion">{this.props.primary}</p>
-				<p className="playerQuestionDetails">{this.props.secondary}</p>
-				{this.props.children}
-			</div>
-		);
-	}
-});
-
-var BuzzInQuestion = React.createClass({
-	submitAnswer: function() {
-		socket.emit("send answer", {
-			questionNo: this.props.questionNo,
-		});
-	},
-	render: function() {
-		return (
-			<div className="playerQuestion">
-				<div onClick={this.submitAnswer} className="buzzer"/>
-			</div>
-		);
-	}
-});

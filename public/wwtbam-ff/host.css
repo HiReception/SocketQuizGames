@@ -271,6 +271,8 @@ div .playerListing {
 	border: 1px solid black;
 }
 
+
+
 p.playerListingName {
 	color: white;
 }
@@ -287,11 +289,7 @@ div.playerListingName {
 	padding-right: 5px;
 }
 
-div.playerListingName.locked {
-	background-color: grey;
-}
-
-div.playerListingName.answering {
+div .playerListingName.waiting {
 	background-color: blue;
 }
 
@@ -317,11 +315,7 @@ div.playerListingDetails {
 	background-color: black;
 }
 
-div.playerListingDetails.locked {
-	background-color: grey;
-}
-
-div.playerListingDetails.answering {
+div .playerListing.waiting {
 	background-color: blue;
 }
 

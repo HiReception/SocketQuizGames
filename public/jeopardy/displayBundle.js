@@ -35006,16 +35006,12 @@ module.exports = yeast;
 },{}],237:[function(require,module,exports){
 "use strict";
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _displayContainer = require("./display/display-container");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _displayContainer2 = _interopRequireDefault(_displayContainer);
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var React = require("react");
-var PropTypes = require("prop-types");
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var soundManager = require("soundmanager2").soundManager;
@@ -35035,7 +35031,7 @@ socket.emit("display request", {
 });
 
 socket.on("accepted", function () {
-	ReactDOM.render(React.createElement(DisplayContainer, null), document.getElementById("display-panel"));
+	ReactDOM.render(React.createElement(_displayContainer2.default, null), document.getElementById("display-panel"));
 
 	soundManager.setup({
 
@@ -35058,6 +35054,274 @@ socket.on("play sound", function (id) {
 	soundManager.play(id);
 });
 
+},{"./display/display-container":241,"react-dom":65,"socket.io-client":217,"soundmanager2":233}],238:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _clueButton = require("./clue-button");
+
+var _clueButton2 = _interopRequireDefault(_clueButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+
+var CategoryGroup = function (_React$Component) {
+	_inherits(CategoryGroup, _React$Component);
+
+	function CategoryGroup() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, CategoryGroup);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CategoryGroup.__proto__ || Object.getPrototypeOf(CategoryGroup)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+			var clueButtons = [];
+			// only show the category name if there are any clues left in it
+			var showCategoryName = _this.props.category.clues.some(function (clue) {
+				return clue.active;
+			});
+			for (var i = 0; i < _this.props.category.clues.length; i++) {
+				clueButtons.push(React.createElement(_clueButton2.default, {
+					clue: _this.props.category.clues[i],
+					key: i,
+					value: _this.props.values[i],
+					prefix: _this.props.prefix,
+					suffix: _this.props.suffix }));
+			}
+
+			if (showCategoryName) {
+				var header = React.createElement(
+					"div",
+					{ className: "category-header" },
+					React.createElement(
+						"p",
+						{ className: "category-header" },
+						_this.props.category.name
+					)
+				);
+
+				return React.createElement(
+					"div",
+					{ className: "category-group" },
+					header,
+					React.createElement(
+						"div",
+						{ className: "category-clue-group" },
+						clueButtons
+					)
+				);
+			} else {
+				return React.createElement(
+					"div",
+					{ className: "category-group" },
+					React.createElement("div", { className: "category-header" }),
+					React.createElement(
+						"div",
+						{ className: "category-clue-group" },
+						clueButtons
+					)
+				);
+			}
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	return CategoryGroup;
+}(React.Component);
+
+exports.default = CategoryGroup;
+
+
+CategoryGroup.propTypes = {
+	category: PropTypes.object,
+	values: PropTypes.array,
+	prefix: PropTypes.string,
+	suffix: PropTypes.string
+};
+
+},{"./clue-button":239,"prop-types":63,"react":216}],239:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+
+var ClueButton = function (_React$Component) {
+	_inherits(ClueButton, _React$Component);
+
+	function ClueButton() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, ClueButton);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ClueButton.__proto__ || Object.getPrototypeOf(ClueButton)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+			if (_this.props.clue.active) {
+				var button = React.createElement(
+					"div",
+					{
+						className: "clue-button active" },
+					React.createElement(
+						"p",
+						{ className: "clue-button" },
+						_this.props.prefix,
+						_this.props.value,
+						_this.props.suffix
+					)
+				);
+				return button;
+			} else {
+				return React.createElement(
+					"div",
+					{
+						className: "clue-button inactive" },
+					React.createElement("p", { className: "clue-button" })
+				);
+			}
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	return ClueButton;
+}(React.Component);
+
+exports.default = ClueButton;
+
+
+ClueButton.propTypes = {
+	clue: PropTypes.object,
+	prefix: PropTypes.string,
+	suffix: PropTypes.string,
+	value: PropTypes.number
+};
+
+},{"prop-types":63,"react":216}],240:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+
+var DailyDoublePanel = function (_React$Component) {
+	_inherits(DailyDoublePanel, _React$Component);
+
+	function DailyDoublePanel() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, DailyDoublePanel);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DailyDoublePanel.__proto__ || Object.getPrototypeOf(DailyDoublePanel)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+			return React.createElement(
+				"div",
+				{ className: "daily-double-panel" },
+				React.createElement(
+					"div",
+					null,
+					React.createElement(
+						"p",
+						{ className: "daily" },
+						"Daily"
+					),
+					React.createElement(
+						"p",
+						{ className: "double" },
+						"DOUBLE"
+					)
+				)
+			);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	return DailyDoublePanel;
+}(React.Component);
+
+exports.default = DailyDoublePanel;
+
+},{"react":216}],241:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _playerListing = require("./player-listing");
+
+var _playerListing2 = _interopRequireDefault(_playerListing);
+
+var _noQuestionPanel = require("./no-question-panel");
+
+var _noQuestionPanel2 = _interopRequireDefault(_noQuestionPanel);
+
+var _selectQuestionPanel = require("./select-question-panel");
+
+var _selectQuestionPanel2 = _interopRequireDefault(_selectQuestionPanel);
+
+var _dailyDoublePanel = require("./daily-double-panel");
+
+var _dailyDoublePanel2 = _interopRequireDefault(_dailyDoublePanel);
+
+var _finalJeopardyPanel = require("./final-jeopardy-panel");
+
+var _finalJeopardyPanel2 = _interopRequireDefault(_finalJeopardyPanel);
+
+var _finalJeopardyResponsePanel = require("./final-jeopardy-response-panel");
+
+var _finalJeopardyResponsePanel2 = _interopRequireDefault(_finalJeopardyResponsePanel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+var io = require("socket.io-client");
+
 var DisplayContainer = function (_React$Component) {
 	_inherits(DisplayContainer, _React$Component);
 
@@ -35066,99 +35330,74 @@ var DisplayContainer = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (DisplayContainer.__proto__ || Object.getPrototypeOf(DisplayContainer)).call(this, props));
 
-		_this.state = {
-			currentRound: 0,
-			buzzersOpen: false,
-			rounds: [],
-			players: [],
-
-			final: {},
-			finalCategoryVisible: false,
-			finalClueVisible: false,
-			finalFocusScreenName: "",
-			finalFocusResponse: "",
-			finalFocusResponseVisible: false,
-			finalFocusWager: "",
-			finalFocusWagerVisible: false,
-
-			currentPanel: "NoQuestionPanel",
-			currentClue: {},
-
-			playerAnswering: {},
-
-			dailyDoublePlaySound: true,
-
-			prefix: "",
-			suffix: ""
-		};
-
-		_this.render = _this.render.bind(_this);
-		var thisPanel = _this;
-
-		socket.on("new game state", function (state) {
-			if (thisPanel.state.currentPanel === "DailyDoublePanel") {
-				thisPanel.setState({
+		_this.onNewState = function (state) {
+			if (_this.state.currentPanel === "DailyDoublePanel") {
+				_this.setState({
 					dailyDoublePlaySound: false
 				});
 			} else {
-				thisPanel.setState({
+				_this.setState({
 					dailyDoublePlaySound: true
 				});
 			}
 			console.log("new state received");
 			console.log(state);
-			thisPanel.setState(state);
-		});
-		return _this;
-	}
+			_this.setState(state);
+		};
 
-	_createClass(DisplayContainer, [{
-		key: "render",
-		value: function render() {
+		_this.componentDidMount = function () {
+			_this.props.socket.on("new game state", _this.onNewState);
+		};
+
+		_this.componentWillUnmount = function () {
+			_this.props.socket.removeHandler("new game state", _this.onNewState);
+		};
+
+		_this.render = function () {
 			var questionPanel;
 
-			switch (this.state.currentPanel) {
+			switch (_this.state.currentPanel) {
 				case "NoQuestionPanel":
-					questionPanel = React.createElement(NoQuestionPanel, null);
+					questionPanel = React.createElement(_noQuestionPanel2.default, null);
 					break;
 				case "SelectQuestionPanel":
-					questionPanel = React.createElement(SelectQuestionPanel, {
-						round: this.state.rounds[this.state.currentRound],
-						prefix: this.state.prefix,
-						suffix: this.state.suffix
+					questionPanel = React.createElement(_selectQuestionPanel2.default, {
+						round: _this.state.rounds[_this.state.currentRound],
+						prefix: _this.state.prefix,
+						suffix: _this.state.suffix
 					});
 					break;
 				case "OpenQuestionPanel":
 					questionPanel = React.createElement(OpenQuestionPanel, {
-						clue: this.state.currentClue
+						clue: _this.state.currentClue
 					});
 					break;
 				case "DailyDoublePanel":
-					questionPanel = React.createElement(DailyDoublePanel, { playSound: this.state.playSound });
+					questionPanel = React.createElement(_dailyDoublePanel2.default, { playSound: _this.state.playSound });
 					break;
 				case "FinalJeopardyPanel":
-					questionPanel = React.createElement(FinalJeopardyPanel, {
-						final: this.state.final,
-						categoryVisible: this.state.finalCategoryVisible,
-						clueVisible: this.state.finalClueVisible,
+					questionPanel = React.createElement(_finalJeopardyPanel2.default, {
+						final: _this.state.final,
+						categoryVisible: _this.state.finalCategoryVisible,
+						clueVisible: _this.state.finalClueVisible,
 						revealTone: false,
 						thinkMusicPlaying: false
 					});
 					break;
 				case "FinalJeopardyResponsePanel":
-					questionPanel = React.createElement(FinalJeopardyResponsePanel, {
-						screenName: this.state.finalFocusScreenName,
-						response: this.state.finalFocusResponse,
-						responseVisible: this.state.finalFocusResponseVisible,
-						wager: this.state.finalFocusWager,
-						wagerVisible: this.state.finalFocusWagerVisible
+					questionPanel = React.createElement(_finalJeopardyResponsePanel2.default, {
+						screenName: _this.state.finalFocusScreenName,
+						response: _this.state.finalFocusResponse,
+						responseVisible: _this.state.finalFocusResponseVisible,
+						wager: _this.state.finalFocusWager,
+						wagerVisible: _this.state.finalFocusWagerVisible
 					});
 					break;
 			}
 
 			var playerPanel;
-			var thisPanel = this;
-			var nonHiddenPlayers = this.state.players.filter(function (p) {
+			var thisPanel = _this;
+			var nonHiddenPlayers = _this.state.players.filter(function (p) {
 				return !p.hidden;
 			});
 
@@ -35167,16 +35406,16 @@ var DisplayContainer = function (_React$Component) {
 				for (var i = 0; i < nonHiddenPlayers.length; i++) {
 					var p = nonHiddenPlayers[i];
 					// light this display up if they are answering the question
-					var answering = this.state.playerAnswering.screenName === p.screenName;
+					var answering = _this.state.playerAnswering.screenName === p.screenName;
 
 					// player is "locked out" if someone ELSE is answering, so grey them out
-					var lockedOut = this.state.playerAnswering.hasOwnProperty("screenName") && this.state.playerAnswering.screenName !== p.screenName;
+					var lockedOut = _this.state.playerAnswering.hasOwnProperty("screenName") && _this.state.playerAnswering.screenName !== p.screenName;
 
-					list.push(React.createElement(PlayerListing, {
+					list.push(React.createElement(_playerListing2.default, {
 						player: p,
 						key: i,
-						prefix: this.state.prefix,
-						suffix: this.state.suffix,
+						prefix: _this.state.prefix,
+						suffix: _this.state.suffix,
 						answering: answering,
 						lockedOut: lockedOut
 					}));
@@ -35204,399 +35443,483 @@ var DisplayContainer = function (_React$Component) {
 					playerPanel
 				)
 			);
-		}
-	}]);
+		};
+
+		_this.state = {
+			currentRound: 0,
+			buzzersOpen: false,
+			rounds: [],
+			players: [],
+
+			final: {},
+			finalCategoryVisible: false,
+			finalClueVisible: false,
+			finalFocusScreenName: "",
+			finalFocusResponse: "",
+			finalFocusResponseVisible: false,
+			finalFocusWager: "",
+			finalFocusWagerVisible: false,
+
+			currentPanel: "NoQuestionPanel",
+			currentClue: {},
+
+			playerAnswering: {},
+
+			dailyDoublePlaySound: true,
+
+			prefix: "",
+			suffix: ""
+		};
+		return _this;
+	}
 
 	return DisplayContainer;
 }(React.Component);
 
-var PlayerListing = React.createClass({
-	displayName: "PlayerListing",
+exports.default = DisplayContainer;
 
-	render: function render() {
-		var scoreString = this.props.prefix + this.props.player.score + this.props.suffix;
 
-		var className = this.props.player.score < 0 ? "playerListingDetails negative" : "playerListingDetails";
-
-		console.log(scoreString);
-
-		var classModifier = "";
-		if (this.props.lockedOut) {
-			classModifier = "locked-out";
-		} else if (this.props.answering) {
-			classModifier = "answering";
-		}
-
-		return React.createElement(
-			"div",
-			{ className: "playerListing " + classModifier },
-			React.createElement(
-				"div",
-				{ className: "playerListingName " + classModifier },
-				React.createElement(
-					"p",
-					{ className: "playerListingName " + classModifier },
-					this.props.player.screenName
-				)
-			),
-			React.createElement(
-				"div",
-				{ className: "playerListingDetails " + classModifier },
-				React.createElement(
-					"p",
-					{ className: className },
-					scoreString
-				)
-			)
-		);
-	}
-});
-
-// starting panel, with field to upload question file
-var NoQuestionPanel = React.createClass({
-	displayName: "NoQuestionPanel",
-
-	render: function render() {
-		return React.createElement(
-			"div",
-			{ className: "no-question-panel" },
-			React.createElement(
-				"div",
-				null,
-				React.createElement(
-					"p",
-					{ className: "handwriting" },
-					"Doyle's"
-				),
-				React.createElement("img", { src: "images/white logo.png" })
-			)
-		);
-	}
-});
-
-// panel showing which categories and clues are unasked (with buttons to show them)
-var SelectQuestionPanel = React.createClass({
-	displayName: "SelectQuestionPanel",
-
-	render: function render() {
-		var catGroups = [];
-		for (var i = 0; i < this.props.round.categories.length; i++) {
-			catGroups.push(React.createElement(CategoryGroup, {
-				category: this.props.round.categories[i],
-				key: i,
-				values: this.props.round.values.amounts,
-				prefix: this.props.prefix,
-				suffix: this.props.suffix }));
-		}
-
-		return React.createElement(
-			"div",
-			{ className: "select-question-panel" },
-			catGroups
-		);
-	},
-	componentDidMount: function componentDidMount() {
-		//textFit($("div.category-header"), {multiLine: false});
-		//textFit($("div.clue-button"));
-	}
-});
-
-var CategoryGroup = React.createClass({
-	displayName: "CategoryGroup",
-
-	propTypes: {
-		category: PropTypes.object,
-		values: PropTypes.array,
-		prefix: PropTypes.string,
-		suffix: PropTypes.string
-	},
-	render: function render() {
-		var clueButtons = [];
-		// only show the category name if there are any clues left in it
-		var showCategoryName = this.props.category.clues.some(function (clue) {
-			return clue.active;
-		});
-		for (var i = 0; i < this.props.category.clues.length; i++) {
-			clueButtons.push(React.createElement(ClueButton, {
-				clue: this.props.category.clues[i],
-				key: i,
-				value: this.props.values[i],
-				prefix: this.props.prefix,
-				suffix: this.props.suffix }));
-		}
-
-		if (showCategoryName) {
-			var header = React.createElement(
-				"div",
-				{ className: "category-header" },
-				React.createElement(
-					"p",
-					{ className: "category-header" },
-					this.props.category.name
-				)
-			);
-
-			return React.createElement(
-				"div",
-				{ className: "category-group" },
-				header,
-				React.createElement(
-					"div",
-					{ className: "category-clue-group" },
-					clueButtons
-				)
-			);
-		} else {
-			return React.createElement(
-				"div",
-				{ className: "category-group" },
-				React.createElement("div", { className: "category-header" }),
-				React.createElement(
-					"div",
-					{ className: "category-clue-group" },
-					clueButtons
-				)
-			);
-		}
-	}
-});
-
-var ClueButton = React.createClass({
-	displayName: "ClueButton",
-
-	propTypes: {
-		clue: PropTypes.object,
-		prefix: PropTypes.string,
-		suffix: PropTypes.string,
-		value: PropTypes.number
-	},
-	render: function render() {
-		if (this.props.clue.active) {
-			var button = React.createElement(
-				"div",
-				{
-					className: "clue-button active" },
-				React.createElement(
-					"p",
-					{ className: "clue-button" },
-					this.props.prefix,
-					this.props.value,
-					this.props.suffix
-				)
-			);
-			return button;
-		} else {
-			return React.createElement(
-				"div",
-				{
-					className: "clue-button inactive" },
-				React.createElement("p", { className: "clue-button" })
-			);
-		}
-	}
-});
-
-var OpenQuestionPanel = function (_React$Component2) {
-	_inherits(OpenQuestionPanel, _React$Component2);
-
-	function OpenQuestionPanel(props) {
-		_classCallCheck(this, OpenQuestionPanel);
-
-		var _this2 = _possibleConstructorReturn(this, (OpenQuestionPanel.__proto__ || Object.getPrototypeOf(OpenQuestionPanel)).call(this, props));
-
-		_this2.state = {
-			playerAnswering: -1
-		};
-
-		_this2.render = _this2.render.bind(_this2);
-		return _this2;
-	}
-
-	_createClass(OpenQuestionPanel, [{
-		key: "render",
-		value: function render() {
-			console.log(this.props.clue);
-
-			return React.createElement(
-				"div",
-				{ id: "open-question-panel" },
-				React.createElement(
-					"div",
-					{ className: "open-question-clue" },
-					React.createElement(
-						"p",
-						{ className: "open-question-clue" },
-						this.props.clue.answer
-					)
-				)
-			);
-		}
-	}]);
-
-	return OpenQuestionPanel;
-}(React.Component);
-
-OpenQuestionPanel.propTypes = {
-	clue: PropTypes.object
+DisplayContainer.propTypes = {
+	socket: PropTypes.instanceOf(io.Socket)
 };
 
-var DailyDoublePanel = React.createClass({
-	displayName: "DailyDoublePanel",
+},{"./daily-double-panel":240,"./final-jeopardy-panel":243,"./final-jeopardy-response-panel":244,"./no-question-panel":245,"./player-listing":246,"./select-question-panel":247,"prop-types":63,"react":216,"socket.io-client":217}],242:[function(require,module,exports){
+"use strict";
 
-	render: function render() {
-		return React.createElement(
-			"div",
-			{ className: "daily-double-panel" },
-			React.createElement(
-				"div",
-				null,
-				React.createElement(
-					"p",
-					{ className: "daily" },
-					"Daily"
-				),
-				React.createElement(
-					"p",
-					{ className: "double" },
-					"DOUBLE"
-				)
-			)
-		);
-	}
+Object.defineProperty(exports, "__esModule", {
+	value: true
 });
 
-var FinalJeopardyPanel = React.createClass({
-	displayName: "FinalJeopardyPanel",
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	propTypes: {
-		final: PropTypes.object,
-		categoryVisible: PropTypes.bool,
-		clueVisible: PropTypes.bool,
-		revealTone: PropTypes.bool,
-		thinkMusicPlaying: PropTypes.bool
-	},
-	getDefaultProps: function getDefaultProps() {
-		return {
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+
+var FinalJeopardyLogo = function (_React$Component) {
+	_inherits(FinalJeopardyLogo, _React$Component);
+
+	function FinalJeopardyLogo() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, FinalJeopardyLogo);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = FinalJeopardyLogo.__proto__ || Object.getPrototypeOf(FinalJeopardyLogo)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+			return React.createElement(
+				"div",
+				{ className: "final-jeopardy-logo" },
+				React.createElement(
+					"div",
+					null,
+					React.createElement(
+						"p",
+						{ className: "handwriting" },
+						"Final"
+					),
+					React.createElement("img", { src: "images/white logo.png" })
+				)
+			);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	return FinalJeopardyLogo;
+}(React.Component);
+
+exports.default = FinalJeopardyLogo;
+
+},{"react":216}],243:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _finalJeopardyLogo = require("./final-jeopardy-logo");
+
+var _finalJeopardyLogo2 = _interopRequireDefault(_finalJeopardyLogo);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+
+var FinalJeopardyPanel = function (_React$Component) {
+	_inherits(FinalJeopardyPanel, _React$Component);
+
+	function FinalJeopardyPanel(props) {
+		_classCallCheck(this, FinalJeopardyPanel);
+
+		var _this = _possibleConstructorReturn(this, (FinalJeopardyPanel.__proto__ || Object.getPrototypeOf(FinalJeopardyPanel)).call(this, props));
+
+		_this.render = function () {
+			var categoryPanel;
+			if (_this.props.categoryVisible) {
+				categoryPanel = React.createElement(
+					"div",
+					{ className: "final-jeopardy-category" },
+					React.createElement(
+						"p",
+						{ className: "final-jeopardy-category" },
+						_this.props.final.category
+					)
+				);
+			} else {
+				categoryPanel = React.createElement(_finalJeopardyLogo2.default, null);
+			}
+
+			var cluePanel;
+			if (_this.props.clueVisible) {
+				cluePanel = React.createElement(
+					"div",
+					{ className: "final-jeopardy-clue" },
+					React.createElement(
+						"p",
+						{ className: "final-jeopardy-clue" },
+						_this.props.final.answer
+					)
+				);
+			} else {
+				cluePanel = React.createElement(_finalJeopardyLogo2.default, null);
+			}
+
+			return React.createElement(
+				"div",
+				{ className: "final-jeopardy-panel" },
+				React.createElement(
+					"div",
+					{ className: "final-jeopardy-row" },
+					React.createElement("div", { className: "final-jeopardy-blank" }),
+					categoryPanel
+				),
+				React.createElement(
+					"div",
+					{ className: "final-jeopardy-row" },
+					React.createElement("div", { className: "final-jeopardy-blank" }),
+					cluePanel
+				)
+			);
+		};
+
+		_this.state = {
 			categoryVisible: false,
 			clueVisible: false,
 			revealTone: false,
 			thinkMusicPlaying: false
 		};
-	},
-	render: function render() {
-		var categoryPanel;
-		if (this.props.categoryVisible) {
-			categoryPanel = React.createElement(
-				"div",
-				{ className: "final-jeopardy-category" },
-				React.createElement(
-					"p",
-					{ className: "final-jeopardy-category" },
-					this.props.final.category
-				)
-			);
-		} else {
-			categoryPanel = React.createElement(FinalJeopardyLogo, null);
-		}
-
-		var cluePanel;
-		if (this.props.clueVisible) {
-			cluePanel = React.createElement(
-				"div",
-				{ className: "final-jeopardy-clue" },
-				React.createElement(
-					"p",
-					{ className: "final-jeopardy-clue" },
-					this.props.final.answer
-				)
-			);
-		} else {
-			cluePanel = React.createElement(FinalJeopardyLogo, null);
-		}
-
-		return React.createElement(
-			"div",
-			{ className: "final-jeopardy-panel" },
-			React.createElement(
-				"div",
-				{ className: "final-jeopardy-row" },
-				React.createElement("div", { className: "final-jeopardy-blank" }),
-				categoryPanel
-			),
-			React.createElement(
-				"div",
-				{ className: "final-jeopardy-row" },
-				React.createElement("div", { className: "final-jeopardy-blank" }),
-				cluePanel
-			)
-		);
+		return _this;
 	}
+
+	return FinalJeopardyPanel;
+}(React.Component);
+
+exports.default = FinalJeopardyPanel;
+
+
+FinalJeopardyPanel.propTypes = {
+	final: PropTypes.object,
+	categoryVisible: PropTypes.bool,
+	clueVisible: PropTypes.bool,
+	revealTone: PropTypes.bool,
+	thinkMusicPlaying: PropTypes.bool
+};
+
+},{"./final-jeopardy-logo":242,"prop-types":63,"react":216}],244:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
 });
 
-var FinalJeopardyLogo = React.createClass({
-	displayName: "FinalJeopardyLogo",
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	render: function render() {
-		return React.createElement(
-			"div",
-			{ className: "final-jeopardy-logo" },
-			React.createElement(
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+
+var FinalJeopardyResponsePanel = function (_React$Component) {
+	_inherits(FinalJeopardyResponsePanel, _React$Component);
+
+	function FinalJeopardyResponsePanel() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, FinalJeopardyResponsePanel);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = FinalJeopardyResponsePanel.__proto__ || Object.getPrototypeOf(FinalJeopardyResponsePanel)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+			return React.createElement(
 				"div",
-				null,
+				{ className: "final-response" },
 				React.createElement(
-					"p",
-					{ className: "handwriting" },
-					"Final"
-				),
-				React.createElement("img", { src: "images/white logo.png" })
-			)
-		);
-	}
-});
-
-var FinalJeopardyResponsePanel = React.createClass({
-	displayName: "FinalJeopardyResponsePanel",
-
-	propTypes: {
-		player: PropTypes.object,
-		responseVisible: PropTypes.bool,
-		wagerVisible: PropTypes.bool,
-		response: PropTypes.string,
-		wager: PropTypes.string
-	},
-	render: function render() {
-		return React.createElement(
-			"div",
-			{ className: "final-response" },
-			React.createElement(
-				"div",
-				{ className: "final-response-name" },
-				React.createElement(
-					"p",
+					"div",
 					{ className: "final-response-name" },
-					this.props.screenName
-				)
-			),
-			React.createElement(
-				"div",
-				{ className: "final-response-question" },
+					React.createElement(
+						"p",
+						{ className: "final-response-name" },
+						_this.props.screenName
+					)
+				),
 				React.createElement(
-					"p",
+					"div",
 					{ className: "final-response-question" },
-					this.props.responseVisible ? this.props.response : ""
-				)
-			),
-			React.createElement(
-				"div",
-				{ className: "final-response-wager" },
+					React.createElement(
+						"p",
+						{ className: "final-response-question" },
+						_this.props.responseVisible ? _this.props.response : ""
+					)
+				),
 				React.createElement(
-					"p",
+					"div",
 					{ className: "final-response-wager" },
-					this.props.wagerVisible ? this.props.wager : ""
+					React.createElement(
+						"p",
+						{ className: "final-response-wager" },
+						_this.props.wagerVisible ? _this.props.wager : ""
+					)
 				)
-			)
-		);
+			);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
 	}
+
+	return FinalJeopardyResponsePanel;
+}(React.Component);
+
+exports.default = FinalJeopardyResponsePanel;
+
+
+FinalJeopardyResponsePanel.propTypes = {
+	player: PropTypes.object,
+	responseVisible: PropTypes.bool,
+	wagerVisible: PropTypes.bool,
+	response: PropTypes.string,
+	wager: PropTypes.string
+};
+
+},{"prop-types":63,"react":216}],245:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
 });
 
-},{"prop-types":63,"react":216,"react-dom":65,"socket.io-client":217,"soundmanager2":233}]},{},[237]);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+
+// starting panel, with field to upload question file
+
+var NoQuestionPanel = function (_React$Component) {
+	_inherits(NoQuestionPanel, _React$Component);
+
+	function NoQuestionPanel() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, NoQuestionPanel);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = NoQuestionPanel.__proto__ || Object.getPrototypeOf(NoQuestionPanel)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+			return React.createElement(
+				"div",
+				{ className: "no-question-panel" },
+				React.createElement(
+					"div",
+					null,
+					React.createElement(
+						"p",
+						{ className: "handwriting" },
+						"Doyle's"
+					),
+					React.createElement("img", { src: "images/white logo.png" })
+				)
+			);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	return NoQuestionPanel;
+}(React.Component);
+
+exports.default = NoQuestionPanel;
+
+},{"react":216}],246:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+
+var PlayerListing = function (_React$Component) {
+	_inherits(PlayerListing, _React$Component);
+
+	function PlayerListing() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, PlayerListing);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PlayerListing.__proto__ || Object.getPrototypeOf(PlayerListing)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+			var scoreString = _this.props.prefix + _this.props.player.score + _this.props.suffix;
+
+			var className = _this.props.player.score < 0 ? "playerListingDetails negative" : "playerListingDetails";
+
+			var classModifier = "";
+			if (_this.props.lockedOut) {
+				classModifier = "locked-out";
+			} else if (_this.props.answering) {
+				classModifier = "answering";
+			}
+
+			return React.createElement(
+				"div",
+				{ className: "playerListing " + classModifier },
+				React.createElement(
+					"div",
+					{ className: "playerListingName " + classModifier },
+					React.createElement(
+						"p",
+						{ className: "playerListingName " + classModifier },
+						_this.props.player.screenName
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "playerListingDetails " + classModifier },
+					React.createElement(
+						"p",
+						{ className: className },
+						scoreString
+					)
+				)
+			);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	return PlayerListing;
+}(React.Component);
+
+exports.default = PlayerListing;
+
+
+PlayerListing.propTypes = {
+	player: PropTypes.object,
+	answering: PropTypes.bool,
+	lockedOut: PropTypes.bool,
+	prefix: PropTypes.string,
+	suffix: PropTypes.string
+};
+
+},{"prop-types":63,"react":216}],247:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _categoryGroup = require("./category-group");
+
+var _categoryGroup2 = _interopRequireDefault(_categoryGroup);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+
+// panel showing which categories and clues are unasked (with buttons to show them)
+var SelectQuestionPanel = function (_React$Component) {
+	_inherits(SelectQuestionPanel, _React$Component);
+
+	function SelectQuestionPanel() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, SelectQuestionPanel);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SelectQuestionPanel.__proto__ || Object.getPrototypeOf(SelectQuestionPanel)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
+			//textFit($("div.category-header"), {multiLine: false});
+			//textFit($("div.clue-button"));
+		}, _this.render = function () {
+			var catGroups = [];
+			for (var i = 0; i < _this.props.round.categories.length; i++) {
+				catGroups.push(React.createElement(_categoryGroup2.default, {
+					category: _this.props.round.categories[i],
+					key: i,
+					values: _this.props.round.values.amounts,
+					prefix: _this.props.prefix,
+					suffix: _this.props.suffix }));
+			}
+
+			return React.createElement(
+				"div",
+				{ className: "select-question-panel" },
+				catGroups
+			);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	return SelectQuestionPanel;
+}(React.Component);
+
+exports.default = SelectQuestionPanel;
+
+
+SelectQuestionPanel.propTypes = {
+	round: PropTypes.object,
+	prefix: PropTypes.string,
+	suffix: PropTypes.string
+};
+
+},{"./category-group":238,"prop-types":63,"react":216}]},{},[237]);

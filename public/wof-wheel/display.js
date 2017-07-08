@@ -1,4 +1,5 @@
 var React = require("react");
+var PropTypes = require("prop-types");
 var ReactDOM = require("react-dom");
 var soundManager = require("soundmanager2").soundManager;
 
@@ -107,12 +108,10 @@ document.getElementById("container").style.height = containerHeightWidth + "px";
 document.getElementById("container").style.width = containerHeightWidth + "px";
 document.getElementById("container").style.top = containerHeightWidth/-24 + "px";
 
-var WheelPanel = React.createClass({
-	propTypes: {
-		angle: React.PropTypes.number,
-		round: React.PropTypes.number
-	},
-	getInitialState: function() {
+class WheelPanel extends React.Component {
+	
+	constructor(props) {
+		super(props)
 		var wedgeArray;
 		switch(this.props.round) {
 		case 1:
@@ -131,14 +130,15 @@ var WheelPanel = React.createClass({
 			wedgeArray = round1Array;
 			break;
 		}
-		return {
+		this.state = {
 			currentAngle: this.props.angle,
 			currentlySpinning: false,
 			diameter: 0,
 			wedgeArray: wedgeArray
 		};
-	},
-	updateDimensions: function() {
+	}
+
+	updateDimensions = () => {
 		var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 		this.setState({
 			diameter: viewportHeight * 2
@@ -148,17 +148,17 @@ var WheelPanel = React.createClass({
 		document.getElementById("container").style.height = containerHeightWidth + "px";
 		document.getElementById("container").style.width = containerHeightWidth + "px";
 		document.getElementById("container").style.top = containerHeightWidth/-24 + "px";
-	},
-	componentWillMount: function() {
+	}
+	componentWillMount = () => {
 		this.updateDimensions();
-	},
-	componentDidMount: function() {
+	}
+	componentDidMount = () => {
 		window.addEventListener("resize", this.updateDimensions);
-	},
-	componentWillUnmount: function() {
+	}
+	componentWillUnmount = () => {
 		window.removeEventListener("resize", this.updateDimensions);
-	},
-	spin: function() {
+	}
+	spin = () => {
 		var thisPanel = this;
 		var maxAngleIncrement = Math.random() * 5 + 5;
 		console.log("maxAngleIncrement = " + maxAngleIncrement);
@@ -198,8 +198,8 @@ var WheelPanel = React.createClass({
 				}, wheelTurnInterval);
 			}
 		}, wheelTurnInterval);
-	},
-	handlePostSpin: function() {
+	}
+	handlePostSpin = () => {
 		var thisPanel = this;
 		this.setState({
 			currentlySpinning: false
@@ -214,8 +214,8 @@ var WheelPanel = React.createClass({
 			console.log("Player " + i + " landed on Wedge #" + playerLandedWedges[i]
 				+ ", with a value of " + this.state.wedgeArray[playerLandedWedges[i]].value);
 		}
-	},
-	render: function() {
+	}
+	render = () => {
 		
 		var visibleWedges = [];
 		var wedgeImageHeight = this.state.diameter * 10/9;
@@ -273,7 +273,12 @@ var WheelPanel = React.createClass({
 			</div>
 		);
 	}
-});
+}
+
+WheelPanel.propTypes = {
+	angle: PropTypes.number,
+	round: PropTypes.number
+};
 
 ReactDOM.render(<WheelPanel angle={0} round={1}/>, document.getElementById("wheel-panel"));
 

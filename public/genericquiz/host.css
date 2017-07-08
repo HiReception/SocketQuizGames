@@ -201,6 +201,7 @@ div .playerListing {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border: 1px solid black;
+	cursor: pointer;
 }
 
 p.playerListingName {
@@ -332,6 +333,7 @@ p.player-details-score {
 p.player-details-back {
 	color: black;
 	text-align: center;
+	cursor: pointer;
 }
 
 div.player-panel-bar {

@@ -1,0 +1,9 @@
+Prize   	Example Value	Price	Difference	Example ratio
+Prize #1	$2,000			$75		$75			0.0375
+Prize #2	$4,250			$155	$80			0.0365
+Prize #3	$8,653			$240	$85			0.0277
+Prize #4	$12,000			$330	$90			0.0275
+Prize #5	$16,500			$420	$90			0.0254
+Car			$62,100			$515	$95			0.0082
+All above	$105,503		$605	$90			0.0057
+Lot			$195,503		$700﻿	$95			0.0036

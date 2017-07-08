@@ -1,4 +1,5 @@
 var React = require("react");
+var PropTypes = require("prop-types");
 var ReactDOM = require("react-dom");
 var soundManager = require("soundmanager2").soundManager;
 
@@ -62,11 +63,8 @@ var wedgeValueArray = [750, "LAT", 200, 165, 110, 200, 310, 230,
 
 var standardWedgeHeight = 75;
 
-var WheelPanel = React.createClass({
-	propTypes: {
-		angle: React.PropTypes.number
-	},
-	render: function() {
+class WheelPanel extends React.Component {
+	render = () => {
 		var visibleWedges = [];
 		var wedgeSpan = 360.0 / wedgeArray.length;
 		var angleOffCentre = this.props.angle % wedgeSpan;
@@ -119,7 +117,13 @@ var WheelPanel = React.createClass({
 		
 		return <div className="vert">{visibleWedges}</div>;
 	}
-});
+}
+
+WheelPanel.propTypes = {
+	angle: PropTypes.number,
+};
+
+
 var angle = 0;
 ReactDOM.render(<WheelPanel angle={angle}/>, document.getElementById("wheel-panel"));
 

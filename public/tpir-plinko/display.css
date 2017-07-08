@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Eurostile T Black';
+    src: url('fonts/eurostile.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 div#scoreboard {
 	background-color: #E5218A;
 	height: 40px;
