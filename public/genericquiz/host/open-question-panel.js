@@ -6,30 +6,12 @@ const io = require("socket.io-client");
 export default class OpenQuestionPanel extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			correctValue: 1,
-			incorrectValue: 1
-		};
 
 	}
-
-	setCorrectValue = (event) => {
-		this.setState({
-			correctValue: parseInt(event.target.value)
-		});
-	}
-
-	setIncorrectValue = (event) => {
-		this.setState({
-			incorrectValue: parseInt(event.target.value)
-		});
-	}
-
-
 
 	wrongAnswer = () => {
 		if (!$.isEmptyObject(this.props.playerAnswering)) {
-			this.props.modifyScore(this.props.playerAnswering.screenName, this.state.incorrectValue * -1);
+			this.props.modifyScore(this.props.playerAnswering.screenName, this.props.incorrectPoints * -1);
 			this.openBuzzers();
 		}
 		this.props.socket.emit("play sound", "incorrect");
@@ -37,7 +19,7 @@ export default class OpenQuestionPanel extends React.Component {
 
 	rightAnswer = () => {
 		if (!$.isEmptyObject(this.props.playerAnswering)) {
-			this.props.modifyScore(this.props.playerAnswering.screenName, this.state.correctValue);
+			this.props.modifyScore(this.props.playerAnswering.screenName, this.props.correctPoints);
 			this.openBuzzers();
 		}
 		this.props.socket.emit("play sound", "correct");
@@ -107,12 +89,16 @@ export default class OpenQuestionPanel extends React.Component {
 			<div id="open-question-panel">
 				<div className="score-input-panel">
 					<div className="button-row">
+						<p>Starting Score for new players:</p>
+						<input type="number" onChange={this.props.setStartingScore} value={this.props.startingScore}/>
+					</div>
+					<div className="button-row">
 						<p>Points added for correct answer:</p>
-						<input type="number" onChange={this.setCorrectValue} value={this.state.correctValue}/>
+						<input type="number" onChange={this.props.setCorrectPoints} value={this.props.correctPoints}/>
 					</div>
 					<div className="button-row">
 						<p>Points deducted for incorrect answer:</p>
-						<input type="number" onChange={this.setIncorrectValue} value={this.state.incorrectValue}/>
+						<input type="number" onChange={this.props.setIncorrectPoints} value={this.props.incorrectPoints}/>
 					</div>
 				</div>
 				{buzzerPanel}
@@ -127,5 +113,11 @@ OpenQuestionPanel.propTypes = {
 	buzzersOpen: PropTypes.bool,
 	playerAnswering: PropTypes.object,
 	socket: PropTypes.instanceOf(io.Socket),
+	startingScore: PropTypes.number,
+	setStartingScore: PropTypes.func,
+	correctPoints: PropTypes.number,
+	setCorrectPoints: PropTypes.func,
+	incorrectPoints: PropTypes.number,
+	setIncorrectPoints: PropTypes.func,
 };
 

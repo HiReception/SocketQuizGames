@@ -1,9 +1,7 @@
 var React = require("react");
-var ReactDOM = require("react-dom");
 var io = require("socket.io-client");
 var PropTypes = require("prop-types");
 import Question from "../../common/player-question";
-import EmptyPanel from "../../common/empty-panel";
 import SubmitButton from "../../common/submit-button";
 
 export default class FinalQuestion extends React.Component {
@@ -28,9 +26,6 @@ export default class FinalQuestion extends React.Component {
 				questionNo: 1,
 				submittedAnswer: this.state.input
 			});
-
-			// TODO produce toast to represent successful answering
-			ReactDOM.render(<EmptyPanel/>, document.getElementById("question-window"));
 		}
 		
 		

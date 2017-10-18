@@ -35013,6 +35013,7 @@ var _displayContainer2 = _interopRequireDefault(_displayContainer);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ReactDOM = require("react-dom");
+var React = require("react");
 var socket = require("socket.io-client")();
 var soundManager = require("soundmanager2").soundManager;
 
@@ -35031,7 +35032,7 @@ socket.emit("display request", {
 });
 
 socket.on("accepted", function () {
-	ReactDOM.render(React.createElement(_displayContainer2.default, null), document.getElementById("display-panel"));
+	ReactDOM.render(React.createElement(_displayContainer2.default, { socket: socket }), document.getElementById("display-panel"));
 
 	soundManager.setup({
 
@@ -35054,7 +35055,7 @@ socket.on("play sound", function (id) {
 	soundManager.play(id);
 });
 
-},{"./display/display-container":241,"react-dom":65,"socket.io-client":217,"soundmanager2":233}],238:[function(require,module,exports){
+},{"./display/display-container":241,"react":216,"react-dom":65,"socket.io-client":217,"soundmanager2":233}],238:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35290,6 +35291,10 @@ var _playerListing = require("./player-listing");
 
 var _playerListing2 = _interopRequireDefault(_playerListing);
 
+var _openQuestionPanel = require("./open-question-panel");
+
+var _openQuestionPanel2 = _interopRequireDefault(_openQuestionPanel);
+
 var _noQuestionPanel = require("./no-question-panel");
 
 var _noQuestionPanel2 = _interopRequireDefault(_noQuestionPanel);
@@ -35358,6 +35363,7 @@ var DisplayContainer = function (_React$Component) {
 
 			switch (_this.state.currentPanel) {
 				case "NoQuestionPanel":
+				case "NextRoundPanel":
 					questionPanel = React.createElement(_noQuestionPanel2.default, null);
 					break;
 				case "SelectQuestionPanel":
@@ -35368,7 +35374,7 @@ var DisplayContainer = function (_React$Component) {
 					});
 					break;
 				case "OpenQuestionPanel":
-					questionPanel = React.createElement(OpenQuestionPanel, {
+					questionPanel = React.createElement(_openQuestionPanel2.default, {
 						clue: _this.state.currentClue
 					});
 					break;
@@ -35386,7 +35392,7 @@ var DisplayContainer = function (_React$Component) {
 					break;
 				case "FinalJeopardyResponsePanel":
 					questionPanel = React.createElement(_finalJeopardyResponsePanel2.default, {
-						screenName: _this.state.finalFocusScreenName,
+						screenName: _this.state.finalFocusPlayerName,
 						response: _this.state.finalFocusResponse,
 						responseVisible: _this.state.finalFocusResponseVisible,
 						wager: _this.state.finalFocusWager,
@@ -35396,7 +35402,6 @@ var DisplayContainer = function (_React$Component) {
 			}
 
 			var playerPanel;
-			var thisPanel = _this;
 			var nonHiddenPlayers = _this.state.players.filter(function (p) {
 				return !p.hidden;
 			});
@@ -35483,7 +35488,7 @@ DisplayContainer.propTypes = {
 	socket: PropTypes.instanceOf(io.Socket)
 };
 
-},{"./daily-double-panel":240,"./final-jeopardy-panel":243,"./final-jeopardy-response-panel":244,"./no-question-panel":245,"./player-listing":246,"./select-question-panel":247,"prop-types":63,"react":216,"socket.io-client":217}],242:[function(require,module,exports){
+},{"./daily-double-panel":240,"./final-jeopardy-panel":243,"./final-jeopardy-response-panel":244,"./no-question-panel":245,"./open-question-panel":246,"./player-listing":247,"./select-question-panel":248,"prop-types":63,"react":216,"socket.io-client":217}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35786,6 +35791,63 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var React = require("react");
 var PropTypes = require("prop-types");
 
+var OpenQuestionPanel = function (_React$Component) {
+	_inherits(OpenQuestionPanel, _React$Component);
+
+	function OpenQuestionPanel() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, OpenQuestionPanel);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = OpenQuestionPanel.__proto__ || Object.getPrototypeOf(OpenQuestionPanel)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+			return React.createElement(
+				"div",
+				{ id: "open-question-panel" },
+				React.createElement(
+					"div",
+					{ className: "open-question-clue" },
+					React.createElement(
+						"p",
+						{ className: "open-question-clue" },
+						_this.props.clue.answer
+					)
+				)
+			);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	return OpenQuestionPanel;
+}(React.Component);
+
+exports.default = OpenQuestionPanel;
+
+
+OpenQuestionPanel.propTypes = {
+	clue: PropTypes.object
+};
+
+},{"prop-types":63,"react":216}],247:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var PropTypes = require("prop-types");
+
 var PlayerListing = function (_React$Component) {
 	_inherits(PlayerListing, _React$Component);
 
@@ -35851,7 +35913,7 @@ PlayerListing.propTypes = {
 	suffix: PropTypes.string
 };
 
-},{"prop-types":63,"react":216}],247:[function(require,module,exports){
+},{"prop-types":63,"react":216}],248:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

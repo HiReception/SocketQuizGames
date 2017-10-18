@@ -57,6 +57,27 @@ socket.on("game details", function(details) {
 
 			prefix: "",
 			suffix: "",
+
+			wrongPlayerNames: [],
+			ddWagerEntered: false,
+			ddWagerSubmittable: false,
+			ddWager: 0,
+			buzzersOpen: false,
+
+			finalCategoryVisible: false,
+			finalClueVisible: false,
+			finalWagers: [],
+			finalWageringOpen: false,
+			allFinalWagersIn: false,
+			finalRespondingOpen: false,
+			finalRespondingOver: false,
+			finalRespondingTimeRemaining: 30,
+			finalResponses: [],
+			finalFocusPlayerNumber: 0,
+			finalFocusPlayerName: "",
+			finalFocusResponse: "",
+			finalFocusMode: "response",
+			finalFocusCorrect: false,
 		};
 		socket.emit("set state", state);
 	} else {

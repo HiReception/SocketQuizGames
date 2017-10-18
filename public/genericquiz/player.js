@@ -2,8 +2,7 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
-import Message from "../common/player-message";
-import BuzzInQuestion from "../common/buzz-in-question";
+import PlayerPanel from "./player/player-panel.js";
 
 function getParameterByName(name, url) {
 	if (!url) url = window.location.href;
@@ -29,41 +28,9 @@ socket.emit("join request", {
 	gameCode: gameCode,
 });
 
-socket.on("accepted", function(newPlayerDetails) {
-	console.log("new player details received:");
-	console.log(JSON.stringify(newPlayerDetails));
-	document.getElementById("question-window").style.backgroundColor = newPlayerDetails.colour;
+socket.on("accepted", function(state) {
+	console.log("state received:");
+	console.log(state);
 	$("#header-bar").text(screenName);
+	ReactDOM.render(<PlayerPanel screenName={screenName} receivedState={state} socket={socket}/>, document.getElementById("question-window"));
 });
-
-socket.on("room not found", function() {
-	console.log("received message room not found");
-	// TODO send Message saying that the room was not found, with a back button (or a button that leads to /join)
-});
-
-socket.on("name taken", function() {
-	console.log("received message name taken");
-	// TODO send Message saying that the screen name is taken, with a back button (or a button that leads to /join)
-});
-
-socket.on("new message", function(message) {
-	console.log("new message received: ");
-	console.log(message);
-	if (message.type === "colour") {
-		document.getElementById("question-window").style.backgroundColor = message.colour;
-	}
-	ReactDOM.render(<Message primary={message.primary} secondary={message.secondary}/>,
-		document.getElementById("question-window"));
-	
-});
-
-
-
-socket.on("new question", function(question) {
-	console.log("New question received, type " + question.type);
-	console.log(question);
-	if (question.type === "buzz-in") {
-		ReactDOM.render(<BuzzInQuestion socket={socket}/>, document.getElementById("question-window"));
-	}
-});
-

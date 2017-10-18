@@ -83,12 +83,14 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
-	handleNewPlayer = (playerDetails) => {
+	handleNewPlayer = (screenName) => {
 		console.log("new player:");
-		console.log(playerDetails);
-		const newPlayer = playerDetails;
-		newPlayer.score = 0;
-		newPlayer.hidden = false;
+		console.log(screenName);
+		const newPlayer = {
+			screenName: screenName,
+			score: 0,
+			hidden: false
+		};
 		const newPlayers = this.state.players;
 
 		newPlayers.push(newPlayer);
@@ -300,6 +302,7 @@ export default class HostConsole extends React.Component {
 				setSelectingPlayer={this.setSelectingPlayer}
 				setAnsweringPlayer={this.setAnsweringPlayer}
 				clearAnsweringPlayer={this.clearAnsweringPlayer}
+				gameState={this.state}
 				setGameState={this.setGameState}
 				prefix={this.state.prefix}
 				suffix={this.state.suffix}
@@ -316,6 +319,7 @@ export default class HostConsole extends React.Component {
 					final={this.state.final}
 					changePlayerScore={this.changePlayerScore}
 					eligiblePlayers={this.state.finalEligiblePlayers}
+					gameState={this.state}
 					setGameState={this.setGameState}
 					prefix={this.state.prefix}
 					suffix={this.state.suffix}

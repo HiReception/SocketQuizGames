@@ -1,4 +1,5 @@
 var ReactDOM = require("react-dom");
+var React = require("react");
 var socket = require("socket.io-client")();
 var soundManager = require("soundmanager2").soundManager;
 
@@ -20,7 +21,7 @@ socket.emit("display request", {
 });
 
 socket.on("accepted", function() {
-	ReactDOM.render(<DisplayContainer/>, document.getElementById("display-panel"));
+	ReactDOM.render(<DisplayContainer socket={socket}/>, document.getElementById("display-panel"));
 
 	soundManager.setup({
 

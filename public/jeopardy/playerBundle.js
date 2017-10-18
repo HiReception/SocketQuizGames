@@ -39216,6 +39216,10 @@ var _playerMessage = require("../common/player-message");
 
 var _playerMessage2 = _interopRequireDefault(_playerMessage);
 
+var _emptyPanel = require("../common/empty-panel");
+
+var _emptyPanel2 = _interopRequireDefault(_emptyPanel);
+
 var _wagerQuestion = require("./player/wager-question");
 
 var _wagerQuestion2 = _interopRequireDefault(_wagerQuestion);
@@ -39226,8 +39230,15 @@ var _finalQuestion2 = _interopRequireDefault(_finalQuestion);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
+var React = require("react");
 var $ = require("jquery");
 
 
@@ -39265,36 +39276,10 @@ socket.on("connect_error", function (err) {
 	console.log("connection error: " + err);
 });
 
-socket.on("accepted", function (newPlayerDetails) {
-	document.getElementById("question-window").style.backgroundColor = newPlayerDetails.colour;
+socket.on("accepted", function (state) {
 	$("#header-bar").text(screenName);
-});
-
-socket.on("new message", function (message) {
-	if (message.type === "wager") {
-		ReactDOM.render(React.createElement(_wagerQuestion2.default, {
-			balance: message.balance,
-			category: message.category,
-			prefix: message.prefix,
-			suffix: message.suffix
-		}), document.getElementById("question-window"));
-	} else if (message.type === "final") {
-		ReactDOM.render(React.createElement(_finalQuestion2.default, {
-			body: message.questionBody
-		}), document.getElementById("question-window"));
-	} else {
-		ReactDOM.render(React.createElement(_playerMessage2.default, { primary: message.primary, secondary: message.secondary }), document.getElementById("question-window"));
-	}
-});
-
-socket.on("new question", function (question) {
-	if (question.type === "final") {
-		ReactDOM.render(React.createElement(_finalQuestion2.default, {
-			body: question.questionBody
-		}), document.getElementById("question-window"));
-	} else if (question.type === "buzz-in") {
-		ReactDOM.render(React.createElement(_buzzInQuestion2.default, { socket: socket }), document.getElementById("question-window"));
-	}
+	console.log(state);
+	ReactDOM.render(React.createElement(PlayerPanel, { receivedState: state, socket: socket }), document.getElementById("question-window"));
 });
 
 socket.on("end of final", function () {
@@ -39305,7 +39290,70 @@ socket.on("end of final", function () {
  */
 });
 
-},{"../common/buzz-in-question":237,"../common/player-message":239,"./player/final-question":243,"./player/wager-question":244,"jquery":53,"react-dom":66,"socket.io-client":218}],243:[function(require,module,exports){
+var PlayerPanel = function (_React$Component) {
+	_inherits(PlayerPanel, _React$Component);
+
+	function PlayerPanel(props) {
+		_classCallCheck(this, PlayerPanel);
+
+		var _this = _possibleConstructorReturn(this, (PlayerPanel.__proto__ || Object.getPrototypeOf(PlayerPanel)).call(this, props));
+
+		_this.handleNewState = function (newState) {
+			console.log("new state");
+			console.log(newState);
+			_this.setState(newState);
+		};
+
+		_this.componentDidMount = function () {
+			socket.on("new game state", _this.handleNewState);
+		};
+
+		_this.componentWillUnmount = function () {
+			socket.removeListener("new game state", _this.handleNewState);
+		};
+
+		_this.render = function () {
+			var input;
+			if (_this.state.currentPanel !== "FinalJeopardyPanel" && _this.state.currentPanel !== "FinalJeopardyResponsePanel") {
+				input = React.createElement(_buzzInQuestion2.default, { socket: _this.props.socket });
+			} else {
+				if (_this.state.finalWageringOpen && (!_this.state.finalWagers || !_this.state.finalWagers.some(function (wager) {
+					console.log("wager name: " + wager.screenName + " vs " + screenName);
+					return wager.screenName === screenName;
+				}))) {
+					var me = _this.state.players.find(function (p) {
+						return p.screenName === screenName;
+					});
+					input = React.createElement(_wagerQuestion2.default, {
+						balance: me.score,
+						category: _this.state.final.category,
+						prefix: _this.state.prefix,
+						suffix: _this.state.suffix,
+						socket: _this.props.socket
+					});
+				} else if (_this.state.finalRespondingOpen && (!_this.state.finalResponses || !_this.state.finalResponses.some(function (response) {
+					return response.screenName === screenName;
+				}))) {
+					input = React.createElement(_finalQuestion2.default, { body: _this.state.final.answer, socket: _this.props.socket });
+				} else {
+					input = React.createElement(_emptyPanel2.default, null);
+				}
+			}
+			return React.createElement(
+				"div",
+				{ className: "playerBody" },
+				input
+			);
+		};
+
+		_this.state = props.receivedState;
+		return _this;
+	}
+
+	return PlayerPanel;
+}(React.Component);
+
+},{"../common/buzz-in-question":237,"../common/empty-panel":238,"../common/player-message":239,"./player/final-question":243,"./player/wager-question":244,"jquery":53,"react":217,"react-dom":66,"socket.io-client":218}],243:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -39315,10 +39363,6 @@ Object.defineProperty(exports, "__esModule", {
 var _playerQuestion = require("../../common/player-question");
 
 var _playerQuestion2 = _interopRequireDefault(_playerQuestion);
-
-var _emptyPanel = require("../../common/empty-panel");
-
-var _emptyPanel2 = _interopRequireDefault(_emptyPanel);
 
 var _submitButton = require("../../common/submit-button");
 
@@ -39333,7 +39377,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require("react");
-var ReactDOM = require("react-dom");
 var io = require("socket.io-client");
 var PropTypes = require("prop-types");
 
@@ -39358,9 +39401,6 @@ var FinalQuestion = function (_React$Component) {
 					questionNo: 1,
 					submittedAnswer: _this.state.input
 				});
-
-				// TODO produce toast to represent successful answering
-				ReactDOM.render(React.createElement(_emptyPanel2.default, null), document.getElementById("question-window"));
 			}
 		};
 
@@ -39394,16 +39434,12 @@ FinalQuestion.propTypes = {
 	socket: PropTypes.instanceOf(io.Socket)
 };
 
-},{"../../common/empty-panel":238,"../../common/player-question":240,"../../common/submit-button":241,"prop-types":64,"react":217,"react-dom":66,"socket.io-client":218}],244:[function(require,module,exports){
+},{"../../common/player-question":240,"../../common/submit-button":241,"prop-types":64,"react":217,"socket.io-client":218}],244:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _emptyPanel = require("../../common/empty-panel");
-
-var _emptyPanel2 = _interopRequireDefault(_emptyPanel);
 
 var _submitButton = require("../../common/submit-button");
 
@@ -39418,7 +39454,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require("react");
-var ReactDOM = require("react-dom");
 var io = require("socket.io-client");
 var PropTypes = require("prop-types");
 
@@ -39443,9 +39478,6 @@ var WagerQuestion = function (_React$Component) {
 					type: "wager",
 					wager: parseInt(_this.state.input)
 				});
-
-				// TODO produce toast to represent successful answering
-				ReactDOM.render(React.createElement(_emptyPanel2.default, null), document.getElementById("question-window"));
 			}
 		};
 
@@ -39498,4 +39530,4 @@ WagerQuestion.propTypes = {
 	socket: PropTypes.instanceOf(io.Socket)
 };
 
-},{"../../common/empty-panel":238,"../../common/submit-button":241,"prop-types":64,"react":217,"react-dom":66,"socket.io-client":218}]},{},[242]);
+},{"../../common/submit-button":241,"prop-types":64,"react":217,"socket.io-client":218}]},{},[242]);

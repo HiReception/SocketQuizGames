@@ -1,8 +1,10 @@
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
+var React = require("react");
 var $ = require("jquery");
 import BuzzInQuestion from "../common/buzz-in-question";
 import Message from "../common/player-message";
+import EmptyPanel from "../common/empty-panel";
 import WagerQuestion from "./player/wager-question";
 import FinalQuestion from "./player/final-question";
 
@@ -42,46 +44,10 @@ socket.on("connect_error", function(err) {
 	console.log("connection error: " + err);
 });
 
-socket.on("accepted", function(newPlayerDetails) {
-	document.getElementById("question-window").style.backgroundColor = newPlayerDetails.colour;
+socket.on("accepted", function(state) {
 	$("#header-bar").text(screenName);
-});
-
-socket.on("new message", function(message) {
-	if (message.type === "wager") {
-		ReactDOM.render((
-			<WagerQuestion
-				balance={message.balance}
-				category={message.category}
-				prefix={message.prefix}
-				suffix={message.suffix}
-			/>
-		), document.getElementById("question-window"));
-	} else if (message.type === "final") {
-		ReactDOM.render((
-			<FinalQuestion
-				body={message.questionBody}
-			/>
-		), document.getElementById("question-window"));
-	} else {
-		ReactDOM.render(<Message primary={message.primary} secondary={message.secondary}/>,
-			document.getElementById("question-window"));
-	}
-	
-});
-
-
-
-socket.on("new question", function(question) {
-	if (question.type === "final") {
-		ReactDOM.render((
-			<FinalQuestion
-				body={question.questionBody}
-			/>
-		), document.getElementById("question-window"));
-	} else if (question.type === "buzz-in") {
-		ReactDOM.render(<BuzzInQuestion socket={socket}/>, document.getElementById("question-window"));
-	}
+	console.log(state);
+	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"))
 });
 
 socket.on("end of final", function() {
@@ -91,3 +57,58 @@ socket.on("end of final", function() {
 		replace the FinalJeopardyPanel with EmptyPanel
 	*/
 });
+
+class PlayerPanel extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = props.receivedState;
+	}
+
+	handleNewState = (newState) => {
+		console.log("new state");
+		console.log(newState);
+		this.setState(newState);
+	}
+
+	componentDidMount = () => {
+		socket.on("new game state", this.handleNewState);
+	}
+
+	componentWillUnmount = () => {
+		socket.removeListener("new game state", this.handleNewState);
+	}
+
+	render = () => {
+		var input;
+		if (this.state.currentPanel !== "FinalJeopardyPanel" && this.state.currentPanel !== "FinalJeopardyResponsePanel") {
+			input = <BuzzInQuestion socket={this.props.socket}/>;
+		} else {
+			if (this.state.finalWageringOpen && (!this.state.finalWagers || !this.state.finalWagers.some((wager) => {
+				console.log(`wager name: ${wager.screenName} vs ${screenName}`)
+				return wager.screenName === screenName;
+			}))) {
+				const me = this.state.players.find(p => { return p.screenName === screenName; });
+				input = (
+					<WagerQuestion
+						balance={me.score}
+						category={this.state.final.category}
+						prefix={this.state.prefix}
+						suffix={this.state.suffix}
+						socket={this.props.socket}
+					/>
+				);
+			} else if (this.state.finalRespondingOpen && (!this.state.finalResponses || !this.state.finalResponses.some(response => { return response.screenName === screenName; }))) {
+				input = <FinalQuestion body={this.state.final.answer} socket={this.props.socket}/>;
+			} else {
+				input = <EmptyPanel/>;
+			}
+		}
+		return (
+			<div className="playerBody">
+				{input}
+			</div>
+		);
+	}
+
+	egwebugnwelig
+}

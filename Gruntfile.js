@@ -2,6 +2,28 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 		browserify: {
+			sotc_podiums: {
+				src: "public/sotc/podiums.js",
+				dest: "public/sotc/podiumsBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}]
+					]
+				}
+			},
+			feud_test: {
+				src: "public/feud/test.js",
+				dest: "public/feud/testBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}]
+					]
+				}
+			},
 			sotc_cashcard: {
 				src: "public/sotc/cashcard.js",
 				dest: "public/sotc/cashcardBundle.js",

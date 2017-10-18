@@ -38989,74 +38989,9 @@ BuzzInQuestion.propTypes = {
 },{"prop-types":64,"react":217,"socket.io-client":218}],238:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
+var _playerPanel = require("./player/player-panel.js");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var React = require("react");
-var PropTypes = require("prop-types");
-
-var Message = function (_React$Component) {
-	_inherits(Message, _React$Component);
-
-	function Message() {
-		var _ref;
-
-		var _temp, _this, _ret;
-
-		_classCallCheck(this, Message);
-
-		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-			args[_key] = arguments[_key];
-		}
-
-		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Message.__proto__ || Object.getPrototypeOf(Message)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
-			return React.createElement(
-				"div",
-				{ className: "playerQuestion" },
-				React.createElement(
-					"p",
-					{ className: "playerQuestion" },
-					_this.props.primary
-				),
-				React.createElement(
-					"p",
-					{ className: "playerQuestionDetails" },
-					_this.props.secondary
-				),
-				_this.props.children
-			);
-		}, _temp), _possibleConstructorReturn(_this, _ret);
-	}
-
-	return Message;
-}(React.Component);
-
-exports.default = Message;
-
-
-Message.propTypes = {
-	primary: PropTypes.string,
-	secondary: PropTypes.string,
-	children: PropTypes.array
-};
-
-},{"prop-types":64,"react":217}],239:[function(require,module,exports){
-"use strict";
-
-var _playerMessage = require("../common/player-message");
-
-var _playerMessage2 = _interopRequireDefault(_playerMessage);
-
-var _buzzInQuestion = require("../common/buzz-in-question");
-
-var _buzzInQuestion2 = _interopRequireDefault(_buzzInQuestion);
+var _playerPanel2 = _interopRequireDefault(_playerPanel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39089,38 +39024,87 @@ socket.emit("join request", {
 	gameCode: gameCode
 });
 
-socket.on("accepted", function (newPlayerDetails) {
-	console.log("new player details received:");
-	console.log(JSON.stringify(newPlayerDetails));
-	document.getElementById("question-window").style.backgroundColor = newPlayerDetails.colour;
+socket.on("accepted", function (state) {
+	console.log("state received:");
+	console.log(state);
 	$("#header-bar").text(screenName);
+	ReactDOM.render(React.createElement(_playerPanel2.default, { screenName: screenName, receivedState: state, socket: socket }), document.getElementById("question-window"));
 });
 
-socket.on("room not found", function () {
-	console.log("received message room not found");
-	// TODO send Message saying that the room was not found, with a back button (or a button that leads to /join)
+},{"./player/player-panel.js":239,"jquery":53,"react":217,"react-dom":66,"socket.io-client":218}],239:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
 });
 
-socket.on("name taken", function () {
-	console.log("received message name taken");
-	// TODO send Message saying that the screen name is taken, with a back button (or a button that leads to /join)
-});
+var _buzzInQuestion = require("../../common/buzz-in-question");
 
-socket.on("new message", function (message) {
-	console.log("new message received: ");
-	console.log(message);
-	if (message.type === "colour") {
-		document.getElementById("question-window").style.backgroundColor = message.colour;
+var _buzzInQuestion2 = _interopRequireDefault(_buzzInQuestion);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require("react");
+var io = require("socket.io-client");
+var PropTypes = require("prop-types");
+
+var PlayerPanel = function (_React$Component) {
+	_inherits(PlayerPanel, _React$Component);
+
+	function PlayerPanel(props) {
+		_classCallCheck(this, PlayerPanel);
+
+		var _this = _possibleConstructorReturn(this, (PlayerPanel.__proto__ || Object.getPrototypeOf(PlayerPanel)).call(this, props));
+
+		_this.handleNewState = function (state) {
+			console.log("state received:");
+			console.log(state);
+			_this.setState(state);
+		};
+
+		_this.componentDidMount = function () {
+			_this.props.socket.on("new game state", _this.handleNewState);
+		};
+
+		_this.componentWillUnmount = function () {
+			_this.props.socket.removeListener("new game state", _this.handleNewState);
+		};
+
+		_this.render = function () {
+			var thisPlayer = _this.state.players.find(function (p) {
+				return p.screenName === _this.props.screenName;
+			});
+			var background = "#05ABE3";
+			if (thisPlayer) {
+				background = thisPlayer.colour;
+			}
+			return React.createElement(
+				"div",
+				{ className: "playerBody", style: { backgroundColor: background } },
+				React.createElement(_buzzInQuestion2.default, { socket: _this.props.socket })
+			);
+		};
+
+		_this.state = props.receivedState;
+		return _this;
 	}
-	ReactDOM.render(React.createElement(_playerMessage2.default, { primary: message.primary, secondary: message.secondary }), document.getElementById("question-window"));
-});
 
-socket.on("new question", function (question) {
-	console.log("New question received, type " + question.type);
-	console.log(question);
-	if (question.type === "buzz-in") {
-		ReactDOM.render(React.createElement(_buzzInQuestion2.default, { socket: socket }), document.getElementById("question-window"));
-	}
-});
+	return PlayerPanel;
+}(React.Component);
 
-},{"../common/buzz-in-question":237,"../common/player-message":238,"jquery":53,"react":217,"react-dom":66,"socket.io-client":218}]},{},[239]);
+exports.default = PlayerPanel;
+
+
+PlayerPanel.propTypes = {
+	screenName: PropTypes.string,
+	receivedState: PropTypes.object,
+	socket: PropTypes.instanceOf(io.Socket)
+};
+
+},{"../../common/buzz-in-question":237,"prop-types":64,"react":217,"socket.io-client":218}]},{},[238]);

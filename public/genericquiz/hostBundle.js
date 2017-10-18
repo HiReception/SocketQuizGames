@@ -39047,6 +39047,7 @@ socket.on("connect_error", function (err) {
 });
 
 socket.on("game details", function (details) {
+	console.log(details);
 	socket.emit("send question", {
 		type: "buzz-in",
 		open: true
@@ -39060,6 +39061,9 @@ socket.on("game details", function (details) {
 			detailPlayerName: "",
 			playerAnswering: {},
 			buzzersOpen: false,
+			startingScore: 0,
+			correctPoints: 1,
+			incorrectPoints: 1,
 			playerColours: playerColours
 		};
 		socket.emit("set state", state);
@@ -39131,14 +39135,42 @@ var HostPanel = function (_React$Component) {
 var _initialiseProps = function _initialiseProps() {
 	var _this2 = this;
 
-	this.handleNewPlayer = function (playerDetails) {
-		playerDetails.colour = _this2.state.playerColours[_this2.state.players.length % _this2.state.playerColours.length];
-		playerDetails.score = 0;
+	this.handleNewPlayer = function (screenName) {
+		var newPlayer = {
+			screenName: screenName,
+			colour: _this2.state.playerColours[_this2.state.players.length % _this2.state.playerColours.length],
+			score: isNaN(_this2.state.startingScore) ? 0 : _this2.state.startingScore
+		};
+
 		var newPlayers = _this2.state.players;
 
-		newPlayers.push(playerDetails);
+		newPlayers.push(newPlayer);
 		_this2.setGameState({
 			players: newPlayers
+		});
+	};
+
+	this.setStartingScore = function (event) {
+		console.log("event = ");
+		console.log(event);
+		_this2.setGameState({
+			startingScore: event.target.value
+		});
+	};
+
+	this.setCorrectPoints = function (event) {
+		console.log("event = ");
+		console.log(event);
+		_this2.setGameState({
+			correctPoints: event.target.value
+		});
+	};
+
+	this.setIncorrectPoints = function (event) {
+		console.log("event = ");
+		console.log(event);
+		_this2.setGameState({
+			incorrectPoints: event.target.value
 		});
 	};
 
@@ -39152,7 +39184,7 @@ var _initialiseProps = function _initialiseProps() {
 		if (_this2.state.buzzersOpen) {
 
 			var newPlayerAnswering = _this2.state.players.find(function (p) {
-				return p.screenName === details.player.screenName;
+				return p.screenName === details.player;
 			});
 			_this2.setGameState({
 				buzzersOpen: false,
@@ -39242,19 +39274,6 @@ var _initialiseProps = function _initialiseProps() {
 	};
 
 	this.render = function () {
-		var playerList = [];
-		if (_this2.state.players.length != 0) {
-			var playersByScore = _this2.state.players.sort(function (a, b) {
-				return a.score > b.score;
-			});
-
-			for (var i = 0; i < playersByScore.length; i++) {
-				var p = playersByScore[i];
-				var answering = _this2.state.playerAnswering === p;
-				playerList.push(React.createElement(_playerListing2.default, { player: p, answering: answering, key: i, onClick: _this2.showPlayerDetails.bind(_this2, p.screenName) }));
-			}
-		}
-
 		// render player list panel
 		var playerPanel = void 0;
 		if (_this2.state.detailPlayerName === "") {
@@ -39262,22 +39281,21 @@ var _initialiseProps = function _initialiseProps() {
 				return !player.hidden;
 			});
 			if (nonHiddenPlayers.length !== 0) {
-				var _playersByScore = nonHiddenPlayers.sort(function (p1, p2) {
+				var playersByScore = nonHiddenPlayers.sort(function (p1, p2) {
 					return p1.score < p2.score;
 				});
-				var list = [];
-				for (var _i = 0; _i < _playersByScore.length; _i++) {
-					var player = _playersByScore[_i];
-					list.push(React.createElement(_playerListing2.default, {
+				var list = playersByScore.map(function (player, index) {
+					return React.createElement(_playerListing2.default, {
 						onClick: _this2.showPlayerDetails.bind(_this2, player.screenName),
 						player: player,
-						key: _i,
+						key: index,
 						answering: !$.isEmptyObject(_this2.state.playerAnswering) && _this2.state.playerAnswering.screenName === player.screenName,
 						lockedOut: !$.isEmptyObject(_this2.state.playerAnswering) && _this2.state.playerAnswering.screenName !== player.screenName,
 						selecting: _this2.state.selectingPlayer === player.screenName,
 						prefix: _this2.state.prefix,
-						suffix: _this2.state.suffix }));
-				}
+						suffix: _this2.state.suffix });
+				});
+				console.log(list);
 				playerPanel = React.createElement(
 					"div",
 					null,
@@ -39295,13 +39313,13 @@ var _initialiseProps = function _initialiseProps() {
 				);
 			}
 		} else {
-			var _player = _this2.state.players.find(function (player) {
+			var player = _this2.state.players.find(function (player) {
 				return player.screenName === _this2.state.detailPlayerName;
 			});
 			playerPanel = React.createElement(_playerDetailsPanel2.default, {
-				player: _player,
+				player: player,
 				clearPlayerDetails: _this2.clearPlayerDetails,
-				hidden: _player.hidden,
+				hidden: player.hidden,
 				hidePlayer: _this2.hidePlayer,
 				unhidePlayer: _this2.unhidePlayer,
 				changePlayerScore: _this2.changePlayerScore });
@@ -39343,7 +39361,13 @@ var _initialiseProps = function _initialiseProps() {
 							toggleBuzzers: _this2.toggleBuzzers,
 							buzzersOpen: _this2.state.buzzersOpen,
 							playerAnswering: _this2.state.playerAnswering,
-							socket: _this2.props.socket })
+							socket: _this2.props.socket,
+							startingScore: parseInt(_this2.state.startingScore),
+							setStartingScore: _this2.setStartingScore,
+							correctPoints: parseInt(_this2.state.correctPoints),
+							setCorrectPoints: _this2.setCorrectPoints,
+							incorrectPoints: parseInt(_this2.state.incorrectPoints),
+							setIncorrectPoints: _this2.setIncorrectPoints })
 					)
 				)
 			),
@@ -39390,21 +39414,9 @@ var OpenQuestionPanel = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (OpenQuestionPanel.__proto__ || Object.getPrototypeOf(OpenQuestionPanel)).call(this, props));
 
-		_this.setCorrectValue = function (event) {
-			_this.setState({
-				correctValue: parseInt(event.target.value)
-			});
-		};
-
-		_this.setIncorrectValue = function (event) {
-			_this.setState({
-				incorrectValue: parseInt(event.target.value)
-			});
-		};
-
 		_this.wrongAnswer = function () {
 			if (!$.isEmptyObject(_this.props.playerAnswering)) {
-				_this.props.modifyScore(_this.props.playerAnswering.screenName, _this.state.incorrectValue * -1);
+				_this.props.modifyScore(_this.props.playerAnswering.screenName, _this.props.incorrectPoints * -1);
 				_this.openBuzzers();
 			}
 			_this.props.socket.emit("play sound", "incorrect");
@@ -39412,7 +39424,7 @@ var OpenQuestionPanel = function (_React$Component) {
 
 		_this.rightAnswer = function () {
 			if (!$.isEmptyObject(_this.props.playerAnswering)) {
-				_this.props.modifyScore(_this.props.playerAnswering.screenName, _this.state.correctValue);
+				_this.props.modifyScore(_this.props.playerAnswering.screenName, _this.props.correctPoints);
 				_this.openBuzzers();
 			}
 			_this.props.socket.emit("play sound", "correct");
@@ -39515,9 +39527,19 @@ var OpenQuestionPanel = function (_React$Component) {
 						React.createElement(
 							"p",
 							null,
+							"Starting Score for new players:"
+						),
+						React.createElement("input", { type: "number", onChange: _this.props.setStartingScore, value: _this.props.startingScore })
+					),
+					React.createElement(
+						"div",
+						{ className: "button-row" },
+						React.createElement(
+							"p",
+							null,
 							"Points added for correct answer:"
 						),
-						React.createElement("input", { type: "number", onChange: _this.setCorrectValue, value: _this.state.correctValue })
+						React.createElement("input", { type: "number", onChange: _this.props.setCorrectPoints, value: _this.props.correctPoints })
 					),
 					React.createElement(
 						"div",
@@ -39527,16 +39549,11 @@ var OpenQuestionPanel = function (_React$Component) {
 							null,
 							"Points deducted for incorrect answer:"
 						),
-						React.createElement("input", { type: "number", onChange: _this.setIncorrectValue, value: _this.state.incorrectValue })
+						React.createElement("input", { type: "number", onChange: _this.props.setIncorrectPoints, value: _this.props.incorrectPoints })
 					)
 				),
 				buzzerPanel
 			);
-		};
-
-		_this.state = {
-			correctValue: 1,
-			incorrectValue: 1
 		};
 
 		return _this;
@@ -39553,7 +39570,13 @@ OpenQuestionPanel.propTypes = {
 	toggleBuzzers: PropTypes.func,
 	buzzersOpen: PropTypes.bool,
 	playerAnswering: PropTypes.object,
-	socket: PropTypes.instanceOf(io.Socket)
+	socket: PropTypes.instanceOf(io.Socket),
+	startingScore: PropTypes.number,
+	setStartingScore: PropTypes.func,
+	correctPoints: PropTypes.number,
+	setCorrectPoints: PropTypes.func,
+	incorrectPoints: PropTypes.number,
+	setIncorrectPoints: PropTypes.func
 };
 
 },{"jquery":53,"prop-types":64,"react":217,"socket.io-client":218}],241:[function(require,module,exports){

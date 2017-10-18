@@ -6,22 +6,12 @@ const io = require("socket.io-client");
 export default class OpenQuestionPanel extends React.Component {
 	constructor(props) {
 		super(props);
-		const dailyDouble = this.props.clue.dailyDouble;
-		this.state = {
-			playerAnswering: dailyDouble ? this.props.selectingPlayer : {},
-			wrongPlayerNames: [],
-			value: this.props.value,
-			dailyDouble: dailyDouble,
-			ddWagerEntered: false,
-			ddWagerSubmittable: false,
-			ddWager: 0,
-			buzzersOpen: false,
-		};
+		this.state = props.gameState;
 	}
 
 	componentWillMount = () => {
 		console.log("componentWillMount called");
-		if (this.state.dailyDouble) {
+		if (this.props.clue.dailyDouble) {
 			console.log(`Setting answering player to 
 				${ this.props.selectingPlayer.screenName}`);
 			this.props.setAnsweringPlayer(this.props.selectingPlayer.screenName);
@@ -29,7 +19,7 @@ export default class OpenQuestionPanel extends React.Component {
 	}
 
 	componentDidMount = () => {
-		if (this.state.dailyDouble) {
+		if (this.props.clue.dailyDouble) {
 			this.props.socket.emit("set state", {
 				currentPanel: "DailyDoublePanel",
 			});
@@ -48,36 +38,30 @@ export default class OpenQuestionPanel extends React.Component {
 	}
 
 	handleNewAnswer = (details) => {
+		console.log("new answer received (Open outer): ");
+		console.log(details);
 		if (this.state.buzzersOpen &&
-			details.player.screenName !== "" &&
-			!this.state.wrongPlayerNames.includes(details.player.screenName)) {
-			console.log("new answer:");
+			details.player !== "" &&
+			!this.state.wrongPlayerNames.includes(details.player)) {
+			console.log("new answer (Open inner):");
 			console.log(details);
-			console.log(this);
 			this.setGameState({
 				playerAnswering: this.props.players.find((player) => {
-					return player.screenName === details.player.screenName;
+					return player.screenName === details.player;
 				}),
 				buzzersOpen: false,
 			});
-
-
-			this.props.socket.emit("set state", {
-				playerAnswering: this.props.players.find((player) => {
-					return player.screenName === details.player.screenName;
-				}),
-			});
-
-			this.props.setAnsweringPlayer(details.player.screenName);
+			console.log(details.player);
+			this.props.setAnsweringPlayer(details.player);
 		}
 	}
 
 	wrongAnswer = () => {
 		if (!$.isEmptyObject(this.state.playerAnswering)) {
 			this.props.changePlayerScore(this.state.playerAnswering.screenName,
-				this.state.playerAnswering.score - this.state.value);
+				this.state.playerAnswering.score - this.state.currentClueValue);
 			this.props.clearAnsweringPlayer();
-			if (this.state.dailyDouble) {
+			if (this.props.clue.dailyDouble) {
 				this.props.endClue();
 			} else {
 				const newWrongPlayerNames = this.state.wrongPlayerNames;
@@ -96,7 +80,7 @@ export default class OpenQuestionPanel extends React.Component {
 		console.log(this.state.playerAnswering);
 		if (!$.isEmptyObject(this.state.playerAnswering)) {
 			this.props.changePlayerScore(this.state.playerAnswering.screenName,
-				this.state.playerAnswering.score + this.state.value);
+				this.state.playerAnswering.score + this.state.currentClueValue);
 			this.props.setSelectingPlayer(this.state.playerAnswering.screenName);
 			this.props.clearAnsweringPlayer();
 			this.props.endClue();
@@ -155,7 +139,7 @@ export default class OpenQuestionPanel extends React.Component {
 				<div className='open-question-header'>
 					<p className='open-question-category'>{this.props.catName}</p>
 					<p className='open-question-value'>
-						{this.props.prefix}{this.state.value}{this.props.suffix}
+						{this.props.prefix}{this.state.currentClueValue}{this.props.suffix}
 					</p>
 				</div>
 			);
@@ -186,7 +170,7 @@ export default class OpenQuestionPanel extends React.Component {
 			);
 
 		// Daily Double, wager not yet entered
-		} else if (this.state.dailyDouble && !this.state.ddWagerEntered) {
+		} else if (this.props.clue.dailyDouble && !this.state.ddWagerEntered) {
 			this.props.socket.emit("set state", {
 				currentPanel: "DailyDoublePanel",
 			});
@@ -240,7 +224,7 @@ export default class OpenQuestionPanel extends React.Component {
 				<div className='open-question-header'>
 					<p className='open-question-category'>{this.props.catName}</p>
 					<p className='open-question-value'>
-						{this.props.prefix}{this.state.value}{this.props.suffix}
+						{this.props.prefix}{this.state.currentClueValue}{this.props.suffix}
 					</p>
 				</div>
 			);
@@ -274,7 +258,7 @@ export default class OpenQuestionPanel extends React.Component {
 
 		// Player answering, either Daily Double or not
 		} else {
-			if (this.state.dailyDouble) {
+			if (this.props.clue.dailyDouble) {
 				this.props.socket.emit("set state", {
 					currentPanel: "OpenQuestionPanel",
 					currentClue: this.props.clue,
@@ -285,7 +269,7 @@ export default class OpenQuestionPanel extends React.Component {
 				<div className='open-question-header'>
 					<p className='open-question-category'>{this.props.catName}</p>
 					<p className='open-question-value'>
-						{this.props.prefix}{this.state.value}{this.props.suffix}
+						{this.props.prefix}{this.state.currentClueValue}{this.props.suffix}
 					</p>
 				</div>
 			);
@@ -349,6 +333,7 @@ OpenQuestionPanel.propTypes = {
 	setAnsweringPlayer: PropTypes.func,
 	clearAnsweringPlayer: PropTypes.func,
 	setGameState: PropTypes.func,
+	gameState: PropTypes.object,
 	socket: PropTypes.instanceOf(io.Socket),
 	prefix: PropTypes.string,
 	suffix: PropTypes.string,

@@ -48,6 +48,7 @@ socket.on("connect_error", function(err) {
 });
 
 socket.on("game details", function(details) {
+	console.log(details);
 	socket.emit("send question", {
 		type: "buzz-in",
 		open: true
@@ -61,6 +62,9 @@ socket.on("game details", function(details) {
 			detailPlayerName: "",
 			playerAnswering: {},
 			buzzersOpen: false,
+			startingScore: 0,
+			correctPoints: 1,
+			incorrectPoints: 1,
 			playerColours: playerColours,
 		};
 		socket.emit("set state", state);

@@ -15,14 +15,42 @@ export default class HostPanel extends React.Component {
 		this.state = newState;
 	}
 
-	handleNewPlayer = (playerDetails) => {
-		playerDetails.colour = this.state.playerColours[this.state.players.length % this.state.playerColours.length];
-		playerDetails.score = 0;
+	handleNewPlayer = (screenName) => {
+		var newPlayer = {
+			screenName: screenName,
+			colour: this.state.playerColours[this.state.players.length % this.state.playerColours.length],
+			score: isNaN(this.state.startingScore) ? 0 : this.state.startingScore,
+		};
+		
 		var newPlayers = this.state.players;
 
-		newPlayers.push(playerDetails);
+		newPlayers.push(newPlayer);
 		this.setGameState({
 			players: newPlayers
+		});
+	}
+
+	setStartingScore = (event) => {
+		console.log("event = ");
+		console.log(event);
+		this.setGameState({
+			startingScore: event.target.value,
+		});
+	}
+
+	setCorrectPoints = (event) => {
+		console.log("event = ");
+		console.log(event);
+		this.setGameState({
+			correctPoints: event.target.value,
+		});
+	}
+
+	setIncorrectPoints = (event) => {
+		console.log("event = ");
+		console.log(event);
+		this.setGameState({
+			incorrectPoints: event.target.value,
 		});
 	}
 
@@ -36,7 +64,7 @@ export default class HostPanel extends React.Component {
 		if (this.state.buzzersOpen) {
 
 			var newPlayerAnswering = this.state.players.find(function(p) {
-				return p.screenName === details.player.screenName;
+				return p.screenName === details.player;
 			});
 			this.setGameState({
 				buzzersOpen: false,
@@ -127,20 +155,6 @@ export default class HostPanel extends React.Component {
 	}
 
 	render = () => {
-		var playerList = [];
-		if (this.state.players.length != 0) {
-			var playersByScore = this.state.players.sort(function(a,b) {
-				return a.score > b.score;
-			});
-
-			for (var i = 0; i < playersByScore.length; i++) {
-				var p = playersByScore[i];
-				var answering = this.state.playerAnswering === p;
-				playerList.push(<PlayerListing player={p} answering={answering} key={i} onClick={this.showPlayerDetails.bind(this, p.screenName)}/>);
-			}
-			
-		}
-
 		// render player list panel
 		let playerPanel;
 		if (this.state.detailPlayerName === "") {
@@ -151,22 +165,21 @@ export default class HostPanel extends React.Component {
 				const playersByScore = nonHiddenPlayers.sort((p1, p2) => {
 					return p1.score < p2.score;
 				});
-				const list = [];
-				for (let i = 0; i < playersByScore.length; i++) {
-					const player = playersByScore[i];
-					list.push((
+				const list = playersByScore.map((player, index) => {
+					return (
 						<PlayerListing
 							onClick={this.showPlayerDetails.bind(this, player.screenName)}
 							player={player}
-							key={i}
+							key={index}
 							answering={!$.isEmptyObject(this.state.playerAnswering) &&
 								this.state.playerAnswering.screenName === player.screenName}
 							lockedOut={!$.isEmptyObject(this.state.playerAnswering) &&
 								this.state.playerAnswering.screenName !== player.screenName}
 							selecting={this.state.selectingPlayer === player.screenName}
 							prefix={this.state.prefix}
-							suffix={this.state.suffix}/>));
-				}
+							suffix={this.state.suffix}/>);
+				});
+				console.log(list);
 				playerPanel = <div>{list}</div>;
 			} else {
 				playerPanel = <div><p className='no-players'>No Players</p></div>;
@@ -201,7 +214,13 @@ export default class HostPanel extends React.Component {
 								toggleBuzzers={this.toggleBuzzers}
 								buzzersOpen={this.state.buzzersOpen}
 								playerAnswering={this.state.playerAnswering}
-								socket={this.props.socket}/>
+								socket={this.props.socket}
+								startingScore={parseInt(this.state.startingScore)}
+								setStartingScore={this.setStartingScore}
+								correctPoints={parseInt(this.state.correctPoints)}
+								setCorrectPoints={this.setCorrectPoints}
+								incorrectPoints={parseInt(this.state.incorrectPoints)}
+								setIncorrectPoints={this.setIncorrectPoints}/>
 						</div>
 					</div>
 				</div>

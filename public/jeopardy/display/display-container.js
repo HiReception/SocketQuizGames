@@ -3,6 +3,7 @@ var PropTypes = require("prop-types");
 const io = require("socket.io-client");
 
 import PlayerListing from "./player-listing";
+import OpenQuestionPanel from "./open-question-panel";
 import NoQuestionPanel from "./no-question-panel";
 import SelectQuestionPanel from "./select-question-panel";
 import DailyDoublePanel from "./daily-double-panel";
@@ -68,6 +69,7 @@ export default class DisplayContainer extends React.Component {
 
 		switch (this.state.currentPanel) {
 		case "NoQuestionPanel":
+		case "NextRoundPanel":
 			questionPanel = <NoQuestionPanel/>;
 			break;
 		case "SelectQuestionPanel":
@@ -101,7 +103,7 @@ export default class DisplayContainer extends React.Component {
 		case "FinalJeopardyResponsePanel":
 			questionPanel = (
 				<FinalJeopardyResponsePanel
-					screenName={this.state.finalFocusScreenName}
+					screenName={this.state.finalFocusPlayerName}
 					response={this.state.finalFocusResponse}
 					responseVisible={this.state.finalFocusResponseVisible}
 					wager={this.state.finalFocusWager}
@@ -112,7 +114,6 @@ export default class DisplayContainer extends React.Component {
 		}
 
 		var playerPanel;
-		var thisPanel = this;
 		var nonHiddenPlayers = this.state.players.filter(function(p) {
 			return !p.hidden;
 		});

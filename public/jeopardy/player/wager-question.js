@@ -1,8 +1,6 @@
 var React = require("react");
-var ReactDOM = require("react-dom");
 var io = require("socket.io-client");
 var PropTypes = require("prop-types");
-import EmptyPanel from "../../common/empty-panel";
 import SubmitButton from "../../common/submit-button";
 
 export default class WagerQuestion extends React.Component {
@@ -29,9 +27,6 @@ export default class WagerQuestion extends React.Component {
 				type: "wager",
 				wager: parseInt(this.state.input)
 			});
-
-			// TODO produce toast to represent successful answering
-			ReactDOM.render(<EmptyPanel/>, document.getElementById("question-window"));
 		}
 		
 		

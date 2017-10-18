@@ -63,21 +63,23 @@ class HostConsole extends Component {
 		});
 	}
 
-	handleNewPlayer = (playerDetails) => {
+	handleNewPlayer = (screenName) => {
 		console.log("new player:");
-		console.log(playerDetails);
-		const playerWithAdditions = playerDetails;
-		playerWithAdditions.score = 0;
-		playerWithAdditions.hidden = false;
-		playerWithAdditions.correctAnswers = 0;
-		playerWithAdditions.aggregateTime = 0.0;
-		playerWithAdditions.currentQuestionAnswer = "";
-		playerWithAdditions.answeredCurrentQuestion = false;
-		playerWithAdditions.answeredCurrentQuestionCorrectly = false;
-		playerWithAdditions.currentQuestionTime = 0.0;
+		console.log(screenName);
+		var newPlayer = {
+			screenName: screenName,
+			score: 0,
+			hidden: false,
+			correctAnswers: 0,
+			aggregateTime: 0.0,
+			currentQuestionAnswer: "",
+			answeredCurrentQuestion: false,
+			answeredCurrentQuestionCorrectly: false,
+			currentQuestionTime: 0.0,
+		};
 		const newPlayers = this.state.players;
 
-		newPlayers.push(playerWithAdditions);
+		newPlayers.push(newPlayer);
 		this.setGameState({
 			players: newPlayers,
 		});

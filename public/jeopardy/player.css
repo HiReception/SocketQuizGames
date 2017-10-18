@@ -28,6 +28,7 @@ div.playerBody {
   align-items: center;
   flex-grow: 1;
   min-height: calc(100% - 40px);
+  background-color: #0B1885;
 }
 
 div.playerQuestion {

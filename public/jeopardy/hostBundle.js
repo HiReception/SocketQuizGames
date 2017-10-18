@@ -42014,7 +42014,28 @@ socket.on("game details", function (details) {
 			currentClueValue: 0,
 
 			prefix: "",
-			suffix: ""
+			suffix: "",
+
+			wrongPlayerNames: [],
+			ddWagerEntered: false,
+			ddWagerSubmittable: false,
+			ddWager: 0,
+			buzzersOpen: false,
+
+			finalCategoryVisible: false,
+			finalClueVisible: false,
+			finalWagers: [],
+			finalWageringOpen: false,
+			allFinalWagersIn: false,
+			finalRespondingOpen: false,
+			finalRespondingOver: false,
+			finalRespondingTimeRemaining: 30,
+			finalResponses: [],
+			finalFocusPlayerNumber: 0,
+			finalFocusPlayerName: "",
+			finalFocusResponse: "",
+			finalFocusMode: "response",
+			finalFocusCorrect: false
 		};
 		socket.emit("set state", state);
 	} else {
@@ -42232,16 +42253,16 @@ var FinalJeopardyPanel = function (_React$Component) {
 		_this.handleNewAnswer = function (details) {
 			console.log("new answer:");
 			console.log(details);
-			if (_this.state.respondingOpen && !_this.state.respondingOver && !_this.state.responses.some(function (resp) {
+			if (_this.state.finalRespondingOpen && !_this.state.finalRespondingOver && !_this.state.finalResponses.some(function (resp) {
 				return resp.screenName === details.screenName;
 			})) {
-				var newResponses = _this.state.responses;
+				var newResponses = _this.state.finalResponses;
 				newResponses.push({
-					screenName: details.player.screenName,
+					screenName: details.player,
 					response: details.answer
 				});
-				_this.setState({
-					responses: newResponses
+				_this.setGameState({
+					finalResponses: newResponses
 				});
 			}
 		};
@@ -42249,17 +42270,17 @@ var FinalJeopardyPanel = function (_React$Component) {
 		_this.handleNewMessage = function (message) {
 			console.log("new message:");
 			console.log(message);
-			if (message.details.type === "wager" && _this.state.wageringOpen && !_this.state.wagers.some(function (wager) {
+			if (message.details.type === "wager" && _this.state.finalWageringOpen && !_this.state.finalWagers.some(function (wager) {
 				return wager.screenName === message.player.screenName;
 			})) {
-				var newWagers = _this.state.wagers;
+				var newWagers = _this.state.finalWagers;
 				newWagers.push({
-					screenName: message.player.screenName,
+					screenName: message.player,
 					wager: message.details.wager
 				});
-				_this.setState({
-					wagers: newWagers,
-					allWagersIn: newWagers.length === _this.props.eligiblePlayers.length
+				_this.setGameState({
+					finalWagers: newWagers,
+					allFinalWagersIn: newWagers.length === _this.props.eligiblePlayers.length
 				});
 			}
 		};
@@ -42272,10 +42293,7 @@ var FinalJeopardyPanel = function (_React$Component) {
 		_this.showCategory = function () {
 			_this.setGameState({
 				finalCategoryVisible: true,
-				wageringOpen: true
-			});
-			_this.props.socket.emit("set state", {
-				finalCategoryVisible: true
+				finalWageringOpen: true
 			});
 
 			_this.props.eligiblePlayers.map(function (player) {
@@ -42295,10 +42313,7 @@ var FinalJeopardyPanel = function (_React$Component) {
 		};
 
 		_this.showClue = function () {
-			_this.setState({
-				clueVisible: true
-			});
-			_this.props.socket.emit("set state", {
+			_this.setGameState({
 				finalClueVisible: true
 			});
 			// send message to display to play reveal tone
@@ -42306,8 +42321,8 @@ var FinalJeopardyPanel = function (_React$Component) {
 		};
 
 		_this.openResponses = function () {
-			_this.setState({
-				respondingOpen: true
+			_this.setGameState({
+				finalRespondingOpen: true
 			});
 			_this.props.eligiblePlayers.map(function (player) {
 				_this.props.socket.emit("send private message", {
@@ -42321,85 +42336,97 @@ var FinalJeopardyPanel = function (_React$Component) {
 			_this.props.socket.emit("play sound", "final-think");
 			// send message to display to start think music
 			var timer = setInterval(function () {
-				if (_this.state.respondingTimeRemaining > 1) {
-					_this.setState({
-						respondingTimeRemaining: _this.state.respondingTimeRemaining - 1
+				if (_this.state.finalRespondingTimeRemaining > 1) {
+					_this.setGameState({
+						finalRespondingTimeRemaining: _this.state.finalRespondingTimeRemaining - 1
 					});
 				} else {
 					console.log("time up");
-					_this.closeResponses();
 					clearInterval(timer);
+					_this.closeResponses();
 				}
 			}, 1000);
 		};
 
 		_this.closeResponses = function () {
-			_this.setState({
-				respondingOver: true,
-				respondingOpen: false
-			});
-			var focusResponse = void 0;
+			var finalFocusResponse = void 0;
 
-			if (_this.state.responses.some(function (resp) {
+			var firstFocusName = _this.state.finalEligiblePlayers[0].screenName;
+
+			if (_this.state.finalResponses.some(function (resp) {
 				console.log(resp);
-				return resp.screenName === _this.state.focusPlayerName;
+				return resp.screenName === firstFocusName;
 			})) {
-				focusResponse = _this.state.responses.find(function (resp) {
-					return resp.screenName === _this.state.focusPlayerName;
+				finalFocusResponse = _this.state.finalResponses.find(function (resp) {
+					return resp.screenName === firstFocusName;
 				}).response;
 			} else {
-				focusResponse = "";
+				finalFocusResponse = "";
 			}
 
-			_this.setState({
-				focusResponse: focusResponse
-			});
+			console.log("Final Wagers:");
+			console.log(_this.state.finalWagers);
 
-			_this.props.socket.emit("set state", {
+			var firstFocusWagerValue;
+
+			if (_this.state.finalWagers.some(function (wag) {
+				console.log(wag);
+				return wag.screenName === firstFocusName;
+			})) {
+				firstFocusWagerValue = _this.state.finalWagers.find(function (wag) {
+					console.log("wager name = " + wag.screenName + " vs " + firstFocusName);
+					return wag.screenName === firstFocusName;
+				}).wager;
+			} else {
+				firstFocusWagerValue = 0;
+			}
+
+			_this.setGameState({
 				currentPanel: "FinalJeopardyResponsePanel",
-				finalFocusScreenName: _this.state.focusPlayerName,
-				finalFocusWager: _this.props.prefix + _this.state.wagers.find(function (player) {
-					return player.screenName === _this.state.focusPlayerName;
-				}).wager + _this.props.suffix,
-				finalFocusResponse: focusResponse,
+				finalFocusPlayerName: firstFocusName,
+				finalFocusMode: "response",
+				finalFocusWager: _this.props.prefix + firstFocusWagerValue + _this.props.suffix,
+				finalFocusResponse: finalFocusResponse,
 				finalFocusResponseVisible: true,
-				finalFocusWagerVisible: false
+				finalFocusWagerVisible: false,
+				finalRespondingOver: true,
+				finalRespondingOpen: false
 			});
 		};
 
 		_this.nextFocus = function () {
-			if (_this.state.focusPlayerNumber === _this.props.eligiblePlayers.length - 1) {
+			if (_this.state.finalFocusPlayerNumber === _this.props.eligiblePlayers.length - 1) {
 				// TODO proceed to end of game screen
 			} else {
-				var focusPlayerNumber = _this.state.focusPlayerNumber + 1;
-				var focusPlayerName = _this.props.eligiblePlayers[focusPlayerNumber].screenName;
+				var finalFocusPlayerNumber = _this.state.finalFocusPlayerNumber + 1;
+				var finalFocusPlayerName = _this.props.eligiblePlayers[finalFocusPlayerNumber].screenName;
 				_this.setGameState({
-					focusPlayerNumber: focusPlayerNumber,
-					focusPlayerName: focusPlayerName,
-					focusMode: "response"
+					finalFocusPlayerNumber: finalFocusPlayerNumber,
+					finalFocusPlayerName: finalFocusPlayerName,
+					finalFocusMode: "response"
 				});
 
-				var focusResponse = void 0;
-				if (_this.state.responses.some(function (resp) {
-					return resp.screenName === focusPlayerName + 1;
+				var finalFocusResponse = void 0;
+				if (_this.state.finalResponses.some(function (resp) {
+					return resp.screenName === finalFocusPlayerName + 1;
 				})) {
-					focusResponse = _this.state.responses.find(function (resp) {
-						return resp.screenName === focusPlayerName + 1;
+					finalFocusResponse = _this.state.finalResponses.find(function (resp) {
+						return resp.screenName === finalFocusPlayerName + 1;
 					}).response;
 				} else {
-					focusResponse = "";
+					finalFocusResponse = "";
 				}
 				_this.setGameState({
-					focusResponse: focusResponse
+					finalFocusResponse: finalFocusResponse
 				});
 
 				// send message to display to go to next response
 				_this.props.socket.emit("set state", {
-					finalFocusScreenName: focusPlayerName,
-					finalFocusWager: _this.props.prefix + _this.state.wagers.find(function (player) {
-						return player.screenName === focusPlayerName;
+					finalFocusPlayerName: finalFocusPlayerName,
+					finalFocusWager: _this.props.prefix + _this.state.finalWagers.find(function (player) {
+						return player.screenName === finalFocusPlayerName;
 					}).wager + _this.props.suffix,
-					finalFocusResponse: focusResponse,
+					finalFocusResponse: finalFocusResponse,
 					finalFocusResponseVisible: true,
 					finalFocusWagerVisible: false
 				});
@@ -42407,27 +42434,27 @@ var FinalJeopardyPanel = function (_React$Component) {
 		};
 
 		_this.wrongAnswer = function () {
-			_this.props.changePlayerScore(_this.state.focusPlayerName, _this.props.eligiblePlayers.find(function (player) {
-				return player.screenName === _this.state.focusPlayerName;
-			}).score - _this.state.wagers.find(function (player) {
-				return player.screenName === _this.state.focusPlayerName;
+			_this.props.changePlayerScore(_this.state.finalFocusPlayerName, _this.props.eligiblePlayers.find(function (player) {
+				return player.screenName === _this.state.finalFocusPlayerName;
+			}).score - _this.state.finalWagers.find(function (player) {
+				return player.screenName === _this.state.finalFocusPlayerName;
 			}).wager);
 			_this.setGameState({
-				focusMode: "wager",
-				focusCorrect: false,
+				finalFocusMode: "wager",
+				finalFocusCorrect: false,
 				finalFocusWagerVisible: true
 			});
 		};
 
 		_this.rightAnswer = function () {
-			_this.props.changePlayerScore(_this.state.focusPlayerName, _this.props.eligiblePlayers.find(function (player) {
-				return player.screenName === _this.state.focusPlayerName;
-			}).score + _this.state.wagers.find(function (player) {
-				return player.screenName === _this.state.focusPlayerName;
+			_this.props.changePlayerScore(_this.state.finalFocusPlayerName, _this.props.eligiblePlayers.find(function (player) {
+				return player.screenName === _this.state.finalFocusPlayerName;
+			}).score + _this.state.finalWagers.find(function (player) {
+				return player.screenName === _this.state.finalFocusPlayerName;
 			}).wager);
 			_this.setGameState({
-				focusMode: "wager",
-				focusCorrect: true,
+				finalFocusMode: "wager",
+				finalFocusCorrect: true,
 				finalFocusWagerVisible: true
 			});
 		};
@@ -42463,7 +42490,7 @@ var FinalJeopardyPanel = function (_React$Component) {
 			var cluePanel = void 0;
 			if (!_this.state.finalCategoryVisible) {
 				cluePanel = React.createElement("div", { className: "final-jeopardy-clue" });
-			} else if (!_this.state.allWagersIn) {
+			} else if (!_this.state.allFinalWagersIn) {
 				cluePanel = React.createElement(
 					"div",
 					{ className: "final-jeopardy-clue" },
@@ -42471,11 +42498,11 @@ var FinalJeopardyPanel = function (_React$Component) {
 						"p",
 						{ className: "final-jeopardy-clue" },
 						"Waiting on wager from ",
-						_this.props.eligiblePlayers.length - _this.state.wagers.length,
+						_this.props.eligiblePlayers.length - _this.state.finalWagers.length,
 						" contestant(s)"
 					)
 				);
-			} else if (!_this.state.clueVisible) {
+			} else if (!_this.state.finalClueVisible) {
 				cluePanel = React.createElement(
 					"div",
 					{ className: "final-jeopardy-clue" },
@@ -42507,9 +42534,9 @@ var FinalJeopardyPanel = function (_React$Component) {
 			}
 
 			var correctPanel = void 0;
-			if (!_this.state.clueVisible) {
+			if (!_this.state.finalClueVisible) {
 				correctPanel = React.createElement("div", { className: "final-jeopardy-correct" });
-			} else if (!_this.state.respondingOpen && !_this.state.respondingOver) {
+			} else if (!_this.state.finalRespondingOpen && !_this.state.finalRespondingOver) {
 				correctPanel = React.createElement(
 					"div",
 					{ className: "final-jeopardy-correct" },
@@ -42523,14 +42550,14 @@ var FinalJeopardyPanel = function (_React$Component) {
 						)
 					)
 				);
-			} else if (!_this.state.respondingOver) {
+			} else if (!_this.state.finalRespondingOver) {
 				correctPanel = React.createElement(
 					"div",
 					{ className: "final-jeopardy-correct" },
 					React.createElement(
 						"p",
 						{ className: "final-jeopardy-correct" },
-						_this.state.respondingTimeRemaining,
+						_this.state.finalRespondingTimeRemaining,
 						" second(s) remaining"
 					)
 				);
@@ -42549,11 +42576,11 @@ var FinalJeopardyPanel = function (_React$Component) {
 			}
 
 			var responsePanel = void 0;
-			if (!_this.state.respondingOver) {
+			if (!_this.state.finalRespondingOver) {
 				responsePanel = React.createElement("div", { className: "final-jeopardy-response" });
-			} else if (_this.state.focusMode === "response") {
-				console.log(_this.state.responses);
-				console.log(_this.state.focusResponse);
+			} else if (_this.state.finalFocusMode === "response") {
+				console.log(_this.state.finalResponses);
+				console.log(_this.state.finalFocusResponse);
 				responsePanel = React.createElement(
 					"div",
 					{ className: "final-jeopardy-response" },
@@ -42563,7 +42590,7 @@ var FinalJeopardyPanel = function (_React$Component) {
 						React.createElement(
 							"p",
 							{ className: "final-jeopardy-response left" },
-							_this.state.focusPlayerName,
+							_this.state.finalFocusPlayerName,
 							" responded:"
 						),
 						React.createElement(
@@ -42592,14 +42619,14 @@ var FinalJeopardyPanel = function (_React$Component) {
 					React.createElement(
 						"p",
 						{ className: "final-jeopardy-response" },
-						_this.state.focusResponse
+						_this.state.finalFocusResponse
 					)
 				);
 			} else {
-				console.log(_this.state.wagers);
-				var currentWager = _this.state.wagers.find(function (wager) {
-					console.log(wager.screenName + " vs " + _this.state.focusPlayerName);
-					return wager.screenName === _this.state.focusPlayerName;
+				console.log(_this.state.finalWagers);
+				var currentWager = _this.state.finalWagers.find(function (wager) {
+					console.log(wager.screenName + " vs " + _this.state.finalFocusPlayerName);
+					return wager.screenName === _this.state.finalFocusPlayerName;
 				}).wager;
 				console.log(currentWager);
 				responsePanel = React.createElement(
@@ -42611,7 +42638,7 @@ var FinalJeopardyPanel = function (_React$Component) {
 						React.createElement(
 							"p",
 							{ className: "final-jeopardy-response left" },
-							_this.state.focusPlayerName,
+							_this.state.finalFocusPlayerName,
 							" wagered:"
 						),
 						React.createElement(
@@ -42657,22 +42684,7 @@ var FinalJeopardyPanel = function (_React$Component) {
 			);
 		};
 
-		_this.state = {
-			finalCategoryVisible: false,
-			clueVisible: false,
-			wagers: [],
-			wageringOpen: false,
-			allWagersIn: false,
-			respondingOpen: false,
-			respondingOver: false,
-			respondingTimeRemaining: 30,
-			responses: [],
-			focusPlayerNumber: 0,
-			focusPlayerName: _this.props.eligiblePlayers[0].screenName,
-			focusResponse: "",
-			focusMode: "response",
-			focusCorrect: false
-		};
+		_this.state = props.gameState;
 		return _this;
 	}
 
@@ -42689,6 +42701,7 @@ FinalJeopardyPanel.propTypes = {
 	socket: PropTypes.instanceOf(io.Socket),
 	prefix: PropTypes.string,
 	suffix: PropTypes.string,
+	gameState: PropTypes.object,
 	setGameState: PropTypes.func
 };
 
@@ -42814,12 +42827,14 @@ var HostConsole = function (_React$Component) {
 			});
 		};
 
-		_this.handleNewPlayer = function (playerDetails) {
+		_this.handleNewPlayer = function (screenName) {
 			console.log("new player:");
-			console.log(playerDetails);
-			var newPlayer = playerDetails;
-			newPlayer.score = 0;
-			newPlayer.hidden = false;
+			console.log(screenName);
+			var newPlayer = {
+				screenName: screenName,
+				score: 0,
+				hidden: false
+			};
 			var newPlayers = _this.state.players;
 
 			newPlayers.push(newPlayer);
@@ -43031,6 +43046,7 @@ var HostConsole = function (_React$Component) {
 							setSelectingPlayer: _this.setSelectingPlayer,
 							setAnsweringPlayer: _this.setAnsweringPlayer,
 							clearAnsweringPlayer: _this.clearAnsweringPlayer,
+							gameState: _this.state,
 							setGameState: _this.setGameState,
 							prefix: _this.state.prefix,
 							suffix: _this.state.suffix,
@@ -43046,6 +43062,7 @@ var HostConsole = function (_React$Component) {
 						final: _this.state.final,
 						changePlayerScore: _this.changePlayerScore,
 						eligiblePlayers: _this.state.finalEligiblePlayers,
+						gameState: _this.state,
 						setGameState: _this.setGameState,
 						prefix: _this.state.prefix,
 						suffix: _this.state.suffix,
@@ -43435,14 +43452,14 @@ var OpenQuestionPanel = function (_React$Component) {
 
 		_this.componentWillMount = function () {
 			console.log("componentWillMount called");
-			if (_this.state.dailyDouble) {
+			if (_this.props.clue.dailyDouble) {
 				console.log("Setting answering player to \n\t\t\t\t" + _this.props.selectingPlayer.screenName);
 				_this.props.setAnsweringPlayer(_this.props.selectingPlayer.screenName);
 			}
 		};
 
 		_this.componentDidMount = function () {
-			if (_this.state.dailyDouble) {
+			if (_this.props.clue.dailyDouble) {
 				_this.props.socket.emit("set state", {
 					currentPanel: "DailyDoublePanel"
 				});
@@ -43461,32 +43478,27 @@ var OpenQuestionPanel = function (_React$Component) {
 		};
 
 		_this.handleNewAnswer = function (details) {
-			if (_this.state.buzzersOpen && details.player.screenName !== "" && !_this.state.wrongPlayerNames.includes(details.player.screenName)) {
-				console.log("new answer:");
+			console.log("new answer received (Open outer): ");
+			console.log(details);
+			if (_this.state.buzzersOpen && details.player !== "" && !_this.state.wrongPlayerNames.includes(details.player)) {
+				console.log("new answer (Open inner):");
 				console.log(details);
-				console.log(_this);
 				_this.setGameState({
 					playerAnswering: _this.props.players.find(function (player) {
-						return player.screenName === details.player.screenName;
+						return player.screenName === details.player;
 					}),
 					buzzersOpen: false
 				});
-
-				_this.props.socket.emit("set state", {
-					playerAnswering: _this.props.players.find(function (player) {
-						return player.screenName === details.player.screenName;
-					})
-				});
-
-				_this.props.setAnsweringPlayer(details.player.screenName);
+				console.log(details.player);
+				_this.props.setAnsweringPlayer(details.player);
 			}
 		};
 
 		_this.wrongAnswer = function () {
 			if (!$.isEmptyObject(_this.state.playerAnswering)) {
-				_this.props.changePlayerScore(_this.state.playerAnswering.screenName, _this.state.playerAnswering.score - _this.state.value);
+				_this.props.changePlayerScore(_this.state.playerAnswering.screenName, _this.state.playerAnswering.score - _this.state.currentClueValue);
 				_this.props.clearAnsweringPlayer();
-				if (_this.state.dailyDouble) {
+				if (_this.props.clue.dailyDouble) {
 					_this.props.endClue();
 				} else {
 					var newWrongPlayerNames = _this.state.wrongPlayerNames;
@@ -43504,7 +43516,7 @@ var OpenQuestionPanel = function (_React$Component) {
 			console.log("this.state.playerAnswering = ");
 			console.log(_this.state.playerAnswering);
 			if (!$.isEmptyObject(_this.state.playerAnswering)) {
-				_this.props.changePlayerScore(_this.state.playerAnswering.screenName, _this.state.playerAnswering.score + _this.state.value);
+				_this.props.changePlayerScore(_this.state.playerAnswering.screenName, _this.state.playerAnswering.score + _this.state.currentClueValue);
 				_this.props.setSelectingPlayer(_this.state.playerAnswering.screenName);
 				_this.props.clearAnsweringPlayer();
 				_this.props.endClue();
@@ -43567,7 +43579,7 @@ var OpenQuestionPanel = function (_React$Component) {
 						"p",
 						{ className: "open-question-value" },
 						_this.props.prefix,
-						_this.state.value,
+						_this.state.currentClueValue,
 						_this.props.suffix
 					)
 				);
@@ -43609,7 +43621,7 @@ var OpenQuestionPanel = function (_React$Component) {
 				);
 
 				// Daily Double, wager not yet entered
-			} else if (_this.state.dailyDouble && !_this.state.ddWagerEntered) {
+			} else if (_this.props.clue.dailyDouble && !_this.state.ddWagerEntered) {
 				_this.props.socket.emit("set state", {
 					currentPanel: "DailyDoublePanel"
 				});
@@ -43686,7 +43698,7 @@ var OpenQuestionPanel = function (_React$Component) {
 						"p",
 						{ className: "open-question-value" },
 						_this.props.prefix,
-						_this.state.value,
+						_this.state.currentClueValue,
 						_this.props.suffix
 					)
 				);
@@ -43734,7 +43746,7 @@ var OpenQuestionPanel = function (_React$Component) {
 
 				// Player answering, either Daily Double or not
 			} else {
-				if (_this.state.dailyDouble) {
+				if (_this.props.clue.dailyDouble) {
 					_this.props.socket.emit("set state", {
 						currentPanel: "OpenQuestionPanel",
 						currentClue: _this.props.clue
@@ -43753,7 +43765,7 @@ var OpenQuestionPanel = function (_React$Component) {
 						"p",
 						{ className: "open-question-value" },
 						_this.props.prefix,
-						_this.state.value,
+						_this.state.currentClueValue,
 						_this.props.suffix
 					)
 				);
@@ -43824,17 +43836,7 @@ var OpenQuestionPanel = function (_React$Component) {
 			);
 		};
 
-		var dailyDouble = _this.props.clue.dailyDouble;
-		_this.state = {
-			playerAnswering: dailyDouble ? _this.props.selectingPlayer : {},
-			wrongPlayerNames: [],
-			value: _this.props.value,
-			dailyDouble: dailyDouble,
-			ddWagerEntered: false,
-			ddWagerSubmittable: false,
-			ddWager: 0,
-			buzzersOpen: false
-		};
+		_this.state = props.gameState;
 		return _this;
 	}
 
@@ -43857,6 +43859,7 @@ OpenQuestionPanel.propTypes = {
 	setAnsweringPlayer: PropTypes.func,
 	clearAnsweringPlayer: PropTypes.func,
 	setGameState: PropTypes.func,
+	gameState: PropTypes.object,
 	socket: PropTypes.instanceOf(io.Socket),
 	prefix: PropTypes.string,
 	suffix: PropTypes.string
