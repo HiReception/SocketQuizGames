@@ -39072,9 +39072,19 @@ var screenName = getParameterByName("name");
 // TODO add back button to header bar
 // TODO add Page button to header bar, to get attention of host
 
-socket.emit("join request", {
-	screenName: screenName,
-	gameCode: gameCode
+socket.on("connect_timeout", function () {
+	console.log("connection timeout");
+});
+
+socket.on("connect", function () {
+	socket.emit("join request", {
+		screenName: screenName,
+		gameCode: gameCode
+	});
+});
+
+socket.on("connect_error", function (err) {
+	console.log("connection error: " + err);
 });
 
 socket.on("accepted", function (state) {

@@ -53,10 +53,13 @@ div .playerListing {
   margin-bottom: 10px;
 }
 
-p.playerListingName {
+h1.playerListingName {
   color: white;
   text-align: center;
-  font-size: 500%;
+  font-weight:normal;
+  margin: 0;
+  position: relative;
+  
 }
 
 div.playerListingName {
@@ -70,17 +73,20 @@ div.playerListingName {
   padding-right: 5px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+  font-size: 500%;
 }
 
 div.playerListingName.answering {
   background-color: blue;
 }
 
-p.playerListingDetails {
+h1.playerListingDetails {
   font-family: Impact;
   color: white;
-  font-size: 500%;
   text-shadow: 2px 2px black;
+  font-weight:normal;
+  margin: 0;
+  position: relative;
 }
 
 div.playerListingDetails {

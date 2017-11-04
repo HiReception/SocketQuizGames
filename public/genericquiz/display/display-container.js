@@ -29,21 +29,22 @@ export default class DisplayContainer extends React.Component {
 	render = () => {
 		var questionPanel;
 		var playerPanel;
-
-		if (this.state.players.length != 0) {
-			var list = [];
-			for (var i = 0; i < this.state.players.length; i++) {
-				var p = this.state.players[i];
-
+		const nonHiddenPlayers = this.state.players.filter((p) => {
+			return !p.hidden;
+		});
+		if (nonHiddenPlayers.length != 0) {
+			var list = nonHiddenPlayers.map((p, i) => {
 				// light this display up if they are answering the question
 				var answering = this.state.playerAnswering.screenName === p.screenName;
 
-				list.push((<PlayerListing
-					player={p}
-					key={i}
-					answering={answering}
-				/>));
-			}
+				return (
+					<PlayerListing
+						player={p}
+						key={i}
+						answering={answering}
+					/>
+				);
+			});
 			playerPanel = <div className="playerContainer">{list}</div>;
 		} else {
 			playerPanel = <div className="playerContainer"/>;

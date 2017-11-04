@@ -35050,8 +35050,19 @@ function getParameterByName(name, url) {
 	return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-socket.emit("display request", {
-	gameCode: getParameterByName("gamecode")
+socket.on("connect_timeout", function () {
+	console.log("connection timeout");
+});
+
+socket.on("connect", function () {
+	console.log("connected");
+	socket.emit("display request", {
+		gameCode: getParameterByName("gamecode")
+	});
+});
+
+socket.on("connect_error", function (err) {
+	console.log("connection error: " + err);
 });
 
 socket.on("accepted", function () {
@@ -35123,21 +35134,20 @@ var DisplayContainer = function (_React$Component) {
 		_this.render = function () {
 			var questionPanel;
 			var playerPanel;
-
-			if (_this.state.players.length != 0) {
-				var list = [];
-				for (var i = 0; i < _this.state.players.length; i++) {
-					var p = _this.state.players[i];
-
+			var nonHiddenPlayers = _this.state.players.filter(function (p) {
+				return !p.hidden;
+			});
+			if (nonHiddenPlayers.length != 0) {
+				var list = nonHiddenPlayers.map(function (p, i) {
 					// light this display up if they are answering the question
 					var answering = _this.state.playerAnswering.screenName === p.screenName;
 
-					list.push(React.createElement(_playerListing2.default, {
+					return React.createElement(_playerListing2.default, {
 						player: p,
 						key: i,
 						answering: answering
-					}));
-				}
+					});
+				});
 				playerPanel = React.createElement(
 					"div",
 					{ className: "playerContainer" },
@@ -35225,7 +35235,7 @@ var PlayerListing = function (_React$Component) {
 						"div",
 						{ className: "playerListingName", style: { backgroundColor: "#FFFFFF" } },
 						React.createElement(
-							"p",
+							"h1",
 							{ className: "playerListingName", style: { color: _this.props.player.colour } },
 							_this.props.player.screenName
 						)
@@ -35234,7 +35244,7 @@ var PlayerListing = function (_React$Component) {
 						"div",
 						{ className: "playerListingDetails", style: { backgroundColor: "#FFFFFF" } },
 						React.createElement(
-							"p",
+							"h1",
 							{ className: className, style: { color: _this.props.player.colour } },
 							scoreString
 						)
@@ -35248,7 +35258,7 @@ var PlayerListing = function (_React$Component) {
 						"div",
 						{ className: "playerListingName", style: { backgroundColor: _this.props.player.colour } },
 						React.createElement(
-							"p",
+							"h1",
 							{ className: "playerListingName", style: { color: "#FFFFFF" } },
 							_this.props.player.screenName
 						)
@@ -35257,7 +35267,7 @@ var PlayerListing = function (_React$Component) {
 						"div",
 						{ className: "playerListingDetails", style: { backgroundColor: _this.props.player.colour } },
 						React.createElement(
-							"p",
+							"h1",
 							{ className: className, style: { color: "#FFFFFF" } },
 							scoreString
 						)

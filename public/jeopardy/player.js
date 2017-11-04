@@ -109,6 +109,4 @@ class PlayerPanel extends React.Component {
 			</div>
 		);
 	}
-
-	egwebugnwelig
 }

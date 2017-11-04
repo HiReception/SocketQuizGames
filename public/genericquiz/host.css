@@ -16,6 +16,8 @@ div.host-panel {
 	display: flex;
 	flex-direction: column;
 	border-right: 0.5px solid #999999;
+	overflow-y: auto;
+	height: calc(100% - 50px - 1px);
 }
 
 #player-count {
@@ -112,6 +114,13 @@ div.host-panel {
 	font-family: Verdana, Geneva, sans-serif;
 }
 
+div.no-players {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 div .no-question-panel {
 	display: flex;
 	flex-direction: column;
@@ -202,6 +211,24 @@ div .playerListing {
 	margin-bottom: 10px;
 	border: 1px solid black;
 	cursor: pointer;
+}
+
+.listing-enter {
+	transform: translateX(calc(-100% - 10px));
+}
+
+.listing-enter.listing-enter-active {
+	transform: translateX(0);
+	transition: transform 500ms linear;
+}
+
+.listing-leave {
+	transform: translateX(0);
+}
+
+.listing-leave.listing-leave.active {
+	transform: translateX(calc(-100% - 10px));
+	transition: transform 500ms linear;
 }
 
 p.playerListingName {

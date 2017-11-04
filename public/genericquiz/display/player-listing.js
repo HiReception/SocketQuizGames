@@ -11,12 +11,12 @@ export default class PlayerListing extends React.Component {
 			return (
 				<div className="playerListing">
 					<div className="playerListingName" style={{backgroundColor: "#FFFFFF"}}>
-						<p className="playerListingName" style={{color: this.props.player.colour}}>
+						<h1 className="playerListingName" style={{color: this.props.player.colour}}>
 							{this.props.player.screenName}
-						</p>
+						</h1>
 					</div>
 					<div className="playerListingDetails" style={{backgroundColor: "#FFFFFF"}}>
-						<p className={className} style={{color: this.props.player.colour}}>{scoreString}</p>
+						<h1 className={className} style={{color: this.props.player.colour}}>{scoreString}</h1>
 					</div>
 				</div>
 			);
@@ -24,10 +24,10 @@ export default class PlayerListing extends React.Component {
 			return (
 				<div className="playerListing">
 					<div className="playerListingName" style={{backgroundColor: this.props.player.colour}}>
-						<p className="playerListingName" style={{color: "#FFFFFF"}}>{this.props.player.screenName}</p>
+						<h1 className="playerListingName" style={{color: "#FFFFFF"}}>{this.props.player.screenName}</h1>
 					</div>
 					<div className="playerListingDetails" style={{backgroundColor: this.props.player.colour}}>
-						<p className={className} style={{color: "#FFFFFF"}}>{scoreString}</p>
+						<h1 className={className} style={{color: "#FFFFFF"}}>{scoreString}</h1>
 					</div>
 				</div>
 			);

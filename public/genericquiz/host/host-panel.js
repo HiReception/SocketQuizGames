@@ -2,6 +2,8 @@ var $ = require("jquery");
 var React = require("react");
 var PropTypes = require("prop-types");
 const io = require("socket.io-client");
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+
 import PlayerPanelToggleBar from "../../common/player-panel-bar";
 import PlayerDetailsPanel from "./player-details-panel";
 import PlayerListing from "./player-listing";
@@ -20,6 +22,7 @@ export default class HostPanel extends React.Component {
 			screenName: screenName,
 			colour: this.state.playerColours[this.state.players.length % this.state.playerColours.length],
 			score: isNaN(this.state.startingScore) ? 0 : this.state.startingScore,
+			hidden: false,
 		};
 		
 		var newPlayers = this.state.players;
@@ -66,12 +69,15 @@ export default class HostPanel extends React.Component {
 			var newPlayerAnswering = this.state.players.find(function(p) {
 				return p.screenName === details.player;
 			});
-			this.setGameState({
-				buzzersOpen: false,
-				playerAnswering: newPlayerAnswering
-			});
+			if (!newPlayerAnswering.hidden) {
+				this.setGameState({
+					buzzersOpen: false,
+					playerAnswering: newPlayerAnswering
+				});
 
-			this.props.socket.emit("play sound", "buzz-in");
+				this.props.socket.emit("play sound", "buzz-in");
+			}
+
 		}
 	}
 
@@ -157,6 +163,7 @@ export default class HostPanel extends React.Component {
 	render = () => {
 		// render player list panel
 		let playerPanel;
+		let playerPanelContent;
 		if (this.state.detailPlayerName === "") {
 			const nonHiddenPlayers = this.state.players.filter((player) => {
 				return !player.hidden;
@@ -165,12 +172,12 @@ export default class HostPanel extends React.Component {
 				const playersByScore = nonHiddenPlayers.sort((p1, p2) => {
 					return p1.score < p2.score;
 				});
-				const list = playersByScore.map((player, index) => {
+				const list = playersByScore.map((player) => {
 					return (
 						<PlayerListing
 							onClick={this.showPlayerDetails.bind(this, player.screenName)}
 							player={player}
-							key={index}
+							key={player.screenName}
 							answering={!$.isEmptyObject(this.state.playerAnswering) &&
 								this.state.playerAnswering.screenName === player.screenName}
 							lockedOut={!$.isEmptyObject(this.state.playerAnswering) &&
@@ -180,10 +187,21 @@ export default class HostPanel extends React.Component {
 							suffix={this.state.suffix}/>);
 				});
 				console.log(list);
-				playerPanel = <div>{list}</div>;
+				playerPanelContent = list;
+				
 			} else {
-				playerPanel = <div><p className='no-players'>No Players</p></div>;
+				playerPanelContent = <div key={0} className="no-players"><p className='no-players'>No Players</p></div>;
 			}
+			playerPanel = (
+				<div>
+					<ReactCSSTransitionGroup
+						transitionName="listing"
+						transitionEnterTimeout={500}
+						transitionLeaveTimeout={500}>
+						{playerPanelContent}
+					</ReactCSSTransitionGroup>
+				</div>
+			);
 		} else {
 			const player = this.state.players.find((player) => {
 				return player.screenName === this.state.detailPlayerName;

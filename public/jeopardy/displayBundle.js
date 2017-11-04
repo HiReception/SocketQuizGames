@@ -35049,8 +35049,19 @@ function getParameterByName(name, url) {
 	return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-socket.emit("display request", {
-	gameCode: getParameterByName("gamecode")
+socket.on("connect_timeout", function () {
+	console.log("connection timeout");
+});
+
+socket.on("connect", function () {
+	console.log("connected");
+	socket.emit("display request", {
+		gameCode: getParameterByName("gamecode")
+	});
+});
+
+socket.on("connect_error", function (err) {
+	console.log("connection error: " + err);
 });
 
 socket.on("accepted", function () {
