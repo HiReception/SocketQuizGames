@@ -181,11 +181,24 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		sass: {
+			jeopardy: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/jeopardy/host.css": "public/jeopardy/host.scss",
+					"public/jeopardy/player.css": "public/jeopardy/player.scss",
+					"public/jeopardy/display.css": "public/jeopardy/display.scss",
+				}
+			}
+		},
 	});
 
 	grunt.loadNpmTasks("grunt-browserify");
 	grunt.loadNpmTasks("grunt-contrib-watch");
 	grunt.loadNpmTasks("grunt-watchify");
 	grunt.loadNpmTasks("grunt-newer");
-	grunt.registerTask("default", ["browserify"]);
+	grunt.loadNpmTasks("grunt-contrib-sass");
+	grunt.registerTask("default", ["browserify", "sass"]);
 };

@@ -20,12 +20,12 @@ export default class OpenQuestionPanel extends React.Component {
 
 	componentDidMount = () => {
 		if (this.props.clue.dailyDouble) {
-			this.props.socket.emit("set state", {
+			this.props.setGameState({
 				currentPanel: "DailyDoublePanel",
 			});
 			this.props.socket.emit("play sound", "daily-double");
 		} else {
-			this.props.socket.emit("set state", {
+			this.props.setGameState({
 				currentPanel: "OpenQuestionPanel",
 				currentClue: this.props.clue,
 			});
@@ -171,7 +171,7 @@ export default class OpenQuestionPanel extends React.Component {
 
 		// Daily Double, wager not yet entered
 		} else if (this.props.clue.dailyDouble && !this.state.ddWagerEntered) {
-			this.props.socket.emit("set state", {
+			this.props.setGameState({
 				currentPanel: "DailyDoublePanel",
 			});
 			header = (
@@ -259,7 +259,7 @@ export default class OpenQuestionPanel extends React.Component {
 		// Player answering, either Daily Double or not
 		} else {
 			if (this.props.clue.dailyDouble) {
-				this.props.socket.emit("set state", {
+				this.props.setGameState({
 					currentPanel: "OpenQuestionPanel",
 					currentClue: this.props.clue,
 				});
