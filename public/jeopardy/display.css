@@ -1,2 +1,461 @@
-@font-face{font-family:'Korinna Bold';src:url("fonts/Korinna Bold.ttf");font-weight:normal;font-style:normal}@font-face{font-family:'Brush Script Standard Medium';src:url("fonts/BrushScriptStd.otf");font-weight:normal;font-style:normal}@font-face{font-family:'Oswald Bold';src:url("fonts/Oswald-Bold.ttf");font-weight:normal;font-style:normal}@font-face{font-family:'Rock Salt';src:url("fonts/RockSalt.ttf");font-weight:normal;font-style:normal}body{display:flex;flex-direction:column;padding:0;margin:0;font-family:Verdana, Geneva, sans-serif}#question-panel{display:flex;flex:1 1 10px;flex-direction:column;justify-content:center;align-items:stretch;overflow:auto}#player-list{flex:0 0 auto;height:150px;display:flex;flex-direction:row;justify-content:left;align-items:stretch;background-color:brown;overflow-x:auto}#display-panel{display:flex;flex-direction:column;padding:0;margin:0;font-family:Verdana, Geneva, sans-serif;height:100%;width:100%}#question-panel p{text-align:center}.content{flex:1 1 auto}div .no-question-panel{display:flex;flex-direction:column;height:100%;justify-content:center;align-items:stretch;background-color:#0B1885}.no-question-panel div{flex:1 1 auto;display:flex;max-height:95%;flex-direction:column;justify-content:center;align-items:center}.no-question-panel p.handwriting{color:red;font-family:'Brush Script Standard Medium';font-size:15vw;margin-bottom:-5vw;text-shadow:0 5px black;z-index:0;margin-top:0}.no-question-panel img{flex:0 0 auto;width:auto;width:95vw;z-index:2}div.select-question-panel{display:flex;flex-direction:row;height:100%;justify-content:center;align-items:stretch;background-color:brown}div.select-question-wrapper{display:flex;flex-direction:row;height:100%;justify-content:center;align-items:stretch;background-color:#0B1885}div.select-question-board{display:flex;flex-direction:row;height:100%;justify-content:center;align-items:stretch;background-color:#0B1885}div.category-group{flex:1 1 60px;display:flex;flex-direction:column;border-left:2px solid black;border-right:2px solid black;border-top:5px solid black;border-bottom:5px solid black}div.category-header{flex:0.8 0.8 auto;height:20px;background-color:#0B1885;display:flex;align-items:center;justify-content:center;border:2px solid black;border-bottom:8px solid black;padding-left:5px;padding-right:5px}p.category-header{text-align:center;color:white;font-family:'Oswald Bold';font-size:4vmin;text-shadow:1px 1px black;text-transform:uppercase}div.category-clue-group{flex:5 5 60px;display:flex;flex-direction:column;justify-content:center;align-items:stretch}div.clue-button{flex:1 1;border:2px solid black;display:flex;align-items:center;justify-content:center}div.clue-button .active{background-color:#0B1885}div.clue-button .inactive{background-color:#0B1885}p.clue-button{width:100%;text-align:center;color:orange;font-size:400%;font-family:'Oswald Bold'}div .playerContainer{flex:1 1 auto;display:flex;flex-direction:row;justify-content:left;align-items:stretch}div .playerListing{flex:1 1 auto;width:250px;display:flex;flex-direction:column;justify-content:center;align-items:stretch;margin-left:10px;margin-right:10px;margin-top:10px;margin-bottom:10px;border:1px solid black}p.playerListingName{color:white;text-align:center;font-size:150%}div.playerListingName{display:flex;flex-direction:column;justify-content:center;align-items:stretch;flex:1 1 auto;height:30px;background-color:#0B1885;border-bottom:1px solid black;padding-right:5px}div.playerListingName .locked-out{background-color:grey}div.playerListingName .answering{background-color:blue}p.playerListingDetails{font-family:'Oswald Bold';color:white;font-size:300%;text-shadow:2px 2px black}p.playerListingDetails .negative{color:red}div.playerListingDetails{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:stretch;flex:1 1 auto;height:30px;background-color:#0B1885}div.playerListingDetails .locked-out{background-color:grey}div.playerListingDetails .answering{background-color:blue}div #open-question-panel{display:flex;position:relative;flex:1 1 auto;flex-direction:column;align-items:stretch;justify-content:center;background-color:#0B1885;max-width:auto;padding:5px;border:10px solid black}div.open-question-clue{flex:1 1 50px;display:flex;justify-content:center;align-items:center}p.open-question-clue{color:white;text-transform:uppercase;font-size:250%;font-family:'Korinna Bold';text-shadow:2px 2px black;margin:50px}div .daily-double-panel{display:flex;position:relative;flex:1 1 auto;max-height:100%;flex-direction:column;align-items:center;justify-content:center;background-color:maroon;max-width:auto;border:10px solid black;overflow:hidden}.daily-double-panel p.daily{flex:1 1 auto;color:yellow;min-height:0;font-family:'Brush Script Standard Medium';font-size:15vw;height:auto;margin-top:20vw;margin-bottom:-10vw;text-shadow:0 5px black;z-index:1}.daily-double-panel p.double{flex:1 1 auto;color:white;min-height:0;height:auto;font-family:'Oswald Bold';font-size:20vw;text-shadow:0 5px black;margin-top:-10vw;z-index:0}div .final-jeopardy-panel{display:flex;flex-direction:column;align-items:stretch}div .final-jeopardy-row{flex:1 1 auto;height:50%;display:flex;flex-direction:row;align-items:stretch;justify-content:center}div .final-jeopardy-blank{display:flex;flex-direction:column;flex:1 1 auto;justify-content:center;width:50%;align-items:stretch;background-color:#0B1885;border:5px solid black}div .final-jeopardy-logo{flex:1 1 auto;display:flex;width:50%;flex-direction:column;justify-content:center;align-items:stretch;background-color:#0B1885;border:5px solid black}.final-jeopardy-logo div{flex:1 1 auto;display:flex;max-height:47.5%;flex-direction:column;justify-content:center;align-items:center}.final-jeopardy-logo p.handwriting{color:red;font-family:'Brush Script Standard Medium';font-size:7.5vw;margin-bottom:-2.5vw;text-shadow:0 5px black;z-index:0;margin-top:0}div.final-jeopardy-category{flex:1 1 auto;display:flex;width:50%;flex-direction:column;justify-content:center;align-items:stretch;background-color:#0B1885;border:5px solid black}p.final-jeopardy-category{text-align:center;color:white;font-family:'Oswald Bold';font-size:8vmin;text-shadow:1px 1px black;text-transform:uppercase}div.final-jeopardy-clue{flex:1 1 auto;display:flex;width:50%;flex-direction:column;justify-content:center;align-items:stretch;background-color:#0B1885;border:5px solid black}p.final-jeopardy-clue{color:white;text-transform:uppercase;font-size:150%;font-family:'Korinna Bold';text-shadow:2px 2px black;margin:50px}div.final-response{display:flex;flex-direction:column;align-items:stretch;justify-content:center;background-color:brown;height:100%;padding-top:10px;padding-bottom:10px}div.final-response-name{flex:1 1 auto;height:auto;background-color:#0B1885;border:5px solid black;margin-left:20px;margin-right:20px;margin-top:10px;margin-bottom:10px;display:flex;flex-direction:column;justify-content:center;align-items:stretch;padding:0}p.final-response-name{flex:0 1 auto;font-size:200%;margin:0;color:white}div.final-response-question{flex:4 4 auto;background-color:#0B1885;border:5px solid black;margin-left:20px;margin-right:20px;margin-top:10px;margin-bottom:10px;display:flex;flex-direction:column;justify-content:center;align-items:stretch}p.final-response-question{flex:0 1 auto;font-size:200%;margin:0;font-family:"Rock Salt";color:white}div.final-response-wager{flex:1 1 auto;background-color:#0B1885;border:5px solid black;margin-left:20px;margin-right:20px;margin-top:10px;margin-bottom:10px;display:flex;flex-direction:column;justify-content:center;align-items:stretch;padding:0}p.final-response-wager{flex:0 1 auto;font-size:200%;margin:0;color:white;font-family:"Rock Salt"}
-/*# sourceMappingURL=display.css.map */
+@font-face {
+  font-family: 'Korinna Bold';
+  src: url("fonts/Korinna Bold.ttf");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Brush Script Standard Medium';
+  src: url("fonts/BrushScriptStd.otf");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Oswald Bold';
+  src: url("fonts/Oswald-Bold.ttf");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Rock Salt';
+  src: url("fonts/RockSalt.ttf");
+  font-weight: normal;
+  font-style: normal; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  font-family: Verdana, Geneva, sans-serif; }
+
+#question-panel {
+  display: flex;
+  flex: 1 1 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  overflow: auto; }
+
+#player-list {
+  flex: 0 0 auto;
+  height: 150px;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: stretch;
+  background-color: brown;
+  overflow-x: auto; }
+
+#display-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  font-family: Verdana, Geneva, sans-serif;
+  height: 100%;
+  width: 100%; }
+
+#question-panel p {
+  text-align: center; }
+
+.content {
+  flex: 1 1 auto; }
+
+/* No Question Panel */
+div .no-question-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #0B1885; }
+
+.no-question-panel div {
+  flex: 1 1 auto;
+  display: flex;
+  max-height: 95%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+.no-question-panel p.handwriting {
+  color: red;
+  font-family: 'Brush Script Standard Medium';
+  font-size: 15vw;
+  margin-bottom: -5vw;
+  text-shadow: 0 5px black;
+  z-index: 0;
+  margin-top: 0; }
+
+.no-question-panel img {
+  flex: 0 0 auto;
+  width: auto;
+  width: 95vw;
+  z-index: 2; }
+
+/* Select Question Panel */
+div.select-question-panel {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  justify-content: center;
+  align-items: stretch;
+  background-color: brown; }
+
+div.select-question-wrapper {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #0B1885; }
+
+div.select-question-board {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #0B1885; }
+
+div.category-group {
+  flex: 1 1 60px;
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-top: 5px solid black;
+  border-bottom: 5px solid black; }
+
+div.category-header {
+  flex: 0.8 0.8 auto;
+  height: 20px;
+  background-color: #0B1885;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-bottom: 8px solid black;
+  padding-left: 5px;
+  padding-right: 5px; }
+
+p.category-header {
+  text-align: center;
+  color: white;
+  font-family: 'Oswald Bold';
+  font-size: 4vmin;
+  text-shadow: 1px 1px black;
+  text-transform: uppercase; }
+
+div.category-clue-group {
+  flex: 5 5 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch; }
+
+div.clue-button {
+  flex: 1 1;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  div.clue-button .active {
+    background-color: #0B1885; }
+  div.clue-button .inactive {
+    background-color: #0B1885; }
+
+p.clue-button {
+  width: 100%;
+  text-align: center;
+  color: orange;
+  font-size: 400%;
+  font-family: 'Oswald Bold'; }
+
+/* Scoreboard Row */
+div .playerContainer {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: stretch; }
+
+div .playerListing {
+  flex: 1 1 auto;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid black; }
+
+p.playerListingName {
+  color: white;
+  text-align: center;
+  font-size: 150%; }
+
+div.playerListingName {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  flex: 1 1 auto;
+  height: 30px;
+  background-color: #0B1885;
+  border-bottom: 1px solid black;
+  padding-right: 5px; }
+  div.playerListingName .locked-out {
+    background-color: grey; }
+  div.playerListingName .answering {
+    background-color: blue; }
+
+p.playerListingDetails {
+  font-family: 'Oswald Bold';
+  color: white;
+  font-size: 300%;
+  text-shadow: 2px 2px black; }
+  p.playerListingDetails .negative {
+    color: red; }
+
+div.playerListingDetails {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  flex: 1 1 auto;
+  height: 30px;
+  background-color: #0B1885; }
+  div.playerListingDetails .locked-out {
+    background-color: grey; }
+  div.playerListingDetails .answering {
+    background-color: blue; }
+
+/* Open Question Panel */
+div #open-question-panel {
+  display: flex;
+  position: relative;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  background-color: #0B1885;
+  max-width: auto;
+  padding: 5px;
+  border: 10px solid black; }
+
+div.open-question-clue {
+  flex: 1 1 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+p.open-question-clue {
+  color: white;
+  text-transform: uppercase;
+  font-size: 250%;
+  font-family: 'Korinna Bold';
+  text-shadow: 2px 2px black;
+  margin: 50px; }
+
+/* Daily Double Panel */
+div .daily-double-panel {
+  display: flex;
+  position: relative;
+  flex: 1 1 auto;
+  max-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: maroon;
+  max-width: auto;
+  border: 10px solid black;
+  overflow: hidden; }
+
+.daily-double-panel p.daily {
+  flex: 1 1 auto;
+  color: yellow;
+  min-height: 0;
+  font-family: 'Brush Script Standard Medium';
+  font-size: 15vw;
+  height: auto;
+  margin-top: 20vw;
+  margin-bottom: -10vw;
+  text-shadow: 0 5px black;
+  z-index: 1; }
+
+.daily-double-panel p.double {
+  flex: 1 1 auto;
+  color: white;
+  min-height: 0;
+  height: auto;
+  font-family: 'Oswald Bold';
+  font-size: 20vw;
+  text-shadow: 0 5px black;
+  margin-top: -10vw;
+  z-index: 0; }
+
+/* Final Jeopardy Panel */
+div .final-jeopardy-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; }
+
+div .final-jeopardy-row {
+  flex: 1 1 auto;
+  height: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center; }
+
+div .final-jeopardy-blank {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: center;
+  width: 50%;
+  align-items: stretch;
+  background-color: #0B1885;
+  border: 5px solid black; }
+
+div .final-jeopardy-logo {
+  flex: 1 1 auto;
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #0B1885;
+  border: 5px solid black; }
+
+.final-jeopardy-logo div {
+  flex: 1 1 auto;
+  display: flex;
+  max-height: 47.5%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+.final-jeopardy-logo p.handwriting {
+  color: red;
+  font-family: 'Brush Script Standard Medium';
+  font-size: 7.5vw;
+  margin-bottom: -2.5vw;
+  text-shadow: 0 5px black;
+  z-index: 0;
+  margin-top: 0; }
+
+div.final-jeopardy-category {
+  flex: 1 1 auto;
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #0B1885;
+  border: 5px solid black; }
+
+p.final-jeopardy-category {
+  text-align: center;
+  color: white;
+  font-family: 'Oswald Bold';
+  font-size: 8vmin;
+  text-shadow: 1px 1px black;
+  text-transform: uppercase; }
+
+div.final-jeopardy-clue {
+  flex: 1 1 auto;
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #0B1885;
+  border: 5px solid black; }
+
+p.final-jeopardy-clue {
+  color: white;
+  text-transform: uppercase;
+  font-size: 150%;
+  font-family: 'Korinna Bold';
+  text-shadow: 2px 2px black;
+  margin: 50px; }
+
+/* Final Jeopardy Response Panel */
+div.final-response {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  background-color: brown;
+  height: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+div.final-response-name {
+  flex: 1 1 auto;
+  height: auto;
+  background-color: #0B1885;
+  border: 5px solid black;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0; }
+
+p.final-response-name {
+  flex: 0 1 auto;
+  font-size: 200%;
+  margin: 0;
+  color: white; }
+
+div.final-response-question {
+  flex: 4 4 auto;
+  background-color: #0B1885;
+  border: 5px solid black;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch; }
+
+p.final-response-question {
+  flex: 0 1 auto;
+  font-size: 200%;
+  margin: 0;
+  font-family: "Rock Salt";
+  color: white; }
+
+div.final-response-wager {
+  flex: 1 1 auto;
+  background-color: #0B1885;
+  border: 5px solid black;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0; }
+
+p.final-response-wager {
+  flex: 0 1 auto;
+  font-size: 200%;
+  margin: 0;
+  color: white;
+  font-family: "Rock Salt"; }
