@@ -248,9 +248,9 @@ div.playerListingName {
   background-color: #0B1885;
   border-bottom: 1px solid black;
   padding-right: 5px; }
-  div.playerListingName .locked {
+  div.playerListingName.locked {
     background-color: grey; }
-  div.playerListingName .answering {
+  div.playerListingName.answering {
     background-color: blue; }
 
 p.playerListingDetails {
@@ -258,7 +258,7 @@ p.playerListingDetails {
   color: white;
   font-size: 300%;
   text-shadow: 2px 2px black; }
-  p.playerListingDetails .negative {
+  p.playerListingDetails.negative {
     color: red; }
 
 div.playerListingDetails {
@@ -270,9 +270,9 @@ div.playerListingDetails {
   flex: 3 3 auto;
   height: 60px;
   background-color: #0B1885; }
-  div.playerListingDetails .locked {
+  div.playerListingDetails.locked {
     background-color: grey; }
-  div.playerListingDetails .answering {
+  div.playerListingDetails.answering {
     background-color: blue; }
 
 div.player-details-panel {
@@ -373,10 +373,10 @@ div.clue-button {
   justify-content: center;
   margin-left: 5px;
   margin-right: 5px; }
-  div.clue-button .active {
+  div.clue-button.active {
     background-color: #0B1885;
     cursor: pointer; }
-  div.clue-button .inactive {
+  div.clue-button.inactive {
     background-color: #0B1885; }
 
 p.clue-button {
@@ -423,7 +423,7 @@ div.open-question-clue {
   justify-content: center;
   align-items: center;
   border: 1px solid white; }
-  div.open-question-clue .daily-double {
+  div.open-question-clue.daily-double {
     background-color: maroon; }
 
 p.open-question-clue {
@@ -431,7 +431,7 @@ p.open-question-clue {
   text-transform: uppercase;
   font-size: 150%;
   font-family: 'Korinna Bold'; }
-  p.open-question-clue .daily-double {
+  p.open-question-clue.daily-double {
     font-size: 250%;
     font-family: 'Oswald Bold'; }
 
@@ -467,9 +467,9 @@ div.button-row {
   justify-content: center;
   flex: 0 0 auto;
   width: 100%; }
-  div.button-row .space-between {
+  div.button-row.space-between {
     justify-content: space-between; }
-  div.button-row .recursive {
+  div.button-row.recursive {
     width: auto; }
 
 /* Final Jeopardy Panel */
@@ -551,7 +551,7 @@ p.final-jeopardy-response {
   font-family: 'Korinna Bold';
   font-size: 150%;
   margin: auto; }
-  p.final-jeopardy-response .left {
+  p.final-jeopardy-response.left {
     text-align: left; }
 
 p.no-players {
@@ -588,7 +588,7 @@ div.player-panel-bar {
     width: 100%;
     z-index: 1;
     height: calc(100% - (70px + 1px)); }
-    #player-list .hidden {
+    #player-list.hidden {
       display: none; }
   div.main-panel {
     height: calc(100% - (70px + 1px)); }

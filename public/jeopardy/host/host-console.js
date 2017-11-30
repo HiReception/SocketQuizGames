@@ -67,6 +67,7 @@ export default class HostConsole extends React.Component {
 			.clues[this.state.currentClueNo].active = false;
 		const newCluesLeft = this.state.cluesLeft - 1;
 		this.setGameState({
+			buzzersOpen: false,
 			rounds: newRounds,
 			cluesLeft: newCluesLeft,
 			currentPanel: newCluesLeft === 0 ?

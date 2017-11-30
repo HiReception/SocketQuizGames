@@ -101,7 +101,7 @@ div.select-question-panel {
   height: 100%;
   justify-content: center;
   align-items: stretch;
-  background-color: brown; }
+  background-color: #0B1885; }
 
 div.select-question-wrapper {
   display: flex;
@@ -161,9 +161,9 @@ div.clue-button {
   display: flex;
   align-items: center;
   justify-content: center; }
-  div.clue-button .active {
+  div.clue-button.active {
     background-color: #0B1885; }
-  div.clue-button .inactive {
+  div.clue-button.inactive {
     background-color: #0B1885; }
 
 p.clue-button {
@@ -209,9 +209,9 @@ div.playerListingName {
   background-color: #0B1885;
   border-bottom: 1px solid black;
   padding-right: 5px; }
-  div.playerListingName .locked-out {
+  div.playerListingName.locked-out {
     background-color: grey; }
-  div.playerListingName .answering {
+  div.playerListingName.answering {
     background-color: blue; }
 
 p.playerListingDetails {
@@ -219,7 +219,7 @@ p.playerListingDetails {
   color: white;
   font-size: 300%;
   text-shadow: 2px 2px black; }
-  p.playerListingDetails .negative {
+  p.playerListingDetails.negative {
     color: red; }
 
 div.playerListingDetails {
@@ -231,9 +231,9 @@ div.playerListingDetails {
   flex: 1 1 auto;
   height: 30px;
   background-color: #0B1885; }
-  div.playerListingDetails .locked-out {
+  div.playerListingDetails.locked-out {
     background-color: grey; }
-  div.playerListingDetails .answering {
+  div.playerListingDetails.answering {
     background-color: blue; }
 
 /* Open Question Panel */

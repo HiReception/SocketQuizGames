@@ -97,7 +97,7 @@ div.select-question-panel {
   height: 100%;
   justify-content: center;
   align-items: stretch;
-  background-color: brown;
+  background-color: $background-color;
 }
 
 div.select-question-wrapper {
@@ -166,11 +166,11 @@ div.clue-button {
   align-items: center;
   justify-content: center;
 
-  .active {
+  &.active {
     background-color: $background-color;
   }
 
-  .inactive {
+  &.inactive {
     background-color: $background-color;
   }
 }
@@ -228,11 +228,11 @@ div.playerListingName {
   border-bottom: 1px solid black;
   padding-right: 5px;
 
-  .locked-out {
+  &.locked-out {
     background-color: grey;
   }
 
-  .answering {
+  &.answering {
     background-color: blue;
   }
 }
@@ -243,7 +243,7 @@ p.playerListingDetails {
   font-size: 300%;
   text-shadow: 2px 2px black;
 
-  .negative {
+  &.negative {
     color: red;
   }
 }
@@ -258,11 +258,11 @@ div.playerListingDetails {
   height: 30px;
   background-color: $background-color;
 
-  .locked-out {
+  &.locked-out {
     background-color: grey;
   }
 
-  .answering {
+  &.answering {
     background-color: blue;
   }
 }

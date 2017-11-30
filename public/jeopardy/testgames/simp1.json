@@ -1,0 +1,277 @@
+{
+	"properties": {
+		"prefix": "$",
+		"suffix": ""
+	},
+	"rounds": [
+		{
+			"values": {
+				"amounts": [200, 400, 600, 800, 1000]
+			},
+			"categories": [
+				{
+					"name": "Simpsons Sing Along",
+					"clues": [
+						{
+							"answer": "\"We're Sending Our Love Down The Well\" was a takeoff of this charitable hit",
+							"correct": "What is \"We are the World\"?"
+						},
+						{
+							"answer": "Hank Scorpio's theme parodied this James Bond title song",
+							"correct": "What is \"Goldfinger\"?"
+						},
+						{
+							"answer": "It was Homer's first hit with the Be Sharps, his Barbershop Quartet",
+							"correct": "What is \"Baby on Board\"?"
+						},
+						{
+							"answer": "\"The Wandering Log Song\" spoofed this folksinger's work",
+							"correct": "Who is Woody Guthrie?"
+						},
+						{
+							"answer": "This countrified character sang \"Bagged me a Homer\"",
+							"correct": "Who is Lurleen Lumpkin?"
+						}
+					]
+				},
+				{
+					"name": "Guest Star Gazing",
+					"clues": [
+						{
+							"answer": "This \"Frasier\" star played Sideshow Bob",
+							"correct": "Who is Kelsey Grammer?"
+						},
+						{
+							"answer": "He got no respect as the voice of Mr. Burns' son Larry",
+							"correct": "Who is Rodney Dangerfield?"
+						},
+						{
+							"answer": "This multiple Oscar & Husband-winning actress uttered Maggie's first word",
+							"correct": "Who is Elizabeth Taylor?"
+						},
+						{
+							"answer": "She was Ms. Butz, the Babysitter Bandit, as well as Shirley's Laverne",
+							"correct": "Who is Penny Marshall?"
+						},
+						{
+							"answer": "He played a computer, the Ultrahouse 3000 Computer",
+							"correct": "Who is Pierce Brosnan?"
+						}
+					]
+				},
+				{
+					"name": "Who Shot Mr. Burns?",
+					"clues": [
+						{
+							"answer": "This toddler actually shot Mr. Burns",
+							"correct": "Who is Maggie?"
+						},
+						{
+							"answer": "He thought he shot his boss, but didn't",
+							"correct": "Who is Smithers?"
+						},
+						{
+							"answer": "Mr. Burns planned to block out this celestial body to raise energy costs",
+							"correct": "What is the sun?"
+						},
+						{
+							"answer": "She solved the mystery & cleared her father",
+							"correct": "Who is Lisa?"
+						},
+						{
+							"dailyDouble": true,
+							"answer": "This legendary jazz star performed \"Slanderous Mambo\"",
+							"correct": "Who is Tito Puente?"
+						}
+					]
+				},
+				{
+					"name": "Christmas in Springfield",
+					"clues": [
+						{
+							"answer": "Name of Homer's canine Christmas gift to the family",
+							"correct": "Who is Santa's Little Helper?"
+						},
+						{
+							"answer": "Lisa's perennial Christmas wish",
+							"correct": "What is a pony?"
+						},
+						{
+							"answer": "This former child star & security guard spent Christmas Eve with the Simpsons",
+							"correct": "Who is Gary Coleman?"
+						},
+						{
+							"answer": "Marge went on this game show to pay back Springfield for its holiday generosity",
+							"correct": "What is \"Jeopardy!\"?"
+						},
+						{
+							"answer": "Bart shoplifted from this discount store at Christmastime",
+							"correct": "What is the Try 'N' Save?"
+						}
+					]
+				},
+				{
+					"name": "D'oh-pourri",
+					"clues": [
+						{
+							"answer": "When he gave up church, Homer declared that this Stooge was \"their leader\"",
+							"correct": "Who is Moe?"
+						},
+						{
+							"answer": "Title of Bart's Internet cartoon about Homer",
+							"correct": "What is \"Angry Dad\"?"
+						},
+						{
+							"answer": "Mr. Burns' long-lost teddy bear had this name",
+							"correct": "Who is Bobo?"
+						},
+						{
+							"answer": "Springfield's Bi-Monthly Science Fiction Convention is known as this",
+							"correct": "What is the Bi-Mon-Sci-Fi-Con?"
+						},
+						{
+							"answer": "This biker gang hijacked Marge",
+							"correct": "Who are the Hell's Satans?"
+						}
+					]
+				}
+			]
+		},
+		{
+			"values": {
+				"amounts": [400, 800, 1200, 1600, 2000]
+			},
+			"categories": [
+				{
+					"name": "Bart in Trouble",
+					"clues": [
+						{
+							"answer": "Bart stole the head of this statue",
+							"correct": "Who is Jebediah Springfield?"
+						},
+						{
+							"answer": "He's Bart's graffiti-crazed alter ego",
+							"correct": "Who is El Barto?"
+						},
+						{
+							"answer": "Bart joined this scouting group during a squishee blackout",
+							"correct": "Who are the Junior Campers?"
+						},
+						{
+							"answer": "The name of the pen with which Mrs. Krabappel gave Bart an F in History",
+							"correct": "What is \"Old Red\"?"
+						},
+						{
+							"answer": "Bart stumbled upon this Burlesque salon while flying a model airplane",
+							"correct": "What is the Maison Derriere?"
+						}
+					]
+				},
+				{
+					"name": "At the Movies",
+					"clues": [
+						{
+							"answer": "Moe's Christmas vision of a world where he'd never been born was a spoof of this movie",
+							"correct": "What is \"It's a Wonderful Life\"?"
+						},
+						{
+							"answer": "Bart breaking his leg & thinking Flanders killed his wife parodies this Hitchcock film",
+							"correct": "What is \"Rear Window\"?"
+						},
+						{
+							"dailyDouble": true,
+							"answer": "It's the name of the multi-screen Springfield Movie Theatre",
+							"correct": "What is the Googolplex?"
+						},
+						{
+							"answer": "Homer negatively reviewed Mel Gibson's remake of this Capra classic",
+							"correct": "What is \"Mr. Smith Goes to Washington\"?"
+						},
+						{
+							"answer": "Flanders' romance with starlet Sara Sloan was a take-off of this Hugh Grant movie",
+							"correct": "What is \"Notting Hill\"?"
+						}
+					]
+				},
+				{
+					"name": "What's in a Name?",
+					"clues": [
+						{
+							"answer": "It's Smithers' first name",
+							"correct": "What is Waylon?"
+						},
+						{
+							"answer": "Milhouse has this last name",
+							"correct": "What is Van Houten?"
+						},
+						{
+							"answer": "Marge had this maiden name",
+							"correct": "What is Bouvier?"
+						},
+						{
+							"answer": "It's Homer's middle name",
+							"correct": "What is Jay?"
+						},
+						{
+							"dailyDouble": true,
+							"answer": "Krusty the Klown's real, full name",
+							"correct": "What is Herschel Schmoikel Krustofski?"
+						}
+					]
+				},
+				{
+					"name": "Kang & Kodos",
+					"clues": [
+						{
+							"answer": "Kang's love child",
+							"correct": "Who is Maggie?"
+						},
+						{
+							"answer": "This Kansas Senator was the loser in the Bioduplication Election (the real-life one)",
+							"correct": "Who is Bob Dole?"
+						},
+						{
+							"answer": "It was the Initial title of the dusty cook book",
+							"correct": "What is \"How to Cook Humans\"?"
+						},
+						{
+							"answer": "It was the complete title of the dusty cook book",
+							"correct": "What is \"How to Cook for Forty Humans\"?"
+						}
+					]
+				},
+				{
+					"name": "The Moe the Merrier",
+					"clues": [
+						{
+							"answer": "It's the full name of Moe's establishment",
+							"correct": "What is Moe's Tavern?"
+						},
+						{
+							"answer": "Moe has this last name",
+							"correct": "What is Szyslak?"
+						},
+						{
+							"answer": "It's the secret ingredient in a Flaming Moe",
+							"correct": "What is cough syrup?"
+						},
+						{
+							"answer": "Moe's girlfriend, Renee has this occupation",
+							"correct": "What is a flower vendor?"
+						},
+						{
+							"answer": "Moe starred on this soap opera",
+							"correct": "What is \"It Never Ends\"?"
+						}
+					]
+				}
+			]
+		}
+	],
+	"final": {
+		"category": "Kang & Kodos",
+		"answer": "On their first visit to Earth, Kang and Kodos were accompanied by this third alien",
+		"correct": "Who is Serak?"
+	}
+
+}

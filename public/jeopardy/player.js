@@ -71,11 +71,11 @@ class PlayerPanel extends React.Component {
 	}
 
 	componentDidMount = () => {
-		socket.on("new game state", this.handleNewState);
+		this.props.socket.on("new game state", this.handleNewState);
 	}
 
 	componentWillUnmount = () => {
-		socket.removeListener("new game state", this.handleNewState);
+		this.props.socket.removeListener("new game state", this.handleNewState);
 	}
 
 	render = () => {

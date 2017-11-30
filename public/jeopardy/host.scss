@@ -197,11 +197,11 @@ div.playerListingName {
 	border-bottom: 1px solid black;
 	padding-right: 5px;
 
-	.locked {
+	&.locked {
 		background-color: grey;
 	}
 
-	.answering {
+	&.answering {
 		background-color: blue;
 	}
 }
@@ -212,7 +212,7 @@ p.playerListingDetails {
 	font-size: 300%;
 	text-shadow: 2px 2px black;
 
-	.negative {
+	&.negative {
 		color: red;
 	}
 }
@@ -227,11 +227,11 @@ div.playerListingDetails {
 	height: 60px;
 	background-color: $background-color;
 
-	.locked {
+	&.locked {
 		background-color: grey;
 	}
 
-	.answering {
+	&.answering {
 		background-color: blue;
 	}
 }
@@ -367,12 +367,12 @@ div.clue-button {
 	margin-left: 5px;
 	margin-right: 5px;
 
-	.active {
+	&.active {
 		background-color: $background-color;
 		cursor: pointer;
 	}
 
-	.inactive {
+	&.inactive {
 		background-color: $background-color;
 	}
 }
@@ -432,7 +432,7 @@ div.open-question-clue {
 	align-items: center;
 	border: 1px solid white;
 
-	.daily-double {
+	&.daily-double {
 		background-color: maroon;
 	}
 }
@@ -443,7 +443,7 @@ p.open-question-clue {
 	font-size: 150%;
 	font-family: 'Korinna Bold';
 
-	.daily-double {
+	&.daily-double {
 		font-size: 250%;
 		font-family: 'Oswald Bold';
 	}
@@ -486,11 +486,11 @@ div.button-row {
 	flex: 0 0 auto;
 	width: 100%;
 
-	.space-between {
+	&.space-between {
 		justify-content: space-between;
 	}
 
-	.recursive {
+	&.recursive {
 		width: auto;
 	}
 }
@@ -588,7 +588,7 @@ p.final-jeopardy-response {
 	font-size: 150%;
 	margin: auto;
 
-	.left {
+	&.left {
 		text-align: left;
 	}
 }
@@ -630,7 +630,7 @@ div.player-panel-bar {
 		z-index: 1;
 		height: calc(100% - (70px + 1px));
 
-		.hidden {
+		&.hidden {
 			display: none;
 		}
 	}
