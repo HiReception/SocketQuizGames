@@ -1,9 +1,17 @@
+@font-face {
+    font-family: 'Conduit';
+    src: url('fonts/CONDIB01.ttf');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 body {
 	display: flex;
 	flex-direction: row;
 	padding: 0;
 	margin: 0;
-	font-family: Verdana, Geneva, sans-serif;
+	font-family: "Conduit", Verdana, sans-serif;
 }
 
 #sidebar {
@@ -25,7 +33,7 @@ body {
 	flex: 1 0 auto;
 	text-align: center;
 	color: white;
-	font-family: 'Korinna Bold';
+	font-family: "Conduit", Verdana, sans-serif;
 }
 
 #sidebar-header {
@@ -142,7 +150,7 @@ body {
 	flex: 1 0 auto;
 	text-align: center;
 	color: white;
-	font-family: 'Korinna Bold';
+	font-family: "Conduit", Verdana, sans-serif;
 }
 
 #game-code {
@@ -269,6 +277,7 @@ div .playerListing {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border: 1px solid black;
+	cursor: pointer;
 }
 
 
@@ -294,7 +303,7 @@ div .playerListingName.waiting {
 }
 
 p.playerListingDetails {
-	font-family: 'Oswald Bold';
+	font-family: "Conduit", Verdana, sans-serif;
 	color: white;
 	font-size: 300%;
 	text-shadow: 2px 2px black;
@@ -417,7 +426,7 @@ div.open-question-correct {
 
 p.open-question-correct {
 	color: white;
-	font-family: 'Korinna Bold';
+	font-family: "Conduit", Verdana, sans-serif;
 	font-size: 150%;
 }
 
@@ -432,7 +441,7 @@ div.buzzer-panel {
 
 p.buzzer-panel {
 	color: white;
-	font-family: 'Korinna Bold';
+	font-family: "Conduit", Verdana, sans-serif;
 	font-size: 150%;
 	margin: auto;
 }
@@ -481,16 +490,28 @@ div.open-question-option {
 	border: 1px solid aqua;
 }
 
+div.open-question-option.correct {
+	background-color: green;
+}
+
 div.open-question-option-icon {
 	flex: 0 0 auto;
 	color: orange;
 	padding: 10px;
 	font-weight: bold;
+}
+
+div.open-question-option-icon.correct {
+	color: black;
 
 }
 
 p.open-question-option {
 	color: white;
+}
+
+p.open-question-option.correct {
+	color: black;
 }
 
 .remaining-players-header p{

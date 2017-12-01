@@ -46,10 +46,9 @@ socket.on("connect_error", (err) => {
 	console.log(`connection error: ${ err}`);
 });
 
-socket.on("accepted", (newPlayerDetails) => {
-	console.log("new player details received:");
-	console.log(JSON.stringify(newPlayerDetails));
+socket.on("accepted", (state) => {
 	$("#header-bar").text(screenName);
+	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"));
 });
 
 socket.on("new message", (message) => {
@@ -64,39 +63,73 @@ socket.on("new message", (message) => {
 });
 
 
-socket.on("new question", (question) => {
-	console.log(`New question received, type ${ question.type}`);
-	console.log(question);
-	const optionButtons = question.options.map((option) => {
-		return (
-			<AnswerButton
-				key={option.key}
-				answerKey={option.key}
-				body={option.text}/>
 
-		);
-	});
-	if (question.type === "sequence") {
-		ReactDOM.render((
-			<OrderedChoiceQuestion
-				questionNo={parseInt(question.questionNo, 10)}
-				body={question.body}>
-				{optionButtons}
-			</OrderedChoiceQuestion>
-		), document.getElementById("question-window"));
-	} else if (question.type === "double-answer") {
-		// TODO render DoubleAnswerQuestion
-	} else if (question.type === "single-answer") {
-		// TODO render MultipleChoiceQuestion
-		ReactDOM.render((
-			<MultipleChoiceQuestion
-				questionNo={question.questionNo}
-				body={question.questionBody}>
-				{optionButtons}
-			</MultipleChoiceQuestion>
-		), document.getElementById("question-window"));
+class PlayerPanel extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = props.receivedState;
 	}
-});
+
+	handleNewState = (newState) => {
+		console.log("new state");
+		console.log(newState);
+		this.setState(newState);
+	}
+
+	componentDidMount = () => {
+		socket.on("new game state", this.handleNewState);
+	}
+
+	componentWillUnmount = () => {
+		socket.removeListener("new game state", this.handleNewState);
+	}
+
+	render = () => {
+		var input;
+		const currentQ = this.state.questions[this.state.currentQuestion];
+		if (this.state.buzzersOpen && !currentQ.answers.some((answer) => { return answer.screenName === screenName; })) {
+			const optionButtons = currentQ.options.map((option) => {
+				return (
+					<AnswerButton
+						key={option.key}
+						answerKey={option.key}
+						body={option.text}/>
+
+				);
+			});
+
+
+			switch (currentQ.type) {
+			case "sequence":
+				input = (
+					<OrderedChoiceQuestion
+						questionNo={parseInt(currentQ.questionNo, 10)}
+						body={currentQ.body}>
+						{optionButtons}
+					</OrderedChoiceQuestion>
+				);
+				break;
+			case "double-answer":
+				// TODO
+				break;
+			case "single-answer":
+				// TODO
+				break;
+			}
+		} else {
+			input = <EmptyPanel/>;
+		}
+		return (
+			<div className="playerBody">
+				{input}
+			</div>
+		);
+	}
+}
+
+
+
+
 
 class Message extends Component {
 	render() {
@@ -314,7 +347,6 @@ class MultipleChoiceQuestion extends Component {
 		});
 		console.log(`Answered with ${ option.props.answerKey}`);
 		// TODO produce toast to represent successful answering
-		ReactDOM.render(<EmptyPanel />, document.getElementById("question-window"));
 	}
 
 	render = () => {
