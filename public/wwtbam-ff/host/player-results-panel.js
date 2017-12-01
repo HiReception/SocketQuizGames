@@ -5,14 +5,25 @@ import React, { Component } from "react";
 export default class PlayerResultsPanel extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			answersRevealed: false,
-			winnerRevealed: false,
-		};
+		this.state = props.gameState;
+	}
+
+	setGameState = (state) => {
+		this.setState(state);
+		this.props.setGameState(state);
+	}
+
+	revealCorrectPlayers = () => {
+
+	}
+
+	render = () => {
+
 	}
 }
 
 PlayerResultsPanel.propTypes = {
-	players: PropTypes.array,
+	gameState: PropTypes.object,
+	setGameState: PropTypes.func,
 };
 

@@ -74,6 +74,9 @@ export default class HostConsole extends React.Component {
 				"NextRoundPanel" : "SelectQuestionPanel",
 			newPanelKey: this.state.newPanelKey + 1,
 			playerAnswering: {},
+			wrongPlayerNames: [],
+			ddWagerEntered: false,
+			ddWagerSubmittable: false,
 		});
 	}
 
