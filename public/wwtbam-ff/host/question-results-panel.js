@@ -18,7 +18,7 @@ export default class QuestionResultsPanel extends Component {
 			}
 		} else {
 			this.props.setGameState({
-				fullAnswersRevealed: true,
+				fullAnswerRevealed: true,
 			});
 		}
 	}

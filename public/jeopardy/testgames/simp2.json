@@ -1,0 +1,277 @@
+{
+	"properties": {
+		"prefix": "$",
+		"suffix": ""
+	},
+	"rounds": [
+		{
+			"values": {
+				"amounts": [200, 400, 600, 800, 1000]
+			},
+			"categories": [
+				{
+					"name": "Marge's Causes",
+					"clues": [
+						{
+							"answer": "Marge opposed this high speed transit method",
+							"correct": "What is a Monorail?"
+						},
+						{
+							"answer": "Marge wouldn't protest this Michelangelo statue",
+							"correct": "What is David?"
+						},
+						{
+							"answer": "Marge went on this \"Nightline\" take-off to take a stand against violent cartoons",
+							"correct": "What is \"Smartline\"?"
+						},
+						{
+							"answer": "Marge's prison art student painted a picture of Jimi Hendrix with this dessert",
+							"correct": "What is pudding?"
+						},
+						{
+							"answer": "Marge was forced to perform this act when her bulldozer damaged the Maison Derriere",
+							"correct": "What is Ventriloquism?"
+						}
+					]
+				},
+				{
+					"name": "Based on...",
+					"clues": [
+						{
+							"answer": "Malibu Stacy knocked off this doll",
+							"correct": "Who is Barbie?"
+						},
+						{
+							"answer": "Mayor Quimby sounded like he was a member of this politicial family",
+							"correct": "Who are the Kennedys?"
+						},
+						{
+							"answer": "This Jerry Lewis movie is the inspiration for Professor Frink",
+							"correct": "What is \"The Nutty Professor\"?"
+						},
+						{
+							"answer": "This \"Cosby Show\" character is the basis for Dr. Hibbert",
+							"correct": "Who is Dr. Huxtable?"
+						},
+						{
+							"answer": "Rex Banner was a parody of this actor's TV version of The Untouchable Eliot Ness",
+							"correct": "Who is Robert Stack?"
+						}
+					]
+				},
+				{
+					"name": "Papa's Got a Brand New Badge",
+					"clues": [
+						{
+							"answer": "Fat Tony's drive through Springfield mimicked the opening of this HBO show",
+							"correct": "What is \"The Sopranos\"?"
+						},
+						{
+							"answer": "She's the mystery assailant who shot the gangsters & saved her father",
+							"correct": "Who is Maggie?"
+						},
+						{
+							"answer": "During the town looting, Otto made off with this Picasso masterpiece",
+							"correct": "What is \"Guernica\"?"
+						},
+						{
+							"answer": "It's the name of Homer's mob-busting security agency",
+							"correct": "What is Springshield?"
+						},
+						{
+							"answer": "This Christmas novelty item caused the Springfield power outage",
+							"correct": "What is a Musical Santa?"
+						}
+					]
+				},
+				{
+					"name": "Springfield of Dreams",
+					"clues": [
+						{
+							"answer": "It's the nickname of Springfield's baseball team",
+							"correct": "Who are the Isotopes?"
+						},
+						{
+							"answer": "This slugger gave Bart a Major League Baseball spy bat",
+							"correct": "Who is Mark McGwire?"
+						},
+						{
+							"answer": "It's Capital City's baseball team",
+							"correct": "What is the Capitals?"
+						},
+						{
+							"answer": "Name of Homer's game-winning baseball bat",
+							"correct": "What is Wonder Bat?"
+						},
+						{
+							"dailyDouble": true,
+							"answer": "This Hall of Fame shortstop was on Burns' dream team",
+							"correct": "Who is Ozzie Smith?"
+						}
+					]
+				},
+				{
+					"name": "Teacher, Teacher",
+					"clues": [
+						{
+							"answer": "She's Bart's teacher",
+							"correct": "Who is Mrs. Krabappel?"
+						},
+						{
+							"answer": "He's the principal of Springfield Elementary School",
+							"correct": "Who is Seymour Skinner?"
+						},
+						{
+							"answer": "This star of \"Thelma & Louise\" was the voice of Bart's ballet teacher",
+							"correct": "Who is Susan Sarandon?"
+						},
+						{
+							"answer": "He was Lisa's thick-accented YMCA gym instructor",
+							"correct": "Who is Coach Lugash?"
+						},
+						{
+							"answer": "Jon Lovitz played him, Homer's shop teacher",
+							"correct": "Who is Mr. Seckofsky?"
+						}
+					]
+				}
+			]
+		},
+		{
+			"values": {
+				"amounts": [400, 800, 1200, 1600, 2000]
+			},
+			"categories": [
+				{
+					"name": "Hungry Homer",
+					"clues": [
+						{
+							"answer": "This sushi variety nearly killed Homer",
+							"correct": "What is Blowfish/Fugu?"
+						},
+						{
+							"answer": "Homer ate a can of this gelatinous beauty queen tooth polish",
+							"correct": "What is Petroleum jelly?"
+						},
+						{
+							"answer": "Homer ate a powdered packet of this in the Power Plant parking lot",
+							"correct": "What is gravy?"
+						},
+						{
+							"answer": "Homer got Mouth Watering Pork Ribs from this biblical animal",
+							"correct": "Who is the Pig of Eden?"
+						},
+						{
+							"answer": "Caramels, Waffle Batter and Liquid Smoke - fried, then wrapped around a stick of butter",
+							"correct": "What is a space age out-of-this-world moon waffle?"
+						}
+					]
+				},
+				{
+					"name": "General Hospital Facts",
+					"clues": [
+						{
+							"answer": "He's the often hospitalised motorcycle daredevil",
+							"correct": "Who is Lance Murdoch?"
+						},
+						{
+							"answer": "When he was shot, Mr. Burns ended up at this hospital named for a dearly departed doctor",
+							"correct": "What is the Marvin Monroe Memorial Hospital?"
+						},
+						{
+							"dailyDouble": true,
+							"answer": "Homer was sent to this mental hospital when he wore a pink shirt to work",
+							"correct": "What is New Bedlam?"
+						},
+						{
+							"answer": "Ned Flanders committed himself to this facility after a hurricane destroyed his house",
+							"correct": "What is Calmwood Mental Hospital?"
+						},
+						{
+							"answer": "Mooning Lisa and Bleeding Gums, Bart used this alias & was \"a little behind\" in his \"rounds\"",
+							"correct": "Who is Dr. Cheeks?"
+						}
+					]
+				},
+				{
+					"name": "Sibling Rivalries",
+					"clues": [
+						{
+							"answer": "He's Sideshow Bob's brother",
+							"correct": "Who is Cecil?"
+						},
+						{
+							"answer": "Of Kang or Kodos, she's the sister",
+							"correct": "Who is Kodos?"
+						},
+						{
+							"answer": "He's Dr. Hibbert's long-lost musician brother",
+							"correct": "Who is Bleeding Gums Murphy?"
+						},
+						{
+							"answer": "Name of Bart's attic-bound evil siamese twin brother",
+							"correct": "Who is Hugo?"
+						},
+						{
+							"dailyDouble": true,
+							"answer": "He jealously described his sister as \"Miss Big-Shot CNN Washington Correspondent\"",
+							"correct": "Who is Kent Brockman?"
+						}
+					]
+				},
+				{
+					"name": "Word Play",
+					"clues": [
+						{
+							"answer": "Bart's Scrabble entry for \"a fat, dumb, balding North American ape with no chin\"",
+							"correct": "What is \"Kwyjibo\"?"
+						},
+						{
+							"answer": "A noble spirit did \"this\" to the smallest man",
+							"correct": "What is \"Embiggen\"?"
+						},
+						{
+							"answer": "\"To succeed despite idiocy\" meant pulling this",
+							"correct": "What is a \"Homer\"?"
+						},
+						{
+							"answer": "It's Bart's word for Homer's Christmas light show",
+							"correct": "What is \"Crap-tacular\"?"
+						}
+					]
+				},
+				{
+					"name": "Worst Category Ever",
+					"clues": [
+						{
+							"answer": "Homer gave one of these organs to his father",
+							"correct": "What is a kidney?"
+						},
+						{
+							"answer": "This sister of Marge's married Sideshow Bob",
+							"correct": "Who is Selma?"
+						},
+						{
+							"answer": "He ghost wrote Krusty's autobiography, as well as \"Rabbit, Run\"",
+							"correct": "Who is John Updike?"
+						},
+						{
+							"answer": "It's the rarest Gummi candy of them all",
+							"correct": "What is the Venus de Milo Gummi?"
+						},
+						{
+							"answer": "It's the jungle where Guatemalan inmates grew the peppers for Chief Wiggum's chili",
+							"correct": "What is Quetzlzacatenango?"
+						}
+					]
+				}
+			]
+		}
+	],
+	"final": {
+		"category": "Word Play",
+		"answer": "Reverend Lovejoy's sermon on this provoked Marge to become a church volunteer",
+		"correct": "What is \"Prudissitude\"/\"Constancy\"?"
+	}
+
+}

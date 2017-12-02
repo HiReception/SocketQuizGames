@@ -2,3 +2,4 @@ public/*/*Bundle.js
 node_modules/
 .env
 .sass-cache/
+public/jeopardy/*.css

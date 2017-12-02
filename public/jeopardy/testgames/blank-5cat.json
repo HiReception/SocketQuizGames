@@ -1,0 +1,281 @@
+{
+	"properties": {
+		"prefix": "$",
+		"suffix": ""
+	},
+	"rounds": [
+		{
+			"values": {
+				"amounts": [200, 400, 600, 800, 1000]
+			},
+			"categories": [
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						}
+					]
+				},
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						}
+					]
+				},
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"dailyDouble": true,
+							"answer": "",
+							"correct": ""
+						}
+					]
+				},
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						}
+					]
+				},
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"values": {
+				"amounts": [400, 800, 1200, 1600, 2000]
+			},
+			"categories": [
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						}
+					]
+				},
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"dailyDouble": true,
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						}
+					]
+				},
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"dailyDouble": true,
+							"answer": "",
+							"correct": ""
+						}
+					]
+				},
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						}
+					]
+				},
+				{
+					"name": "",
+					"clues": [
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": "",
+						},
+						{
+							"answer": "",
+							"correct": ""
+						},
+						{
+							"answer": "",
+							"correct": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"final": {
+		"category": "",
+		"answer": "",
+		"correct": ""
+	}
+
+}

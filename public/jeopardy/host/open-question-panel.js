@@ -65,7 +65,7 @@ export default class OpenQuestionPanel extends React.Component {
 	wrongAnswer = () => {
 		if (!$.isEmptyObject(this.state.playerAnswering)) {
 			this.props.changePlayerScore(this.state.playerAnswering.screenName,
-				this.state.playerAnswering.score - this.state.currentClueValue);
+				this.state.playerAnswering.score - (this.props.clue.dailyDouble ? this.state.ddWager : this.state.currentClueValue));
 			this.props.clearAnsweringPlayer();
 			if (this.props.clue.dailyDouble) {
 				this.props.endClue();
@@ -86,7 +86,7 @@ export default class OpenQuestionPanel extends React.Component {
 		console.log(this.state.playerAnswering);
 		if (!$.isEmptyObject(this.state.playerAnswering)) {
 			this.props.changePlayerScore(this.state.playerAnswering.screenName,
-				this.state.playerAnswering.score + this.state.currentClueValue);
+				this.state.playerAnswering.score + (this.props.clue.dailyDouble ? this.state.ddWager : this.state.currentClueValue));
 			this.props.setSelectingPlayer(this.state.playerAnswering.screenName);
 			this.props.clearAnsweringPlayer();
 			this.props.endClue();
