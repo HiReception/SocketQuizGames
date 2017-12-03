@@ -151,6 +151,8 @@ export default class HostConsole extends React.Component {
 			this.setGameState({
 				finalEligiblePlayers: this.state.players.filter((player) => {
 					return player.score > 0;
+				}).sort((p1, p2) => {
+					return p1.score < p2.score; // sort Final players so that responses are revealed in ascending order of score going in
 				}),
 				currentPanel: "FinalJeopardyPanel",
 				newPanelKey: this.state.newPanelKey + 1,

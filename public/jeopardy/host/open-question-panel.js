@@ -49,7 +49,8 @@ export default class OpenQuestionPanel extends React.Component {
 		console.log(details);
 		if (this.state.buzzersOpen &&
 			details.player !== "" &&
-			!this.state.wrongPlayerNames.includes(details.player)) {
+			!this.state.wrongPlayerNames.includes(details.player)
+			&& !this.props.clue.dailyDouble) {
 			console.log("new answer (Open inner):");
 			console.log(details);
 			this.setGameState({
