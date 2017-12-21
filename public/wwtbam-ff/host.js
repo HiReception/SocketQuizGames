@@ -12,8 +12,19 @@ import HostConsole from "./host/host-console";
 const gameCode = getParameterByName("gamecode");
 
 
-socket.emit("host request", {
-	gameCode: gameCode,
+socket.on("connect_timeout", function() {
+	console.log("connection timeout");
+});
+
+socket.on("connect", function() {
+	console.log("connected");
+	socket.emit("host request", {
+		gameCode: gameCode,
+	});
+});
+
+socket.on("connect_error", function(err) {
+	console.log("connection error: " + err);
 });
 
 socket.on("game details", (details) => {
@@ -34,6 +45,12 @@ socket.on("game details", (details) => {
 
 			numAnswersRevealed: 0,
 			fullAnswerRevealed: false,
+
+			playerPanelHidden: false,
+
+			correctPlayersRevealed: false,
+			fastestCorrectRevealed: false,
+			fastestFlashOn: false,
 
 			buzzersOpen: false,
 			playerStats: [],

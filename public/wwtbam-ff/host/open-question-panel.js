@@ -37,6 +37,7 @@ export default class OpenQuestionPanel extends Component {
 
 	goToResultsPanel = () => {
 		this.props.setGameState({
+			buzzersOpen: false,
 			currentPanel: "QuestionResultsPanel",
 		});
 	}

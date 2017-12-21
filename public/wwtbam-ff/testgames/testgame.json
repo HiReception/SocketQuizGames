@@ -21,6 +21,50 @@
 				{"key": "D", "text": "Newcastle Knights"}
 			],
 			"correctResponse": "BC"
+		},
+		{
+			"body": "Starting from the north, place these teams in order of the location of their usual home ground.",
+			"type": "sequence",
+			"options": [
+				{"key": "A", "text": "Lions"},
+				{"key": "B", "text": "Eagles"},
+				{"key": "C", "text": "Cats"},
+				{"key": "D", "text": "Power"}
+			],
+			"correctResponse": "ABDC"
+		},
+		{
+			"body": "As of 2017, which two of these players are Legends in the Australian Football Hall of Fame?",
+			"type": "double-answer",
+			"options": [
+				{"key": "A", "text": "Barrie Robran"},
+				{"key": "B", "text": "Barry Hall"},
+				{"key": "C", "text": "Barry Cable"},
+				{"key": "D", "text": "Barry Round"}
+			],
+			"correctResponse": "AC"
+		},
+		{
+			"body": "What is Perry Mason's occupation in the TV series?",
+			"type": "single-answer",
+			"options": [
+				{"key": "A", "text": "Doctor"},
+				{"key": "B", "text": "Lawyer"},
+				{"key": "C", "text": "Writer"},
+				{"key": "D", "text": "Policeman"}
+			],
+			"correctResponse": "B"
+		},
+		{
+			"body": "What is a googol?",
+			"type": "single-answer",
+			"options": [
+				{"key": "A", "text": "A search engine"},
+				{"key": "B", "text": "A number"},
+				{"key": "C", "text": "A brand of sponge"},
+				{"key": "D", "text": "An obscure German car company"}
+			],
+			"correctResponse": "B"
 		}
 	]
 }

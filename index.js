@@ -280,6 +280,8 @@ io.on("connection", function(socket) {
 							console.log("sent message of acceptance to user");
 						} else {
 							socket.emit("accepted", room.state);
+							socket.join(gameCode);
+							console.log("Joined player to room " + gameCode);
 						}
 
 						socket.on("send answer", function(details) {

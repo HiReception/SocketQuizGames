@@ -61,7 +61,7 @@ export default class QuestionResultsPanel extends Component {
 		}
 
 		const options = optionOrder.map((option, index) => {
-			const correctLit = question.type !== "sequence" && question.correctResponse.includes(option.key);
+			const correctLit = question.type !== "sequence" && question.correctResponse.includes(option.key) && gameState.fullAnswerRevealed;
 			return <div key={option.key} className={`open-question-option${correctLit ? " correct" : ""}`}>
 				<div className={`open-question-option-icon${correctLit ? " correct" : ""}`}>
 					{(question.type !== "sequence" || this.props.gameState.numAnswersRevealed - 1 >= index) ? option.key : ""}

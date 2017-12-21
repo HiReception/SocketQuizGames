@@ -28,7 +28,7 @@ div.playerBody {
   align-items: center;
   flex-grow: 1;
   min-height: calc(100% - 40px);
-  background-image: url('background.png');
+  background-image: url('images/background.png');
   background-position: center;
   background-size: cover;
 }

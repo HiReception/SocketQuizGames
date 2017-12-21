@@ -10,6 +10,8 @@ import PlayerListing from "./player-listing";
 import PlayerResultsPanel from "./player-results-panel";
 import QuestionResultsPanel from "./question-results-panel";
 
+import PlayerPanelToggleBar from "../../common/player-panel-bar";
+
 export default class HostConsole extends Component {
 	constructor(props) {
 		super(props);
@@ -28,6 +30,12 @@ export default class HostConsole extends Component {
 		this.setGameState({
 			currentPanel: panelName,
 			newPanelKey: this.state.newPanelKey + 1,
+		});
+	}
+
+	togglePlayerPanel = () => {
+		this.setState({
+			playerPanelHidden: !this.state.playerPanelHidden,
 		});
 	}
 
@@ -124,8 +132,7 @@ export default class HostConsole extends Component {
 
 	render = () => {
 		const { players, detailPlayerName, currentPanel,
-			newPanelKey, currentRound, rounds, questions,
-			currentQuestion } = this.state;
+			newPanelKey, currentQuestion, questions } = this.state;
 		// render player list panel
 		let playerPanel;
 		if (detailPlayerName === "") {
@@ -181,7 +188,7 @@ export default class HostConsole extends Component {
 			mainPanel = (
 				<NextRoundPanel
 					key={newPanelKey}
-					lastRound={currentRound === rounds.length - 1}
+					lastRound={currentQuestion === questions.length - 1}
 					callback={this.goToNextRound}/>
 			);
 			break;
@@ -207,7 +214,10 @@ export default class HostConsole extends Component {
 			break;
 		// TODO PlayerResultsPanel
 		case "PlayerResultsPanel":
-
+			mainPanel = (<PlayerResultsPanel
+				key={newPanelKey}
+				gameState={this.state}
+				setGameState={this.setGameState}/>);
 			break;
 		default:
 			mainPanel = null;
@@ -215,15 +225,21 @@ export default class HostConsole extends Component {
 		}
 
 		return (
-			<div className='main-panel'>
-				<div id='player-list' className='content'>
-					{playerPanel}
+			<div>
+				<div className='main-panel'>
+					<div id='player-list' className={`content${
+							this.state.playerPanelHidden ? " hidden" : "" }`}>
+						{playerPanel}
+					</div>
+					<div
+						id='question-panel'
+						className='content'>
+						{mainPanel}
+					</div>
 				</div>
-				<div
-					id='question-panel'
-					className='content'>
-					{mainPanel}
-				</div>
+				<PlayerPanelToggleBar
+					currentlyHidden={this.state.playerPanelHidden}
+					toggle={this.togglePlayerPanel}/>
 			</div>
 		);
 	}

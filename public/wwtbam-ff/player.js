@@ -51,17 +51,6 @@ socket.on("accepted", (state) => {
 	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"));
 });
 
-socket.on("new message", (message) => {
-	console.log("new message received: ");
-	console.log(message);
-
-	ReactDOM.render((
-		<Message
-			primary={message.primary}
-			secondary={message.secondary}/>),
-		document.getElementById("question-window"));
-});
-
 
 
 class PlayerPanel extends React.Component {
@@ -98,7 +87,7 @@ class PlayerPanel extends React.Component {
 				);
 			});
 
-
+			console.log("question type = " + currentQ.type);
 			switch (currentQ.type) {
 			case "sequence":
 				input = (
@@ -110,11 +99,26 @@ class PlayerPanel extends React.Component {
 				);
 				break;
 			case "double-answer":
-				// TODO
+				input = (
+					<MultipleAnswerQuestion
+						questionNo={parseInt(currentQ.questionNo, 10)}
+						body={currentQ.body}
+						numCorrectAnswers={2}>
+						{optionButtons}
+					</MultipleAnswerQuestion>
+				);
 				break;
 			case "single-answer":
-				// TODO
+				input = (
+					<MultipleChoiceQuestion
+						questionNo={parseInt(currentQ.questionNo, 10)}
+						body={currentQ.body}>
+						{optionButtons}
+					</MultipleChoiceQuestion>
+				);
 				break;
+			default:
+				input = <EmptyPanel/>
 			}
 		} else {
 			input = <EmptyPanel/>;
@@ -221,8 +225,6 @@ class OrderedChoiceQuestion extends Component {
 			});
 			console.log(`Answered with ${ this.state.currentAnswer}`);
 			// TODO produce toast to represent successful answering
-			ReactDOM.render(<EmptyPanel />
-				, document.getElementById("question-window"));
 		}
 	}
 
@@ -290,6 +292,129 @@ OrderedChoiceQuestion.propTypes = {
 	body: PropTypes.string,
 	children: PropTypes.node,
 };
+
+
+
+class MultipleAnswerQuestion extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			currentAnswer: "",
+			invalidInput: true,
+			clearable: false,
+		};
+	}
+	componentWillMount = () => {
+		this.setState({
+			timeReceived: new Date(),
+		});
+	}
+
+	selectOption = (option) => {
+		console.log("selectOption called");
+		if (!this.state.currentAnswer.includes(option.props.answerKey)) {
+			this.setState({
+				currentAnswer: this.state.currentAnswer + option.props.answerKey,
+				clearable: true,
+				invalidInput: !(this.state.currentAnswer.length + 1 ===
+					this.props.numCorrectAnswers),
+			});
+		}
+	}
+
+	clearAnswer = () => {
+		console.log("clearAnswer called");
+		if (this.state.clearable) {
+			this.setState({
+				currentAnswer: "",
+				invalidInput: true,
+				clearable: false,
+			});
+		}
+	}
+
+	submitAnswer = () => {
+		if (!this.state.invalidInput) {
+			const timeAnswered = new Date();
+			const timeTaken = timeAnswered.getTime() -
+				this.state.timeReceived.getTime();
+			socket.emit("send answer", {
+				questionNo: this.props.questionNo,
+				submittedAnswer: this.state.currentAnswer.split("").sort().join(""),
+				timeTaken: timeTaken,
+			});
+			console.log(`Answered with ${ this.state.currentAnswer.split("").sort().join("") }`);
+			// TODO produce toast to represent successful answering
+		}
+	}
+
+	render = () => {
+		const selectFunction = this.selectOption;
+		console.log(this.props.children);
+		const options = React.Children.map(this.props.children, (child) => {
+			console.log(`name = ${ child.type.name}`);
+			if (child.type.name === "AnswerButton") {
+				console.log("adding onClick");
+				return (
+					<AnswerButton
+						key={child.key}
+						answerKey={child.props.answerKey}
+						body={child.props.body}
+						active={!this.state.currentAnswer
+							.includes(child.props.answerKey) && this.state.currentAnswer.length < this.props.numCorrectAnswers}
+						selector={selectFunction}/>
+				);
+			}
+			return child;
+		});
+		const selectedOptions = Array(this.props.numCorrectAnswers).fill().map((option, index) => {
+			console.log(`i = ${ index }, currentAnswer.length = ` +
+				`${ this.state.currentAnswer.length}`);
+			if (this.state.currentAnswer.length > index) {
+				return (
+					<div className='selected-option' key={index}>
+						<p className='selected-option'>{this.state.currentAnswer[index]}</p>
+					</div>
+				);
+			}
+			return (
+				<div className='selected-option blank' key={index}/>
+			);
+		});
+
+		const selectedPanel = (<div className='selected-panel'>
+			{selectedOptions}
+		</div>);
+
+		console.log(options);
+
+		return (
+			<Question questionNo={this.props.questionNo} body={this.props.body}>
+				{options}
+				{selectedPanel}
+				<div className='button-row'>
+					<ClearButton
+						text='Clear'
+						selector={this.clearAnswer}
+						empty={this.state.currentAnswer.length === 0}/>
+					<SubmitButton
+						text='Submit'
+						selector={this.submitAnswer}
+						invalidInput={this.state.invalidInput}/>
+				</div>
+			</Question>
+		);
+	}
+}
+
+MultipleAnswerQuestion.propTypes = {
+	questionNo: PropTypes.number,
+	body: PropTypes.string,
+	children: PropTypes.node,
+	numCorrectAnswers: PropTypes.number,
+};
+
+
 
 class AnswerButton extends Component {
 	select = () => {

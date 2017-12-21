@@ -179,6 +179,18 @@ module.exports = function(grunt) {
 						"brfs"
 					]
 				}
+			},
+			wwtbam_ff_display: {
+				src: "public/wwtbam-ff/display.js",
+				dest: "public/wwtbam-ff/displayBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}],
+						"brfs"
+					]
+				}
 			}
 		},
 		sass: {
