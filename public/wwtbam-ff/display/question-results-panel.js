@@ -72,10 +72,6 @@ export default class QuestionResultsPanel extends Component {
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 
-
-
-		
-
 		const { question, fullAnswerRevealed, numAnswersRevealed } = this.props;
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
@@ -83,13 +79,8 @@ export default class QuestionResultsPanel extends Component {
 		gradient.addColorStop(0,"#4286f4");
 		gradient.addColorStop(0.5,"skyblue");
 		gradient.addColorStop(1,"#4286f4");
-
 		
 		var fontFamily = "ConduitITC TT";
-		
-		
-
-		
 		
 		const answers = question.options.map((a) => {
 			return {
@@ -99,10 +90,8 @@ export default class QuestionResultsPanel extends Component {
 			};
 		})
 
-
 		const screenRatio = width / height;
 		const backgroundRatio = this.state.backgroundNatWidth / this.state.backgroundNatHeight;
-
 
 		var backgroundScale = 0;
 		var backgroundOffsetX = 0, backgroundOffsetY = 0;
@@ -118,23 +107,23 @@ export default class QuestionResultsPanel extends Component {
 		}
 
 		if (question.type === "sequence") {
-			// todo calculate this based on length of text
-			
 			var qNumLines = 6;
 			var panelWidth = 0.4 * width;
-			var aWidth = 0.35 * width;
-			var sideWidth = 0.1 * width;
+			var aWidth = 0.4 * width;
+			var sideWidth = 0.05 * width;
 			var aTotalWidth = aWidth + sideWidth;
+			var qMarginHeight = 0.05 * height;
+			var totalContentHeight = height - (2*qMarginHeight);
 			var aGapHeight = 0.02 * height;
-			var aHeight = 0.08 * height;
+			var aHeight = 0.05 * width;
 			var lineWidth = 0.1 * aHeight;
 			var aTextGapWidth = 0.1 * aWidth;
 			var qWidth = 0.8 * panelWidth;
 			var aLetterWidth = 0.09 * aWidth;
 			var qMarginWidth = 0.1 * panelWidth;
-			var qHeight = 0.5 * height;
+			var qHeight = totalContentHeight - 4*(aHeight + aGapHeight);
 			var aTextWidth = 0.74 * aWidth;
-			var qMarginHeight = 0.05 * height;
+			
 			var aLeft = width - aTotalWidth;
 			var firstAnswerY = qMarginHeight + qHeight + aGapHeight;
 			var aTextHeight = 0.8 * aHeight;
@@ -148,7 +137,6 @@ export default class QuestionResultsPanel extends Component {
 
 			const panelBackgroundScale = this.state.panelBackgroundNatHeight ? height / this.state.backgroundNatHeight : 1;
 			const panelBackgroundOffset = this.state.panelBackgroundNatWidth + (panelWidth / panelBackgroundScale);
-			
 
 			return (
 				<Stage width={width} height={height}>

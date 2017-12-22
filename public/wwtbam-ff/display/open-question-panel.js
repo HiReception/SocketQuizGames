@@ -43,8 +43,6 @@ export default class OpenQuestionPanel extends Component {
 
 		const { question, questionVisible, answersVisible } = this.props;
 
-
-
 		const screenRatio = width / height;
 		const backgroundRatio = this.state.backgroundNatWidth / this.state.backgroundNatHeight;
 

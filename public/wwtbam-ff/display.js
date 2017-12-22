@@ -47,7 +47,19 @@ socket.on("accepted", function() {
 		}
 
 	});
-
+	// pre-question: pre-question ambience
+	// read-question: question-reading background
+	// start-clock: three hits
+	// clock-bed: think music
+	// end-clock-early: end sound of think music
+	// order-bed: order-revealing background
+	// answer1: 1st answer
+	// answer2: 2nd answer
+	// answer3: 3rd answer
+	// answer4: 4th answer
+	// light-answer: single/double answer reveal ($100-1,000 win)
+	// correct-reveal: show correct players sound
+	// fastest-reveal: fastest reveal cue ($32,000 win)
 	//soundManager.createSound({id: "final-think", url: "./sounds/finalThink.mp3", autoLoad: true});
 	//soundManager.createSound({id: "daily-double", url: "./sounds/dailyDouble.wav", autoLoad: true});
 	//soundManager.createSound({id: "final-reveal", url: "./sounds/finalReveal.wav", autoLoad: true});

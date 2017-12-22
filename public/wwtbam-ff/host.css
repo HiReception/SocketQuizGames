@@ -263,9 +263,10 @@ a.cancel-question-button {
 	font-size: 150%;
 }
 
-p .no-players {
+p.no-players {
 	text-align: center;
 	color: white;
+	font-size: 150%;
 }
 
 div .playerListing {

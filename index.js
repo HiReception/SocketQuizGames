@@ -22,16 +22,8 @@ const {parse} = require("pg-connection-string");
 ];*/
 
 //pg.defaults.ssl = true;
-console.log(process.env.DATABASE_URL);
 const dbConfig = Object.assign(parse(process.env.DATABASE_URL), {max: 9});
-console.log(dbConfig);
 var pool = new pg.Pool(dbConfig);
-
-pool.query("SELECT * FROM rooms", (err, dbRes) => {
-	if (err) {
-		console.log(err);
-	}
-});
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(validator());
