@@ -8,6 +8,7 @@ export default class OpenQuestionPanel extends Component {
 	}
 
 	componentDidMount = () => {
+		this.props.socket.emit("play sound", "read-question");
 		this.props.socket.on("new answer", this.handleNewAnswer);
 	}
 
@@ -40,22 +41,32 @@ export default class OpenQuestionPanel extends Component {
 			buzzersOpen: false,
 			currentPanel: "QuestionResultsPanel",
 		});
+		this.props.socket.emit("play sound", "end-clock-early");
+	}
+
+	prepareBuzzers = () => {
+		this.setGameState({
+			buzzersPending: true,
+		});
+		this.props.socket.emit("play sound", "start-clock");
+		setTimeout(this.openBuzzers, 1000);
 	}
 
 	openBuzzers = () => {
 		if (!this.props.gameState.buzzersOpen) {
 			this.setGameState({
 				buzzersOpen: true,
+				buzzersPending: false,
 			});
 		}
 		this.props.socket.emit("send question", this.props.question);
+		this.props.socket.emit("play sound", "clock-bed");
 	}
 
 	setGameState = (state) => {
 		this.setState(state);
 		this.props.setGameState(state);
 	}
-	// TODO
 	render = () => {
 		const { question, gameState, players } = this.props;
 		let buzzerPanel;
@@ -107,11 +118,18 @@ export default class OpenQuestionPanel extends Component {
 					</div>
 				</div>
 			);
-		} else {
-			
+		} else if (gameState.buzzersPending) {
 			buzzerPanel = (
 				<div className='buzzer-panel'>
-					<div className='add-question-button' onClick={this.openBuzzers}>
+					<p className='buzzer-panel'>
+						Commencing Responses...
+					</p>
+				</div>
+			);
+		} else {
+			buzzerPanel = (
+				<div className='buzzer-panel'>
+					<div className='add-question-button' onClick={this.prepareBuzzers}>
 						<p>Open Response Lines</p>
 					</div>
 				</div>

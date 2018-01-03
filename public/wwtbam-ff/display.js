@@ -31,11 +31,10 @@ socket.on("connect_error", function(err) {
 });
 
 
-
+var clockInterruptible = false;
 
 socket.on("accepted", function() {
 	ReactDOM.render(<DisplayContainer socket={socket}/>, document.getElementById("display-panel"));
-
 	soundManager.setup({
 
 		onready: function() {
@@ -47,24 +46,38 @@ socket.on("accepted", function() {
 		}
 
 	});
-	// pre-question: pre-question ambience
-	// read-question: question-reading background
-	// start-clock: three hits
-	// clock-bed: think music
-	// end-clock-early: end sound of think music
-	// order-bed: order-revealing background
-	// answer1: 1st answer
-	// answer2: 2nd answer
-	// answer3: 3rd answer
-	// answer4: 4th answer
-	// light-answer: single/double answer reveal ($100-1,000 win)
-	// correct-reveal: show correct players sound
-	// fastest-reveal: fastest reveal cue ($32,000 win)
-	//soundManager.createSound({id: "final-think", url: "./sounds/finalThink.mp3", autoLoad: true});
-	//soundManager.createSound({id: "daily-double", url: "./sounds/dailyDouble.wav", autoLoad: true});
-	//soundManager.createSound({id: "final-reveal", url: "./sounds/finalReveal.wav", autoLoad: true});
+	soundManager.createSound({id: "pre-question", url: "./sounds/pre-question.mp3", autoLoad: true});
+	soundManager.createSound({id: "read-question", url: "./sounds/read-question.mp3", autoLoad: true, onplay: function() {
+		soundManager.stop("pre-question");
+	}});
+	soundManager.createSound({id: "start-clock", url: "./sounds/start-clock.mp3", autoLoad: true});
+	soundManager.createSound({id: "clock-bed", url: "./sounds/clock-bed.mp3", autoLoad: true, onplay: function() {
+		soundManager.stop("read-question");
+		clockInterruptible = true;
+		console.log("clock now interruptible");
+		setTimeout(() => {
+			clockInterruptible = false;
+			console.log("clock no longer interruptible");
+		}, 20000);
+	}});
+
+	soundManager.createSound({id: "end-clock-early", url: "./sounds/end-clock-early.mp3", autoLoad: true, onplay: function() {
+		soundManager.stop("clock-bed");
+	}});
+	soundManager.createSound({id: "order-bed", url: "./sounds/order-bed.mp3", autoLoad: true})
+	soundManager.createSound({id: "answer1", url: "./sounds/answer1.mp3", autoLoad: true});
+	soundManager.createSound({id: "answer2", url: "./sounds/answer2.mp3", autoLoad: true});
+	soundManager.createSound({id: "answer3", url: "./sounds/answer3.mp3", autoLoad: true});
+	soundManager.createSound({id: "answer4", url: "./sounds/answer4.mp3", autoLoad: true});
+	soundManager.createSound({id: "light-answer", url: "./sounds/light-answer.mp3", autoLoad: true});
+	soundManager.createSound({id: "correct-reveal", url: "./sounds/correct-reveal.mp3", autoLoad: true, onplay: function() {
+		soundManager.stop("order-bed");
+	}});
+	soundManager.createSound({id: "fastest-reveal", url: "./sounds/fastest-reveal.mp3", autoLoad: true});
 });
 
 socket.on("play sound", function(id) {
-	soundManager.play(id);
+	if (!(id === "end-clock-early" && !clockInterruptible)) {
+		soundManager.play(id);
+	}
 });

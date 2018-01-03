@@ -189,7 +189,8 @@ export default class HostConsole extends Component {
 				<NextRoundPanel
 					key={newPanelKey}
 					lastRound={currentQuestion === questions.length - 1}
-					callback={this.goToNextRound}/>
+					callback={this.goToNextRound}
+					socket={this.props.socket}/>
 			);
 			break;
 
@@ -210,14 +211,16 @@ export default class HostConsole extends Component {
 				key={newPanelKey}
 				question={questions[currentQuestion]}
 				gameState={this.state}
-				setGameState={this.setGameState}/>);
+				setGameState={this.setGameState}
+				socket={this.props.socket}/>);
 			break;
 		// TODO PlayerResultsPanel
 		case "PlayerResultsPanel":
 			mainPanel = (<PlayerResultsPanel
 				key={newPanelKey}
 				gameState={this.state}
-				setGameState={this.setGameState}/>);
+				setGameState={this.setGameState}
+				socket={this.props.socket}/>);
 			break;
 		default:
 			mainPanel = null;

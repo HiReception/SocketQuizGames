@@ -43,6 +43,7 @@ socket.on("game details", (details) => {
 			currentPanel: "NoQuestionPanel",
 			newPanelKey: 0,
 
+			questionRecapped: false,
 			numAnswersRevealed: 0,
 			fullAnswerRevealed: false,
 
@@ -52,6 +53,7 @@ socket.on("game details", (details) => {
 			fastestCorrectRevealed: false,
 			fastestFlashOn: false,
 
+			buzzersPending: false,
 			buzzersOpen: false,
 			playerStats: [],
 		};

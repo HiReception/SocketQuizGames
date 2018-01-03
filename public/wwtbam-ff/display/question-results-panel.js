@@ -72,7 +72,7 @@ export default class QuestionResultsPanel extends Component {
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 
-		const { question, fullAnswerRevealed, numAnswersRevealed } = this.props;
+		const { question, fullAnswerRevealed, numAnswersRevealed, questionRecapped } = this.props;
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
 		var gradient = ctx.createLinearGradient(0,0,width,0);
@@ -121,7 +121,7 @@ export default class QuestionResultsPanel extends Component {
 			var qWidth = 0.8 * panelWidth;
 			var aLetterWidth = 0.09 * aWidth;
 			var qMarginWidth = 0.1 * panelWidth;
-			var qHeight = totalContentHeight - 4*(aHeight + aGapHeight);
+			var qHeight = totalContentHeight - question.options.length*(aHeight + aGapHeight);
 			var aTextWidth = 0.74 * aWidth;
 			
 			var aLeft = width - aTotalWidth;
@@ -145,12 +145,11 @@ export default class QuestionResultsPanel extends Component {
 						fillPatternScaleX={backgroundScale} fillPatternScaleY={backgroundScale}
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
 					</Layer>
-					<Layer>
+					<Layer visible={questionRecapped}>
 						<Rect x={width - panelWidth} y={0} height={height} width={panelWidth} fillPatternImage={this.state.panelBackgroundImage}
 							fillPatternScaleX={panelBackgroundScale} fillPatternScaleY={panelBackgroundScale} fillPatternOffsetX={-panelBackgroundOffset}/>
 					</Layer>
-					<Layer>
-						
+					<Layer visible={questionRecapped}>
 						<Text x={width - panelWidth + qMarginWidth} y={qMarginHeight}
 							height={qHeight} width={qWidth}
 							fontSize={qTextHeight} fontFamily={fontFamily}
@@ -210,4 +209,5 @@ QuestionResultsPanel.propTypes = {
 	question: PropTypes.object,
 	fullAnswerRevealed: PropTypes.bool,
 	numAnswersRevealed: PropTypes.number,
+	questionRecapped: PropTypes.bool,
 };

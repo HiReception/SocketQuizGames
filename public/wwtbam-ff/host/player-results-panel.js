@@ -1,4 +1,5 @@
 const PropTypes = require("prop-types");
+const io = require("socket.io-client");
 import React, { Component } from "react";
 
 // TODO
@@ -14,24 +15,30 @@ export default class PlayerResultsPanel extends Component {
 	}
 
 	revealCorrectPlayers = () => {
+		const question = this.state.questions[this.state.currentQuestion];
 		const newPlayers = this.state.players.map((p) => {
 			var newP = p;
-			const pAnswer = this.state.question.answers.find((a) => a.screenName === p.screenName);
-			if (pAnswer && pAnswer.answer === this.state.question.correctResponse) {
+			const pAnswer = question.answers.find((a) => a.screenName === p.screenName);
+			if (pAnswer && pAnswer.answer === question.correctResponse) {
 				newP.score++;
 			}
 			return newP;
 		})
+		const anyCorrectAnswer = question.answers.find((a) => a.answer === question.correctResponse);
 		this.setGameState({
 			correctPlayersRevealed: true,
 			players: newPlayers,
 		})
+		if (anyCorrectAnswer) {
+			this.props.socket.emit("play sound", "correct-reveal");
+		}
 	}
 
 	revealFastestCorrect = () => {
 		this.setGameState({
 			fastestCorrectRevealed: true
 		})
+		this.props.socket.emit("play sound", "fastest-reveal");
 	}
 
 	endRound = () => {
@@ -127,5 +134,6 @@ export default class PlayerResultsPanel extends Component {
 PlayerResultsPanel.propTypes = {
 	gameState: PropTypes.object,
 	setGameState: PropTypes.func,
+	socket: PropTypes.instanceOf(io.Socket),
 };
 

@@ -1,4 +1,5 @@
 const PropTypes = require("prop-types");
+const io = require("socket.io-client");
 import React, { Component } from "react";
 
 // TODO
@@ -11,24 +12,39 @@ export default class QuestionResultsPanel extends Component {
 		const numRevealed = this.props.gameState.numAnswersRevealed;
 		if (this.props.question.type === "sequence") {
 			if (numOptions > numRevealed) {
-				this.props.setGameState({
+				this.setGameState({
 					numAnswersRevealed: numRevealed + 1,
 					fullAnswerRevealed: (numRevealed + 1 === numOptions),
 				});
+				this.props.socket.emit("play sound", "answer" + (numRevealed + 1));
 			}
 		} else {
-			this.props.setGameState({
+			this.setGameState({
 				fullAnswerRevealed: true,
 			});
+			this.props.socket.emit("play sound", "light-answer");
 		}
 	}
 
+	recapQuestion = () => {
+		this.setGameState({
+			questionRecapped: true,
+		})
+		this.props.socket.emit("play sound", "order-bed");
+	}
+
 	goToPlayerResults = () => {
-		this.props.setGameState({
+		this.setGameState({
 			numAnswersRevealed: 0,
 			fullAnswerRevealed: false,
+			questionRecapped: false,
 			currentPanel: "PlayerResultsPanel",
 		});
+	}
+
+	setGameState = (state) => {
+		this.setState(state);
+		this.props.setGameState(state);
 	}
 
 	// TODO
@@ -46,7 +62,7 @@ export default class QuestionResultsPanel extends Component {
 		const questionPanel = (
 			<div className='open-question-body'>
 				<p className='open-question-body'>
-					{question.body}
+					{gameState.questionRecapped ? question.body : ""}
 				</p>
 			</div>
 		);
@@ -80,8 +96,15 @@ export default class QuestionResultsPanel extends Component {
 				{options}
 			</div>
 		);
-
-		if (gameState.fullAnswerRevealed) {
+		if (!gameState.questionRecapped && question.type === "sequence") {
+			buzzerPanel = (
+				<div className='buzzer-panel'>
+					<div className='add-question-button' onClick={this.recapQuestion}>
+						<p>Show Correct Order Panel</p>
+					</div>
+				</div>
+			);
+		} else if (gameState.fullAnswerRevealed) {
 			buzzerPanel = (
 				<div className='buzzer-panel'>
 					<div className='add-question-button' onClick={this.goToPlayerResults}>
@@ -127,4 +150,5 @@ QuestionResultsPanel.propTypes = {
 	question: PropTypes.object,
 	gameState: PropTypes.object,
 	setGameState: PropTypes.func,
+	socket: PropTypes.instanceOf(io.Socket),
 };

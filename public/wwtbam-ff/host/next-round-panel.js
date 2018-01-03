@@ -1,4 +1,5 @@
 const PropTypes = require("prop-types");
+const io = require("socket.io-client");
 import React, { Component } from "react";
 
 // panel for between questions
@@ -23,9 +24,14 @@ export default class NextRoundPanel extends Component {
 			</div>
 		);
 	}
+
+	componentDidMount = () => {
+		this.props.socket.emit("play sound", "pre-question");
+	}
 }
 
 NextRoundPanel.propTypes = {
 	lastRound: PropTypes.bool,
 	callback: PropTypes.func,
+	socket: PropTypes.instanceOf(io.Socket),
 };

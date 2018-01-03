@@ -64,7 +64,14 @@ export default class DisplayContainer extends React.Component {
 			/>);
 			break;
 		case "QuestionResultsPanel":
-			questionPanel = (<QuestionResultsPanel question={question} fullAnswerRevealed={this.state.fullAnswerRevealed} numAnswersRevealed={this.state.numAnswersRevealed}/>);
+			questionPanel = (
+				<QuestionResultsPanel
+					question={question}
+					fullAnswerRevealed={this.state.fullAnswerRevealed}
+					numAnswersRevealed={this.state.numAnswersRevealed}
+					questionRecapped={this.state.questionRecapped}
+				/>
+			);
 			break;
 		case "PlayerResultsPanel":
 			questionPanel = (
