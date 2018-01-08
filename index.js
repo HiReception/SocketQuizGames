@@ -24,7 +24,7 @@ const {parse} = require("pg-connection-string");
 //pg.defaults.ssl = true;
 const dbConfig = Object.assign(parse(process.env.DATABASE_URL), {max: 9});
 var pool = new pg.Pool(dbConfig);
-
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(validator());
 app.use(session({
@@ -52,18 +52,80 @@ app.post("/host",
 		// generate four-letter unique code for game
 		var gameCode = generateGameCode();
 		// add new room with given details
-
-		pool.query("INSERT INTO rooms(gamecode, title, type, registerednames, state) VALUES($1,$2,$3,$4,$5)",
-			[gameCode, gameTitle, req.body.format, [], {}], (err, dbRes) => {
+		pool.query("INSERT INTO rooms(gamecode, title, type, registerednames, state, password) VALUES($1,$2,$3,$4,$5,crypt($6, gen_salt($7, 8)))",
+			[gameCode, gameTitle, req.body.format, [], {}, req.body.password, "bf"], (err, dbRes) => {
 				if (err) {
 					console.log(err);
 					next(err);
 				} else {
-					res.redirect("/" + req.body.format + "/host?gamecode=" + gameCode);
+					res.send("/" + req.body.format + "/host?gamecode=" + gameCode);
 				}
 			}
 		);
 		
+	}
+);
+
+app.post("/hostresume",
+	function checkRoomExists(req, res, next) {
+		console.log("checkRoomExists called");
+		var roomCode = req.body.gamecode.toUpperCase();
+		console.log(roomCode);
+		if (!roomCode || roomCode === "") {
+			next("blankRoom");
+		}
+		pool.query("SELECT * FROM rooms WHERE gameCode = $1", [roomCode], (err, dbRes) => {
+			if (err) {
+				next(err);
+			} else {
+				if (dbRes.rows.length === 0) {
+					next("roomNotFound");
+				} else {
+					next();
+				}
+			}
+		});
+	},
+
+	function checkPassword(req, res, next) {
+		console.log("checkPassword called");
+		pool.query("SELECT * FROM rooms WHERE gameCode = $1 AND password = crypt($2, password)",
+			[req.body.gamecode.toUpperCase(), req.body.password], (err, dbRes) => {
+				if (err) {
+					next(err);
+				} else {
+					if (dbRes.rows.length === 0) {
+						next("wrongPassword");
+					} else {
+						next();
+					}
+				}
+			}
+		);
+		
+	},
+
+	function redirect(req, res, next) {
+		console.log("assignCookieAndRedirect called");
+		pool.query("SELECT type FROM rooms WHERE gameCode = $1", [req.body.gamecode.toUpperCase()], (err, dbRes) => {
+			if (err) {
+				next(err);
+			} else {
+				if (dbRes.rows.length === 0) {
+					next("roomNotFound");
+				} else {
+					var type = dbRes.rows[0].type
+					res.send("/" + type + "/host?gamecode=" + req.body.gamecode.toUpperCase());
+				}
+			}
+		});
+		
+	},
+
+	function handleErrors(err, req, res, next) {
+		var errorCode;
+		console.log("handleErrors called: " + err);
+		res.status(400).send(err);
 	}
 );
 
@@ -141,7 +203,7 @@ app.post("/play",
 					next("roomNotFound");
 				} else {
 					var type = dbRes.rows[0].type
-					res.redirect("/" + type + "/play?gamecode=" + req.body.gamecode.toUpperCase() + "&name=" + req.body.name);
+					res.send("/" + type + "/play?gamecode=" + req.body.gamecode.toUpperCase() + "&name=" + req.body.name);
 				}
 			}
 		});
@@ -149,8 +211,8 @@ app.post("/play",
 	},
 
 	function handleErrors(err, req, res, next) {
-		console.log("handleErrors called");
-		res.redirect("/join?err=" + err + "&gamecode=" + req.body.gamecode + "&name=" + req.body.name);
+		console.log("handleErrors called: " + err);
+		res.status(400).send(err);
 	}
 );
 
@@ -190,7 +252,7 @@ app.post("/display",
 					next("roomNotFound");
 				} else {
 					var type = dbRes.rows[0].type;
-					res.redirect("/" + type + "/display?gamecode=" + roomCode);
+					res.send("/" + type + "/display?gamecode=" + roomCode);
 				}
 			}
 		});
@@ -198,8 +260,8 @@ app.post("/display",
 	},
 
 	function handleErrors(err, req, res, next) {
-		console.log("handleErrors called");
-		res.redirect("/displaygame?err=" + err + "&gamecode=" + req.body.gamecode);
+		console.log("handleErrors called: " + err);
+		res.status(400).send(err)
 	}
 );
 

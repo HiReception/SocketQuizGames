@@ -2,6 +2,17 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 		browserify: {
+			menu: {
+				src: "public/menu.js",
+				dest: "public/menuBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}]
+					]
+				}
+			},
 			sotc_podiums: {
 				src: "public/sotc/podiums.js",
 				dest: "public/sotc/podiumsBundle.js",

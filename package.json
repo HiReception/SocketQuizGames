@@ -20,6 +20,7 @@
     "mocha": "mocha test/ --recursive"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "babel": "^6.23.0",
     "babel-eslint": "^6.1.2",
     "babel-preset-env": "^1.6.1",
