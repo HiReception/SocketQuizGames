@@ -1,17 +1,14 @@
 /* CSS for Player Screens */
-
 body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: Verdana, Geneva, sans-serif;
-}
+  font-family: Verdana, Geneva, sans-serif; }
 
 .box {
-  display; flex;
+  display: flex;
   flex-direction: column;
-  height: 100%;
-}
+  height: 100%; }
 
 div.playerHeader {
   background-color: black;
@@ -19,8 +16,7 @@ div.playerHeader {
   height: 40px;
   display: flex;
   justify-content: center;
-  align-items: center;
-}
+  align-items: center; }
 
 div.playerBody {
   display: flex;
@@ -28,10 +24,9 @@ div.playerBody {
   align-items: center;
   flex-grow: 1;
   min-height: calc(100% - 40px);
-  background-image: url('images/background.png');
+  background-image: url("images/background.png");
   background-position: center;
-  background-size: cover;
-}
+  background-size: cover; }
 
 div.playerQuestion {
   margin: 10px;
@@ -41,23 +36,20 @@ div.playerQuestion {
   position: relative;
   padding: 5px;
   text-align: center;
-  width: 100%;
-}
+  width: 100%; }
 
 p.playerQuestion {
-  font-size: 150%;
-}
+  font-size: 150%; }
 
 p.playerQuestionDetails {
-  font-size: 100%;
-}
+  font-size: 100%; }
 
 div.buzzer {
   background-color: red;
   margin: 5px;
-  margin-left:auto;
-  margin-right:auto;
-  box-sizing:border-box;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
   border: none;
   color: red;
   height: 150px;
@@ -66,16 +58,15 @@ div.buzzer {
   position: relative;
   font-size: 120%;
   display: flex;
-  justify-content: center;  
-  cursor: pointer;
-}
+  justify-content: center;
+  cursor: pointer; }
 
 div.submitButton {
   background-color: #0B1885;
   margin: 5px;
-  margin-left:auto;
-  margin-right:auto;
-  box-sizing:border-box;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
   border: none;
   color: white;
   height: 40px;
@@ -84,28 +75,23 @@ div.submitButton {
   position: relative;
   font-size: 120%;
   display: flex;
-  justify-content: center;  
-  cursor: pointer;
-}
-
-div.submitButton.disabled {
-  background-color: #999999;
-}
-
-.submitButton p {
-  color: white;
-  text-align: left;
-  font-size: 120%;
-  position: relative;
-  margin: auto;
-}
+  justify-content: center;
+  cursor: pointer; }
+  div.submitButton.disabled {
+    background-color: #999999; }
+  div.submitButton > p {
+    color: white;
+    text-align: left;
+    font-size: 120%;
+    position: relative;
+    margin: auto; }
 
 div.clearButton {
   background-color: #0B1885;
   margin: 5px;
-  margin-left:auto;
-  margin-right:auto;
-  box-sizing:border-box;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
   border: none;
   color: white;
   height: 40px;
@@ -114,22 +100,16 @@ div.clearButton {
   position: relative;
   font-size: 120%;
   display: flex;
-  justify-content: center;  
-  cursor: pointer;
-}
-
-div.clearButton.disabled {
-  background-color: #999999;
-}
-
-.clearButton p {
-  color: white;
-  text-align: left;
-  font-size: 120%;
-  position: relative;
-  margin: auto;
-}
-
+  justify-content: center;
+  cursor: pointer; }
+  div.clearButton.disabled {
+    background-color: #999999; }
+  div.clearButton > p {
+    color: white;
+    text-align: left;
+    font-size: 120%;
+    position: relative;
+    margin: auto; }
 
 .playerQuestion input[type=text] {
   border-radius: 5px;
@@ -137,11 +117,10 @@ div.clearButton.disabled {
   border: 2px solid #4472C4;
   height: 30px;
   width: 100%;
-  margin-left:auto;
-  margin-right:auto;
-  box-sizing:border-box;
-  text-align: center;
-}
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  text-align: center; }
 
 .playerQuestion input[type=number] {
   border-radius: 5px;
@@ -149,27 +128,21 @@ div.clearButton.disabled {
   border: 2px solid #4472C4;
   height: 30px;
   width: 100%;
-  margin-left:auto;
-  margin-right:auto;
-  box-sizing:border-box;
-  text-align: center;
-}
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  text-align: center; }
 
 .playerQuestion input[type=text] .invalid {
   border-radius: 5px;
   border: none;
-  border: 2px solid red;
-
-}
+  border: 2px solid red; }
 
 div.logo {
-  padding: 5%;
-}
-
-.logo img {
-  max-width: 100%;
-  height: auto;
-}
+  padding: 5%; }
+  div.logo > img {
+    max-width: 100%;
+    height: auto; }
 
 div.playerOption {
   margin: 10px;
@@ -179,18 +152,14 @@ div.playerOption {
   border-radius: 5px;
   display: flex;
   align-items: center;
-  padding: 5px;
-}
-
-div.playerOption.inactive {
-  background-color: #AAAAAA;
-}
+  padding: 5px; }
+  div.playerOption.inactive {
+    background-color: #AAAAAA; }
 
 p.playerOption {
   color: white;
   text-align: left;
-  font-size: 120%;
-}
+  font-size: 120%; }
 
 div.playerOptionIcon {
   height: 30px;
@@ -203,32 +172,25 @@ div.playerOptionIcon {
   float: left;
   position: relative;
   text-align: center;
-  line-height: 30px;
-
-}
+  line-height: 30px; }
 
 div.button-row {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-}
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; }
 
 div.selected-panel {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
-}
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center; }
 
 div.selected-option {
-	background-color: #4472C4;
-	flex: 0 0 auto;
-	min-width: 50px;
-	min-height: 50px;
-	border-radius: 25px;
-}
-
-div.selected-option.blank {
-	background-color: #AAAAAA;
-}
+  background-color: #4472C4;
+  flex: 0 0 auto;
+  min-width: 50px;
+  min-height: 50px;
+  border-radius: 25px; }
+  div.selected-option.blank {
+    background-color: #AAAAAA; }

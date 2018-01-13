@@ -205,6 +205,14 @@ module.exports = function(grunt) {
 			}
 		},
 		sass: {
+			menu: {
+				options: {
+					style: "compressed",
+				},
+				files : {
+					"public/menu.css": "public/menu.scss",
+				},
+			},
 			jeopardy: {
 				options: {
 					style: "compressed",
@@ -214,7 +222,27 @@ module.exports = function(grunt) {
 					"public/jeopardy/player.css": "public/jeopardy/player.scss",
 					"public/jeopardy/display.css": "public/jeopardy/display.scss",
 				}
-			}
+			},
+			wwtbam_ff: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/wwtbam-ff/host.css": "public/wwtbam-ff/host.scss",
+					"public/wwtbam-ff/player.css": "public/wwtbam-ff/player.scss",
+					"public/wwtbam-ff/display.css": "public/wwtbam-ff/display.scss",
+				}
+			},
+			genericquiz: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/genericquiz/host.css": "public/genericquiz/host.scss",
+					"public/genericquiz/player.css": "public/genericquiz/player.scss",
+					"public/genericquiz/display.css": "public/genericquiz/display.scss",
+				}
+			},
 		},
 	});
 

@@ -3,8 +3,7 @@ body {
   flex-direction: column;
   padding: 0;
   margin: 0;
-  font-family: Verdana, Geneva, sans-serif;
-}
+  font-family: Verdana, Geneva, sans-serif; }
 
 #player-list {
   flex: 0 0 auto;
@@ -12,8 +11,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: stretch;
-}
+  align-items: stretch; }
 
 #display-panel {
   display: flex;
@@ -22,45 +20,37 @@ body {
   margin: 0;
   font-family: Verdana, Geneva, sans-serif;
   height: 100%;
-  width: 100%;
-}
+  width: 100%; }
 
 .content {
-  flex: 1 1 auto;
-}
+  flex: 1 1 auto; }
 
 div .playerContainer {
   flex: 1 1 auto;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: stretch;
-}
+  align-items: stretch; }
 
 div .playerListing {
   flex: 0 1 auto;
   height: 100px;
-
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
-
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 10px;
-  margin-bottom: 10px;
-}
+  margin-bottom: 10px; }
 
 h1.playerListingName {
   color: white;
   text-align: center;
-  font-weight:normal;
+  font-weight: normal;
   margin: 0;
   position: relative;
-  
-}
+  font-size: 100%; }
 
 div.playerListingName {
   display: flex;
@@ -73,21 +63,18 @@ div.playerListingName {
   padding-right: 5px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  font-size: 500%;
-}
-
-div.playerListingName.answering {
-  background-color: blue;
-}
+  font-size: 500%; }
+  div.playerListingName.answering {
+    background-color: blue; }
 
 h1.playerListingDetails {
   font-family: Impact;
   color: white;
   text-shadow: 2px 2px black;
-  font-weight:normal;
+  font-weight: normal;
   margin: 0;
   position: relative;
-}
+  font-size: 100%; }
 
 div.playerListingDetails {
   text-align: center;
@@ -100,8 +87,6 @@ div.playerListingDetails {
   border: 1px solid black;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-}
-
-div.playerListingDetails.answering {
-  background-color: blue;
-}
+  font-size: 500%; }
+  div.playerListingDetails.answering {
+    background-color: blue; }
