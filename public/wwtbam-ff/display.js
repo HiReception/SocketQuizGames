@@ -46,7 +46,9 @@ socket.on("accepted", function() {
 		}
 
 	});
-	soundManager.createSound({id: "pre-question", url: "./sounds/pre-question.mp3", autoLoad: true});
+	soundManager.createSound({id: "pre-question", url: "./sounds/pre-question.mp3", autoLoad: true, onplay: function() {
+		soundManager.stop("order-bed");
+	}});
 	soundManager.createSound({id: "read-question", url: "./sounds/read-question.mp3", autoLoad: true, onplay: function() {
 		soundManager.stop("pre-question");
 	}});

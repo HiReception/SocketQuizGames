@@ -70,6 +70,7 @@
     "react-fittext": "0.0.7",
     "react-keydown": "^1.6.5",
     "react-konva": "^1.6.4",
+    "react-motion": "^0.5.2",
     "react-scale-text": "^1.1.2",
     "react-sound": "^0.5.2",
     "react-textfit": "^0.1.8",

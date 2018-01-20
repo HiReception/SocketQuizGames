@@ -11,11 +11,28 @@ export default class PlayerResultsPanel extends Component {
 			height: 0,
 			width: 0,
 			backgroundImage: null,
+			fastestFlashOn: false,
+			numPlayersRevealed: 0,
+			
 		}
 	}
 
 	updateDimensions = () => {
 		this.setState({width: window.innerWidth, height: window.innerHeight});
+	}
+
+	iterateCorrectReveal = () => {
+		this.setState({
+			numPlayersRevealed: this.state.numPlayersRevealed + 1,
+		});
+
+		if (this.state.numPlayersRevealed + 1 >= this.props.question.answers.length) {
+			clearInterval(this.iterateCorrectReveal);
+		}
+	}
+
+	flashFastest = () => {
+		this.setState({fastestFlashOn: !this.state.fastestFlashOn});
 	}
 
 	componentWillMount = () => {
@@ -31,10 +48,24 @@ export default class PlayerResultsPanel extends Component {
 		};
 	}
 	componentDidMount = () => {
-		window.addEventListener("resize", this.updateDimensions);	
+		window.addEventListener("resize", this.updateDimensions);
+		if (this.props.fastestCorrectRevealed) {
+			setInterval(this.flashFastest, 250);
+		}
 	}
+
 	componentWillUnmount = () => {
 		window.removeEventListener("resize", this.updateDimensions);
+	}
+
+	componentWillReceiveProps = (props) => {
+		if (props.correctPlayersRevealed && !this.props.correctPlayersRevealed) {
+			setInterval(this.state.iterateCorrectReveal, 200);
+		}
+
+		if (props.fastestCorrectRevealed && !this.props.fastestCorrectRevealed) {
+			setInterval(this.flashFastest, 250);
+		}
 	}
 
 	textScale = (text, font, size, width) => {
@@ -92,12 +123,12 @@ export default class PlayerResultsPanel extends Component {
 		const pTextTimeWidth = (pTextWidth - pTextNameWidth);
 		
 		const fastestTime = Math.min(...question.answers.filter((a) => a.answer === question.correctResponse).map((a) => a.timeTaken));
-		const playerDetails = players.map((p) => {
+		const playerDetails = players.map((p, index) => {
 			const answer = question.answers.find((a) => a.screenName === p.screenName);
 			return {
 				screenName: p.screenName.toUpperCase(),
 				timeTaken: answer ? (answer.timeTaken/1000).toFixed(2) : "0.00",
-				correctLit: typeof answer !== "undefined" && answer.answer === question.correctResponse && correctPlayersRevealed,
+				correctLit: typeof answer !== "undefined" && answer.answer === question.correctResponse && correctPlayersRevealed && this.state.numPlayersRevealed > index,
 				fastestLit: typeof answer !== "undefined" && answer.answer === question.correctResponse && answer.timeTaken === fastestTime && fastestCorrectRevealed,
 			};
 		});
@@ -132,7 +163,7 @@ export default class PlayerResultsPanel extends Component {
 							<Group key={index}>
 								<Lozenge xStart={0} yStart={topY}
 									height={pHeight} width={pWidth} leftSideWidth={sideWidth} rightSideWidth={sideWidth}
-									fillStyle={player.fastestLit ? "#00ff00" : (player.correctLit ? "green" : "black")} strokeStyle={gradient} lineWidth={lineWidth}/>
+									fillStyle={player.fastestLit ? (this.state.fastestFlashOn ? "#00ff00" : "black") : (player.correctLit ? "#00ff00" : "black")} strokeStyle={gradient} lineWidth={lineWidth}/>
 
 								<Rect
 									x={sideWidth+(pHeight*(2/5))} y={topY + pHeight/2}
