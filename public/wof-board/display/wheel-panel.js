@@ -18,43 +18,45 @@ export default class WheelPanel extends React.Component {
 		}
 	}
 	render = () => {
-		var visibleWedges = [];
-		var wedgeImageHeight = this.props.diameter * 10/9;
-		var wedgeImageWidth = wedgeImageHeight * 0.15;
-		var wedgeSpan = 360.0 / this.props.wedges.length;
-    
-		// add pointed-to wedge to list of visible ones
-		for (var w in this.props.wedges) {
-			var rotate = this.props.angle + (wedgeSpan * w);
-			var rotateString = "rotate(" + rotate + "deg)";
-			visibleWedges.push((
-				<img
-					key={w}
-					className="wedge"
-					src={this.wedgeFilename(this.props.wedges[w])}
-					style={{
-						"height": wedgeImageHeight,
-						"width": wedgeImageWidth,
-						"top": -(wedgeImageHeight - this.props.diameter) / 2,
-						"left": (this.props.diameter - wedgeImageWidth) / 2,
-						"WebkitTransform": rotateString,
-						"MozTransform": rotateString,
-						"OTransform": rotateString,
-						"msTransform": rotateString,
-						"transform": rotateString
-					}}
-				/>
-			));
-		}
-    
+		const wedgeImageHeight = this.props.diameter * 10/9;
+		const wedgeImageWidth = wedgeImageHeight * 0.15;
+		const wedgeSpan = 360.0 / this.props.wedges.length;
 		
 		return (
 			<div className="wheel" id="wheel"
 				style={{
 					"height": this.props.diameter,
-					"width": this.props.diameter
+					"width": this.props.diameter,
+					"WebkitTransform": `rotate(${this.props.angle}deg)`,
+					"MozTransform": `rotate(${this.props.angle}deg)`,
+					"OTransform": `rotate(${this.props.angle}deg)`,
+					"msTransform": `rotate(${this.props.angle}deg)`,
+					"transform": `rotate(${this.props.angle}deg)`,
+					"WebkitTransition": `transform ${this.props.spinDuration/1000}s`,
+					"transition": `transform ${this.props.spinDuration/1000}s`,
 				}}>
-				{visibleWedges}
+				{this.props.wedges.map((w, index) => {
+					const rotate = (wedgeSpan * index);
+					const rotateString = "rotate(" + rotate + "deg)";
+					return (
+						<img
+							key={index}
+							className="wedge"
+							src={this.wedgeFilename(w)}
+							style={{
+								"height": wedgeImageHeight,
+								"width": wedgeImageWidth,
+								"top": -(wedgeImageHeight - this.props.diameter) / 2,
+								"left": (this.props.diameter - wedgeImageWidth) / 2,
+								"WebkitTransform": rotateString,
+								"MozTransform": rotateString,
+								"OTransform": rotateString,
+								"msTransform": rotateString,
+								"transform": rotateString,
+							}}
+						/>
+					);
+				})}
 			</div>
 		);
 	}
@@ -65,5 +67,6 @@ WheelPanel.propTypes = {
 	wheelTurnInterval: PropTypes.number,
 	spinCallback: PropTypes.func,
 	diameter: PropTypes.number,
-	angle: PropTypes.number
+	angle: PropTypes.number,
+	spinDuration: PropTypes.number,
 };

@@ -23,7 +23,6 @@ export default class BonusRoundPanel extends React.Component {
 	}
 	handleKeyPress = (event) => {
 		var eventDetails = event;
-		console.log(eventDetails.key);
 		if (eventDetails.key === "Enter") {
 			if (!this.props.gameState.bonusClockStarted) {
 				this.startClock();
@@ -39,14 +38,12 @@ export default class BonusRoundPanel extends React.Component {
 		this.props.setGameState({
 			bonusClockStarted: true
 		});
-		var thisPanel = this;
-		var timer = setInterval(function() {
-			thisPanel.props.setGameState({
-				bonusSecondsRemaining: thisPanel.props.gameState.bonusSecondsRemaining - 1
+		var timer = setInterval(() => {
+			this.props.setGameState({
+				bonusSecondsRemaining: this.props.gameState.bonusSecondsRemaining - 1
 			});
-			if (thisPanel.props.gameState.bonusSecondsRemaining <= 0) {
-				console.log("time up");
-				clearInterval(thisPanel.state.timer);
+			if (this.props.gameState.bonusSecondsRemaining <= 0) {
+				clearInterval(this.state.timer);
 			}
 			
 		}, 1000);
@@ -118,24 +115,22 @@ export default class BonusRoundPanel extends React.Component {
 		} else {
 			statusText = "Click the button below to start the clock";
 		}
-		var letterButtons = [];
-		for (var i = 0; i < this.props.letters.length; i++) {
-			var l = this.props.letters[i];
+		const letterButtons = Array.prototype.map.call(this.props.letters, (l, i) => {
 			var active = true;
 			if ((this.props.vowels.includes(l) && this.props.gameState.bonusVowelsLeft === 0)
 				|| (this.props.consonants.includes(l) && this.props.gameState.bonusConsonantsLeft === 0)
 				|| (this.props.gameState.selectedLetters.includes(l))) {
 				active = false;
 			}
-			letterButtons.push((
+			return (
 				<PuzzleLetterButton
 					key={i}
 					letter={l}
 					onClick={this.selectLetter}
 					active={active}
 				/>
-			));
-		}
+			);
+		});
 
 		var solveButtonRow;
 		if (this.props.gameState.bonusAnswerRevealed) {
@@ -150,7 +145,7 @@ export default class BonusRoundPanel extends React.Component {
 			if (this.props.gameState.bonusConsonantsLeft !== 0 || this.props.gameState.bonusVowelsLeft !== 0) {
 				solveButtonRow = (
 					<div className="solve-button-panel">
-						<div className="add-question-button inactive" href="#">
+						<div className="add-question-button disabled" href="#">
 							<p>Start Clock</p>
 						</div>
 					</div>

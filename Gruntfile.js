@@ -131,7 +131,8 @@ module.exports = function(grunt) {
 					transform: [
 						["babelify", {
 							presets: ["react", "es2015", "stage-1"]
-						}]
+						}],
+						"brfs"
 					]
 				}
 			},

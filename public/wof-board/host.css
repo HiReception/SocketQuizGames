@@ -1,8 +1,8 @@
 @font-face {
-    font-family: 'EggCrate';
-    src: url('fonts/EGGCRATE.TTF');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'EggCrate';
+	src: url('fonts/EGGCRATE.TTF');
+	font-weight: normal;
+	font-style: normal;
 
 }
 
@@ -122,6 +122,22 @@ div .no-question-panel {
 	color: white;
 }
 
+div .game-type-radio-group {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+div .game-type-radio-group label {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
 div.letter-button-panel {
 	display: flex;
 	flex-direction: row;
@@ -147,15 +163,15 @@ div.letter-button {
 }
 
 div.letter-button.inactive {
-  background-color: #999999;
+	background-color: #999999;
 }
 
 .letter-button p {
-  color: white;
-  text-align: left;
-  font-size: 150%;
-  position: relative;
-  margin: auto;
+	color: white;
+	text-align: left;
+	font-size: 150%;
+	position: relative;
+	margin: auto;
 }
 
 div.current-board-panel {
@@ -226,57 +242,57 @@ div.main-panel {
 
 
 div.add-question-button {
-  background-color: teal;
-  margin: 5px;
-  border: none;
-  color: white;
-  height: 40px;
-  width: auto;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;  
-  cursor: pointer;
-  padding-left: 5px;
-  padding-right: 5px;
+	background-color: teal;
+	margin: 5px;
+	border: none;
+	color: white;
+	height: 40px;
+	width: auto;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;  
+	cursor: pointer;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 div.add-question-button.disabled {
-  background-color: #999999;
+	background-color: #999999;
 }
 
 .add-question-button p {
-  color: white;
-  text-align: left;
-  font-size: 150%;
-  position: relative;
-  margin: auto;
+	color: white;
+	text-align: left;
+	font-size: 150%;
+	position: relative;
+	margin: auto;
 }
 
 div.cancel-question-button {
-  background-color: red;
-  margin: 5px;
-  border: none;
-  color: white;
-  height: 40px;
-  width: auto;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;  
-  cursor: pointer;
-  padding-left: 5px;
-  padding-right: 5px;
+	background-color: red;
+	margin: 5px;
+	border: none;
+	color: white;
+	height: 40px;
+	width: auto;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;  
+	cursor: pointer;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 div.cancel-question-button.disabled {
-  background-color: #999999;
+	background-color: #999999;
 }
 
 .cancel-question-button p {
-  color: white;
-  text-align: left;
-  font-size: 150%;
-  position: relative;
-  margin: auto;
+	color: white;
+	text-align: left;
+	font-size: 150%;
+	position: relative;
+	margin: auto;
 }
 
 a.cancel-question-button {

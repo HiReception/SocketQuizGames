@@ -3,8 +3,8 @@ var PropTypes = require("prop-types");
 
 export default class PuzzleBoardGrid extends React.Component {
 	render = () => {
-		var boardRows = this.props.currentBoard.map(function(row, rowIndex) { 
-			var rowCells = Array.prototype.map.call(row, function(cell, cellIndex) {
+		var boardRows = this.props.currentBoard.map((row, rowIndex) => { 
+			var rowCells = Array.prototype.map.call(row, (cell, cellIndex) => {
 				var classModifier = "";
 				if (cell === "@") {
 					return null;

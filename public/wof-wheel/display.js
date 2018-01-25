@@ -159,50 +159,26 @@ class WheelPanel extends React.Component {
 		window.removeEventListener("resize", this.updateDimensions);
 	}
 	spin = () => {
-		var thisPanel = this;
-		var maxAngleIncrement = Math.random() * 5 + 5;
-		console.log("maxAngleIncrement = " + maxAngleIncrement);
-		var angleIncrement = 0;
+		const rotation = Math.random() * 450 + 270; // random number between 270 degrees (3/4 of a rotation) and 720 degrees (2 rotations)
+		const spinForce = Math.random() * 0.03 + 0.06 // random number between 0.06 and 0.09 degrees per millisecond (for a 720deg spin, duration will be between 8 seconds and 12 seconds)
+		const newAngle = this.state.currentAngle + rotation;
+		const spinDuration = rotation/spinForce;
+		console.log(`rotation = ${rotation}, spinForce = ${spinForce}, newAngle = ${newAngle}, spinDuration = ${spinDuration}`);
 		this.setState({
-			currentlySpinning: true
+			currentlySpinning: true,
+			currentAngle: newAngle,
+			spinDuration: spinDuration,
 		});
-		var startWheel = setInterval(function() {
-			thisPanel.setState({
-				currentAngle: (((thisPanel.state.currentAngle + angleIncrement) % 360) + 360) % 360
-			});
-			
-			//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
-			//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
 
-			angleIncrement += maxAngleIncrement / 10;
-			if (angleIncrement >= maxAngleIncrement) {
-				clearInterval(startWheel);
-
-				var slowDownAmount = 1/Math.floor(Math.random() * 15 + 15);
-				var slowDownWheel = setInterval(function() {
-
-					thisPanel.setState({
-						currentAngle: (((thisPanel.state.currentAngle + angleIncrement) % 360) + 360) % 360
-					});
-					
-					//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
-					//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
-
-					angleIncrement -= slowDownAmount;
-					if (angleIncrement <= 0) {
-						clearInterval(slowDownWheel);
-						console.log(thisPanel.state.currentAngle);
-						thisPanel.handlePostSpin();
-					}
-			
-				}, wheelTurnInterval);
-			}
-		}, wheelTurnInterval);
+		setTimeout(() => {
+			this.handlePostSpin();
+		}, spinDuration)
 	}
 	handlePostSpin = () => {
+		console.log(this.state);
 		var thisPanel = this;
 		this.setState({
-			currentlySpinning: false
+			currentlySpinning: false,
 		});
 		var wedgeSpan = 360 / this.state.wedgeArray.length;
 		var playerLandedWedges = relativePointerArray.map(function(angle) {
@@ -217,34 +193,33 @@ class WheelPanel extends React.Component {
 	}
 	render = () => {
 		
-		var visibleWedges = [];
-		var wedgeImageHeight = this.state.diameter * 10/9;
-		var wedgeImageWidth = wedgeImageHeight * 0.15;
-		var wedgeSpan = 360.0 / this.state.wedgeArray.length;
+		const wedgeImageHeight = this.state.diameter * 10/9;
+		const wedgeImageWidth = wedgeImageHeight * 0.15;
+		const wedgeSpan = 360.0 / this.state.wedgeArray.length;
     
 		// add pointed-to wedge to list of visible ones
-		for (var w in this.state.wedgeArray) {
-			var rotate = this.state.currentAngle + (wedgeSpan * w);
-			var rotateString = "rotate(" + rotate + "deg)";
-			visibleWedges.push((
+		const visibleWedges = this.state.wedgeArray.map((w, index) => {
+			var wedgeRotate = wedgeSpan * index;
+			var wedgeRotateString = "rotate(" + wedgeRotate + "deg)";
+			return (
 				<img
-					key={w}
+					key={index}
 					className="wedge"
-					src={wedgeFilename(this.state.wedgeArray[w])}
+					src={wedgeFilename(w)}
 					style={{
 						"height": wedgeImageHeight,
 						"width": wedgeImageWidth,
 						"top": -(wedgeImageHeight - this.state.diameter) / 2,
 						"left": (this.state.diameter - wedgeImageWidth) / 2,
-						"WebkitTransform": rotateString,
-						"MozTransform": rotateString,
-						"OTransform": rotateString,
-						"msTransform": rotateString,
-						"transform": rotateString
+						"WebkitTransform": wedgeRotateString,
+						"MozTransform": wedgeRotateString,
+						"OTransform": wedgeRotateString,
+						"msTransform": wedgeRotateString,
+						"transform": wedgeRotateString,
 					}}
 				/>
-			));
-		}
+			);
+		})
     
 		var spinButton = null;
 
@@ -261,14 +236,26 @@ class WheelPanel extends React.Component {
 				</div>
 			);
 		}
+		const rotateString = "rotate(" + this.state.currentAngle + "deg)";
+		const transitionString = "transform " + this.state.spinDuration/1000 + "s"
 		
 		return (
-			<div className="wheel"
-				style={{
-					"height": this.state.diameter,
-					"width": this.state.diameter
-				}}>
-				{visibleWedges}
+			<div className="inner-container">
+				<div className="wheel"
+					style={{
+						"height": this.state.diameter,
+						"width": this.state.diameter,
+						"WebkitTransform": rotateString,
+						"MozTransform": rotateString,
+						"OTransform": rotateString,
+						"msTransform": rotateString,
+						"transform": rotateString,
+						"WebkitTransition": transitionString,
+						"transition": transitionString
+					}}>
+					{visibleWedges}
+					
+				</div>
 				{spinButton}
 			</div>
 		);

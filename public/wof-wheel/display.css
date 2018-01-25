@@ -11,6 +11,10 @@ div.wheel {
 	position: relative;
 }
 
+div.inner-container {
+	position: relative;
+}
+
 div.container {
 	background-image: url("pointers.png");
 	background-size: 100% 100%;
@@ -41,4 +45,5 @@ div.spin-button {
 	font-family: Impact;
 	font-size: 150%;
 	cursor: pointer;
+	top: calc(100% - 100px);
 }

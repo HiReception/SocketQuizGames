@@ -5,7 +5,6 @@ var PropTypes = require("prop-types");
 export default class NextRoundPanel extends React.Component {
 	handleKeyPress = (event) => {
 		var eventDetails = event;
-		console.log(eventDetails.key);
 		if (eventDetails.key === "Enter") {
 			this.props.callback();
 		}

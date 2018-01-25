@@ -7,7 +7,6 @@ import DisplayContainer from './display/display-container';
 
 var wheelTurnInterval = 50;
 
-var relativePointerArray = [35, 0, -35];
 
 
 function getParameterByName(name, url) {
@@ -42,7 +41,6 @@ socket.on("accepted", function() {
 	ReactDOM.render((
 		<DisplayContainer
 			wheelTurnInterval={wheelTurnInterval}
-			relativePointerArray={relativePointerArray}
 			socket={socket}
 			soundManager={soundManager}/>
 	), document.getElementById("display-panel"));

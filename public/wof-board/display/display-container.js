@@ -51,10 +51,9 @@ export default class DisplayContainer extends React.Component {
 	}
 
 	handleNewState = (state) => {
-		console.log(state);
-		console.log(this.state);
 		// connecting before puzzles are loaded
 		if (state.currentPanel === "NoPuzzlePanel") {
+			console.log("Connecting before puzzles are loaded");
 			this.setState({
 				displayedBoard: ["@           @","             ","             ","@           @"]
 			});
@@ -65,29 +64,34 @@ export default class DisplayContainer extends React.Component {
 				(state.currentRound !== this.state.currentRound || 
 				(state.currentPanel === "BonusRoundPanel" && this.state.currentPanel !== "BonusRoundPanel"))) {
 			// play puzzle reveal chime
+			console.log("Revealing Puzzle");
 			this.props.soundManager.stop("backgroundBed");
 			this.props.soundManager.play("showPuzzle");
 			this.updateBoardByCell(this.state.displayedBoard, state.currentBoard);
 
 		// initial connection
 		} else if (this.state.currentBoard.length === 0) {
+			console.log("Initial Connection")
 			this.setState({
 				displayedBoard: state.currentBoard
 			});
 
 		// puzzle just solved
 		} else if (state.currentPuzzleSolved && !this.state.currentPuzzleSolved && !state.bonusAnswerRevealed) {
+			console.log("Puzzle Solved")
 			// play solve theme, and stop playing bonus round think music (if it was playing)
 			this.props.soundManager.stop("bonusThink");
 			this.props.soundManager.play("solvePuzzle");
 			this.updateBoardByCell(this.state.displayedBoard, state.currentBoard);
 
 		} else if (state.uncalledConsonantsInPuzzle.length === 0 && this.state.uncalledConsonantsInPuzzle.length > 0) {
+			console.log("No Consonants Left");
 			this.props.soundManager.play("noConsonants");
 
 
 		// bonus puzzle just solved
-		} else if (state.bonusPuzzleSolved && !this.state.bonusPuzzleSolved) {
+		} else if (state.bonusAnswerRevealed && !this.state.bonusAnswerRevealed && state.currentPuzzleSolved) {
+			console.log("Bonus Puzzle Solved");
 			// play solve theme, and stop playing bonus round think music (if it was playing)
 			this.props.soundManager.stop("bonusThink");
 			this.props.soundManager.play("solvePuzzle");
@@ -95,29 +99,34 @@ export default class DisplayContainer extends React.Component {
 
 		// just moved to NextRoundPanel
 		} else if (state.currentPanel === "NextRoundPanel" && state.currentPanel !== this.state.currentPanel) {
+			console.log("Move to NextRoundPanel");
 			this.updateBoardByCell(this.state.displayedBoard, 
 				["@           @","             ","             ","@           @"]);
 
 
 		// new letter called with no matches (or passed)
 		} else if (state.currentPlayer !== this.state.currentPlayer && state.currentWedge !== "Bankrupt" && state.currentWedge !== "Lose a Turn") {
+			console.log("Playing Buzzer");
 			// play buzzer
-			console.log("buzzing");
 			this.props.soundManager.play("buzzer");
 
 		// bonus round answer revealed (not solved)
 		} else if (state.bonusAnswerRevealed && !this.state.bonusAnswerRevealed) {
+			console.log("Revealing Unsolved Bonus Puzzle");
 			this.updateBoardByCell(this.state.displayedBoard, state.currentBoard);
 
-		// change in current board that isn't a solve - i.e. selection of letter in puzzle
-		} else if (state.currentBoard !== this.state.currentBoard && !state.currentPuzzleSolved && !state.bonusAnswerRevealed) {
-			this.lightUpChanges(this.state.displayedBoard, state.currentBoard);
 
 		// start of bonus round timer
 		} else if (state.bonusClockStarted && !this.state.bonusClockStarted) {
+			console.log("Starting Bonus Round Think Music")
 			// begin playing bonus round think music
-			console.log("starting bonus timer");
 			this.props.soundManager.play("bonusThink");
+
+		// change in current board that isn't a solve - i.e. selection of letter in puzzle
+		} else if (state.currentBoard !== this.state.currentBoard && !state.currentPuzzleSolved && !state.bonusAnswerRevealed) {
+			console.log("Lighting Up Changes");
+			this.lightUpChanges(this.state.displayedBoard, state.currentBoard);
+
 
 
 
@@ -131,7 +140,7 @@ export default class DisplayContainer extends React.Component {
 
 
 		// spinning wheel
-		if (state.spinning && !this.state.spinning) {
+		if (state.spinCount > this.state.spinCount) {
 			this.spin();
 		}
 		this.setState(state);
@@ -140,11 +149,6 @@ export default class DisplayContainer extends React.Component {
 	replaceChar = (string, pos, newChar) => {
 		var endStart = (+newChar.length + +pos);
 		return string.substr(0, pos) + newChar + string.substr(endStart);
-	}
-
-	setGameState = (state) => {
-		this.setState(state);
-		this.props.socket.emit("set state", state);
 	}
 
 	updateBoardByCell = (oldBoard, newBoard) => {
@@ -159,12 +163,11 @@ export default class DisplayContainer extends React.Component {
 		}
 
 		var currentChange = 0;
-		var thisPanel = this;
-		var change = function() {
+		var change = () => {
 			var r = changeCoordinates[currentChange].row;
 			var c = changeCoordinates[currentChange].col;
-			newDisplayBoard[r] = thisPanel.replaceChar(newDisplayBoard[r], c, newBoard[r][c]);
-			thisPanel.setState({
+			newDisplayBoard[r] = this.replaceChar(newDisplayBoard[r], c, newBoard[r][c]);
+			this.setState({
 				displayedBoard: newDisplayBoard
 			});
 			currentChange++;
@@ -189,17 +192,16 @@ export default class DisplayContainer extends React.Component {
 		}
 
 		var currentChange = 0;
-		var thisPanel = this;
-		var change = function() {
+		var change = () => {
 			var r = changeCoordinates[currentChange].row;
 			var c = changeCoordinates[currentChange].col;
-			newDisplayBoard[r] = thisPanel.replaceChar(newDisplayBoard[r], c, "*");
+			newDisplayBoard[r] = this.replaceChar(newDisplayBoard[r], c, "*");
 			// play ding sound
-			thisPanel.props.soundManager.play("ding");
-			thisPanel.setState({
+			this.props.soundManager.play("ding");
+			this.setState({
 				displayedBoard: newDisplayBoard
 			});
-			setTimeout(function() {thisPanel.cellLightToLetter(r, c, newBoard[r][c]);}, 1500);
+			setTimeout(() => this.cellLightToLetter(r, c, newBoard[r][c]), 1500);
 			currentChange++;
 			if (changeCoordinates.length > currentChange) {
 				setTimeout(change, 1000);
@@ -221,48 +223,10 @@ export default class DisplayContainer extends React.Component {
 	}
 
 	spin = () => {
-		var thisPanel = this;
-		var maxAngleIncrement = Math.random() * 5 + 5;
-		var angleIncrement = 0;
-		this.setState({
-			spinning: true
-		});
-		var startWheel = setInterval(function() {
-			thisPanel.setState({
-				wheelAngle: (((thisPanel.state.wheelAngle + angleIncrement) % 360) + 360) % 360
-			});
-			
-			//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
-			//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
-
-			angleIncrement += maxAngleIncrement / 10;
-			if (angleIncrement >= maxAngleIncrement) {
-				clearInterval(startWheel);
-
-				var slowDownAmount = 1/Math.floor(Math.random() * 15 + 15);
-				var slowDownWheel = setInterval(function() {
-
-					thisPanel.setState({
-						wheelAngle: (((thisPanel.state.wheelAngle + angleIncrement) % 360) + 360) % 360
-					});
-					
-					//var pointedWedge = wedgeArray.length - Math.floor(((angle - wedgeSpan/2 + 360) % 360) / wedgeSpan) - 1;
-					//ReactDOM.render(<div>{wedgeValueArray[pointedWedge]}</div>, document.getElementById("angle-panel"));
-
-					angleIncrement -= slowDownAmount;
-					if (angleIncrement <= 0) {
-						clearInterval(slowDownWheel);
-						thisPanel.finishSpin();
-					}
-			
-				}, thisPanel.props.wheelTurnInterval);
-			}
-		}, this.props.wheelTurnInterval);
+		setTimeout(this.finishSpin, this.state.spinTime);
 	}
 
 	finishSpin = () => {
-
-		var thisPanel = this;
 		var wedges = [];
 		if (this.state.currentRound < this.state.wheels.length) {
 			wedges = this.state.wheels[this.state.currentRound];
@@ -270,9 +234,9 @@ export default class DisplayContainer extends React.Component {
 			wedges = this.state.wheels[this.state.wheels.length - 1];
 		}
 		var wedgeSpan = 360 / wedges.length;
-		var playerLandedWedges = this.props.relativePointerArray.map(function(angle) {
+		var playerLandedWedges = this.state.relativePointerArray.map((angle) => {
 			return wedges.length
-			- Math.floor(((thisPanel.state.wheelAngle - wedgeSpan/2 + angle + 360) % 360) / wedgeSpan) - 1;
+			- Math.floor(((this.state.wheelAngle - wedgeSpan/2 + angle + 360) % 360) / wedgeSpan) - 1;
 		});
 
 		if (wedges[playerLandedWedges[this.state.currentPlayer]].value === "Bankrupt") {
@@ -289,12 +253,6 @@ export default class DisplayContainer extends React.Component {
 				this.props.soundManager.play("topDollar");
 			}
 		}
-
-		this.setGameState({
-			spinning: false,
-			currentWedge: wedges[playerLandedWedges[this.state.currentPlayer]].value,
-			wheelAngle: this.state.wheelAngle
-		});
 	}
 
 	componentDidMount = () => {
@@ -336,6 +294,5 @@ export default class DisplayContainer extends React.Component {
 DisplayContainer.propTypes = {
 	socket: PropTypes.instanceOf(io.Socket),
 	wheelTurnInterval: PropTypes.number,
-	relativePointerArray: PropTypes.array,
 	soundManager: PropTypes.instanceOf(SoundManager),
 };

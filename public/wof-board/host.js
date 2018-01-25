@@ -58,7 +58,11 @@ socket.on("game details", function(details) {
 			wheels: [],
 			currentRound: -1,
 			spinning: false,
+			spinCount: 0,
+			spinRotation: 0,
+			spinTime: 0,
 			wheelAngle: 0,
+			relativePointerArray: [35, 0, -35],
 
 			currentBoard: [],
 			usedLetters: "",

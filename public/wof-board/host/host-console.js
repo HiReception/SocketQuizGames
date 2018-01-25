@@ -33,6 +33,9 @@ export default class HostConsole extends React.Component {
 				}),
 				usedLetters: "",
 				lastLetterCalled: "",
+				spinCount: 0,
+				spinRotation: 0,
+				spinTime: 0,
 				numberOfMatchesLast: 0,
 				currentPuzzleSolved: false,
 				currentFinalBoard: this.state.bonus.finalBoard,
@@ -41,8 +44,6 @@ export default class HostConsole extends React.Component {
 			});
 		} else {
 			var newPuzzle = this.state.puzzles[this.state.currentRound + 1];
-			console.log("Setting puzzle to:");
-			console.log(newPuzzle);
 			this.setGameState({
 				currentRound: this.state.currentRound + 1,
 				currentPanel: "PuzzleBoardPanel",
@@ -91,7 +92,6 @@ export default class HostConsole extends React.Component {
 	}
 
 	setGameData = (newPuzzles, newBonus, newWheels) => {
-		console.log(newPuzzles, newBonus);
 		this.setGameState({
 			puzzles: newPuzzles,
 			bonus: newBonus,
@@ -108,29 +108,8 @@ export default class HostConsole extends React.Component {
 	}
 
 	receiveNewState = (state) => {
-		console.log("new state received:");
-		console.log(state);
-
-		var oldState = this.state;
 
 		this.setState(state);
-
-		if (state.currentWedge !== oldState.currentWedge) {
-			if (state.currentWedge === "Bankrupt") {
-				this.setPlayerRoundScore(state.currentPlayer, 0);
-			}
-			if (state.currentWedge === "Bankrupt" || state.currentWedge === "Lose a Turn") {
-				this.goToNextPlayer();
-			} else {
-				this.setGameState({
-					selectingConsonant: true
-				});
-			}
-		}
-
-		this.setGameState({
-			lastLetterCalled: ""
-		});
 
 	}
 

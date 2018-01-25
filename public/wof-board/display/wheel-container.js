@@ -25,7 +25,8 @@ export default class WheelContainer extends React.Component {
 					<WheelPanel
 						wedges={this.props.wedges}
 						diameter={this.state.diameter}
-						angle={this.props.angle}/>
+						angle={this.props.angle}
+						spinDuration={this.props.spinDuration}/>
 				</div>
 			</div>
 		);
@@ -52,5 +53,6 @@ export default class WheelContainer extends React.Component {
 WheelContainer.propTypes = {
 	wedges: PropTypes.array,
 	angle: PropTypes.number,
-	currentPlayer: PropTypes.number
+	currentPlayer: PropTypes.number,
+	spinDuration: PropTypes.number,
 }

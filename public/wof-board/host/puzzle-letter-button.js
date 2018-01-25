@@ -8,7 +8,7 @@ export default class PuzzleLetterButton extends React.Component {
 	render = () => {
 		if (this.props.active) {
 			return (
-				<div className="letter-button" href="#" onClick={this.onClick.bind(this, this.props.letter)}>
+				<div className="letter-button" href="#" onClick={() => this.onClick(this.props.letter)}>
 					<p>{this.props.letter}</p>
 				</div>
 			);

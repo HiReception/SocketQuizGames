@@ -41,25 +41,9 @@ export default class PuzzleBoardPanel extends React.Component {
 				<WheelContainer
 					wedges={wedges}
 					angle={this.props.gameState.wheelAngle}
-					currentPlayer={this.props.gameState.currentPlayer}/>
+					currentPlayer={this.props.gameState.currentPlayer}
+					spinDuration={this.props.gameState.spinTime}/>
 			);
-		}
-
-		var playerPanels = [];
-		for (var p in this.props.gameState.players) {
-			playerPanels.push((
-				<div key={p} className="player-panel" style={{
-					backgroundColor: this.props.gameState.players[p].colour
-				}}>
-					<div className="player-panel-inner">
-						<p className="player-panel" style={{
-							color: "white"
-						}}>
-							{this.props.gameState.players[p].roundScore}
-						</p>
-					</div>
-				</div>
-			));
 		}
 
 		return (
@@ -72,7 +56,15 @@ export default class PuzzleBoardPanel extends React.Component {
 					{wheelContainer}
 				</div>
 				<div className="player-row">
-					{playerPanels}
+					{this.props.gameState.players.map((p, index) => (
+						<div key={index} className="player-panel" style={{backgroundColor: p.colour}}>
+							<div className="player-panel-inner">
+								<p className="player-panel" style={{color: "white"}}>
+									{p.roundScore}
+								</p>
+							</div>
+						</div>
+					))}
 				</div>
 			</div>
 		);
