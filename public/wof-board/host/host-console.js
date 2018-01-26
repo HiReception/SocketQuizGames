@@ -22,7 +22,7 @@ export default class HostConsole extends React.Component {
 	}
 
 	goToNextRound = () => {
-		if (this.state.currentRound === this.state.puzzles.length - 1) {
+		if (!this.state.puzzles || this.state.currentRound === this.state.puzzles.length - 1) {
 			this.setGameState({
 				currentPanel: "BonusRoundPanel",
 				newPanelKey: this.state.newPanelKey + 1,
@@ -36,6 +36,7 @@ export default class HostConsole extends React.Component {
 				spinCount: 0,
 				spinRotation: 0,
 				spinTime: 0,
+				wheelAngle: 0,
 				numberOfMatchesLast: 0,
 				currentPuzzleSolved: false,
 				currentFinalBoard: this.state.bonus.finalBoard,

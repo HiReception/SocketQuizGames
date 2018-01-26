@@ -244,6 +244,15 @@ module.exports = function(grunt) {
 					"public/genericquiz/display.css": "public/genericquiz/display.scss",
 				}
 			},
+			wof_board: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/wof-board/host.css": "public/wof-board/host.scss",
+					"public/wof-board/display.css": "public/wof-board/display.scss",
+				}
+			},
 		},
 	});
 
