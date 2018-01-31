@@ -83,11 +83,10 @@ class PlayerPanel extends React.Component {
 		if (this.state.currentPanel !== "FinalJeopardyPanel" && this.state.currentPanel !== "FinalJeopardyResponsePanel") {
 			input = <BuzzInQuestion socket={this.props.socket}/>;
 		} else {
-			if (this.state.finalWageringOpen && (!this.state.finalWagers || !this.state.finalWagers.some((wager) => {
-				console.log(`wager name: ${wager.screenName} vs ${screenName}`)
-				return wager.screenName === screenName;
-			}))) {
-				const me = this.state.players.find(p => { return p.screenName === screenName; });
+			if (this.state.finalWageringOpen
+				&& this.state.finalEligiblePlayers.contains((p) => p.screenName === screenName)
+				&& (!this.state.finalWagers || !this.state.finalWagers.some(w => w.screenName === screenName))) {
+				const me = this.state.players.find(p => p.screenName === screenName);
 				input = (
 					<WagerQuestion
 						balance={me.score}
@@ -97,7 +96,9 @@ class PlayerPanel extends React.Component {
 						socket={this.props.socket}
 					/>
 				);
-			} else if (this.state.finalRespondingOpen && (!this.state.finalResponses || !this.state.finalResponses.some(response => { return response.screenName === screenName; }))) {
+			} else if (this.state.finalRespondingOpen
+				&& this.state.finalEligiblePlayers.some(p => p.screenName === screenName)
+				&& (!this.state.finalResponses || !this.state.finalResponses.some(r => r.screenName === screenName))) {
 				input = <FinalQuestion body={this.state.final.answer} socket={this.props.socket}/>;
 			} else {
 				input = <EmptyPanel/>;

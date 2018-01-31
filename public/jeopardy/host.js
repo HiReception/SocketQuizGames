@@ -76,7 +76,7 @@ socket.on("game details", function(details) {
 			finalFocusPlayerNumber: 0,
 			finalFocusPlayerName: "",
 			finalFocusResponse: "",
-			finalFocusMode: "response",
+			finalFocusMode: "pending",
 			finalFocusCorrect: false,
 		};
 		socket.emit("set state", state);
