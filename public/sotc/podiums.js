@@ -1,28 +1,30 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
+var PropTypes = require("prop-types");
 
-var ContestantPodium1993 = React.createClass({
-	getInitialState: function() {
-		return {
+class ContestantPodium1993 extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			lit: false,
 		};
-	},
-	toggleLit: function() {
+	}
+	toggleLit = () => {
 		this.setState({
 			lit: !this.state.lit,
 		});
-	},
-	render: function() {var lightArray = [];
-		for (var i = 0; i < 16; i++) {
-			var delay = this.state.lit ? i * 40 + "ms" : "0ms";
-			lightArray.push((
+	}
+	render = () => {
+		const lightArray = [...Array(16).keys()].map((i) => {
+			const delay = this.state.lit ? i * 40 + "ms" : "0ms";
+			return (
 				<div
 					key={i}
 					className={"light-bar" +
 						(this.state.lit ? " lit" : "")}
 					style={{transitionDelay: delay}}/>
-			))
-		}
+			);
+		})
 		
 		return (
 			<div className="contestant-podium" onClick={this.toggleLit}>
@@ -53,25 +55,30 @@ var ContestantPodium1993 = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
-var ContestantPodium1988 = React.createClass({
-	getInitialState: function() {
-		return {
+ContestantPodium1993.propTypes = {
+	name: PropTypes.string,
+	score: PropTypes.number,
+}
+
+class ContestantPodium1988 extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			lit: false,
 		};
-	},
-	toggleLit: function() {
+	}
+	toggleLit = () => {
 		this.setState({
 			lit: !this.state.lit,
 		});
-	},
-	render: function() {
-		var lightArray = [];
-		var colourArray = ["#807276", "#FFFD93", "#D07877"];
-		for (var i = 0; i < 8; i++) {
-			var delay = this.state.lit ? i * 80 + "ms" : "0ms";
-			lightArray.push((
+	}
+	render = () => {
+		const colourArray = ["#807276", "#FFFD93", "#D07877"];
+		const lightArray = [...Array(8).keys()].map((i) => {
+			const delay = this.state.lit ? i * 80 + "ms" : "0ms";
+			return (
 				<div
 					key={i}
 					className={"light-bar-1988" +
@@ -85,8 +92,8 @@ var ContestantPodium1988 = React.createClass({
 						top: Math.max(0, 50 - i * 10) + "px",
 						left: (i === 7) ? 0 : (20 + (6 - i) * 10) + "px",
 					}}/>
-			))
-		}
+			);
+		});
 		return (
 			<div className="contestant-podium" onClick={this.toggleLit}>
 				<div className="name-section">
@@ -116,7 +123,12 @@ var ContestantPodium1988 = React.createClass({
 			</div>
 		);
 	}
-});
+}
+
+ContestantPodium1988.propTypes = {
+	name: PropTypes.string,
+	score: PropTypes.number,
+}
 
 
 
