@@ -84,7 +84,7 @@ class PlayerPanel extends React.Component {
 			input = <BuzzInQuestion socket={this.props.socket}/>;
 		} else {
 			if (this.state.finalWageringOpen
-				&& this.state.finalEligiblePlayers.contains((p) => p.screenName === screenName)
+				&& this.state.finalEligiblePlayers.some((p) => p.screenName === screenName)
 				&& (!this.state.finalWagers || !this.state.finalWagers.some(w => w.screenName === screenName))) {
 				const me = this.state.players.find(p => p.screenName === screenName);
 				input = (

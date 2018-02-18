@@ -1,6 +1,7 @@
 var React = require("react");
 var PropTypes = require("prop-types");
 import CategoryGroup from "./category-group";
+import {Group} from "react-konva";
 
 // panel showing which categories and clues are unasked (with buttons to show them)
 export default class SelectQuestionPanel extends React.Component {
@@ -8,22 +9,26 @@ export default class SelectQuestionPanel extends React.Component {
 		//textFit($("div.category-header"), {multiLine: false});
 		//textFit($("div.clue-button"));
 	}
+
 	render = () => {
-		var catGroups = [];
-		for (var i = 0; i < this.props.round.categories.length; i++) {
-			catGroups.push((
-				<CategoryGroup
-					category={this.props.round.categories[i]}
-					key={i}
-					values={this.props.round.values.amounts}
-					prefix={this.props.prefix}
-					suffix={this.props.suffix}/>));
-		}
+		const {height, width, round, prefix, suffix} = this.props;
+		const catWidth = width / round.categories.length;
+		var catGroups = round.categories.map((c,i) => (
+			<CategoryGroup
+				category={c}
+				key={i}
+				left={catWidth * i}
+				width={catWidth}
+				height={height}
+				values={round.values.amounts}
+				prefix={prefix}
+				suffix={suffix}/>
+		));
 
 		return (
-			<div className="select-question-panel">
+			<Group>
 				{catGroups}
-			</div>
+			</Group>
 		);
 	}
 	
@@ -33,4 +38,6 @@ SelectQuestionPanel.propTypes = {
 	round: PropTypes.object,
 	prefix: PropTypes.string,
 	suffix: PropTypes.string,
+	height: PropTypes.number,
+	width: PropTypes.number,
 };

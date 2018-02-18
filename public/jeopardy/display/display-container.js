@@ -1,6 +1,7 @@
 var React = require("react");
 var PropTypes = require("prop-types");
 const io = require("socket.io-client");
+import {Stage, Group, Rect, Layer} from "react-konva";
 
 import PlayerListing from "./player-listing";
 import OpenQuestionPanel from "./open-question-panel";
@@ -30,6 +31,8 @@ export default class DisplayContainer extends React.Component {
 
 			
 			currentPanel: "NoQuestionPanel",
+			currentCatNo: 0,
+			currentClueNo: 0,
 			currentClue: {},
 
 			playerAnswering: {},
@@ -38,7 +41,14 @@ export default class DisplayContainer extends React.Component {
 
 			prefix: "",
 			suffix: "",
+
+			height: 0,
+			width: 0,
 		};
+	}
+
+	updateDimensions = () => {
+		this.setState({width: window.innerWidth, height: window.innerHeight});
 	}
 
 	onNewState = (state) => {
@@ -56,38 +66,95 @@ export default class DisplayContainer extends React.Component {
 		this.setState(state);
 	}
 
+	componentWillMount = () => {
+		this.updateDimensions();
+	}
+
 	componentDidMount = () => {
 		this.props.socket.on("new game state", this.onNewState);
+		window.addEventListener("resize", this.updateDimensions);
 	}
 
 	componentWillUnmount = () => {
 		this.props.socket.removeHandler("new game state", this.onNewState);
+		window.removeEventListener("resize", this.updateDimensions);
 	}
+
 
 	render = () => {
 		var questionPanel;
-
+		var cluePanel;
+		var ddPanel;
+		const currentRound = this.state.rounds[this.state.currentRound];
+		const playerPanelHeight = 0.2 * this.state.height;
+		const boardHeight = this.state.height - playerPanelHeight;
+		const currentClue = currentRound ? currentRound.categories[this.state.currentCatNo].clues[this.state.currentClueNo] : {};
+		const clueWidth = currentRound ? this.state.width/currentRound.categories.length : 0;
+		const headerHeight = (1/6) * boardHeight;
+		const clueHeight = currentRound ? (boardHeight - headerHeight) / currentRound.categories[this.state.currentCatNo].clues.length : 0;
+		const clueTop = headerHeight + (clueHeight * this.state.currentClueNo);
+		const clueLeft = clueWidth * this.state.currentCatNo;
 		switch (this.state.currentPanel) {
 		case "NoQuestionPanel":
 		case "NextRoundPanel":
-			questionPanel = <NoQuestionPanel/>;
+			questionPanel = <NoQuestionPanel height={boardHeight} width={this.state.width}/>;
 			break;
 		case "SelectQuestionPanel":
 			questionPanel = (
-				<SelectQuestionPanel
-					round={this.state.rounds[this.state.currentRound]}
-					prefix={this.state.prefix}
-					suffix={this.state.suffix}
-				/>
+				<Group height={boardHeight} width={this.state.width} x={0} y={0}>
+					<SelectQuestionPanel
+						round={this.state.rounds[this.state.currentRound]}
+						prefix={this.state.prefix}
+						suffix={this.state.suffix}
+						height={boardHeight}
+						width={this.state.width}
+					/>
+				</Group>
 			);
 			break;
 		case "OpenQuestionPanel":
-			questionPanel = (<OpenQuestionPanel
-				clue={this.state.currentClue}
+			questionPanel = (
+				<Group height={boardHeight} width={this.state.width} x={0} y={0}>
+					<SelectQuestionPanel
+						round={this.state.rounds[this.state.currentRound]}
+						prefix={this.state.prefix}
+						suffix={this.state.suffix}
+						height={boardHeight}
+						width={this.state.width}
+					/>
+				</Group>
+			);
+			cluePanel = (<OpenQuestionPanel
+				clue={currentClue}
+				height={boardHeight}
+				width={this.state.width}
+				startingLeft={clueLeft}
+				startingTop={clueTop}
+				startingHeight={clueHeight}
+				startingWidth={clueWidth}
 			/>);
 			break;
 		case "DailyDoublePanel":
-			questionPanel = <DailyDoublePanel playSound={this.state.playSound}/>;
+			questionPanel = (
+				<Group height={boardHeight} width={this.state.width} x={0} y={0}>
+					<SelectQuestionPanel
+						round={this.state.rounds[this.state.currentRound]}
+						prefix={this.state.prefix}
+						suffix={this.state.suffix}
+						height={boardHeight}
+						width={this.state.width}
+					/>
+				</Group>
+			);
+			
+			ddPanel = (<DailyDoublePanel
+				height={boardHeight}
+				width={this.state.width}
+				startingLeft={clueLeft}
+				startingTop={clueTop}
+				startingHeight={clueHeight}
+				startingWidth={clueWidth}
+			/>);
 			break;
 		case "FinalJeopardyPanel":
 			questionPanel = (
@@ -95,8 +162,8 @@ export default class DisplayContainer extends React.Component {
 					final={this.state.final}
 					categoryVisible={this.state.finalCategoryVisible}
 					clueVisible={this.state.finalClueVisible}
-					revealTone={false}
-					thinkMusicPlaying={false}
+					height={boardHeight}
+					width={this.state.width}
 				/>
 			);
 			break;
@@ -108,50 +175,54 @@ export default class DisplayContainer extends React.Component {
 					responseVisible={this.state.finalFocusResponseVisible}
 					wager={this.state.finalFocusWager}
 					wagerVisible={this.state.finalFocusWagerVisible}
+					height={boardHeight}
+					width={this.state.width}
 				/>
 			);
 			break;
 		}
 
-		var playerPanel;
-		var nonHiddenPlayers = this.state.players.filter(function(p) {
-			return !p.hidden;
+		const nonHiddenPlayers = this.state.players.filter((p) => !p.hidden);
+
+		const playerWidth = this.state.width / nonHiddenPlayers.length;
+
+		const list = nonHiddenPlayers.map((p,i) => {
+			// light this display up if they are answering the question
+			const answering = this.state.playerAnswering.screenName === p.screenName;
+
+			// player is "locked out" if someone ELSE is answering, so grey them out
+			const lockedOut = this.state.playerAnswering.hasOwnProperty("screenName")
+				&& this.state.playerAnswering.screenName !== p.screenName;
+
+			return (<PlayerListing
+				player={p}
+				key={i}
+				prefix={this.state.prefix}
+				suffix={this.state.suffix}
+				answering={answering}
+				lockedOut={lockedOut}
+				left={i * playerWidth}
+				width={playerWidth}
+				top={0}
+				height={playerPanelHeight}
+			/>);
 		});
 
-		if (nonHiddenPlayers.length != 0) {
-			var list = [];
-			for (var i = 0; i < nonHiddenPlayers.length; i++) {
-				var p = nonHiddenPlayers[i];
-				// light this display up if they are answering the question
-				var answering = this.state.playerAnswering.screenName === p.screenName;
-
-				// player is "locked out" if someone ELSE is answering, so grey them out
-				var lockedOut = this.state.playerAnswering.hasOwnProperty("screenName")
-					&& this.state.playerAnswering.screenName !== p.screenName;
-
-				list.push((<PlayerListing
-					player={p}
-					key={i}
-					prefix={this.state.prefix}
-					suffix={this.state.suffix}
-					answering={answering}
-					lockedOut={lockedOut}
-				/>));
-			}
-			playerPanel = <div className="playerContainer">{list}</div>;
-		} else {
-			playerPanel = <div className="playerContainer"/>;
-		}
-
 		return (
-			<div id="display-panel" className="content">
-				<div id="question-panel" className="content">
+			<Stage x={0} y={0} height={this.state.height} width={this.state.width}>
+				<Layer>
 					{questionPanel}
-				</div>		
-				<div id="player-list" className="content">
-					{playerPanel}
-				</div>
-			</div>
+					{cluePanel}
+					{ddPanel}
+				</Layer>
+				<Layer>	
+					<Group height={playerPanelHeight} width={this.state.width} x={0} y={boardHeight}>
+						<Rect height={playerPanelHeight} width={this.state.width} x={0} y={0}
+							fill={"brown"}/>
+						{list}
+					</Group>
+				</Layer>
+			</Stage>
 		);
 	}
 }
