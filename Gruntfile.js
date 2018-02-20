@@ -253,6 +253,47 @@ module.exports = function(grunt) {
 					"public/wof-board/display.css": "js/wof-board/display.scss",
 				}
 			},
+			sotc: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/sotc/cashcard.css": "js/sotc/cashcard.scss",
+					"public/sotc/podiums.css": "js/sotc/podiums.scss",
+				}
+			},
+			tpir_plinko: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/tpir-plinko/display.css": "js/tpir-plinko/display.scss",
+				}
+			},
+			wof_wheel: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/wof-wheel/display.css": "js/wof-wheel/display.scss",
+				}
+			},
+			tpir_wheel: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/tpir-wheel/display.css": "js/tpir-wheel/display.scss",
+				}
+			},
+			feud: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/feud/test.css": "js/feud/test.scss",
+				}
+			}
 		},
 	});
 

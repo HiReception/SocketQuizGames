@@ -1,129 +1,108 @@
 /* entire container, keeps perspective */
 .flip-container {
-	margin: 5px;
-	perspective: 1000px;
-	cursor: default;
-}
+  margin: 5px;
+  perspective: 1000px;
+  cursor: default; }
+  .flip-container > .flipper {
+    transform-origin: 100% 51px;
+    /* half of height */ }
+  .flip-container.flip > .flipper {
+    transform: rotateX(-180deg); }
 
-.flip-container .flipper {
-	transform-origin: 100% 51px; /* half of height */
-}
-
-	/* flip the pane when hovered */
-	.flip-container.flip .flipper {
-		transform: rotateX(-180deg);
-	}
-
+/* flip the pane when hovered */
 .flip-container, .front, .back {
-	width: 400px;
-	height: 100px;
-}
+  width: 400px;
+  height: 100px; }
 
 /* flip speed goes here */
 .flipper {
-	transition: 1.5s;
-	transform-style: preserve-3d;
-
-	position: relative;
-}
+  transition: 1.5s;
+  transform-style: preserve-3d;
+  position: relative; }
 
 /* hide back of pane during swap */
 .front, .back {
-	backface-visibility: hidden;
-
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0; }
 
 /* front pane, placed above back */
 .front {
-	z-index: 2;
-	/* for firefox 31 */
-	transform: rotateX(0deg);
-	
-}
+  z-index: 2;
+  /* for firefox 31 */
+  transform: rotateX(0deg); }
 
 /* back, initially hidden pane */
 .back {
-	transform: rotateX(-180deg);
-}
+  transform: rotateX(-180deg); }
 
 div.front {
-	height: 100px;
-	width: 400px;
-	background-color: navy;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: white;
-	
-	font-family: Verdana;
-}
+  height: 100px;
+  width: 400px;
+  background-color: navy;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: Verdana; }
 
 div.index {
-	height: 60px;
-	width: 60px;
-	border-radius: 30px;
-	border: 1px solid gold;
-	background-color: navy;
-	text-align: center;
-	font-size: 200%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	font-family: 'Arial Narrow';
-}
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  border: 1px solid gold;
+  background-color: navy;
+  text-align: center;
+  font-size: 200%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial Narrow'; }
 
 div.back {
-	height: 100px;
-	width: 400px;
-	border: 1px solid gold;
-	background-color: black;
-	display: flex;
-	flex-direction: row;
-	align-items: stretch;
-}
+  height: 100px;
+  width: 400px;
+  border: 1px solid gold;
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch; }
 
 div.answer {
-	flex: 3 3 300px;
-	color: white;
-	display: flex;
-	flex-direction: row;
-	justify-content: left;
-	align-items: center;
-	background-color: navy;
-	font-size: 200%;
-	font-family: 'Arial Narrow';
-	text-transform: uppercase;
-	text-align: left;
-	padding: 5px;
-}
+  flex: 3 3 300px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  background-color: navy;
+  font-size: 200%;
+  font-family: 'Arial Narrow';
+  text-transform: uppercase;
+  text-align: left;
+  padding: 5px; }
 
 div.value {
-	flex: 1 1 100px;
-	background-color: blue;
-	color: white;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 200%;
-	font-family: 'Arial Narrow';
-}
+  flex: 1 1 100px;
+  background-color: blue;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 200%;
+  font-family: 'Arial Narrow'; }
 
 div.board {
-	display: flex;
-	flex-direction: row;
-	background-color: blue;
-	justify-content: center;
-	align-items: center;
-	padding: 10px;
-}
+  display: flex;
+  flex-direction: row;
+  background-color: blue;
+  justify-content: center;
+  align-items: center;
+  padding: 10px; }
 
 div.column {
-	display: flex;
-	flex-direction: column;
-	padding: 5px;
-}
+  display: flex;
+  flex-direction: column;
+  padding: 5px; }

@@ -1,49 +1,43 @@
 body {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	overflow: hidden;
-	background-color: #000099;
-}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #000099; }
 
 div.wheel {
-	position: relative;
-}
+  position: relative; }
 
 div.inner-container {
-	position: relative;
-}
+  position: relative; }
 
 div.container {
-	background-image: url("pointers.png");
-	background-size: 100% 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-}
+  background-image: url("pointers.png");
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute; }
 
 img.wedge {
-	position: absolute
-}
+  position: absolute; }
 
 div.spin-button {
-	display: flex;
-	flex-direction: column;
-	height: 50px;
-	width: 150px;
-	background-color: teal;
-	border: 1px solid white;
-	position: absolute;
-	z-index: 2;
-	border-radius: 10px;
-	justify-content: center;
-	align-items: center;
-	color: white;
-	font-family: Impact;
-	font-size: 150%;
-	cursor: pointer;
-	top: calc(100% - 100px);
-}
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  width: 150px;
+  background-color: teal;
+  border: 1px solid white;
+  position: absolute;
+  z-index: 2;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: Impact;
+  font-size: 150%;
+  cursor: pointer;
+  top: calc(100% - 100px); }
