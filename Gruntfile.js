@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 		browserify: {
 			menu: {
-				src: "public/menu.js",
+				src: "js/menu.js",
 				dest: "public/menuBundle.js",
 				options: {
 					transform: [
@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 				}
 			},
 			sotc_podiums: {
-				src: "public/sotc/podiums.js",
+				src: "js/sotc/podiums.js",
 				dest: "public/sotc/podiumsBundle.js",
 				options: {
 					transform: [
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
 				}
 			},
 			feud_test: {
-				src: "public/feud/test.js",
+				src: "js/feud/test.js",
 				dest: "public/feud/testBundle.js",
 				options: {
 					transform: [
@@ -36,7 +36,7 @@ module.exports = function(grunt) {
 				}
 			},
 			sotc_cashcard: {
-				src: "public/sotc/cashcard.js",
+				src: "js/sotc/cashcard.js",
 				dest: "public/sotc/cashcardBundle.js",
 				options: {
 					transform: [
@@ -47,7 +47,7 @@ module.exports = function(grunt) {
 				}
 			},
 			jeopardy_player: {
-				src: "public/jeopardy/player.js",
+				src: "js/jeopardy/player.js",
 				dest: "public/jeopardy/playerBundle.js",
 				options: {
 					transform: [
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
 				}
 			},
 			jeopardy_host: {
-				src: "public/jeopardy/host.js",
+				src: "js/jeopardy/host.js",
 				dest: "public/jeopardy/hostBundle.js",
 				options: {
 					transform: [
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
 				}
 			},
 			jeopardy_display: {
-				src: "public/jeopardy/display.js",
+				src: "js/jeopardy/display.js",
 				dest: "public/jeopardy/displayBundle.js",
 				options: {
 					transform: [
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
 				}
 			},
 			genericquiz_player: {
-				src: "public/genericquiz/player.js",
+				src: "js/genericquiz/player.js",
 				dest: "public/genericquiz/playerBundle.js",
 				options: {
 					transform: [
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
 				}
 			},
 			genericquiz_host: {
-				src: "public/genericquiz/host.js",
+				src: "js/genericquiz/host.js",
 				dest: "public/genericquiz/hostBundle.js",
 				options: {
 					transform: [
@@ -103,7 +103,7 @@ module.exports = function(grunt) {
 				}
 			},
 			genericquiz_display: {
-				src: "public/genericquiz/display.js",
+				src: "js/genericquiz/display.js",
 				dest: "public/genericquiz/displayBundle.js",
 				options: {
 					transform: [
@@ -114,7 +114,7 @@ module.exports = function(grunt) {
 				}
 			},
 			wof_board_display: {
-				src: "public/wof-board/display.js",
+				src: "js/wof-board/display.js",
 				dest: "public/wof-board/displayBundle.js",
 				options: {
 					transform: [
@@ -125,7 +125,7 @@ module.exports = function(grunt) {
 				}
 			},
 			wof_board_host: {
-				src: "public/wof-board/host.js",
+				src: "js/wof-board/host.js",
 				dest: "public/wof-board/hostBundle.js",
 				options: {
 					transform: [
@@ -137,7 +137,7 @@ module.exports = function(grunt) {
 				}
 			},
 			tpir_wheel_display: {
-				src: "public/tpir-wheel/display.js",
+				src: "js/tpir-wheel/display.js",
 				dest: "public/tpir-wheel/displayBundle.js",
 				options: {
 					transform: [
@@ -148,7 +148,7 @@ module.exports = function(grunt) {
 				}
 			},
 			tpir_plinko_display: {
-				src: "public/tpir-plinko/display.js",
+				src: "js/tpir-plinko/display.js",
 				dest: "public/tpir-plinko/displayBundle.js",
 				options: {
 					transform: [
@@ -159,7 +159,7 @@ module.exports = function(grunt) {
 				}
 			},
 			wof_wheel_display: {
-				src: "public/wof-wheel/display.js",
+				src: "js/wof-wheel/display.js",
 				dest: "public/wof-wheel/displayBundle.js",
 				options: {
 					transform: [
@@ -170,7 +170,7 @@ module.exports = function(grunt) {
 				}
 			},
 			wwtbam_ff_player: {
-				src: "public/wwtbam-ff/player.js",
+				src: "js/wwtbam-ff/player.js",
 				dest: "public/wwtbam-ff/playerBundle.js",
 				options: {
 					transform: [
@@ -181,7 +181,7 @@ module.exports = function(grunt) {
 				}
 			},
 			wwtbam_ff_host: {
-				src: "public/wwtbam-ff/host.js",
+				src: "js/wwtbam-ff/host.js",
 				dest: "public/wwtbam-ff/hostBundle.js",
 				options: {
 					transform: [
@@ -193,7 +193,7 @@ module.exports = function(grunt) {
 				}
 			},
 			wwtbam_ff_display: {
-				src: "public/wwtbam-ff/display.js",
+				src: "js/wwtbam-ff/display.js",
 				dest: "public/wwtbam-ff/displayBundle.js",
 				options: {
 					transform: [
@@ -211,7 +211,7 @@ module.exports = function(grunt) {
 					style: "compressed",
 				},
 				files : {
-					"public/menu.css": "public/menu.scss",
+					"public/menu.css": "js/menu.scss",
 				},
 			},
 			jeopardy: {
@@ -219,9 +219,9 @@ module.exports = function(grunt) {
 					style: "compressed",
 				},
 				files: {
-					"public/jeopardy/host.css": "public/jeopardy/host.scss",
-					"public/jeopardy/player.css": "public/jeopardy/player.scss",
-					"public/jeopardy/display.css": "public/jeopardy/display.scss",
+					"public/jeopardy/host.css": "js/jeopardy/host.scss",
+					"public/jeopardy/player.css": "js/jeopardy/player.scss",
+					"public/jeopardy/display.css": "js/jeopardy/display.scss",
 				}
 			},
 			wwtbam_ff: {
@@ -229,9 +229,9 @@ module.exports = function(grunt) {
 					style: "compressed",
 				},
 				files: {
-					"public/wwtbam-ff/host.css": "public/wwtbam-ff/host.scss",
-					"public/wwtbam-ff/player.css": "public/wwtbam-ff/player.scss",
-					"public/wwtbam-ff/display.css": "public/wwtbam-ff/display.scss",
+					"public/wwtbam-ff/host.css": "js/wwtbam-ff/host.scss",
+					"public/wwtbam-ff/player.css": "js/wwtbam-ff/player.scss",
+					"public/wwtbam-ff/display.css": "js/wwtbam-ff/display.scss",
 				}
 			},
 			genericquiz: {
@@ -239,9 +239,9 @@ module.exports = function(grunt) {
 					style: "compressed",
 				},
 				files: {
-					"public/genericquiz/host.css": "public/genericquiz/host.scss",
-					"public/genericquiz/player.css": "public/genericquiz/player.scss",
-					"public/genericquiz/display.css": "public/genericquiz/display.scss",
+					"public/genericquiz/host.css": "js/genericquiz/host.scss",
+					"public/genericquiz/player.css": "js/genericquiz/player.scss",
+					"public/genericquiz/display.css": "js/genericquiz/display.scss",
 				}
 			},
 			wof_board: {
@@ -249,8 +249,8 @@ module.exports = function(grunt) {
 					style: "compressed",
 				},
 				files: {
-					"public/wof-board/host.css": "public/wof-board/host.scss",
-					"public/wof-board/display.css": "public/wof-board/display.scss",
+					"public/wof-board/host.css": "js/wof-board/host.scss",
+					"public/wof-board/display.css": "js/wof-board/display.scss",
 				}
 			},
 		},
