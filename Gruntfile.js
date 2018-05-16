@@ -24,6 +24,29 @@ module.exports = function(grunt) {
 					]
 				}
 			},
+			sotc_player: {
+				src: "js/sotc/player.js",
+				dest: "public/sotc/playerBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"],
+						}]
+					]
+				}
+			},
+			sotc_host: {
+				src: "js/sotc/host.js",
+				dest: "public/sotc/hostBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"],
+						}],
+						"brfs",
+					]
+				}
+			},
 			feud_test: {
 				src: "js/feud/test.js",
 				dest: "public/feud/testBundle.js",
@@ -260,6 +283,8 @@ module.exports = function(grunt) {
 				files: {
 					"public/sotc/cashcard.css": "js/sotc/cashcard.scss",
 					"public/sotc/podiums.css": "js/sotc/podiums.scss",
+					"public/sotc/host.css": "js/sotc/host.scss",
+					"public/sotc/player.css": "js/sotc/player.scss",
 				}
 			},
 			tpir_plinko: {

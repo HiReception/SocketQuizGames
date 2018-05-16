@@ -20,14 +20,15 @@ class MainMenu extends React.Component {
 
 			displayCode: "",
 			currentError: "",
-		}
+		};
 	}
 
 	hostableGames = [
 		{folder: "jeopardy", name: "Jeopardy!"},
 		{folder: "genericquiz", name: "Generic Quiz"},
 		{folder: "wof-board", name: "Wheel of Fortune"},
-		{folder: "wwtbam-ff", name: "Fastest Finger First"}
+		{folder: "wwtbam-ff", name: "Fastest Finger First"},
+		{folder: "sotc", name: "$ale of the Century"},
 	];
 
 	minigames = [
@@ -119,8 +120,6 @@ class MainMenu extends React.Component {
 			password: this.state.hostPassword,
 		}).then(res => {
 			if (res) {
-				console.log("Response Received: ");
-				console.log(res);
 				window.location.href = res.data;
 			}
 			
@@ -138,8 +137,6 @@ class MainMenu extends React.Component {
 			password: this.state.hostPassword,
 		}).then((res) => {
 			if (res) {
-				console.log("Response Received: ");
-				console.log(res);
 				window.location.href = res.data;
 			}
 			
@@ -157,8 +154,6 @@ class MainMenu extends React.Component {
 			name: this.state.joinName,
 		}).then(res => {
 			if (res) {
-				console.log("Response Received: ");
-				console.log(res);
 				window.location.href = res.data;
 			}
 			
@@ -175,8 +170,6 @@ class MainMenu extends React.Component {
 			gamecode: this.state.displayCode,
 		}).then(res => {
 			if (res) {
-				console.log("Response Received: ");
-				console.log(res);
 				window.location.href = res.data;
 			}
 			
@@ -268,7 +261,7 @@ class MainMenu extends React.Component {
 					<div className="error">
 						<p>{errorText}</p>
 					</div>
-				)
+				);
 			}
 			content = (
 				<div className="content">
@@ -313,7 +306,7 @@ class MainMenu extends React.Component {
 					<div className="error">
 						<p>{errorText}</p>
 					</div>
-				)
+				);
 			}
 			content = (
 				<div className="content">
@@ -361,7 +354,7 @@ class MainMenu extends React.Component {
 					<div className="error">
 						<p>{errorText}</p>
 					</div>
-				)
+				);
 			}
 			content = (
 				<div className="content">

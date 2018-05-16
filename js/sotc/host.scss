@@ -1,0 +1,642 @@
+@import "general";
+@import "../common/generic-buttons";
+@import "../common/player-panel-bar";
+
+
+$panel-border: #999999;
+$sidebar-width: 300px;
+
+body {
+	display: flex;
+	flex-direction: row;
+	padding: 0;
+	margin: 0;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+
+
+#body-panel {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+}
+
+#body-footer {
+	text-align: center;
+}
+
+.main-panel {
+	flex: 1 1 auto;
+	height: calc(100% - (50px + 1px));
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: stretch;
+}
+
+#question-panel {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+	overflow: auto;
+}
+#question-panel p {
+	text-align: center;
+}
+
+.mainpanel-enter {
+	transform: translate(100%);
+}
+
+/*.mainpanel-enter.mainpanel-enter-active {
+	transform: translate(0%);
+	transition: transform 0ms ease-in-out;
+}
+
+.mainpanel-leave {
+	transform: translate(0%);
+}
+
+.mainpanel-leave.mainpanel-leave-active {
+	transform: translate(-100%);
+	transition: transform 0ms ease-in-out;
+}
+
+.mainpanel-reverse-enter {
+	transform: translate(-100%);
+}
+
+.mainpanel-reverse-enter.mainpanel-reverse-enter-active {
+	transform: translate(0%);
+	transition: transform 0ms ease-in-out;
+}
+
+.mainpanel-reverse-leave {
+	transform: translate(0%);
+}
+
+.mainpanel-reverse-leave.mainpanel-reverse-leave-active {
+	transform: translate(100%);
+	transition: transform 0ms ease-in-out;
+}*/
+
+.header {
+	flex: 0 0 50px;
+	max-height: 50px;
+	border-bottom: 0.5px solid $panel-border;
+}
+
+.footer {
+	flex: 0 0 50px;
+	max-height: 50px;
+	border-top: 0.5px solid $panel-border;
+	overflow: hidden;
+}
+
+.content {
+	flex: 1 1 auto;
+}
+
+#body-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-end;
+	padding-left: 10px;
+	padding-right: 10px;
+	overflow: hidden;
+	background-color: $background-color;
+}
+
+#game-title {
+	font-size: 150%;
+	flex: 1 0 auto;
+	text-align: center;
+	color: white;
+	font-family: 'Korinna Bold';
+}
+
+#game-code {
+	font-size: 200%;
+	color: orange;
+	flex: 0 0 auto;
+	font-weight: bold;
+}
+
+
+/* Sidebar - Player Info */
+
+
+#sidebar {
+	flex: 0 0 $sidebar-width;
+	display: flex;
+	flex-direction: column;
+	border-right: 0.5px solid $panel-border;
+}
+
+#player-count {
+	font-size: 150%;
+	flex: 1 0 auto;
+	text-align: center;
+	color: white;
+	font-family: 'Korinna Bold';
+}
+
+#sidebar-header {
+	background-color: $background-color;
+	text-align: center;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-left: 10px;
+	padding-right: 10px;
+	overflow: hidden;
+}
+
+#sidebar-footer {
+	text-align: center;
+}
+
+#player-list {
+	flex: 0 0 $sidebar-width;
+	display: flex;
+	flex-direction: column;
+	background-color: brown;
+	overflow-y: auto;
+}
+
+p .no-players {
+	text-align: center;
+	color: white;
+}
+
+div .playerListing {
+	display: flex;
+	flex-direction: column;
+
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border: 1px solid black;
+}
+
+p.playerListingName {
+	color: white;
+}
+
+div.playerListingName {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+	flex: 2 2 auto;
+	height: 30px;
+	background-color: $background-color;
+	border-bottom: 1px solid black;
+	padding-right: 5px;
+
+	&.locked {
+		background-color: grey;
+	}
+
+	&.answering {
+		background-color: blue;
+	}
+}
+
+p.playerListingDetails {
+	font-family: 'Oswald Bold';
+	color: white;
+	font-size: 300%;
+	text-shadow: 2px 2px black;
+
+	&.negative {
+		color: red;
+	}
+}
+
+div.playerListingDetails {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+	flex: 3 3 auto;
+	height: 60px;
+	background-color: $background-color;
+
+	&.locked {
+		background-color: grey;
+	}
+
+	&.answering {
+		background-color: blue;
+	}
+}
+
+
+div.player-details-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+div.player-details-name {
+
+}
+
+div.player-details-score {
+
+}
+
+p.player-details-name {
+	color: white;
+	text-align: center;
+	font-size: 150%;
+	margin: 10px;
+}
+
+p.player-details-score {
+	color: white;
+	text-align: center;
+	font-size: 200%;
+	margin: 10px;
+}
+
+p.player-details-back {
+	color: white;
+	text-align: center;
+}
+
+
+
+
+/* No Question Panel */
+
+
+div .no-question-panel {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	background-color: $background-color;
+	color: white;
+}
+
+div .game-type-radio-group {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	label {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+}
+
+div.upload-file-dialog {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+}
+
+
+/* Select Question Panel */
+
+
+div.select-question-panel {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	justify-content: center;
+	align-items: stretch;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: $background-color;
+}
+
+div.category-group {
+	flex: 1 1 60px;
+	display: flex;
+	flex-direction: column;
+	margin: 5px;
+}
+
+div.category-header {
+	flex: 0 0 auto;
+	height: 20px;
+	background-color: $background-color;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+p.category-header {
+	text-align: left;
+	color: white;
+	text-transform: uppercase;
+}
+
+div.category-clue-group {
+	flex: 1 1 60px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: stretch;
+	
+}
+
+div.clue-button {
+	flex: 1 1 20px;
+	border: 5px solid black;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 5px;
+	margin-right: 5px;
+
+	&.active {
+		background-color: $background-color;
+		cursor: pointer;
+	}
+
+	&.inactive {
+		background-color: $background-color;
+	}
+}
+
+p.clue-button {
+	width: 100%;
+	text-align: center;
+	color: orange;
+	font-size: 200%;
+	font-family: 'Oswald Bold';
+}
+
+
+/* Open Question Panel */
+
+
+div #open-question-panel {
+	display: flex;
+	position: relative;
+	flex: 1 1 auto;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	background-color: $background-color;
+	padding: 5px;
+	max-width: auto;
+}
+
+div.open-question-header {
+	flex: 0 0 auto;
+	height: 30px;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	align-items: center;
+	border: 1px solid white;
+}
+
+p.open-question-category {
+	
+	color: white;
+	text-transform: uppercase;
+	font-size: 150%;
+}
+
+p.open-question-value {
+
+	color: orange;
+	font-family: 'Oswald Bold';
+	font-size: 150%;
+}
+
+div.open-question-clue {
+	flex: 1 1 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+
+	&.daily-double {
+		background-color: maroon;
+	}
+}
+
+p.open-question-clue {
+	color: white;
+	text-transform: uppercase;
+	font-size: 150%;
+	font-family: 'Korinna Bold';
+
+	&.daily-double {
+		font-size: 250%;
+		font-family: 'Oswald Bold';
+	}
+}
+
+div.open-question-correct {
+	flex: 1 1 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+}
+
+p.open-question-correct {
+	color: white;
+	font-family: 'Korinna Bold';
+	font-size: 150%;
+}
+
+div.buzzer-panel {
+	flex: 0 0 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+}
+
+p.buzzer-panel {
+	color: white;
+	font-family: 'Korinna Bold';
+	font-size: 150%;
+	margin: auto;
+}
+
+div.button-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex: 0 0 auto;
+	width: 100%;
+
+	&.space-between {
+		justify-content: space-between;
+	}
+
+	&.recursive {
+		width: auto;
+	}
+}
+
+
+/* Final Jeopardy Panel */
+
+
+div #final-jeopardy-panel {
+	display: flex;
+	position: relative;
+	flex: 1 1 auto;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	background-color: $background-color;
+	padding: 5px;
+	max-width: auto;
+}
+
+div.final-jeopardy-header {
+	flex: 0 0 auto;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	flex-direction: row;
+	align-items: center;
+	border: 1px solid white;
+}
+
+p.final-jeopardy-header {
+	color: white;
+	font-size: 150%;
+	text-align: center;
+}
+
+div.final-jeopardy-category {
+	flex: 1 1 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+}
+
+p.final-jeopardy-category {
+	color: white;
+	text-transform: uppercase;
+	font-size: 150%;
+	font-family: 'Korinna Bold';
+}
+
+div.final-jeopardy-clue {
+	flex: 1 1 50px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+}
+
+p.final-jeopardy-clue {
+	color: white;
+	text-transform: uppercase;
+	font-size: 150%;
+	font-family: 'Korinna Bold';
+}
+
+div.final-jeopardy-correct {
+	flex: 1 1 50px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+}
+
+p.final-jeopardy-correct {
+	color: white;
+	font-family: 'Korinna Bold';
+	font-size: 150%;
+}
+
+div.final-jeopardy-response {
+	flex: 0 0 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+}
+
+p.final-jeopardy-response {
+	color: white;
+	font-family: 'Korinna Bold';
+	font-size: 150%;
+	margin: auto;
+
+	&.left {
+		text-align: left;
+	}
+}
+
+
+p.no-players {
+	text-align: center;
+}
+
+@media screen and (max-width: 799px) {
+	#player-list {
+		flex-grow: 1;
+		position: absolute;
+		width: 100%;
+		z-index: 1;
+		height: calc(100% - (70px + 1px));
+
+		&.hidden {
+			display: none;
+		}
+	}
+
+	div.main-panel {
+		height: calc(100% - (70px + 1px));
+	}
+
+	div.select-question-panel {
+		justify-content: flex-start;
+		overflow: scroll;
+	}
+
+	div.category-group {
+		flex-shrink: 0;
+		flex-basis: auto;
+		justify-content: flex-start;
+	}
+
+	div.category-clue-group {
+		flex-shrink: 0;
+		flex-basis: auto;
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+
+	div.clue-button {
+		flex-basis: 40px;
+		margin: 2.5px 0 2.5px 0;
+	}
+
+}

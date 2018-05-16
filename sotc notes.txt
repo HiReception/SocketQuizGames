@@ -1,0 +1,170 @@
+Standard Question
+Phases:
+	-During asking, no answers
+	-After asking, no answers
+	-Time elapsed, no answers
+	-Player answering
+	-Post answer
+Commands:
+	-Add to player's score and close buzzers
+	-Deduct from player's score and close buzzers
+	-Cancel buzz-in
+	-Start lockout timer
+Props:
+	-question object
+	-player answering (if any)
+	-has timer been started
+	-time to lockout (if started)
+
+
+
+Fame Game Question
+Phases:
+	-During asking, no open answer
+	-After asking, no open answer
+	-Time elapsed, no open answer (or all players wrong)
+	-Player answering
+	-Post answer
+Commands:
+	-Lock player out
+	-Cancel buzz-in
+	-Start lockout timer
+Props:
+	-question object
+	-player answering (if any)
+	-has timer been started
+	-time to lockout (if started)
+
+
+
+Fame Game Board
+Phases:
+	-Introduction of Famous Faces (only on first question)
+	-Board selection
+	-Post board selection
+	-Reveal of prizes with scoreValue (only on last question)
+Commands:
+	-Add to player's prizes
+	-Add to player's score
+	-Make board selection
+Props:
+	-player selecting
+	-state of board (which numbers and prizes have been selected)
+	-board selection (if any and not wild card)
+	-wild card selection (pick again or take prize)
+	-is this the first Fame Game Question of the game
+	-is this the last Fame Game Question of the game
+	
+	
+	
+Gift Shop
+Phases:
+	-No buy
+	-Post-buy
+Commands:
+	-Change selling price
+	-Change added prize
+	-Deduct from player's score
+	-Add to player's prizes
+Props:
+	-prize object
+	-current selling price
+	-current add-on prize
+	-player(s) able to buy
+	-player who has bought (if any)
+
+
+
+Cash Card
+Phases:
+	-pre-buy-in with one leader (set price of $15)
+	-pre-buy-in with multiple leaders (ability to decrease price until there's a buyer)
+	-post buy with player involved (if any)
+	-pre-selection
+	-post-selection
+	-prize behind selected suit revealed
+	-major prize revealed (if not selected)
+Commands:
+	-Change selling price
+	-Deduct from player's score
+	-Set Cash Card selection
+	-Reveal prize under selected suit
+	-Add to player's prizes
+	-Add to player's score
+	-Reveal major prize
+Props:
+	-player(s) able to buy
+	-current selling price
+	-is still available to buy
+	-player who has bought in (if any)
+	-suit selected (if any)
+	-is prize behind suit selected revealed
+	-is suit hiding major prize revealed
+
+
+
+Fast Money
+Phases:
+	-Pre-start
+	-Ongoing (involving all phases of Standard Question)
+	-Paused
+	-Post-ending
+Commands:
+	-Start/resume fast money
+	-All commands of Standard Question
+	-Pause fast money
+Props:
+	-Time remaining in fast money
+	-All props of Standard Question
+
+
+
+Post-Game
+Phases:
+	-Clear winner
+	-Tie, pre-Tiebreaker (which is same as Fame Game Question)
+Props:
+	-Player who has won/players who are tied
+
+
+
+Shopping Bonus
+Phases:
+	-Prize available now
+	-Future Prize(s)
+Commands:
+	-Add to player's bonus prizes
+	-Remove from player's bonus prizes
+Props:
+	-prize available now
+	-future prize(s)
+
+
+
+Board Bonus
+Phases:
+	-Summary of prizes won so far
+	-Summary of prizes available on board
+	-Board play
+	-Description of won prize
+	-Reveal of Win card and any un-won Win-dependent prizes
+	-Summary of larger prizes (car if not already covered, cash jackpot)
+Commands:
+	-Add to player's bonus prizes
+	-Mark board number as selected
+Props:
+	-is board game commenced
+	-is board game completed
+
+
+
+Decision
+Phases:
+	-Total display (all prizes won)
+	-Pre-decision
+	-Post-decision
+Commands:
+	-Remove player from retention for next game
+	-Start game over with different players
+Props:
+	-Has decision been made

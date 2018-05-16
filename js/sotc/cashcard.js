@@ -53,7 +53,7 @@ class CashCardReel extends React.Component {
 
 	render = () => {
 		var faceDivs = this.state.reelFaces.map((face, index) => {
-			return <CashCardFace key={index} face={face}/>
+			return <CashCardFace key={index} face={face}/>;
 		}).reverse();
 		return (
 			<div className={this.state.spun ? "cashcard-reel spun" : "cashcard-reel"} onClick={this.spin}>
@@ -89,8 +89,7 @@ CashCardMachine.propTypes = {
 	reelLength: PropTypes.number,
 	stopAfter: PropTypes.number,
 	landOn: PropTypes.string,
-
-}
+};
 
 var landOn = faces[Math.floor(Math.random()*faces.length)];
 
