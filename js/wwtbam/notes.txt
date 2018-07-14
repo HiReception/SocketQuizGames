@@ -1,0 +1,32 @@
+Display components to make:
+
+-Post-Win Sash*
+Shown immediately after player answers a question correctly, with the value of the question.
+Appears near the bottom of the screen, spread across the width.
+
+
+-Total Winnings Sash
+Shown at the end of a player's game.
+If player answers question incorrectly, shows the highest attained safe haven.
+If player walks away, shows their accrued total.
+If player wins the lot, shows the top prize or may have special configuration.
+Appears near the bottom of the screen, spread across the width.
+
+
+-Money Tree Sidebar
+Shows all steps in the money tree, including which ones have been achieved and which one the player is currently on.
+May also show the lifelines at the top, with used ones indicated with a cross over the top.
+Appears on the right-hand side of the screen and may occupy up to half of the screen.
+
+
+-Phone a Friend Clock*
+Indicates the time remaining in the Phone a Friend time limit, typically with both a number display and a draining clock-face arc.
+Appears near the right of the screen and takes up about 1/6 of the width of the screen.
+
+
+-Ask the Audience Graph*
+Graph appears once responses are opened; when they close, displays the percentages of respondents for each answer.
+Appears near the right of the screen and takes up about 1/4 of the width of the screen.
+
+
+* - may be incorporated into the main OpenQuestionPanel, since it appears either while or right after the OpenQuestionPanel

@@ -26,7 +26,7 @@ module.exports = {
         "react/jsx-uses-vars": [2],
         "linebreak-style": [
             "error",
-            "unix"
+            "windows"
         ],
         "quotes": [
             "error",

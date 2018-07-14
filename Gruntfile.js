@@ -169,6 +169,41 @@ module.exports = function(grunt) {
 					]
 				}
 			},
+			wwtbam_player: {
+				src: "js/wwtbam/player.js",
+				dest: "public/wwtbam/playerBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}]
+					]
+				}
+			},
+			wwtbam_host: {
+				src: "js/wwtbam/host.js",
+				dest: "public/wwtbam/hostBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}],
+						"brfs"
+					]
+				}
+			},
+			wwtbam_display: {
+				src: "js/wwtbam/display.js",
+				dest: "public/wwtbam/displayBundle.js",
+				options: {
+					transform: [
+						["babelify", {
+							presets: ["react", "es2015", "stage-1"]
+						}],
+						"brfs"
+					]
+				}
+			},
 			wwtbam_ff_player: {
 				src: "js/wwtbam-ff/player.js",
 				dest: "public/wwtbam-ff/playerBundle.js",
@@ -222,6 +257,16 @@ module.exports = function(grunt) {
 					"public/jeopardy/host.css": "js/jeopardy/host.scss",
 					"public/jeopardy/player.css": "js/jeopardy/player.scss",
 					"public/jeopardy/display.css": "js/jeopardy/display.scss",
+				}
+			},
+			wwtbam: {
+				options: {
+					style: "compressed",
+				},
+				files: {
+					"public/wwtbam/host.css": "js/wwtbam/host.scss",
+					"public/wwtbam/player.css": "js/wwtbam/player.scss",
+					"public/wwtbam/display.css": "js/wwtbam/display.scss",
 				}
 			},
 			wwtbam_ff: {
