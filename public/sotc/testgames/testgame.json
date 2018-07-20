@@ -8,14 +8,14 @@
 		{"type": "StandardQuestion"},
 		{"type": "StandardQuestion"},
 		{"type": "StandardQuestion"},
-		{"type": "StandardQuestion"}, // actually a media question
+		{"type": "StandardQuestion"},
 		{"type": "StandardQuestion"},
 		{"type": "StandardQuestion"},
 		{"type": "GiftShop", "prize": {
 			"shortName": "Sunroof",
 			"retailPrice": 1350,
 			"startingPrice": 6,
-			"description": "",
+			"description": ""
 		}},
 		{"type": "StandardQuestion"},
 		{"type": "StandardQuestion"},
@@ -33,10 +33,10 @@
 			"shortName": "Leather Recliner",
 			"retailPrice": 2299,
 			"startingPrice": 10,
-			"description": "",
+			"description": ""
 		}},
 
-		{"type": "RoundBreak"}, // actually a viewer question
+		{"type": "RoundBreak"},
 
 		{"type": "StandardQuestion"},
 		{"type": "StandardQuestion"},
@@ -46,23 +46,23 @@
 				"slotImage": "",
 				"shortName": "Cutlery Set",
 				"prizeValue": 3128,
-				"description": "",
+				"description": ""
 			},
 			{
 				"slotImage": "",
 				"shortName": "$5,000",
 				"prizeValue": 5000,
-				"major": true,
+				"major": true
 			},
 			{
 				"slotImage": "",
 				"shortName": "The Car on the Board",
-				"prizeValue": 0,
+				"prizeValue": 0
 			},
 			{
 				"slotImage": "",
 				"shortName": "$15 back",
-				"scoreValue": 15,
+				"scoreValue": 15
 			}
 		],
 		"startingPrice": 15},
@@ -73,7 +73,7 @@
 
 		{"type": "RoundBreak"},
 
-		{"type": "FastMoney", "length": 60} // The one, the only, #MadMinute
+		{"type": "FastMoney", "length": 60}
 	],
 	"endgame": "BoardBonus",
 	"cashCardStartingPrice": 15,
@@ -92,7 +92,7 @@
 		{"image": "", "name": "$10", "scoreValue": 10},
 		{"image": "", "name": "$15", "scoreValue": 15, "added": 2},
 		{"image": "", "name": "$25", "scoreValue": 25, "added": 3},
-		{"image": "", "name": "$1,000 or Pick Again", "wildCard": true, "prizeOption": 1000, "prizeOptionText": "$1,000 in Cash", "added": 3}
+		{"image": "", "name": "$1,000 or Pick Again", "wildCard": true, "prizeOption": 1000, "prizeOptionText": "$1,000 in Cash", "added": 3},
 		{"image": "", "name": "Carpets", "prizeValue": 550, "removable": true, "description": ""},
 		{"image": "", "name": "Silverware", "prizeValue": 660, "removable": true, "description": ""},
 		{"image": "", "name": "Toys", "prizeValue": 770, "removable": true, "description": ""},
@@ -100,7 +100,7 @@
 		{"image": "", "name": "Pillows", "prizeValue": 999, "description": "", "removable": true},
 		{"image": "", "name": "Artwork", "prizeValue": 1000, "description": "", "removable": true},
 		{"image": "", "name": "Television", "prizeValue": 1100, "description": "", "removable": true},
-		{"image": "", "name": "Pillows", "prizeValue": 1200, "description": "", "removable": true},
+		{"image": "", "name": "Pillows", "prizeValue": 1200, "description": "", "removable": true}
 	],
 	"bonusPrizes": [
 		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": ""},
@@ -109,7 +109,7 @@
 		{"photo": "", "cardImage": "", "name": "Computers", "prizeValue": 8230, "description": ""},
 		{"photo": "", "cardImage": "", "name": "Some Other Prize", "prizeValue": 8230, "description": ""},
 		{"photo": "", "cardImage": "", "name": "Yet Another Prize", "prizeValue": 8230, "description": ""},
-		{"photo": "", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 65900, "description": "", "requiresWin": true},
+		{"photo": "", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 65900, "description": "", "requiresWin": true}
 	]
 
 }

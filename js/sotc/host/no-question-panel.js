@@ -9,7 +9,7 @@ export default class NoQuestionPanel extends React.Component {
 		super(props);
 		const testFiles = fs.readdirSync("public/sotc/testgames");
 		this.state = {
-			anyFieldsEmpty: !(this.props.players.length > 0),
+			anyFieldsEmpty: false,
 			gameUsed: "upload",
 			testFiles: testFiles,
 			testFileSelected: `testgames/${ testFiles[0]}`,
@@ -31,14 +31,16 @@ export default class NoQuestionPanel extends React.Component {
 					type: "GET",
 					url: this.state.testFileSelected,
 					success: this.loadGameData,
+					error: this.handleError,
 				});
 			}
 		}
 	}
+	handleError = (err) => {
+		// TODO better error handling
+		console.error(err);
+	}
 	loadGameData = (fileObject) => {
-
-		// TODO error handling
-		
 		this.props.setGameData(fileObject);
 	}
 	changeGameUsed = (event) => {

@@ -18,13 +18,20 @@
         "react"
     ],
     "rules": {
+        "react/jsx-uses-react": "error",
         "indent": [
             "error",
             "tab"
         ],
+        "no-warning-comments": [
+            "warn"
+        ],
+        "no-console": [
+            "warn"
+        ],
         "linebreak-style": [
             "error",
-            "unix"
+            "windows"
         ],
         "quotes": [
             "error",

@@ -28,7 +28,7 @@ export default class GiftShop extends React.Component {
 			bottomPanel = (
 				<div className="gift-shop-end-button">
 					<p>{this.props.playerPurchasing} has purchased</p>
-					<div className="add-question-button" onClick={this.props.confirmSale}>
+					<div className="add-question-button" onClick={this.confirmSale}>
 						<p>Continue</p>
 					</div>
 				</div>
@@ -57,7 +57,7 @@ export default class GiftShop extends React.Component {
 		}
 
 		return (
-			<div class="gift-shop">
+			<div className="gift-shop">
 				<div className="gift-shop-prize-desc">
 					<p>{this.props.prize.shortName}</p>
 					<p>{this.props.prize.description}</p>
@@ -66,11 +66,11 @@ export default class GiftShop extends React.Component {
 				</div>
 				<div className="gift-shop-variable-panel">
 					<div className="gift-shop-variable">
-						<input type="text" value={this.props.currentPrice} onChange={this.props.setPrice} disabled={!this.props.availableToBuy}/>
+						<input type="number" value={this.props.currentPrice} onChange={(e) => this.props.setPrice(e.target.value)} disabled={!this.props.available}/>
 						<p>Current Price</p>
 					</div>
 					<div className="gift-shop-variable">
-						<input type="text" value={this.props.bonusMoney} onChange={this.props.setPrice} disabled={!this.props.availableToBuy}/>
+						<input type="number" value={this.props.bonusMoney} onChange={(e) => this.props.setBonus(e.target.value)} disabled={!this.props.available}/>
 						<p>Bonus Money</p>
 					</div>
 					

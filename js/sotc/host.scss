@@ -175,7 +175,7 @@ p .no-players {
 div .playerListing {
 	display: flex;
 	flex-direction: column;
-
+	cursor: pointer;
 	margin-left: 10px;
 	margin-right: 10px;
 	margin-top: 10px;
@@ -269,6 +269,7 @@ p.player-details-score {
 p.player-details-back {
 	color: white;
 	text-align: center;
+	cursor: pointer;
 }
 
 
@@ -440,7 +441,6 @@ div.open-question-clue {
 
 p.open-question-clue {
 	color: white;
-	text-transform: uppercase;
 	font-size: 150%;
 	font-family: 'Korinna Bold';
 

@@ -2,8 +2,6 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
-var ReactCSSTransitionReplace = require("react-css-transition-replace");
-var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 
 import HostConsole from "./host/host-console";
 
@@ -53,7 +51,7 @@ socket.on("game details", function(details) {
 			items: [],
 			currentItemNo: 0,
 			currentItemType: "NoQuestionPanel",
-			currentItemAnswered: false,
+			currentItemOver: false,
 			newPanelKey: 0,
 
 			prefix: "",
@@ -71,7 +69,8 @@ socket.on("game details", function(details) {
 			selectedSuit: -1,
 			selSuitRevealed: false,
 			majorPrizeRevealed: false,
-
+			eligibleToBuy: [],
+			
 			// fame game related
 			lockedOutPlayerNames: [],
 			fameGamesCompleted: 0,

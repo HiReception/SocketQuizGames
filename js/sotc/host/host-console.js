@@ -5,6 +5,7 @@ const PropTypes = require("prop-types");
 import PlayerDetailsPanel from "./player-details-panel";
 import PlayerListing from "./player-listing";
 
+import NoQuestionPanel from "./no-question-panel";
 import StandardQuestion from "./standard-question";
 import FameGameQuestion from "./fame-game-question";
 import FameGameBoard from "./fame-game-board";
@@ -39,9 +40,16 @@ export default class HostConsole extends React.Component {
 	}
 
 	handleNewAnswer = (details) => {
-		if (this.state.buzzersOpen && this.state.playerAnswering === "") {
-			this.setAnsweringPlayer(details.player);
+		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FameGameQuestion" || this.state.currentItemType === "FastMoney") {
+			if (this.state.buzzersOpen && this.state.playerAnswering === "" && !this.state.lockedOutPlayerNames.includes(details.player)) {
+				this.setAnsweringPlayer(details.player);
+			}
+		} else if (this.state.currentItemType === "GiftShop" || this.state.currentItemType === "CashCard") {
+			if (this.state.playerPurchasing === "" && this.state.eligibleToBuy.includes(details.player)) {
+				this.setPurchasingPlayer(details.player);
+			}
 		}
+		
 	}
 
 	togglePlayerPanel = () => {
@@ -60,6 +68,19 @@ export default class HostConsole extends React.Component {
 	clearAnsweringPlayer = () => {
 		this.setGameState({
 			playerAnswering: "",
+		});
+	}
+
+	setPurchasingPlayer = (screenName) => {
+		console.log(`HostConsole setting purchasing player to ${screenName}`);
+		this.setGameState({
+			playerPurchasing: screenName,
+		});
+	}
+
+	clearPurchasingPlayer = () => {
+		this.setGameState({
+			playerPurchasing: "",
 		});
 	}
 
@@ -85,12 +106,14 @@ export default class HostConsole extends React.Component {
 			newAnswering.score = newAnswering.score + this.state.standardCorrectAmount;
 			this.setGameState({
 				players: newPlayers,
+				buzzersOpen: false,
 				currentItemOver: true
 			});
 			this.clearAnsweringPlayer();
 		} else if (this.state.currentItemType === "FameGameQuestion") {
 			this.setGameState({
 				currentItemOver: true,
+				buzzersOpen: false,
 			});
 		}
 		
@@ -103,7 +126,8 @@ export default class HostConsole extends React.Component {
 			newAnswering.score = newAnswering.score - this.state.standardIncorrectAmount;
 			this.setGameState({
 				players: newPlayers,
-				currentItemOver: true
+				currentItemOver: true,
+				buzzersOpen: false,
 			});
 			this.clearAnsweringPlayer();
 		} else if (this.state.currentItemType === "FameGameQuestion") {
@@ -112,6 +136,7 @@ export default class HostConsole extends React.Component {
 			if (this.state.lockedOutPlayerNames.length === this.state.players.length) {
 				this.setGameState({
 					currentItemOver: true,
+					buzzersOpen: false,
 				});
 			} else {
 				this.setGameState({
@@ -147,7 +172,7 @@ export default class HostConsole extends React.Component {
 	addPlayerPrize = (name, prize) => {
 		var newPlayers = this.state.players;
 		var player = newPlayers.find((p) => p.screenName === name);
-		player.prizes.append(prize);
+		player.prizes.push(prize);
 		this.setGameState({
 			players: newPlayers
 		});
@@ -189,15 +214,29 @@ export default class HostConsole extends React.Component {
 	}
 
 	setPrice = (price) => {
-		this.setGameState({
-			sellingPrice: price,
-		});
+		if (!isNaN(parseInt(price))) {
+			this.setGameState({
+				sellingPrice: parseInt(price),
+			});
+		} else if (price === "") {
+			this.setGameState({
+				sellingPrice: 0,
+			});
+		}
+		
 	}
 
 	setBonus = (amount) => {
-		this.setGameState({
-			bonusMoney: amount,
-		});
+		if (!isNaN(parseInt(amount))) {
+			this.setGameState({
+				bonusMoney: parseInt(amount),
+			});
+		} else if (amount === "") {
+			this.setGameState({
+				bonusMoney: 0,
+			});
+		}
+		
 	}
 
 	callNoSale = () => {
@@ -323,7 +362,32 @@ export default class HostConsole extends React.Component {
 	}
 
 	goToNextItem = () => {
-		// TODO
+		const newItemNo = this.state.currentItemNo + 1;
+		if (newItemNo !== this.state.items.length) {
+			const newItem = this.state.items[newItemNo];
+
+			this.setGameState({
+				currentItemNo: newItemNo,
+				currentItemType: newItem.type,
+				currentItemOver: false,
+				buzzersOpen: (newItem.type === "StandardQuestion" || newItem.type === "FameGameQuestion")
+			});
+
+			const leadingScore = Math.max(...this.state.players.map(p => p.score));
+
+			if (newItem.type === "GiftShop") {
+				this.setGameState({
+					sellingPrice: newItem.prize.startingPrice,
+					bonusMoney: 0,
+					availableToBuy: true,
+					eligibleToBuy: this.state.players.filter((p) => p.score === leadingScore).map(p => p.screenName),
+					playerPurchasing: "",
+				});
+			}
+		} else {
+			// TODO handle end of regular game
+		}
+		
 	}
 
 	setGameState = (changedItems) => {
@@ -336,7 +400,7 @@ export default class HostConsole extends React.Component {
 		console.log(gameProps);
 		// prepare fame game board
 		// take prizes that start on fame game board and randomise them
-		const shuffledOpeningPrizes = this.shuffle(gameProps.fameGamePrizes.filter((p) => !p.added));
+		const shuffledOpeningPrizes = this.shuffleList(gameProps.fameGamePrizes.filter((p) => !p.added));
 		// pair them up with faces
 		const fameGameBoard = gameProps.fameGameFaces.map((face, index) => {
 			return {
@@ -346,21 +410,28 @@ export default class HostConsole extends React.Component {
 			};
 		});
 
+		// give players starting score
+		const newPlayers = this.state.players.map(p => {
+			const newP = p;
+			newP.score = gameProps.startingScore;
+			return newP;
+		});
+
 		this.setGameState({
 			prefix: gameProps.prefix,
 			suffix: gameProps.suffix,
+			players: newPlayers,
 			items: gameProps.items,
 			endgame: gameProps.endgame,
 			fameGameBoard: fameGameBoard,
 			endgamePrizes: gameProps.endgamePrizes,
 			currentRound: 0,
-			currentItemNo: 0,
-			currentItemType: gameProps.items.length === 0 ?
-				"PostGame" : gameProps.items[0].type,
+			currentItemNo: -1,
 			standardCorrectAmount: gameProps.standardCorrectAmount,
 			standardIncorrectAmount: gameProps.standardIncorrectAmount,
 			newPanelKey: this.state.newPanelKey + 1,
 		});
+		this.goToNextItem();
 	}
 
 	render = () => {
@@ -383,9 +454,7 @@ export default class HostConsole extends React.Component {
 							player={player}
 							key={i}
 							answering={this.state.playerAnswering === player.screenName}
-							lockedOut={this.state.playerAnswering !== player.screenName}
-							prefix={this.state.prefix}
-							suffix={this.state.suffix}/>));
+							lockedOut={this.state.playerAnswering.length > 0 && this.state.playerAnswering !== player.screenName}/>));
 				}
 				playerPanel = <div>{list}</div>;
 			} else {
@@ -407,7 +476,7 @@ export default class HostConsole extends React.Component {
 
 		let mainPanel;
 		const leadingScore = Math.max(...this.state.players.map(p => p.score));
-		const currentItem = this.state.items[this.state.currentItem];
+		const currentItem = this.state.items[this.state.currentItemNo];
 		switch (this.state.currentItemType) {
 		case "NoQuestionPanel":
 			mainPanel = (
@@ -473,17 +542,17 @@ export default class HostConsole extends React.Component {
 		case "GiftShop":
 			mainPanel = (
 				<GiftShop
-					prize={currentItem}
+					prize={currentItem.prize}
 					currentPrice={this.state.sellingPrice}
 					bonusMoney={this.state.bonusMoney}
-					eligibleToBuy={this.state.players.filter((p) => p.score === leadingScore)}
+					eligibleToBuy={this.state.eligibleToBuy}
 					playerPurchasing={this.state.playerPurchasing}
 					available={this.state.availableToBuy}
 					setPrice={this.setPrice}
 					setBonus={this.setBonus}
 					callNoSale={this.callNoSale}
 					deductFromScore={this.deductPlayerScore}
-					addToPrizes={this.addPlayerScore}
+					addToPrizes={this.addPlayerPrize}
 					nextItem={this.goToNextItem}
 				/>
 			);
@@ -493,7 +562,7 @@ export default class HostConsole extends React.Component {
 				<CashCard
 					suits={this.state.cashCardSuits}
 					prizes={currentItem.prizes}
-					eligibleToBuy={this.state.players.filter((p) => p.score === leadingScore)}
+					eligibleToBuy={this.state.eligibleToBuy}
 					currentPrice={this.state.sellingPrice}
 					availableToBuy={this.state.availableToBuy}
 					playerPurchasing={this.state.playerPurchasing}

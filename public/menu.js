@@ -1,6 +1,553 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _axios = require("axios");
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ReactDOM = require("react-dom");
+
+var MainMenu = function (_React$Component) {
+	_inherits(MainMenu, _React$Component);
+
+	function MainMenu(props) {
+		_classCallCheck(this, MainMenu);
+
+		var _this = _possibleConstructorReturn(this, (MainMenu.__proto__ || Object.getPrototypeOf(MainMenu)).call(this, props));
+
+		_this.hostableGames = [{ folder: "jeopardy", name: "Jeopardy!" }, { folder: "genericquiz", name: "Generic Quiz" }, { folder: "wof-board", name: "Wheel of Fortune" }, { folder: "wwtbam-ff", name: "Fastest Finger First" }, { folder: "sotc", name: "$ale of the Century" }];
+		_this.minigames = [{ folder: "tpir-plinko", name: "Plinko" }, { folder: "wof-wheel", name: "WOF Wheel" }, { folder: "tpir-wheel", name: "TPIR Big Wheel" }];
+		_this.availablePages = [{ name: "home", heading: "Welcome to Trivle!" }, { name: "host", heading: "Host a Game" }, { name: "join", heading: "Join a Game" }, { name: "display", heading: "Display a Game" }, { name: "minigames", heading: "Minigames" }];
+
+		_this.goToPage = function (pageName) {
+			if (_this.availablePages.some(function (a) {
+				return a.name === pageName;
+			})) {
+				_this.setState({
+					currentPage: pageName,
+					currentError: ""
+				});
+			}
+		};
+
+		_this.formSubmittable = function () {
+			switch (_this.state.currentPage) {
+				case "host":
+					if (_this.state.hostStartNew) {
+						return _this.state.hostPassword.length > 0;
+					} else {
+						return _this.state.hostCode.length > 0 && _this.state.hostPassword.length > 0;
+					}
+				case "join":
+					return _this.state.joinCode.length > 0 && _this.state.joinName.length > 0;
+				case "display":
+					return _this.state.displayCode.length > 0;
+				default:
+					return false;
+			}
+		};
+
+		_this.setHostStartNew = function (event) {
+			var mode = event.target.value === "new";
+			_this.setState({
+				hostStartNew: mode
+			});
+		};
+
+		_this.setHostTitle = function (event) {
+			_this.setState({ hostTitle: event.target.value });
+		};
+
+		_this.setHostGame = function (event) {
+			_this.setState({ hostGame: event.target.value });
+		};
+
+		_this.setHostPassword = function (event) {
+			_this.setState({ hostPassword: event.target.value });
+		};
+
+		_this.setHostCode = function (event) {
+			_this.setState({ hostCode: event.target.value });
+		};
+
+		_this.setJoinCode = function (event) {
+			_this.setState({ joinCode: event.target.value });
+		};
+
+		_this.setJoinName = function (event) {
+			_this.setState({ joinName: event.target.value });
+		};
+
+		_this.setDisplayCode = function (event) {
+			_this.setState({ displayCode: event.target.value });
+		};
+
+		_this.submitHostNew = function () {
+			_this.setState({ currentError: "" });
+			_axios2.default.post("/host", {
+				gametitle: _this.state.hostTitle,
+				format: _this.state.hostGame,
+				password: _this.state.hostPassword
+			}).then(function (res) {
+				if (res) {
+					window.location.href = res.data;
+				}
+			}).catch(function (err) {
+				if (err) {
+					_this.setState({ currentError: err.response.data });
+				}
+			});
+		};
+
+		_this.submitHostResume = function () {
+			_this.setState({ currentError: "" });
+			_axios2.default.post("/hostresume", {
+				gamecode: _this.state.hostCode,
+				password: _this.state.hostPassword
+			}).then(function (res) {
+				if (res) {
+					window.location.href = res.data;
+				}
+			}).catch(function (err) {
+				if (err) {
+					_this.setState({ currentError: err.response.data });
+				}
+			});
+		};
+
+		_this.submitJoin = function () {
+			_this.setState({ currentError: "" });
+			_axios2.default.post("/play", {
+				gamecode: _this.state.joinCode,
+				name: _this.state.joinName
+			}).then(function (res) {
+				if (res) {
+					window.location.href = res.data;
+				}
+			}).catch(function (err) {
+				if (err) {
+					_this.setState({ currentError: err.response.data });
+				}
+			});
+		};
+
+		_this.submitDisplay = function () {
+			_this.setState({ currentError: "" });
+			_axios2.default.post("/display", {
+				gamecode: _this.state.displayCode
+			}).then(function (res) {
+				if (res) {
+					window.location.href = res.data;
+				}
+			}).catch(function (err) {
+				if (err) {
+					_this.setState({ currentError: err.response.data });
+				}
+			});
+		};
+
+		_this.render = function () {
+			var error;
+			var errorText;
+
+			var _this$availablePages$ = _this.availablePages.find(function (a) {
+				return a.name === _this.state.currentPage;
+			}),
+			    heading = _this$availablePages$.heading;
+
+			var content;
+			switch (_this.state.currentPage) {
+				case "home":
+					content = _react2.default.createElement(
+						"div",
+						{ className: "content" },
+						_react2.default.createElement(
+							"a",
+							{ className: "button", onClick: function onClick() {
+									return _this.goToPage("host");
+								} },
+							"Start a Game"
+						),
+						_react2.default.createElement(
+							"a",
+							{ className: "button", onClick: function onClick() {
+									return _this.goToPage("join");
+								} },
+							"Play a Game"
+						),
+						_react2.default.createElement(
+							"a",
+							{ className: "button", onClick: function onClick() {
+									return _this.goToPage("display");
+								} },
+							"Display a Game"
+						),
+						_react2.default.createElement(
+							"a",
+							{ className: "button", onClick: function onClick() {
+									return _this.goToPage("minigames");
+								} },
+							"Minigames"
+						),
+						_react2.default.createElement(
+							"div",
+							{ className: "subLink" },
+							_react2.default.createElement(
+								"a",
+								{ href: "about.html" },
+								"ABOUT"
+							)
+						)
+					);
+					break;
+				case "host":
+					var form;
+					if (_this.state.hostStartNew) {
+						form = _react2.default.createElement(
+							"div",
+							{ id: "formDiv" },
+							_react2.default.createElement(
+								"form",
+								{ onSubmit: _this.submitHostNew },
+								_react2.default.createElement("input", { type: "text", value: _this.state.hostTitle, onChange: _this.setHostTitle,
+									placeholder: "Game Title (optional)", name: "gametitle" }),
+								_react2.default.createElement("input", { type: "password", value: _this.state.hostPassword, onChange: _this.setHostPassword,
+									placeholder: "Set a Password for Hosting", name: "password" }),
+								_react2.default.createElement(
+									"p",
+									null,
+									"Format of game:"
+								),
+								_react2.default.createElement(
+									"select",
+									{ value: _this.state.hostGame, onChange: _this.setHostGame, name: "format" },
+									_this.hostableGames.map(function (g) {
+										return _react2.default.createElement(
+											"option",
+											{ key: g.folder, value: g.folder },
+											g.name
+										);
+									})
+								),
+								_react2.default.createElement("br", null),
+								_react2.default.createElement(
+									"a",
+									{ className: _this.formSubmittable() ? "button" : "button inactive",
+										onClick: _this.formSubmittable() ? _this.submitHostNew : null },
+									"Let's Play!"
+								)
+							)
+						);
+					} else {
+						form = _react2.default.createElement(
+							"div",
+							{ id: "formDiv" },
+							_react2.default.createElement(
+								"form",
+								{ onSubmit: _this.submitHostResume },
+								_react2.default.createElement("input", { type: "text", value: _this.state.hostCode, onChange: _this.setHostCode,
+									placeholder: "Game Code", name: "gamecode" }),
+								_react2.default.createElement("input", { type: "password", value: _this.state.hostPassword, onChange: _this.setHostPassword,
+									placeholder: "Enter this game's password", name: "password" }),
+								_react2.default.createElement("br", null),
+								_react2.default.createElement(
+									"a",
+									{ className: _this.formSubmittable() ? "button" : "button inactive",
+										onClick: _this.formSubmittable() ? _this.submitHostResume : null },
+									"Let's Play!"
+								)
+							)
+						);
+					}
+					if (_this.state.currentError) {
+						switch (_this.state.currentError) {
+							case "roomNotFound":
+								errorText = "This game could not be found. Note that games which haven't been touched in over 24 hours are marked for eventual deletion.";
+								break;
+							case "wrongPassword":
+								errorText = "The password you just entered doesn't match the one given when this game was created.";
+								break;
+							default:
+								errorText = "Sorry, it looks like an unknown error has occurred. Please try again in a bit.";
+								break;
+						}
+						error = _react2.default.createElement(
+							"div",
+							{ className: "error" },
+							_react2.default.createElement(
+								"p",
+								null,
+								errorText
+							)
+						);
+					}
+					content = _react2.default.createElement(
+						"div",
+						{ className: "content" },
+						_react2.default.createElement(
+							"div",
+							{ className: "errorDiv" },
+							error
+						),
+						_react2.default.createElement(
+							"div",
+							{ className: "host-radio-group" },
+							_react2.default.createElement(
+								"label",
+								{ className: _this.state.hostStartNew ? "active" : "" },
+								_react2.default.createElement("input", { type: "radio", value: "new",
+									checked: _this.state.hostStartNew,
+									onChange: _this.setHostStartNew }),
+								_react2.default.createElement(
+									"p",
+									null,
+									"New Game"
+								)
+							),
+							_react2.default.createElement(
+								"label",
+								{ className: !_this.state.hostStartNew ? "active" : "" },
+								_react2.default.createElement("input", { type: "radio", value: "resume",
+									checked: !_this.state.hostStartNew,
+									onChange: _this.setHostStartNew }),
+								_react2.default.createElement(
+									"p",
+									null,
+									"Resume Game"
+								)
+							)
+						),
+						form,
+						_react2.default.createElement(
+							"div",
+							{ className: "subLink" },
+							_react2.default.createElement(
+								"a",
+								{ onClick: function onClick() {
+										return _this.goToPage("home");
+									} },
+								"BACK"
+							)
+						)
+					);
+					break;
+				case "join":
+					if (_this.state.currentError) {
+						switch (_this.state.currentError) {
+							case "roomNotFound":
+								errorText = "This game could not be found. Note that games which haven't been touched in over 24 hours are marked for eventual deletion.";
+								break;
+							case "screenNameTaken":
+								errorText = "Somebody else in this game is using that Screen Name. Please choose another one.";
+								break;
+							default:
+								errorText = "Sorry, it looks like an unknown error has occurred. Please try again in a bit.";
+								break;
+						}
+						error = _react2.default.createElement(
+							"div",
+							{ className: "error" },
+							_react2.default.createElement(
+								"p",
+								null,
+								errorText
+							)
+						);
+					}
+					content = _react2.default.createElement(
+						"div",
+						{ className: "content" },
+						_react2.default.createElement(
+							"div",
+							{ id: "errorDiv" },
+							error
+						),
+						_react2.default.createElement(
+							"div",
+							{ id: "formDiv" },
+							_react2.default.createElement(
+								"form",
+								{ onSubmit: _this.submitJoin },
+								_react2.default.createElement("input", { type: "text",
+									autoComplete: "off",
+									autoCorrect: "off",
+									autoCapitalize: "off",
+									placeholder: "Your Game Code",
+									name: "gamecode",
+									id: "gamecode-input",
+									value: _this.state.joinCode,
+									onChange: _this.setJoinCode }),
+								_react2.default.createElement("br", null),
+								_react2.default.createElement("input", { type: "text", placeholder: "Screen Name", name: "name", id: "name-input",
+									value: _this.state.joinName, onChange: _this.setJoinName }),
+								_react2.default.createElement("br", null),
+								_react2.default.createElement(
+									"a",
+									{ className: _this.formSubmittable() ? "button" : "button inactive",
+										onClick: _this.formSubmittable() ? _this.submitJoin : null },
+									"Let's Play!"
+								)
+							)
+						),
+						_react2.default.createElement(
+							"div",
+							{ className: "subLink" },
+							_react2.default.createElement(
+								"a",
+								{ onClick: function onClick() {
+										return _this.goToPage("home");
+									} },
+								"BACK"
+							)
+						)
+					);
+					break;
+				case "display":
+					if (_this.state.currentError) {
+						switch (_this.state.currentError) {
+							case "roomNotFound":
+								errorText = "This game could not be found. Note that games which haven't been touched in over 24 hours are marked for eventual deletion.";
+								break;
+							default:
+								errorText = "Sorry, it looks like an unknown error has occurred. Please try again in a bit.";
+								break;
+						}
+						error = _react2.default.createElement(
+							"div",
+							{ className: "error" },
+							_react2.default.createElement(
+								"p",
+								null,
+								errorText
+							)
+						);
+					}
+					content = _react2.default.createElement(
+						"div",
+						{ className: "content" },
+						_react2.default.createElement(
+							"div",
+							{ id: "errorDiv" },
+							error
+						),
+						_react2.default.createElement(
+							"div",
+							{ id: "formDiv" },
+							_react2.default.createElement(
+								"form",
+								{ onSubmit: _this.submitDisplay },
+								_react2.default.createElement("input", { type: "text",
+									autoComplete: "off",
+									autoCorrect: "off",
+									autoCapitalize: "off",
+									placeholder: "Your Game Code",
+									name: "gamecode",
+									id: "gamecode-input",
+									value: _this.state.displayCode,
+									onChange: _this.setDisplayCode }),
+								_react2.default.createElement("br", null),
+								_react2.default.createElement(
+									"a",
+									{ className: _this.formSubmittable() ? "button" : "button inactive",
+										onClick: _this.formSubmittable() ? _this.submitDisplay : null },
+									"Let's Play!"
+								)
+							)
+						),
+						_react2.default.createElement(
+							"div",
+							{ className: "subLink" },
+							_react2.default.createElement(
+								"a",
+								{ onClick: function onClick() {
+										return _this.goToPage("home");
+									} },
+								"BACK"
+							)
+						)
+					);
+					break;
+				case "minigames":
+					content = _react2.default.createElement(
+						"div",
+						{ className: "content" },
+						_this.minigames.map(function (m) {
+							return _react2.default.createElement(
+								"a",
+								{ className: "button", key: m.folder, href: "/" + m.folder + "/display" },
+								m.name
+							);
+						}),
+						_react2.default.createElement(
+							"div",
+							{ className: "subLink" },
+							_react2.default.createElement(
+								"a",
+								{ onClick: function onClick() {
+										return _this.goToPage("home");
+									} },
+								"BACK"
+							)
+						)
+					);
+					break;
+			}
+
+			return _react2.default.createElement(
+				"div",
+				null,
+				_react2.default.createElement(
+					"div",
+					{ id: "logo" },
+					_react2.default.createElement("object", { style: { width: "auto", height: "100%" }, data: "logo-blackred.svg", type: "image/svg+xml" })
+				),
+				_react2.default.createElement(
+					"h1",
+					null,
+					heading
+				),
+				content
+			);
+		};
+
+		_this.state = {
+			currentPage: "home",
+
+			hostStartNew: true,
+			hostTitle: "",
+			hostGame: _this.hostableGames[0].folder,
+			hostPassword: "",
+			hostCode: "",
+
+			joinCode: "",
+			joinName: "",
+
+			displayCode: "",
+			currentError: ""
+		};
+		return _this;
+	}
+
+	return MainMenu;
+}(_react2.default.Component);
+
+ReactDOM.render(_react2.default.createElement(MainMenu, null), document.getElementById("container"));
+
+},{"axios":2,"react":53,"react-dom":50}],2:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":3}],2:[function(require,module,exports){
+},{"./lib/axios":4}],3:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -184,7 +731,7 @@ module.exports = function xhrAdapter(config) {
 };
 
 }).call(this,require('_process'))
-},{"../core/createError":9,"./../core/settle":12,"./../helpers/btoa":16,"./../helpers/buildURL":17,"./../helpers/cookies":19,"./../helpers/isURLSameOrigin":21,"./../helpers/parseHeaders":23,"./../utils":25,"_process":44}],3:[function(require,module,exports){
+},{"../core/createError":10,"./../core/settle":13,"./../helpers/btoa":17,"./../helpers/buildURL":18,"./../helpers/cookies":20,"./../helpers/isURLSameOrigin":22,"./../helpers/parseHeaders":24,"./../utils":26,"_process":45}],4:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -238,7 +785,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":4,"./cancel/CancelToken":5,"./cancel/isCancel":6,"./core/Axios":7,"./defaults":14,"./helpers/bind":15,"./helpers/spread":24,"./utils":25}],4:[function(require,module,exports){
+},{"./cancel/Cancel":5,"./cancel/CancelToken":6,"./cancel/isCancel":7,"./core/Axios":8,"./defaults":15,"./helpers/bind":16,"./helpers/spread":25,"./utils":26}],5:[function(require,module,exports){
 'use strict';
 
 /**
@@ -259,7 +806,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -318,14 +865,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":4}],6:[function(require,module,exports){
+},{"./Cancel":5}],7:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var defaults = require('./../defaults');
@@ -406,7 +953,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":14,"./../utils":25,"./InterceptorManager":8,"./dispatchRequest":10}],8:[function(require,module,exports){
+},{"./../defaults":15,"./../utils":26,"./InterceptorManager":9,"./dispatchRequest":11}],9:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -460,7 +1007,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":25}],9:[function(require,module,exports){
+},{"./../utils":26}],10:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -480,7 +1027,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":11}],10:[function(require,module,exports){
+},{"./enhanceError":12}],11:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -568,7 +1115,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":6,"../defaults":14,"./../helpers/combineURLs":18,"./../helpers/isAbsoluteURL":20,"./../utils":25,"./transformData":13}],11:[function(require,module,exports){
+},{"../cancel/isCancel":7,"../defaults":15,"./../helpers/combineURLs":19,"./../helpers/isAbsoluteURL":21,"./../utils":26,"./transformData":14}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -591,7 +1138,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -619,7 +1166,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":9}],13:[function(require,module,exports){
+},{"./createError":10}],14:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -641,7 +1188,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":25}],14:[function(require,module,exports){
+},{"./../utils":26}],15:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -737,7 +1284,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":2,"./adapters/xhr":2,"./helpers/normalizeHeaderName":22,"./utils":25,"_process":44}],15:[function(require,module,exports){
+},{"./adapters/http":3,"./adapters/xhr":3,"./helpers/normalizeHeaderName":23,"./utils":26,"_process":45}],16:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -750,7 +1297,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -788,7 +1335,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -858,7 +1405,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":25}],18:[function(require,module,exports){
+},{"./../utils":26}],19:[function(require,module,exports){
 'use strict';
 
 /**
@@ -874,7 +1421,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -929,7 +1476,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":25}],20:[function(require,module,exports){
+},{"./../utils":26}],21:[function(require,module,exports){
 'use strict';
 
 /**
@@ -945,7 +1492,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1015,7 +1562,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":25}],22:[function(require,module,exports){
+},{"./../utils":26}],23:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -1029,7 +1576,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":25}],23:[function(require,module,exports){
+},{"../utils":26}],24:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1084,7 +1631,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":25}],24:[function(require,module,exports){
+},{"./../utils":26}],25:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1113,7 +1660,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -1418,7 +1965,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":15,"is-buffer":42}],26:[function(require,module,exports){
+},{"./helpers/bind":16,"is-buffer":43}],27:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1495,7 +2042,7 @@ var EventListener = {
 
 module.exports = EventListener;
 }).call(this,require('_process'))
-},{"./emptyFunction":31,"_process":44}],27:[function(require,module,exports){
+},{"./emptyFunction":32,"_process":45}],28:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1529,7 +2076,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1559,7 +2106,7 @@ function camelize(string) {
 }
 
 module.exports = camelize;
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1597,7 +2144,7 @@ function camelizeStyleName(string) {
 }
 
 module.exports = camelizeStyleName;
-},{"./camelize":28}],30:[function(require,module,exports){
+},{"./camelize":29}],31:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1635,7 +2182,7 @@ function containsNode(outerNode, innerNode) {
 }
 
 module.exports = containsNode;
-},{"./isTextNode":39}],31:[function(require,module,exports){
+},{"./isTextNode":40}],32:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1672,7 +2219,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1692,7 +2239,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":44}],33:[function(require,module,exports){
+},{"_process":45}],34:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1717,7 +2264,7 @@ function focusNode(node) {
 }
 
 module.exports = focusNode;
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1754,7 +2301,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 }
 
 module.exports = getActiveElement;
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1785,7 +2332,7 @@ function hyphenate(string) {
 }
 
 module.exports = hyphenate;
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1822,7 +2369,7 @@ function hyphenateStyleName(string) {
 }
 
 module.exports = hyphenateStyleName;
-},{"./hyphenate":35}],37:[function(require,module,exports){
+},{"./hyphenate":36}],38:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1878,7 +2425,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":44}],38:[function(require,module,exports){
+},{"_process":45}],39:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1901,7 +2448,7 @@ function isNode(object) {
 }
 
 module.exports = isNode;
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1924,7 +2471,7 @@ function isTextNode(object) {
 }
 
 module.exports = isTextNode;
-},{"./isNode":38}],40:[function(require,module,exports){
+},{"./isNode":39}],41:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1990,7 +2537,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -2055,7 +2602,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":31,"_process":44}],42:[function(require,module,exports){
+},{"./emptyFunction":32,"_process":45}],43:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -2078,7 +2625,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -2170,7 +2717,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2356,7 +2903,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -2419,7 +2966,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":46,"_process":44,"fbjs/lib/invariant":37,"fbjs/lib/warning":41}],46:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":47,"_process":45,"fbjs/lib/invariant":38,"fbjs/lib/warning":42}],47:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -2433,7 +2980,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 (function (process){
 /** @license React v16.2.0
  * react-dom.development.js
@@ -17831,7 +18378,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":44,"fbjs/lib/EventListener":26,"fbjs/lib/ExecutionEnvironment":27,"fbjs/lib/camelizeStyleName":29,"fbjs/lib/containsNode":30,"fbjs/lib/emptyFunction":31,"fbjs/lib/emptyObject":32,"fbjs/lib/focusNode":33,"fbjs/lib/getActiveElement":34,"fbjs/lib/hyphenateStyleName":36,"fbjs/lib/invariant":37,"fbjs/lib/shallowEqual":40,"fbjs/lib/warning":41,"object-assign":43,"prop-types/checkPropTypes":45,"react":52}],48:[function(require,module,exports){
+},{"_process":45,"fbjs/lib/EventListener":27,"fbjs/lib/ExecutionEnvironment":28,"fbjs/lib/camelizeStyleName":30,"fbjs/lib/containsNode":31,"fbjs/lib/emptyFunction":32,"fbjs/lib/emptyObject":33,"fbjs/lib/focusNode":34,"fbjs/lib/getActiveElement":35,"fbjs/lib/hyphenateStyleName":37,"fbjs/lib/invariant":38,"fbjs/lib/shallowEqual":41,"fbjs/lib/warning":42,"object-assign":44,"prop-types/checkPropTypes":46,"react":53}],49:[function(require,module,exports){
 /** @license React v16.2.0
  * react-dom.production.min.js
  *
@@ -18062,7 +18609,7 @@ var Sg={createPortal:Qg,findDOMNode:function(a){if(null==a)return null;if(1===a.
 E("40");return a._reactRootContainer?(Z.unbatchedUpdates(function(){Pg(null,null,a,!1,function(){a._reactRootContainer=null})}),!0):!1},unstable_createPortal:Qg,unstable_batchedUpdates:tc,unstable_deferredUpdates:Z.deferredUpdates,flushSync:Z.flushSync,__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{EventPluginHub:mb,EventPluginRegistry:Va,EventPropagators:Cb,ReactControlledComponent:qc,ReactDOMComponentTree:sb,ReactDOMEventListener:xd}};
 Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",rendererPackageName:"react-dom"});var Tg=Object.freeze({default:Sg}),Ug=Tg&&Sg||Tg;module.exports=Ug["default"]?Ug["default"]:Ug;
 
-},{"fbjs/lib/EventListener":26,"fbjs/lib/ExecutionEnvironment":27,"fbjs/lib/containsNode":30,"fbjs/lib/emptyFunction":31,"fbjs/lib/emptyObject":32,"fbjs/lib/focusNode":33,"fbjs/lib/getActiveElement":34,"fbjs/lib/shallowEqual":40,"object-assign":43,"react":52}],49:[function(require,module,exports){
+},{"fbjs/lib/EventListener":27,"fbjs/lib/ExecutionEnvironment":28,"fbjs/lib/containsNode":31,"fbjs/lib/emptyFunction":32,"fbjs/lib/emptyObject":33,"fbjs/lib/focusNode":34,"fbjs/lib/getActiveElement":35,"fbjs/lib/shallowEqual":41,"object-assign":44,"react":53}],50:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -18104,7 +18651,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":47,"./cjs/react-dom.production.min.js":48,"_process":44}],50:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":48,"./cjs/react-dom.production.min.js":49,"_process":45}],51:[function(require,module,exports){
 (function (process){
 /** @license React v16.2.0
  * react.development.js
@@ -19465,7 +20012,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":44,"fbjs/lib/emptyFunction":31,"fbjs/lib/emptyObject":32,"fbjs/lib/invariant":37,"fbjs/lib/warning":41,"object-assign":43,"prop-types/checkPropTypes":45}],51:[function(require,module,exports){
+},{"_process":45,"fbjs/lib/emptyFunction":32,"fbjs/lib/emptyObject":33,"fbjs/lib/invariant":38,"fbjs/lib/warning":42,"object-assign":44,"prop-types/checkPropTypes":46}],52:[function(require,module,exports){
 /** @license React v16.2.0
  * react.production.min.js
  *
@@ -19488,7 +20035,7 @@ var U={Children:{map:function(a,b,e){if(null==a)return a;var c=[];T(a,c,null,b,e
 d=a.key,g=a.ref,k=a._owner;if(null!=b){void 0!==b.ref&&(g=b.ref,k=G.current);void 0!==b.key&&(d=""+b.key);if(a.type&&a.type.defaultProps)var f=a.type.defaultProps;for(h in b)H.call(b,h)&&!I.hasOwnProperty(h)&&(c[h]=void 0===b[h]&&void 0!==f?f[h]:b[h])}var h=arguments.length-2;if(1===h)c.children=e;else if(1<h){f=Array(h);for(var l=0;l<h;l++)f[l]=arguments[l+2];c.children=f}return{$$typeof:r,type:a.type,key:d,ref:g,props:c,_owner:k}},createFactory:function(a){var b=J.bind(null,a);b.type=a;return b},
 isValidElement:K,version:"16.2.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:G,assign:m}},V=Object.freeze({default:U}),W=V&&U||V;module.exports=W["default"]?W["default"]:W;
 
-},{"fbjs/lib/emptyFunction":31,"fbjs/lib/emptyObject":32,"object-assign":43}],52:[function(require,module,exports){
+},{"fbjs/lib/emptyFunction":32,"fbjs/lib/emptyObject":33,"object-assign":44}],53:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -19499,559 +20046,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":50,"./cjs/react.production.min.js":51,"_process":44}],53:[function(require,module,exports){
-"use strict";
-
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _axios = require("axios");
-
-var _axios2 = _interopRequireDefault(_axios);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ReactDOM = require("react-dom");
-
-var MainMenu = function (_React$Component) {
-	_inherits(MainMenu, _React$Component);
-
-	function MainMenu(props) {
-		_classCallCheck(this, MainMenu);
-
-		var _this = _possibleConstructorReturn(this, (MainMenu.__proto__ || Object.getPrototypeOf(MainMenu)).call(this, props));
-
-		_this.hostableGames = [{ folder: "jeopardy", name: "Jeopardy!" }, { folder: "genericquiz", name: "Generic Quiz" }, { folder: "wof-board", name: "Wheel of Fortune" }, { folder: "wwtbam-ff", name: "Fastest Finger First" }];
-		_this.minigames = [{ folder: "tpir-plinko", name: "Plinko" }, { folder: "wof-wheel", name: "WOF Wheel" }, { folder: "tpir-wheel", name: "TPIR Big Wheel" }];
-		_this.availablePages = [{ name: "home", heading: "Welcome to Trivle!" }, { name: "host", heading: "Host a Game" }, { name: "join", heading: "Join a Game" }, { name: "display", heading: "Display a Game" }, { name: "minigames", heading: "Minigames" }];
-
-		_this.goToPage = function (pageName) {
-			if (_this.availablePages.some(function (a) {
-				return a.name === pageName;
-			})) {
-				_this.setState({
-					currentPage: pageName,
-					currentError: ""
-				});
-			}
-		};
-
-		_this.formSubmittable = function () {
-			switch (_this.state.currentPage) {
-				case "host":
-					if (_this.state.hostStartNew) {
-						return _this.state.hostPassword.length > 0;
-					} else {
-						return _this.state.hostCode.length > 0 && _this.state.hostPassword.length > 0;
-					}
-				case "join":
-					return _this.state.joinCode.length > 0 && _this.state.joinName.length > 0;
-				case "display":
-					return _this.state.displayCode.length > 0;
-				default:
-					return false;
-			}
-		};
-
-		_this.setHostStartNew = function (event) {
-			var mode = event.target.value === "new";
-			_this.setState({
-				hostStartNew: mode
-			});
-		};
-
-		_this.setHostTitle = function (event) {
-			_this.setState({ hostTitle: event.target.value });
-		};
-
-		_this.setHostGame = function (event) {
-			_this.setState({ hostGame: event.target.value });
-		};
-
-		_this.setHostPassword = function (event) {
-			_this.setState({ hostPassword: event.target.value });
-		};
-
-		_this.setHostCode = function (event) {
-			_this.setState({ hostCode: event.target.value });
-		};
-
-		_this.setJoinCode = function (event) {
-			_this.setState({ joinCode: event.target.value });
-		};
-
-		_this.setJoinName = function (event) {
-			_this.setState({ joinName: event.target.value });
-		};
-
-		_this.setDisplayCode = function (event) {
-			_this.setState({ displayCode: event.target.value });
-		};
-
-		_this.submitHostNew = function () {
-			_this.setState({ currentError: "" });
-			_axios2.default.post("/host", {
-				gametitle: _this.state.hostTitle,
-				format: _this.state.hostGame,
-				password: _this.state.hostPassword
-			}).then(function (res) {
-				if (res) {
-					console.log("Response Received: ");
-					console.log(res);
-					window.location.href = res.data;
-				}
-			}).catch(function (err) {
-				if (err) {
-					_this.setState({ currentError: err.response.data });
-				}
-			});
-		};
-
-		_this.submitHostResume = function () {
-			_this.setState({ currentError: "" });
-			_axios2.default.post("/hostresume", {
-				gamecode: _this.state.hostCode,
-				password: _this.state.hostPassword
-			}).then(function (res) {
-				if (res) {
-					console.log("Response Received: ");
-					console.log(res);
-					window.location.href = res.data;
-				}
-			}).catch(function (err) {
-				if (err) {
-					_this.setState({ currentError: err.response.data });
-				}
-			});
-		};
-
-		_this.submitJoin = function () {
-			_this.setState({ currentError: "" });
-			_axios2.default.post("/play", {
-				gamecode: _this.state.joinCode,
-				name: _this.state.joinName
-			}).then(function (res) {
-				if (res) {
-					console.log("Response Received: ");
-					console.log(res);
-					window.location.href = res.data;
-				}
-			}).catch(function (err) {
-				if (err) {
-					_this.setState({ currentError: err.response.data });
-				}
-			});
-		};
-
-		_this.submitDisplay = function () {
-			_this.setState({ currentError: "" });
-			_axios2.default.post("/display", {
-				gamecode: _this.state.displayCode
-			}).then(function (res) {
-				if (res) {
-					console.log("Response Received: ");
-					console.log(res);
-					window.location.href = res.data;
-				}
-			}).catch(function (err) {
-				if (err) {
-					_this.setState({ currentError: err.response.data });
-				}
-			});
-		};
-
-		_this.render = function () {
-			var error;
-			var errorText;
-
-			var _this$availablePages$ = _this.availablePages.find(function (a) {
-				return a.name === _this.state.currentPage;
-			}),
-			    heading = _this$availablePages$.heading;
-
-			var content;
-			switch (_this.state.currentPage) {
-				case "home":
-					content = _react2.default.createElement(
-						"div",
-						{ className: "content" },
-						_react2.default.createElement(
-							"a",
-							{ className: "button", onClick: function onClick() {
-									return _this.goToPage("host");
-								} },
-							"Start a Game"
-						),
-						_react2.default.createElement(
-							"a",
-							{ className: "button", onClick: function onClick() {
-									return _this.goToPage("join");
-								} },
-							"Play a Game"
-						),
-						_react2.default.createElement(
-							"a",
-							{ className: "button", onClick: function onClick() {
-									return _this.goToPage("display");
-								} },
-							"Display a Game"
-						),
-						_react2.default.createElement(
-							"a",
-							{ className: "button", onClick: function onClick() {
-									return _this.goToPage("minigames");
-								} },
-							"Minigames"
-						),
-						_react2.default.createElement(
-							"div",
-							{ className: "subLink" },
-							_react2.default.createElement(
-								"a",
-								{ href: "about.html" },
-								"ABOUT"
-							)
-						)
-					);
-					break;
-				case "host":
-					var form;
-					if (_this.state.hostStartNew) {
-						form = _react2.default.createElement(
-							"div",
-							{ id: "formDiv" },
-							_react2.default.createElement(
-								"form",
-								{ onSubmit: _this.submitHostNew },
-								_react2.default.createElement("input", { type: "text", value: _this.state.hostTitle, onChange: _this.setHostTitle,
-									placeholder: "Game Title (optional)", name: "gametitle" }),
-								_react2.default.createElement("input", { type: "password", value: _this.state.hostPassword, onChange: _this.setHostPassword,
-									placeholder: "Set a Password for Hosting", name: "password" }),
-								_react2.default.createElement(
-									"p",
-									null,
-									"Format of game:"
-								),
-								_react2.default.createElement(
-									"select",
-									{ value: _this.state.hostGame, onChange: _this.setHostGame, name: "format" },
-									_this.hostableGames.map(function (g) {
-										return _react2.default.createElement(
-											"option",
-											{ key: g.folder, value: g.folder },
-											g.name
-										);
-									})
-								),
-								_react2.default.createElement("br", null),
-								_react2.default.createElement(
-									"a",
-									{ className: _this.formSubmittable() ? "button" : "button inactive",
-										onClick: _this.formSubmittable() ? _this.submitHostNew : null },
-									"Let's Play!"
-								)
-							)
-						);
-					} else {
-						form = _react2.default.createElement(
-							"div",
-							{ id: "formDiv" },
-							_react2.default.createElement(
-								"form",
-								{ onSubmit: _this.submitHostResume },
-								_react2.default.createElement("input", { type: "text", value: _this.state.hostCode, onChange: _this.setHostCode,
-									placeholder: "Game Code", name: "gamecode" }),
-								_react2.default.createElement("input", { type: "password", value: _this.state.hostPassword, onChange: _this.setHostPassword,
-									placeholder: "Enter this game's password", name: "password" }),
-								_react2.default.createElement("br", null),
-								_react2.default.createElement(
-									"a",
-									{ className: _this.formSubmittable() ? "button" : "button inactive",
-										onClick: _this.formSubmittable() ? _this.submitHostResume : null },
-									"Let's Play!"
-								)
-							)
-						);
-					}
-					if (_this.state.currentError) {
-						switch (_this.state.currentError) {
-							case "roomNotFound":
-								errorText = "This game could not be found. Note that games which haven't been touched in over 24 hours are marked for eventual deletion.";
-								break;
-							case "wrongPassword":
-								errorText = "The password you just entered doesn't match the one given when this game was created.";
-								break;
-							default:
-								errorText = "Sorry, it looks like an unknown error has occurred. Please try again in a bit.";
-								break;
-						}
-						error = _react2.default.createElement(
-							"div",
-							{ className: "error" },
-							_react2.default.createElement(
-								"p",
-								null,
-								errorText
-							)
-						);
-					}
-					content = _react2.default.createElement(
-						"div",
-						{ className: "content" },
-						_react2.default.createElement(
-							"div",
-							{ className: "errorDiv" },
-							error
-						),
-						_react2.default.createElement(
-							"div",
-							{ className: "host-radio-group" },
-							_react2.default.createElement(
-								"label",
-								{ className: _this.state.hostStartNew ? "active" : "" },
-								_react2.default.createElement("input", { type: "radio", value: "new",
-									checked: _this.state.hostStartNew,
-									onChange: _this.setHostStartNew }),
-								_react2.default.createElement(
-									"p",
-									null,
-									"New Game"
-								)
-							),
-							_react2.default.createElement(
-								"label",
-								{ className: !_this.state.hostStartNew ? "active" : "" },
-								_react2.default.createElement("input", { type: "radio", value: "resume",
-									checked: !_this.state.hostStartNew,
-									onChange: _this.setHostStartNew }),
-								_react2.default.createElement(
-									"p",
-									null,
-									"Resume Game"
-								)
-							)
-						),
-						form,
-						_react2.default.createElement(
-							"div",
-							{ className: "subLink" },
-							_react2.default.createElement(
-								"a",
-								{ onClick: function onClick() {
-										return _this.goToPage("home");
-									} },
-								"BACK"
-							)
-						)
-					);
-					break;
-				case "join":
-					if (_this.state.currentError) {
-						switch (_this.state.currentError) {
-							case "roomNotFound":
-								errorText = "This game could not be found. Note that games which haven't been touched in over 24 hours are marked for eventual deletion.";
-								break;
-							case "screenNameTaken":
-								errorText = "Somebody else in this game is using that Screen Name. Please choose another one.";
-								break;
-							default:
-								errorText = "Sorry, it looks like an unknown error has occurred. Please try again in a bit.";
-								break;
-						}
-						error = _react2.default.createElement(
-							"div",
-							{ className: "error" },
-							_react2.default.createElement(
-								"p",
-								null,
-								errorText
-							)
-						);
-					}
-					content = _react2.default.createElement(
-						"div",
-						{ className: "content" },
-						_react2.default.createElement(
-							"div",
-							{ id: "errorDiv" },
-							error
-						),
-						_react2.default.createElement(
-							"div",
-							{ id: "formDiv" },
-							_react2.default.createElement(
-								"form",
-								{ onSubmit: _this.submitJoin },
-								_react2.default.createElement("input", { type: "text",
-									autoComplete: "off",
-									autoCorrect: "off",
-									autoCapitalize: "off",
-									placeholder: "Your Game Code",
-									name: "gamecode",
-									id: "gamecode-input",
-									value: _this.state.joinCode,
-									onChange: _this.setJoinCode }),
-								_react2.default.createElement("br", null),
-								_react2.default.createElement("input", { type: "text", placeholder: "Screen Name", name: "name", id: "name-input",
-									value: _this.state.joinName, onChange: _this.setJoinName }),
-								_react2.default.createElement("br", null),
-								_react2.default.createElement(
-									"a",
-									{ className: _this.formSubmittable() ? "button" : "button inactive",
-										onClick: _this.formSubmittable() ? _this.submitJoin : null },
-									"Let's Play!"
-								)
-							)
-						),
-						_react2.default.createElement(
-							"div",
-							{ className: "subLink" },
-							_react2.default.createElement(
-								"a",
-								{ onClick: function onClick() {
-										return _this.goToPage("home");
-									} },
-								"BACK"
-							)
-						)
-					);
-					break;
-				case "display":
-					if (_this.state.currentError) {
-						switch (_this.state.currentError) {
-							case "roomNotFound":
-								errorText = "This game could not be found. Note that games which haven't been touched in over 24 hours are marked for eventual deletion.";
-								break;
-							default:
-								errorText = "Sorry, it looks like an unknown error has occurred. Please try again in a bit.";
-								break;
-						}
-						error = _react2.default.createElement(
-							"div",
-							{ className: "error" },
-							_react2.default.createElement(
-								"p",
-								null,
-								errorText
-							)
-						);
-					}
-					content = _react2.default.createElement(
-						"div",
-						{ className: "content" },
-						_react2.default.createElement(
-							"div",
-							{ id: "errorDiv" },
-							error
-						),
-						_react2.default.createElement(
-							"div",
-							{ id: "formDiv" },
-							_react2.default.createElement(
-								"form",
-								{ onSubmit: _this.submitDisplay },
-								_react2.default.createElement("input", { type: "text",
-									autoComplete: "off",
-									autoCorrect: "off",
-									autoCapitalize: "off",
-									placeholder: "Your Game Code",
-									name: "gamecode",
-									id: "gamecode-input",
-									value: _this.state.displayCode,
-									onChange: _this.setDisplayCode }),
-								_react2.default.createElement("br", null),
-								_react2.default.createElement(
-									"a",
-									{ className: _this.formSubmittable() ? "button" : "button inactive",
-										onClick: _this.formSubmittable() ? _this.submitDisplay : null },
-									"Let's Play!"
-								)
-							)
-						),
-						_react2.default.createElement(
-							"div",
-							{ className: "subLink" },
-							_react2.default.createElement(
-								"a",
-								{ onClick: function onClick() {
-										return _this.goToPage("home");
-									} },
-								"BACK"
-							)
-						)
-					);
-					break;
-				case "minigames":
-					content = _react2.default.createElement(
-						"div",
-						{ className: "content" },
-						_this.minigames.map(function (m) {
-							return _react2.default.createElement(
-								"a",
-								{ className: "button", key: m.folder, href: "/" + m.folder + "/display" },
-								m.name
-							);
-						}),
-						_react2.default.createElement(
-							"div",
-							{ className: "subLink" },
-							_react2.default.createElement(
-								"a",
-								{ onClick: function onClick() {
-										return _this.goToPage("home");
-									} },
-								"BACK"
-							)
-						)
-					);
-					break;
-			}
-
-			return _react2.default.createElement(
-				"div",
-				null,
-				_react2.default.createElement(
-					"div",
-					{ id: "logo" },
-					_react2.default.createElement("object", { style: { width: "auto", height: "100%" }, data: "logo-blackred.svg", type: "image/svg+xml" })
-				),
-				_react2.default.createElement(
-					"h1",
-					null,
-					heading
-				),
-				content
-			);
-		};
-
-		_this.state = {
-			currentPage: "home",
-
-			hostStartNew: true,
-			hostTitle: "",
-			hostGame: _this.hostableGames[0].folder,
-			hostPassword: "",
-			hostCode: "",
-
-			joinCode: "",
-			joinName: "",
-
-			displayCode: "",
-			currentError: ""
-		};
-		return _this;
-	}
-
-	return MainMenu;
-}(_react2.default.Component);
-
-ReactDOM.render(_react2.default.createElement(MainMenu, null), document.getElementById("container"));
-
-},{"axios":1,"react":52,"react-dom":49}]},{},[53]);
+},{"./cjs/react.development.js":51,"./cjs/react.production.min.js":52,"_process":45}]},{},[1]);

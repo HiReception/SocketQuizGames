@@ -3,8 +3,7 @@ const PropTypes = require("prop-types");
 
 export default class PlayerListing extends React.Component {
 	render = () => {
-		const scoreString = this.props.prefix + this.props.player.score +
-			this.props.suffix;
+		const scoreString = this.props.player.score;
 		let classExt = "";
 		if (this.props.player.score < 0) {
 			classExt += " negative";
@@ -38,7 +37,5 @@ PlayerListing.propTypes = {
 	answering: PropTypes.bool,
 	lockedOut: PropTypes.bool,
 	selecting: PropTypes.bool,
-	prefix: PropTypes.string,
-	suffix: PropTypes.string,
 	onClick: PropTypes.func,
 };

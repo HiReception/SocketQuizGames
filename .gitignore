@@ -1,6 +1,9 @@
 public/*/*Bundle.js
 public/*Bundle.js
+public/*/*.js
+public/*.js
+public/*/*.css
+public/*.css
 node_modules/
 .env
 .sass-cache/
-public/jeopardy/*.css

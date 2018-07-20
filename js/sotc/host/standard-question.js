@@ -26,7 +26,7 @@ export default class StandardQuestion extends React.Component {
 		
 		}
 		// Player Answering
-		else if (this.props.playerAnswering !== "" && this.props.answered) {
+		else if (this.props.playerAnswering !== "" && !this.props.answered) {
 			buzzerPanel = (
 				<div className="buzzer-panel">
 					<p className="buzzer-panel">{this.props.playerAnswering} is Answering</p>
@@ -55,7 +55,8 @@ export default class StandardQuestion extends React.Component {
 				</div>
 			);
 		}
-
+		const body = this.props.question.body ? this.props.question.body : "No Question Body";
+		const correct = this.props.question.correct ? this.props.question.correct : "No Correct Answer";
 		return (
 			<div id='open-question-panel'>
 				<div className='open-question-header'>
@@ -63,12 +64,12 @@ export default class StandardQuestion extends React.Component {
 				</div>
 				<div className='open-question-clue'>
 					<p className='open-question-clue'>
-						{this.props.question.body}
+						{body}
 					</p>
 				</div>
 				<div className='open-question-correct'>
 					<p className='open-question-correct'>
-						{this.props.question.correct}
+						{correct}
 					</p>
 				</div>
 				{buzzerPanel}

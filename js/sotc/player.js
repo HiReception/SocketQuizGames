@@ -43,7 +43,7 @@ socket.on("connect_error", function(err) {
 socket.on("accepted", function(state) {
 	$("#header-bar").text(screenName);
 	console.log(state);
-	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"))
+	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"));
 });
 
 class PlayerPanel extends React.Component {

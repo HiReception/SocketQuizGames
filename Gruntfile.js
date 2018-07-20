@@ -1,231 +1,128 @@
+const browserifyOptions = {
+	transform: [
+		["babelify", {
+			presets: ["react", "es2015", "stage-1"],
+		}],
+		"brfs",
+	]
+};
+
 module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
+		watch: {
+			options: {
+				livereload: true
+			},
+			sotc_js: {
+				files: ["js/sotc/**/*.js"],
+				tasks: ["browserify:sotc_host", "browserify:sotc_player"]
+			},
+			sotc_css: {
+				files: ["js/sotc/**/*.scss"],
+				tasks: ["sass:sotc"]
+			}
+		},
 		browserify: {
 			menu: {
 				src: "js/menu.js",
-				dest: "public/menuBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				dest: "public/menu.js",
+				options: browserifyOptions
 			},
 			sotc_podiums: {
 				src: "js/sotc/podiums.js",
 				dest: "public/sotc/podiumsBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			sotc_player: {
 				src: "js/sotc/player.js",
-				dest: "public/sotc/playerBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"],
-						}]
-					]
-				}
+				dest: "public/sotc/player.js",
+				options: browserifyOptions
 			},
 			sotc_host: {
 				src: "js/sotc/host.js",
-				dest: "public/sotc/hostBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"],
-						}],
-						"brfs",
-					]
-				}
+				dest: "public/sotc/host.js",
+				options: browserifyOptions
 			},
 			feud_test: {
 				src: "js/feud/test.js",
 				dest: "public/feud/testBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			sotc_cashcard: {
 				src: "js/sotc/cashcard.js",
 				dest: "public/sotc/cashcardBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			jeopardy_player: {
 				src: "js/jeopardy/player.js",
 				dest: "public/jeopardy/playerBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			jeopardy_host: {
 				src: "js/jeopardy/host.js",
 				dest: "public/jeopardy/hostBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}],
-						"brfs"
-					]
-				}
+				options: browserifyOptions
 			},
 			jeopardy_display: {
 				src: "js/jeopardy/display.js",
 				dest: "public/jeopardy/displayBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			genericquiz_player: {
 				src: "js/genericquiz/player.js",
 				dest: "public/genericquiz/playerBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			genericquiz_host: {
 				src: "js/genericquiz/host.js",
 				dest: "public/genericquiz/hostBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			genericquiz_display: {
 				src: "js/genericquiz/display.js",
 				dest: "public/genericquiz/displayBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			wof_board_display: {
 				src: "js/wof-board/display.js",
 				dest: "public/wof-board/displayBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			wof_board_host: {
 				src: "js/wof-board/host.js",
 				dest: "public/wof-board/hostBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}],
-						"brfs"
-					]
-				}
+				options: browserifyOptions
 			},
 			tpir_wheel_display: {
 				src: "js/tpir-wheel/display.js",
 				dest: "public/tpir-wheel/displayBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			tpir_plinko_display: {
 				src: "js/tpir-plinko/display.js",
 				dest: "public/tpir-plinko/displayBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			wof_wheel_display: {
 				src: "js/wof-wheel/display.js",
 				dest: "public/wof-wheel/displayBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			wwtbam_ff_player: {
 				src: "js/wwtbam-ff/player.js",
 				dest: "public/wwtbam-ff/playerBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}]
-					]
-				}
+				options: browserifyOptions
 			},
 			wwtbam_ff_host: {
 				src: "js/wwtbam-ff/host.js",
 				dest: "public/wwtbam-ff/hostBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}],
-						"brfs"
-					]
-				}
+				options: browserifyOptions
 			},
 			wwtbam_ff_display: {
 				src: "js/wwtbam-ff/display.js",
 				dest: "public/wwtbam-ff/displayBundle.js",
-				options: {
-					transform: [
-						["babelify", {
-							presets: ["react", "es2015", "stage-1"]
-						}],
-						"brfs"
-					]
-				}
+				options: browserifyOptions
 			}
 		},
 		sass: {
@@ -328,4 +225,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-newer");
 	grunt.loadNpmTasks("grunt-sass");
 	grunt.registerTask("default", ["browserify", "sass"]);
+	grunt.registerTask("sotc", ["browserify:sotc_player", "browserify:sotc_host", "sass:sotc"]);
 };
