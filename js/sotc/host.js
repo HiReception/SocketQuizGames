@@ -75,18 +75,26 @@ socket.on("game details", function(details) {
 			lockedOutPlayerNames: [],
 			fameGamesCompleted: 0,
 			fameGameBoard: [],
+			fameGamePrizes: [],
 			fameGameBoardShowing: false,
 			fameGameCurrentSelection: -1,
 			fameGameWildCardDecision: -1,
 			fameGameMoneyRevealed: false,
 
+			lockoutTimer: null,
 			timerStarted: false,
 			timeRemaining: 0,
+			normalAnsweringTimer: 0,
+			fastMoneyAnsweringTimer: 0,
+			
 
 			// fast money related fields
+			fmTimer: null,
 			fmStarted: false,
 			fmTimeRemaining: 0,
 			fmClockRunning: false,
+			fmCurrentQuestionNo: 0,
+			fmCurrentQuestion: {},
 
 			bonusPrizes: [],
 

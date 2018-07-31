@@ -1,0 +1,58 @@
+{
+	"prefix": "$",
+	"suffix": "",
+	"startingScore": 20,
+	"normalAnsweringTimer": 3000,
+	"fastMoneyAnsweringTimer": 1000,
+	"standardCorrectAmount": 5,
+	"standardIncorrectAmount": 5,
+	"items": [
+		{"type": "CashCard", "startingPrice": 15},
+		{"type": "StandardQuestion"},
+		{"type": "StandardQuestion"},
+		{"type": "StandardQuestion"},
+
+		{"type": "RoundBreak"},
+
+		{"type": "FastMoney", "length": 60}
+	],
+	"cashCardPrizes": [
+		{
+			"prize": true,
+			"slotImage": "",
+			"shortName": "Cutlery Set",
+			"prizeValue": 3128,
+			"description": ""
+		},
+		{
+			"major": true,
+			"slotImage": "",
+			"shortName": "$5,000",
+			"prizeValue": 5000,
+			"major": true
+		},
+		{
+			"generic": true,
+			"slotImage": "",
+			"shortName": "The Car on the Board",
+			"prizeValue": 0
+		},
+		{
+			"score": true,
+			"slotImage": "",
+			"shortName": "$15 back",
+			"scoreValue": 15
+		}
+	],
+	"endgame": "BoardBonus",
+	"bonusPrizes": [
+		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": ""},
+		{"photo": "", "cardImage": "", "name": "Watch", "prizeValue": 12950, "description": ""},
+		{"photo": "", "cardImage": "", "name": "Sea-Doo", "prizeValue": 14990, "description": ""},
+		{"photo": "", "cardImage": "", "name": "Computers", "prizeValue": 8230, "description": ""},
+		{"photo": "", "cardImage": "", "name": "Some Other Prize", "prizeValue": 8230, "description": ""},
+		{"photo": "", "cardImage": "", "name": "Yet Another Prize", "prizeValue": 8230, "description": ""},
+		{"photo": "", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 65900, "description": "", "requiresWin": true}
+	]
+
+}

@@ -5,6 +5,8 @@ import {faPlay, faPause} from "@fortawesome/fontawesome-free-solid";
 
 export default class FastMoney extends React.Component {
 	render = () => {
+		const seconds = Math.ceil(this.props.fmTimeRemaining/1000);
+		const minutes = Math.floor(seconds/60);
 		if (!this.props.fmStarted) {
 			return (
 				<div id='open-question-panel'>
@@ -13,16 +15,18 @@ export default class FastMoney extends React.Component {
 							<p className='fast-money-title'>FAST MONEY</p>
 						</div>
 						<div className="fast-money-clock">
-							<p className='fast-money-clock'>{Math.floor(this.props.fmTimeRemaining/60000)}:{Math.floor(this.props.fmTimeRemaining/1000 % 60)}</p>
+							<p className='fast-money-clock'>
+								{minutes}:{(seconds % 60).toString().padStart(2,"0")}
+							</p>
 						</div>
 						<div className="fast-money-empty">
 						</div>
 					</div>
-					<div className='open-question-clue'>
-						<p className='open-question-clue'>
+					<div className='fast-money-start'>
+						<p>
 							{this.props.fmTimeRemaining/1000} second Fast Money next
 						</p>
-						<div className="add-question-button" onClick={this.props.startLockTimer}>
+						<div className="add-question-button" onClick={this.props.startFastMoneyTimer}>
 							<p>Start Fast Money</p>
 						</div>
 					</div>
@@ -52,9 +56,11 @@ export default class FastMoney extends React.Component {
 					</div>
 				);
 			}
+
+
 			let buzzerPanel;
 			// No answers or question answered, fast money time over
-			if ((this.props.playerAnswering === "" || this.props.answered) && this.props.fmTimeRemaining <= 0) {
+			if ((this.props.playerAnswering === "" || this.props.currentQuestionOver) && this.props.fmTimeRemaining <= 0) {
 				buzzerPanel = (
 					<div className="buzzer-panel">
 						<p className="buzzer-panel">Fast Money Over</p>
@@ -65,7 +71,7 @@ export default class FastMoney extends React.Component {
 				);
 			}
 			// No answers, question timer not yet started
-			else if (this.props.playerAnswering === "" && !this.props.answered && !this.props.timerStarted) {
+			else if (this.props.playerAnswering === "" && !this.props.currentQuestionOver && !this.props.lockTimerStarted) {
 				buzzerPanel = (
 					<div className="buzzer-panel">
 						<p className="buzzer-panel">Nobody Answering</p>
@@ -76,16 +82,16 @@ export default class FastMoney extends React.Component {
 				);
 			}
 			// No answers, question timer started but not elapsed
-			else if (this.props.playerAnswering === "" && !this.props.answered && this.props.timerStarted && this.props.locktimeRemaining > 0) {
+			else if (this.props.playerAnswering === "" && !this.props.currentQuestionOver && this.props.lockTimerStarted && this.props.lockTimeRemaining > 0) {
 				buzzerPanel = (
 					<div className="buzzer-panel">
-						<p className="buzzer-panel">{this.props.locktimeRemaining} seconds left to buzz in</p>
+						<p className="buzzer-panel">{this.props.lockTimeRemaining/1000} second(s) left to buzz in</p>
 					</div>
 				);
 			
 			}
 			// Player Answering
-			else if (this.props.playerAnswering !== "" && !this.props.answered) {
+			else if (this.props.playerAnswering !== "" && !this.props.currentQuestionOver) {
 				buzzerPanel = (
 					<div className="buzzer-panel">
 						<p className="buzzer-panel">{this.props.playerAnswering} is Answering</p>
@@ -115,25 +121,30 @@ export default class FastMoney extends React.Component {
 				);
 			}
 
+			const body = this.props.currentQuestion.body ? this.props.currentQuestion.body : "No Question Body";
+			const correct = this.props.currentQuestion.correct ? this.props.currentQuestion.correct : "No Correct Answer";
+
 			return (
 				<div id='open-question-panel'>
 					<div className='fast-money-header'>
 						<div className="fast-money-title">
 							<p className='fast-money-title'>FAST MONEY</p>
 						</div>
-						<div className="fast-money-clock">
-							<p className='fast-money-clock'>{Math.floor(this.props.fmTimeRemaining/60000)}:{Math.floor(this.props.fmTimeRemaining/1000 % 60)}</p>
+						<div className={`fast-money-clock${this.props.fmTimeRemaining === 0 ? " over" : (!this.props.fmClockRunning ? " paused": "")}`}>
+							<p>
+								{minutes}:{(seconds % 60).toString().padStart(2,"0")}
+							</p>
 						</div>
 						{fmHeaderButton}
 					</div>
 					<div className='open-question-clue'>
 						<p className='open-question-clue'>
-							{this.props.question.body}
+							{body}
 						</p>
 					</div>
 					<div className='open-question-correct'>
 						<p className='open-question-correct'>
-							{this.props.question.correct}
+							{correct}
 						</p>
 					</div>
 					{buzzerPanel}
@@ -146,11 +157,11 @@ export default class FastMoney extends React.Component {
 FastMoney.propTypes = {
 	fmTimeRemaining: PropTypes.number,
 	fmClockRunning: PropTypes.bool,
-	question: PropTypes.object,
+	currentQuestion: PropTypes.object,
 	playerAnswering: PropTypes.string,
 	lockTimerStarted: PropTypes.bool,
 	lockTimeRemaining: PropTypes.number,
-	answered: PropTypes.bool,
+	currentQuestionOver: PropTypes.bool,
 	playerRight: PropTypes.func,
 	playerWrong: PropTypes.func,
 	cancelBuzz: PropTypes.func,

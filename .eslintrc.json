@@ -23,6 +23,7 @@
             "error",
             "tab"
         ],
+        "no-unused-vars": ["warn"],
         "no-warning-comments": [
             "warn"
         ],

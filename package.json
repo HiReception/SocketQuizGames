@@ -2,7 +2,7 @@
   "name": "socketquizgames",
   "description": "A real-time device-independent question and answer framework",
   "version": "0.0.0",
-  "homepage": "",
+  "homepage": "http://quiz.mtdoyle.com",
   "main": "src/",
   "keywords": [],
   "license": "MIT",

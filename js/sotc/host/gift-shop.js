@@ -58,6 +58,9 @@ export default class GiftShop extends React.Component {
 
 		return (
 			<div className="gift-shop">
+				<div className="gift-shop-header">
+					<p>Gift Shop</p>
+				</div>
 				<div className="gift-shop-prize-desc">
 					<p>{this.props.prize.shortName}</p>
 					<p>{this.props.prize.description}</p>

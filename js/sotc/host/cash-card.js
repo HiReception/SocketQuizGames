@@ -25,41 +25,48 @@ export default class CashCard extends React.Component {
 	render = () => {
 		let contentPanel;
 		if (!this.props.availableToBuy) {
+			const numRows = 2;
 			// board of four suits, showing symbol if not revealed (different colour if selected)
 			contentPanel = (
+				
 				<div className="cash-card-suit-container">
-					{(this.props.suits.map((s, i) => {
-						const revealed = (this.props.selectedSuit === i && this.props.selSuitRevealed) || (s.prize.major && this.props.majorPrizeRevealed);
-						if (revealed) {
-							let prizeClass;
-							let prizeContent;
-							if (s.prize.major) {
-								prizeClass = "major";
-								prizeContent = <p>{s.prize.shortName}</p>;
-							} else if (s.prize.prizeValue) {
-								prizeClass = "prize";
-								prizeContent = <p>PRIZE</p>;
-							} else if (s.prize.scoreValue) {
-								prizeClass = "score";
-								prizeContent = <p>${s.prize.scoreValue}</p>;
-							} else {
-								prizeClass = "generic";
-								prizeContent = s.prize.slotImage ? <img src={s.prize.slotImage}/> : <p>{s.prize.shortName}</p>;
-							}
-							return (
-								<div className={`cash-card-suit revealed ${prizeClass}`}>
-									{prizeContent}
-								</div>
-							);
-						} else {
-							const selectedString = this.props.selectedSuit === i ? " selected" : "";
-							return (
-								<div className={`cash-card-suit concealed${selectedString}`}>
-									<p>{s.suitSymbol}</p>
-								</div>
-							);
-						}
-					}))}
+					{[...Array(numRows).keys()].map((r) => (
+						<div key={r} className="cash-card-suit-row">
+							{this.props.suits.slice(r*numRows, (r+1)*numRows).map((s, i) => {
+								const suitNo = (r*numRows)+i;
+								const revealed = (this.props.selectedSuit === suitNo && this.props.selSuitRevealed) || (s.prize.major && this.props.majorPrizeRevealed);
+								if (revealed) {
+									let prizeClass;
+									let prizeContent;
+									if (s.prize.major) {
+										prizeClass = "major";
+										prizeContent = <p>{s.prize.shortName}</p>;
+									} else if (s.prize.prizeValue) {
+										prizeClass = "prize";
+										prizeContent = <p>PRIZE</p>;
+									} else if (s.prize.scoreValue) {
+										prizeClass = "score";
+										prizeContent = <p>${s.prize.scoreValue}</p>;
+									} else {
+										prizeClass = "generic";
+										prizeContent = s.prize.slotImage ? <img src={s.prize.slotImage}/> : <p>{s.prize.shortName}</p>;
+									}
+									return (
+										<div key={i} className={`cash-card-suit revealed ${prizeClass}`}>
+											{prizeContent}
+										</div>
+									);
+								} else {
+									const selectedString = this.props.selectedSuit === suitNo ? " selected" : (this.props.selectedSuit !== -1 ? " inactive " : "");
+									return (
+										<div key={i} className={`cash-card-suit concealed${selectedString}`} onClick={() => this.props.selectCashCardSuit(suitNo)}>
+											<p>{s.suitSymbol}</p>
+										</div>
+									);
+								}
+							})}
+						</div>
+					))}
 				</div>
 			);
 		} else {
@@ -68,13 +75,18 @@ export default class CashCard extends React.Component {
 			contentPanel = (
 				<div className="cash-card-sell-container">
 					<div className="cash-card-prize-desc">
-						<p>Prize on Offer:</p>
-						<p>{this.props.prize.shortName}</p>
-						<p>{this.props.prize.description}</p>
-						<p>Normally priced at ${this.props.prize.retailPrice}</p>
+						<p>Prizes on Offer:</p>
+						{this.props.prizes.map(p => (
+							<div key={p.shortName} className="cash-card-prize">
+								<p>{p.shortName}</p>
+								<p>{p.description}</p>
+								<p>Value: ${p.prizeValue || p.scoreValue}</p>
+							</div>
+						))}
+						
 					</div>
 					<div className="cash-card-variable-panel">
-						<div className="gift-shop-variable">
+						<div className="cash-card-variable">
 							<input type="text" value={this.props.currentPrice} onChange={this.props.setPrice} disabled={!priceTogglable}/>
 							<p>Current Price</p>
 						</div>
@@ -85,30 +97,32 @@ export default class CashCard extends React.Component {
 
 		let bottomPanel;
 
-		const prize = this.props.suits[this.props.selectedSuit].prize.shortName || "";
-		const wonMajorPrize = this.props.suits[this.props.selectedSuit].prize.major || false;
+		
+		
 
 		// if nobody has purchased, the leader (or one of the co-leaders) will play hypothetically;
 		const hypo = !this.props.playerPurchasing;
 		const playerName = this.props.playerPurchasing || this.props.eligibleToBuy[0];
 
 		if (this.props.majorPrizeRevealed) {
-			const suitName = this.props.suits.filter(s => s.prize.major).suit.name;
+			const suitName = this.props.suits.find(s => s.prize.major).name;
 			// major prize revealed, end of game
 			bottomPanel = (
 				<div className="cash-card-bottom">
 					<p>Major Prize was behind {suitName}</p>
-					<div className="add-question-button" onClick={this.props.confirmSale}>
+					<div className="add-question-button" onClick={this.props.nextItem}>
 						<p>Continue</p>
 					</div>
 				</div>
 			);
 		} else if (this.props.selSuitRevealed) {
 			// prize behind selected suit revealed, if major prize then end of game
+			const prize = this.props.suits[this.props.selectedSuit].prize.shortName || "";
+			const wonMajorPrize = this.props.suits[this.props.selectedSuit].prize.major || false;
 			bottomPanel = (
 				<div className="cash-card-bottom">
 					<p>{playerName} {hypo ? "would have won" : "wins"} {prize}</p>
-					<div className="add-question-button" onClick={this.props.awardPrize}>
+					<div className="add-question-button" onClick={this.awardPrize}>
 						<p>{wonMajorPrize ? "Continue" : "Reveal Major Prize"}</p>
 					</div>
 				</div>
@@ -147,6 +161,9 @@ export default class CashCard extends React.Component {
 
 		return (
 			<div className="cash-card">
+				<div className="cash-card-header">
+					<p>CASH CARD</p>
+				</div>
 				{contentPanel}
 				{bottomPanel}
 			</div>

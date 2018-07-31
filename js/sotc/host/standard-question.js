@@ -20,7 +20,7 @@ export default class StandardQuestion extends React.Component {
 		else if (this.props.playerAnswering === "" && !this.props.answered && this.props.timerStarted && this.props.timeRemaining > 0) {
 			buzzerPanel = (
 				<div className="buzzer-panel">
-					<p className="buzzer-panel">{this.props.timeRemaining} seconds left to buzz in</p>
+					<p className="buzzer-panel">{this.props.timeRemaining/1000} second(s) left to buzz in</p>
 				</div>
 			);
 		

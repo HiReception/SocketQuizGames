@@ -40,12 +40,14 @@ export default class HostConsole extends React.Component {
 	}
 
 	handleNewAnswer = (details) => {
-		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FameGameQuestion" || this.state.currentItemType === "FastMoney") {
+		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FameGame" || this.state.currentItemType === "FastMoney") {
 			if (this.state.buzzersOpen && this.state.playerAnswering === "" && !this.state.lockedOutPlayerNames.includes(details.player)) {
 				this.setAnsweringPlayer(details.player);
 			}
 		} else if (this.state.currentItemType === "GiftShop" || this.state.currentItemType === "CashCard") {
-			if (this.state.playerPurchasing === "" && this.state.eligibleToBuy.includes(details.player)) {
+			if (this.state.playerPurchasing === ""
+			&& this.state.eligibleToBuy.includes(details.player)
+			&& this.state.availableToBuy) {
 				this.setPurchasingPlayer(details.player);
 			}
 		}
@@ -59,9 +61,9 @@ export default class HostConsole extends React.Component {
 	}
 
 	setAnsweringPlayer = (screenName) => {
-		console.log(`HostConsole setting answering player to ${screenName}`);
 		this.setGameState({
 			playerAnswering: screenName,
+			timerRunning: false // cancel any post-question timer that may be running
 		});
 	}
 
@@ -72,15 +74,16 @@ export default class HostConsole extends React.Component {
 	}
 
 	setPurchasingPlayer = (screenName) => {
-		console.log(`HostConsole setting purchasing player to ${screenName}`);
 		this.setGameState({
 			playerPurchasing: screenName,
+			availableToBuy: false,
 		});
 	}
 
 	clearPurchasingPlayer = () => {
 		this.setGameState({
 			playerPurchasing: "",
+			availableToBuy: true,
 		});
 	}
 
@@ -100,7 +103,7 @@ export default class HostConsole extends React.Component {
 	}
 
 	playerRight = () => {
-		if (this.state.currentItemType === "StandardQuestion") {
+		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FastMoney") {
 			var newPlayers = this.state.players;
 			var newAnswering = newPlayers.find((p) => p.screenName === this.state.playerAnswering);
 			newAnswering.score = newAnswering.score + this.state.standardCorrectAmount;
@@ -110,17 +113,12 @@ export default class HostConsole extends React.Component {
 				currentItemOver: true
 			});
 			this.clearAnsweringPlayer();
-		} else if (this.state.currentItemType === "FameGameQuestion") {
-			this.setGameState({
-				currentItemOver: true,
-				buzzersOpen: false,
-			});
 		}
 		
 	}
 
 	playerWrong = () => {
-		if (this.state.currentItemType === "StandardQuestion") {
+		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FastMoney") {
 			var newPlayers = this.state.players;
 			var newAnswering = newPlayers.find((p) => p.screenName === this.state.playerAnswering);
 			newAnswering.score = newAnswering.score - this.state.standardIncorrectAmount;
@@ -130,7 +128,7 @@ export default class HostConsole extends React.Component {
 				buzzersOpen: false,
 			});
 			this.clearAnsweringPlayer();
-		} else if (this.state.currentItemType === "FameGameQuestion") {
+		} else if (this.state.currentItemType === "FameGame") {
 			this.lockPlayerOutThisItem();
 			
 			if (this.state.lockedOutPlayerNames.length === this.state.players.length) {
@@ -151,19 +149,46 @@ export default class HostConsole extends React.Component {
 		this.clearAnsweringPlayer();
 	}
 
-	startTimer = () => {
-		// TODO
+	timerIncrement = () => {
+		if (this.state.timerRunning) {
+			const newTimeRemaining = Math.max(this.state.timeRemaining - 100, 0);
+			this.setGameState({
+				timeRemaining: newTimeRemaining,
+			});
+			if (newTimeRemaining === 0) {
+				this.setGameState({
+					timerRunning: false,
+					buzzersOpen: false,
+					currentItemOver: true,
+				});
+				clearInterval(this.state.lockoutTimer);
+			} 
+		} else {
+			this.setGameState({
+				timeRemaining: 0,
+			});
+			clearInterval(this.state.lockoutTimer);
+		}
+	}
+
+	startTimer = (limit) => {
+		this.setGameState({
+			timerStarted: true,
+			timerRunning: true,
+			timeRemaining: limit,
+			lockoutTimer: setInterval(this.timerIncrement, 100)
+		});
 	}
 
 	goToFameGameBoard = () => {
 		this.setGameState({
-			fameGameBoardShowing: false,
+			fameGameBoardShowing: true,
 		});
 	}
 
 	lockPlayerOutThisItem = () => {
 		var lockedOut = this.state.lockedOutPlayerNames;
-		lockedOut.append(this.state.playerAnswering);
+		lockedOut.push(this.state.playerAnswering);
 		this.setGameState({
 			lockedOutPlayerNames: lockedOut,
 		});
@@ -181,7 +206,7 @@ export default class HostConsole extends React.Component {
 	addBonusPrize = (name, prize) => {
 		var newPlayers = this.state.players;
 		var player = newPlayers.find((p) => p.screenName === name);
-		player.bonusPrizes.append(prize);
+		player.bonusPrizes.push(prize);
 		this.setGameState({
 			players: newPlayers
 		});
@@ -210,7 +235,15 @@ export default class HostConsole extends React.Component {
 	}
 
 	selectFace = (index) => {
-		// TODO
+		if (this.state.fameGameCurrentSelection === -1) {
+			const newBoard = this.state.fameGameBoard;
+			newBoard[index].selected = true;
+			this.setGameState({
+				fameGameCurrentSelection: index,
+				fameGameBoard: newBoard,
+			});
+		}
+		
 	}
 
 	setPrice = (price) => {
@@ -246,9 +279,11 @@ export default class HostConsole extends React.Component {
 	}
 
 	selectCashCardSuit = (index) => {
-		this.setGameState({
-			selectedSuit: index
-		});
+		if (this.state.selectedSuit === -1) {
+			this.setGameState({
+				selectedSuit: index
+			});
+		}
 	}
 
 	revealSelectedSuit = () => {
@@ -263,16 +298,47 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
+	fastMoneyTimerIncrement = () => {
+		if (this.state.fmClockRunning) {
+			const newTimeRemaining = Math.max(this.state.fmTimeRemaining - 100, 0);
+			this.setGameState({
+				fmTimeRemaining: newTimeRemaining,
+			});
+			if (newTimeRemaining === 0) {
+				this.setGameState({
+					fmClockRunning: false,
+					buzzersOpen: false,
+					currentItemOver: true,
+				});
+				clearInterval(this.state.fmTimer);
+			} 
+		}
+	}
+
 	startFastMoneyTimer = () => {
-		// TODO
+		this.setGameState({
+			fmStarted: true,
+			fmClockRunning: true,
+			fmTimer: setInterval(this.fastMoneyTimerIncrement, 100)
+		});
 	}
 
 	pauseFastMoneyTimer = () => {
-		// TODO
+		this.setGameState({
+			fmClockRunning: false,
+		});
+		clearInterval(this.state.fmTimer);
 	}
 
-	nextQuestion = () => {
-		// TODO
+	fmNextQuestion = () => {
+		this.setGameState({
+			fmCurrentQuestionNo: this.state.fmCurrentQuestionNo + 1,
+			fmCurrentQuestion: this.state.items[this.state.currentItemNo].questions[this.state.fmCurrentQuestionNo + 1],
+			buzzersOpen: true,
+			timerStarted: false,
+			timerRunning: false,
+			currentItemOver: false,
+		});
 	}
 
 	goToTiebreaker = () => {
@@ -297,8 +363,6 @@ export default class HostConsole extends React.Component {
 	}
 
 	handleNewPlayer = (screenName) => {
-		console.log("new player:");
-		console.log(screenName);
 		const newPlayer = {
 			screenName: screenName,
 			score: 0,
@@ -325,14 +389,15 @@ export default class HostConsole extends React.Component {
 	}
 
 	showPlayerDetails = (name, event) => {
-		console.log(`showPlayerDetails(${ name },${ event }) called`);
 		this.setGameState({
 			detailPlayerName: name,
 		});
 	}
 
 	setWildCardDecision = (decision) => {
-		// TODO
+		this.setGameState({
+			wildCardDecision: decision
+		});
 	}
 
 	clearPlayerDetails = () => {
@@ -365,17 +430,34 @@ export default class HostConsole extends React.Component {
 		const newItemNo = this.state.currentItemNo + 1;
 		if (newItemNo !== this.state.items.length) {
 			const newItem = this.state.items[newItemNo];
+			const newItemType = newItem.type;
 
 			this.setGameState({
 				currentItemNo: newItemNo,
-				currentItemType: newItem.type,
+				currentItemType: newItemType,
 				currentItemOver: false,
-				buzzersOpen: (newItem.type === "StandardQuestion" || newItem.type === "FameGameQuestion")
+				
 			});
+
+			if (newItemType === "StandardQuestion" || newItemType === "FameGame" || newItemType === "FastMoney") {
+				this.setGameState({
+					buzzersOpen: true,
+					timerStarted: false,
+					timerRunning: false,
+				});
+			}
+
+			if (newItemType === "FastMoney") {
+				this.setGameState({
+					fmTimeRemaining: newItem.length * 1000,
+					fmCurrentQuestionNo: 0,
+					fmCurrentQuestion: newItem.questions[0],
+				});
+			}
 
 			const leadingScore = Math.max(...this.state.players.map(p => p.score));
 
-			if (newItem.type === "GiftShop") {
+			if (newItemType === "GiftShop") {
 				this.setGameState({
 					sellingPrice: newItem.prize.startingPrice,
 					bonusMoney: 0,
@@ -384,11 +466,74 @@ export default class HostConsole extends React.Component {
 					playerPurchasing: "",
 				});
 			}
+
+			if (newItemType === "CashCard") {
+				this.setGameState({
+					sellingPrice: newItem.startingPrice,
+					availableToBuy: true,
+					eligibleToBuy: this.state.players.filter((p) => p.score === leadingScore).map(p => p.screenName),
+					playerPurchasing: "",
+				});
+			}
+
+			if (this.state.currentItemType === "RoundBreak") {
+				this.setGameState({
+					currentRound: this.state.currentRound + 1,
+				});
+			}
+
+			if (this.state.currentItemType === "FameGame") {
+				this.setGameState({
+					fameGamesCompleted: this.state.fameGamesCompleted + 1,
+					playerAnswering: "",
+				});
+			}
+
+			if (newItemType === "FameGame") {
+				// TODO add verification that there will never be a situation where there are fewer removable prizes on the board than there are ones to be added for a new round
+				// TODO add validation to prevent duplicate names of prizes in fame game
+				var newBoard = this.state.fameGameBoard;
+				const fameGameNo = this.state.fameGamesCompleted + 1;
+				// find the prizes which are to be added to the board this round
+				const toAdd = this.state.fameGamePrizes.filter(p => p.added === fameGameNo);
+				console.log("Prizes to be added to Fame Game:");
+				console.log(toAdd);
+				// pick prizes that can be taken off the board to be replaced by the new prizes (if any)
+				if (toAdd.length > 0) {
+					const removablePrizes = this.state.fameGameBoard.filter(o => !o.selected && o.prize.removable);
+					// select random elements, one for each new prize
+					const selectedToRemove = removablePrizes.sort(() => 0.5 < Math.random()).slice(0,toAdd.length).map(o => o.prize.name);
+					console.log("Prize(s) selected to remove: ");
+					console.log(selectedToRemove);
+					newBoard = newBoard.map(o => {
+						// replace those prizes with the new prizes
+						if (selectedToRemove.includes(o.prize.name)) {
+							console.log(`${o.prize.name} Found`);
+							o.prize = toAdd.pop();
+						}
+						return o;
+					});
+					console.log("Updated board:");
+					console.log(newBoard);
+				}
+				
+
+				this.setGameState({
+					fameGameBoard: newBoard,
+					fameGameBoardShowing: false,
+					fameGameCurrentSelection: -1,
+					fameGameWildCardDecision: -1,
+				});
+			}
+
+
 		} else {
 			// TODO handle end of regular game
 		}
 		
 	}
+	
+
 
 	setGameState = (changedItems) => {
 		console.log("setGameState called");
@@ -396,19 +541,87 @@ export default class HostConsole extends React.Component {
 		this.props.socket.emit("set state", changedItems);
 	}
 
-	setGameData = (gameProps) => {
-		console.log(gameProps);
-		// prepare fame game board
-		// take prizes that start on fame game board and randomise them
-		const shuffledOpeningPrizes = this.shuffleList(gameProps.fameGamePrizes.filter((p) => !p.added));
-		// pair them up with faces
-		const fameGameBoard = gameProps.fameGameFaces.map((face, index) => {
-			return {
-				face: face,
-				prize: shuffledOpeningPrizes[index],
-				selected: false,
-			};
+	setGameData = (gameProps, standardQuestions, fameGameQuestions) => {
+		// prepare list of all StandardQuestions in use (to prevent duplicates)
+		// TODO validate that question database has enough questions to accommodate the requirements of the game JSON
+		const standardQuestionsUsed = [];
+		const fameGameQuestionsUsed = [];
+		var index;
+		gameProps.items = gameProps.items.map(i => {
+			switch (i.type) {
+			case "StandardQuestion":
+				index = Math.floor(Math.random() * standardQuestions.length);
+				while (standardQuestionsUsed.includes(index)) {
+					index = Math.floor(Math.random() * standardQuestions.length);
+				}
+				i.question = standardQuestions[index];
+				standardQuestionsUsed.push(index);
+				break;
+			case "FameGame":
+				index = Math.floor(Math.random() * fameGameQuestions.length);
+				while (fameGameQuestionsUsed.includes(index)) {
+					index = Math.floor(Math.random() * fameGameQuestions.length);
+				}
+				i.question = fameGameQuestions[index];
+				fameGameQuestionsUsed.push(index);
+				break;
+			case "FastMoney":
+				// get a set of questions for the fast money, 1 for every 2 seconds in the alloted time
+				i.questions = [...Array(Math.ceil(i.length / 2)).keys()].map(q => {
+					index = Math.floor(Math.random() * standardQuestions.length);
+					while (standardQuestionsUsed.includes(index)) {
+						index = Math.floor(Math.random() * standardQuestions.length);
+					}
+					standardQuestionsUsed.push(index);
+					return standardQuestions[index];
+					
+				});
+				break;
+			}
+
+			return i;
+
+			
 		});
+
+		if (gameProps.items.some(i => i.type === "FameGame")) {
+			// prepare fame game board
+			// take prizes that start on fame game board and randomise them
+			const shuffledOpeningPrizes = this.shuffleList(gameProps.fameGamePrizes.filter((p) => !p.added));
+			// pair them up with faces
+			const fameGameBoard = gameProps.fameGameFaces.map((face, index) => {
+				return {
+					face: face,
+					prize: shuffledOpeningPrizes[index],
+					selected: false,
+				};
+			});
+			this.setGameState({
+				fameGameBoard: fameGameBoard,
+				fameGamePrizes: gameProps.fameGamePrizes,
+			});
+		}
+
+		if (gameProps.items.some(i => i.type === "CashCard")) {
+			const shuffledPrizes = this.shuffleList(gameProps.cashCardPrizes);
+			const cashCardSuits = [
+				{name: "Hearts", suitSymbol: "\u2665"},
+				{name: "Spades", suitSymbol: "\u2660"},
+				{name: "Diamonds", suitSymbol: "\u2666"},
+				{name: "Clubs", suitSymbol: "\u2663"},
+			].map(suit => {
+				suit.prize = shuffledPrizes.pop();
+				return suit;
+			});
+
+			console.log("Cash Card Suits: ");
+			console.log(cashCardSuits);
+
+			this.setGameState({
+				cashCardSuits: cashCardSuits,
+			});
+		}
+		
 
 		// give players starting score
 		const newPlayers = this.state.players.map(p => {
@@ -423,12 +636,13 @@ export default class HostConsole extends React.Component {
 			players: newPlayers,
 			items: gameProps.items,
 			endgame: gameProps.endgame,
-			fameGameBoard: fameGameBoard,
 			endgamePrizes: gameProps.endgamePrizes,
-			currentRound: 0,
+			currentRound: 1,
 			currentItemNo: -1,
 			standardCorrectAmount: gameProps.standardCorrectAmount,
 			standardIncorrectAmount: gameProps.standardIncorrectAmount,
+			normalAnsweringTimer: gameProps.normalAnsweringTimer,
+			fastMoneyAnsweringTimer: gameProps.fastMoneyAnsweringTimer,
 			newPanelKey: this.state.newPanelKey + 1,
 		});
 		this.goToNextItem();
@@ -490,7 +704,7 @@ export default class HostConsole extends React.Component {
 		case "StandardQuestion":
 			mainPanel = (
 				<StandardQuestion
-					question={currentItem}
+					question={currentItem.question}
 					playerAnswering={this.state.playerAnswering}
 					timerStarted={this.state.timerStarted}
 					timeRemaining={this.state.timeRemaining}
@@ -498,37 +712,35 @@ export default class HostConsole extends React.Component {
 					playerRight={this.playerRight}
 					playerWrong={this.playerWrong}
 					cancelBuzz={this.cancelBuzz}
-					startTimer={this.startTimer}
+					startTimer={() => this.startTimer(this.state.normalAnsweringTimer)}
 					nextItem={this.goToNextItem}
 				/>
 			);
 			break;
-		case "FameGameQuestion":
-			mainPanel = (
+		case "FameGame":
+			console.log(currentItem);
+			mainPanel = !this.state.fameGameBoardShowing ? (
 				<FameGameQuestion
-					question={currentItem}
+					question={currentItem.question}
 					eligiblePlayers={this.state.players.map(p => p.screenName).filter(n => !this.state.lockedOutPlayerNames.includes(n))}
 					playerAnswering={this.state.playerAnswering}
 					timerStarted={this.state.timerStarted}
 					timeRemaining={this.state.timeRemaining}
-					answeredCorrectly={this.state.currentItemOver}
+					questionOver={this.state.currentItemOver}
 					playerRight={this.goToFameGameBoard}
-					playerWrong={this.lockPlayerOut}
+					playerWrong={this.playerWrong}
 					cancelBuzz = {this.cancelBuzz}
-					startTimer={this.startTimer}
+					startTimer={() => this.startTimer(this.state.normalAnsweringTimer)}
 					nextItem={this.goToNextItem}
 				/>
-			);
-			break;
-		case "FameGameBoard":
-			mainPanel = (
+			) : (
 				<FameGameBoard
 					playerSelecting={this.state.playerAnswering}
 					boardState={this.state.fameGameBoard}
 					currentSelection={this.state.fameGameCurrentSelection}
 					wildCardDecision={this.state.fameGameWildCardDecision}
-					first={this.state.completedFameGames === 0}
-					last={this.state.completedFameGames + 1 === this.state.items.filter((i) => i.type === "FameGame")}
+					first={this.state.fameGamesCompleted === 0}
+					last={this.state.fameGamesCompleted + 1 === this.state.items.filter((i) => i.type === "FameGame")}
 					moneyRevealed={this.state.fameGameMoneyRevealed}
 					addToPrizes={this.addPlayerPrize}
 					addToScore={this.addPlayerScore}
@@ -558,10 +770,12 @@ export default class HostConsole extends React.Component {
 			);
 			break;
 		case "CashCard":
+			console.log(this.state.cashCardSuits);
+			const prizesSorted = this.state.cashCardSuits.map(s => s.prize).sort((a,b) => (a.prizeValue || a.scoreValue) > (b.prizeValue || b.scoreValue));
 			mainPanel = (
 				<CashCard
 					suits={this.state.cashCardSuits}
-					prizes={currentItem.prizes}
+					prizes={prizesSorted}
 					eligibleToBuy={this.state.eligibleToBuy}
 					currentPrice={this.state.sellingPrice}
 					availableToBuy={this.state.availableToBuy}
@@ -587,17 +801,18 @@ export default class HostConsole extends React.Component {
 					fmStarted={this.state.fmStarted}
 					fmTimeRemaining={this.state.fmTimeRemaining}
 					fmClockRunning={this.state.fmClockRunning}
-					question={currentItem}
+					currentQuestion={this.state.fmCurrentQuestion}
+					currentQuestionOver={this.state.currentItemOver}
 					playerAnswering={this.state.playerAnswering}
 					lockTimerStarted={this.state.timerStarted}
 					lockTimeRemaining={this.state.timeRemaining}
 					playerRight={this.playerRight}
 					playerWrong={this.playerWrong}
 					cancelBuzz={this.cancelBuzz}
-					startLockTimer={this.startTimer}
+					startLockTimer={() => this.startTimer(this.state.fastMoneyAnsweringTimer)}
 					startFastMoneyTimer={this.startFastMoneyTimer}
 					pauseFastMoneyTimer={this.pauseFastMoneyTimer}
-					nextQuestion={this.nextQuestion}
+					nextQuestion={this.fmNextQuestion}
 					nextItem={this.goToNextItem}
 				/>
 			);

@@ -331,66 +331,6 @@ div.upload-file-dialog {
   justify-content: center;
   align-items: stretch; }
 
-/* Select Question Panel */
-div.select-question-panel {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  align-items: stretch;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  background-color: #0B1885; }
-
-div.category-group {
-  flex: 1 1 60px;
-  display: flex;
-  flex-direction: column;
-  margin: 5px; }
-
-div.category-header {
-  flex: 0 0 auto;
-  height: 20px;
-  background-color: #0B1885;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  margin-left: 5px;
-  margin-right: 5px; }
-
-p.category-header {
-  text-align: left;
-  color: white;
-  text-transform: uppercase; }
-
-div.category-clue-group {
-  flex: 1 1 60px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: stretch; }
-
-div.clue-button {
-  flex: 1 1 20px;
-  border: 5px solid black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 5px;
-  margin-right: 5px; }
-  div.clue-button.active {
-    background-color: #0B1885;
-    cursor: pointer; }
-  div.clue-button.inactive {
-    background-color: #0B1885; }
-
-p.clue-button {
-  width: 100%;
-  text-align: center;
-  color: orange;
-  font-size: 200%;
-  font-family: 'Oswald Bold'; }
-
 /* Open Question Panel */
 div #open-question-panel {
   display: flex;
@@ -428,16 +368,11 @@ div.open-question-clue {
   justify-content: center;
   align-items: center;
   border: 1px solid white; }
-  div.open-question-clue.daily-double {
-    background-color: maroon; }
 
 p.open-question-clue {
   color: white;
   font-size: 150%;
   font-family: 'Korinna Bold'; }
-  p.open-question-clue.daily-double {
-    font-size: 250%;
-    font-family: 'Oswald Bold'; }
 
 div.open-question-correct {
   flex: 1 1 50px;
@@ -476,8 +411,8 @@ div.button-row {
   div.button-row.recursive {
     width: auto; }
 
-/* Final Jeopardy Panel */
-div #final-jeopardy-panel {
+/* Gift Shop */
+div.gift-shop {
   display: flex;
   position: relative;
   flex: 1 1 auto;
@@ -488,78 +423,347 @@ div #final-jeopardy-panel {
   padding: 5px;
   max-width: auto; }
 
-div.final-jeopardy-header {
+div.gift-shop-header {
   flex: 0 0 auto;
   height: 30px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: row;
   align-items: center;
   border: 1px solid white; }
+  div.gift-shop-header > p {
+    color: white;
+    text-transform: uppercase;
+    font-size: 150%; }
 
-p.final-jeopardy-header {
-  color: white;
-  font-size: 150%;
-  text-align: center; }
-
-div.final-jeopardy-category {
-  flex: 1 1 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid white; }
-
-p.final-jeopardy-category {
-  color: white;
-  text-transform: uppercase;
-  font-size: 150%;
-  font-family: 'Korinna Bold'; }
-
-div.final-jeopardy-clue {
-  flex: 1 1 50px;
+div.gift-shop-prize-desc {
+  flex: 2 2 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 1px solid white; }
+  div.gift-shop-prize-desc > p {
+    color: white;
+    font-size: 150%;
+    font-family: 'Korinna Bold'; }
 
-p.final-jeopardy-clue {
-  color: white;
-  text-transform: uppercase;
-  font-size: 150%;
-  font-family: 'Korinna Bold'; }
-
-div.final-jeopardy-correct {
+div.gift-shop-variable-panel {
   flex: 1 1 50px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   border: 1px solid white; }
 
-p.final-jeopardy-correct {
-  color: white;
-  font-family: 'Korinna Bold';
-  font-size: 150%; }
+div.gift-shop-variable {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+  div.gift-shop-variable > input[type=number] {
+    width: auto;
+    font-size: 150%;
+    text-align: center;
+    max-width: 100px; }
+  div.gift-shop-variable > p {
+    color: white;
+    font-size: 150%;
+    font-family: 'Korinna Bold'; }
 
-div.final-jeopardy-response {
+div.gift-shop-end-button {
   flex: 0 0 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 1px solid white; }
+  div.gift-shop-end-button > p {
+    color: white;
+    font-family: 'Korinna Bold';
+    font-size: 150%;
+    margin: auto; }
 
-p.final-jeopardy-response {
+/* Cash Card */
+div.cash-card {
+  display: flex;
+  position: relative;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  background-color: #0B1885;
+  padding: 5px;
+  max-width: auto; }
+
+div.cash-card-header {
+  flex: 0 0 auto;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid white; }
+  div.cash-card-header > p {
+    color: white;
+    text-transform: uppercase;
+    font-size: 150%; }
+
+div.cash-card-sell-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column; }
+
+div.cash-card-suit-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 5px;
+  border: 1px solid white; }
+
+div.cash-card-suit-row {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch; }
+
+div.cash-card-suit {
+  flex: 1 1 50px;
+  border: 1px solid white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  div.cash-card-suit.concealed {
+    cursor: pointer;
+    background-color: grey; }
+    div.cash-card-suit.concealed.selected {
+      cursor: default;
+      background-color: white; }
+    div.cash-card-suit.concealed > p {
+      font-size: 500%; }
+    div.cash-card-suit.concealed.inactive {
+      cursor: default; }
+  div.cash-card-suit.revealed.major {
+    background-color: red; }
+    div.cash-card-suit.revealed.major > p {
+      color: yellow;
+      font-style: italic;
+      font-size: 200%; }
+  div.cash-card-suit.revealed.prize {
+    background-color: orange; }
+    div.cash-card-suit.revealed.prize > p {
+      color: yellow;
+      font-size: 200%; }
+  div.cash-card-suit.revealed.score {
+    background-color: green; }
+    div.cash-card-suit.revealed.score > p {
+      color: yellow;
+      font-style: italic;
+      font-size: 500%; }
+  div.cash-card-suit.revealed.generic {
+    background-color: #0B1885; }
+    div.cash-card-suit.revealed.generic > p {
+      color: white; }
+
+div.cash-card-prize-desc {
+  flex: 2 2 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid white;
+  overflow-y: auto; }
+  div.cash-card-prize-desc > p {
+    color: white;
+    font-size: 150%;
+    font-family: 'Korinna Bold'; }
+
+div.cash-card-prize > p {
   color: white;
-  font-family: 'Korinna Bold';
   font-size: 150%;
-  margin: auto; }
-  p.final-jeopardy-response.left {
-    text-align: left; }
+  font-family: 'Korinna Bold'; }
+
+div.cash-card-variable-panel {
+  flex: 1 1 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white; }
+
+div.cash-card-variable {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+  div.cash-card-variable > input[type=number] {
+    width: auto;
+    font-size: 150%;
+    text-align: center;
+    max-width: 100px; }
+  div.cash-card-variable > p {
+    color: white;
+    font-size: 150%;
+    font-family: 'Korinna Bold'; }
+
+div.cash-card-bottom {
+  flex: 0 0 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white; }
+  div.cash-card-bottom > p {
+    color: white;
+    font-family: 'Korinna Bold';
+    font-size: 150%;
+    margin: auto; }
+
+/* Fame Game Board */
+div.fame-game-board {
+  display: flex;
+  position: relative;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  background-color: #0B1885;
+  padding: 5px;
+  max-width: auto; }
+
+div.fame-game-names {
+  display: flex;
+  flex-direction: column; }
+
+div.fame-game-names-row {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch; }
+  div.fame-game-names-row.reversed {
+    flex-direction: row-reverse; }
+
+div.fame-game-name {
+  flex: 1 1 auto;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  margin: 5px;
+  cursor: pointer; }
+  div.fame-game-name.inactive {
+    background-color: grey;
+    color: grey; }
+
+div.fame-game-intro {
+  background-color: #b9b9b9;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px; }
+
+div.fame-game-intro-container {
+  overflow-y: auto; }
 
 p.no-players {
   text-align: center; }
+
+/* Round Break */
+div.round-break {
+  position: relative;
+  flex: 1 1 auto;
+  align-items: stretch;
+  padding: 5px;
+  max-width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #0B1885; }
+  div.round-break > p {
+    color: white;
+    font-size: 150%;
+    font-family: 'Korinna Bold'; }
+
+/* Fast Money */
+div.fast-money-start {
+  position: relative;
+  flex: 1 1 auto;
+  align-items: stretch;
+  padding: 5px;
+  max-width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #0B1885;
+  border: 1px solid white; }
+  div.fast-money-start > p {
+    color: white;
+    font-size: 150%;
+    font-family: 'Korinna Bold'; }
+
+div.fast-money-header {
+  height: 30px;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: row; }
+
+div.fast-money-title {
+  flex: 3 3 auto;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  border-right: 1px solid white; }
+  div.fast-money-title > p {
+    color: white;
+    text-transform: uppercase;
+    font-size: 150%; }
+
+div.fast-money-clock {
+  flex: 0 0 auto;
+  height: 30px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  cursor: default; }
+  div.fast-money-clock > p {
+    color: white;
+    text-transform: uppercase;
+    font-size: 150%;
+    text-align: center; }
+  div.fast-money-clock.paused {
+    background-color: grey; }
+  div.fast-money-clock.over {
+    background-color: red; }
+
+div.fast-money-button {
+  width: 30px;
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid white;
+  cursor: pointer; }
+  div.fast-money-button > p {
+    color: white; }
+  div.fast-money-button.pause {
+    background-color: grey; }
+  div.fast-money-button.play {
+    background-color: #0B1885; }
+  div.fast-money-button.over {
+    background-color: red;
+    cursor: default; }
 
 @media screen and (max-width: 799px) {
   #player-list {

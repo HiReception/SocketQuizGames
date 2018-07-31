@@ -6,7 +6,7 @@ export default class FameGameQuestion extends React.Component {
 		let buzzerPanel;
 
 		// People still able to answer, timer not yet started
-		if (this.props.playerAnswering === "" && !this.props.answered && !this.props.timerStarted) {
+		if (this.props.playerAnswering === "" && !this.props.questionOver && !this.props.timerStarted) {
 			let eligibleString;
 			if (this.props.eligiblePlayers.length > 1) {
 				eligibleString = `${this.props.eligiblePlayers.length} players able to answer`;
@@ -23,16 +23,16 @@ export default class FameGameQuestion extends React.Component {
 			);
 		}
 		// People still able to answer, timer started but not elapsed
-		else if (this.props.playerAnswering === "" && !this.props.answered && this.props.timerStarted && this.props.timeRemaining > 0) {
+		else if (this.props.playerAnswering === "" && !this.props.questionOver && this.props.timerStarted && this.props.timeRemaining > 0) {
 			buzzerPanel = (
 				<div className="buzzer-panel">
-					<p className="buzzer-panel">{this.props.timeRemaining} seconds left to buzz in</p>
+					<p className="buzzer-panel">{this.props.timeRemaining/1000} seconds left to buzz in</p>
 				</div>
 			);
 		
 		}
 		// Player Answering
-		else if (this.props.playerAnswering !== "" && this.props.answered) {
+		else if (this.props.playerAnswering !== "" && !this.props.questionOver) {
 			buzzerPanel = (
 				<div className="buzzer-panel">
 					<p className="buzzer-panel">{this.props.playerAnswering} is Answering</p>
@@ -55,26 +55,29 @@ export default class FameGameQuestion extends React.Component {
 			buzzerPanel = (
 				<div className="buzzer-panel">
 					<p className="buzzer-panel">Question Over</p>
-					<div className="add-question-button" onClick={this.props.endItem}>
+					<div className="add-question-button" onClick={this.props.nextItem}>
 						<p>Continue</p>
 					</div>
 				</div>
 			);
 		}
 
+		const body = this.props.question.body ? this.props.question.body : "No Question Body";
+		const correct = this.props.question.correct ? this.props.question.correct : "No Correct Answer";
+
 		return (
 			<div id='open-question-panel'>
 				<div className='open-question-header'>
-					<p className='open-question-category'>Standard Question</p>
+					<p className='open-question-category'>Fame Game Question</p>
 				</div>
 				<div className='open-question-clue'>
 					<p className='open-question-clue'>
-						{this.props.question.body}
+						{body}
 					</p>
 				</div>
 				<div className='open-question-correct'>
 					<p className='open-question-correct'>
-						{this.props.question.correct}
+						{correct}
 					</p>
 				</div>
 				{buzzerPanel}
@@ -89,7 +92,7 @@ FameGameQuestion.propTypes = {
 	playerAnswering: PropTypes.string,
 	timerStarted: PropTypes.bool,
 	timeRemaining: PropTypes.number,
-	answeredCorrectly: PropTypes.bool,
+	questionOver: PropTypes.bool,
 	playerRight: PropTypes.func,
 	playerWrong: PropTypes.func,
 	cancelBuzz: PropTypes.func,

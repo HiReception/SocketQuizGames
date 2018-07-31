@@ -13,6 +13,10 @@ export default class NoQuestionPanel extends React.Component {
 			gameUsed: "upload",
 			testFiles: testFiles,
 			testFileSelected: `testgames/${ testFiles[0]}`,
+			fameGameQuestionsLoaded: false,
+			fameGameQuestions: [],
+			standardQuestionsLoaded: false,
+			standardQuestions: [],
 		};
 	}
 	processFile = () => {
@@ -40,8 +44,45 @@ export default class NoQuestionPanel extends React.Component {
 		// TODO better error handling
 		console.error(err);
 	}
+
+
 	loadGameData = (fileObject) => {
-		this.props.setGameData(fileObject);
+		$.ajax({
+			type: "GET",
+			// TODO let user pick question file
+			url: "question-databases/standard/dummy-standard.csv",
+			success: (sqFile) => {
+				const standardQuestions = sqFile.split("\n").map(str => {
+					const parts = str.split("\t");
+					return {
+						body: parts[0],
+						correct: parts[1]
+					};
+				});
+				$.ajax({
+					type: "GET",
+					// TODO let user pick question file
+					url: "question-databases/famegame/dummy-famegame.csv",
+					success: (fgFile) => {
+						const fameGameQuestions = fgFile.split("\n").map(str => {
+							const parts = str.split("\t");
+							return {
+								body: parts[0],
+								correct: parts[1]
+							};
+						});
+						this.props.setGameData(fileObject, standardQuestions, fameGameQuestions);
+					},
+					error: this.handleError,
+				});
+			},
+			error: this.handleError,
+		});
+
+		
+
+
+		
 	}
 	changeGameUsed = (event) => {
 		this.setState({
