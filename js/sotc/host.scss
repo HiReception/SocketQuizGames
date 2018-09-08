@@ -5,6 +5,9 @@
 
 $panel-border: #999999;
 $sidebar-width: 300px;
+$mobile-max: 799px;
+$header-height: 50px;
+$header-border-width: 1px;
 
 body {
 	display: flex;
@@ -28,11 +31,15 @@ body {
 
 .main-panel {
 	flex: 1 1 auto;
-	height: calc(100% - (50px + 1px));
+	height: calc(100% - (#{$header-height} + #{$header-border-width}));
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: stretch;
+
+	@media screen and (max-width: $mobile-max) {
+		height: calc(100% - (#{$header-border-width} + #{$header-height} + #{$player-panel-bar-height}));
+	}
 }
 
 #question-panel {
@@ -83,16 +90,9 @@ body {
 }*/
 
 .header {
-	flex: 0 0 50px;
-	max-height: 50px;
+	flex: 0 0 $header-height;
+	max-height: $header-height;
 	border-bottom: 0.5px solid $panel-border;
-}
-
-.footer {
-	flex: 0 0 50px;
-	max-height: 50px;
-	border-top: 0.5px solid $panel-border;
-	overflow: hidden;
 }
 
 .content {
@@ -165,6 +165,18 @@ body {
 	flex-direction: column;
 	background-color: brown;
 	overflow-y: auto;
+
+	@media screen and (max-width: $mobile-max) {
+		flex-grow: 1;
+		position: absolute;
+		width: 100%;
+		z-index: 1;
+		height: calc(100% - (#{$header-border-width} + #{$header-height} + #{$player-panel-bar-height}));
+
+		&.hidden {
+			display: none;
+		}
+	}
 }
 
 p .no-players {
@@ -882,44 +894,251 @@ div.fast-money-button {
 	}
 }
 
-@media screen and (max-width: 799px) {
-	#player-list {
-		flex-grow: 1;
-		position: absolute;
-		width: 100%;
-		z-index: 1;
-		height: calc(100% - (70px + 1px));
+/* Post Game Panel */
 
-		&.hidden {
-			display: none;
+
+
+.post-game {
+	position: relative;
+	flex: 1 1 auto;
+	align-items: stretch;
+	padding: 5px;
+	max-width: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: $background-color;
+	.post-game-winner {
+		border: 1px solid white;
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: stretch;
+		> p {
+			color: white;
+			font-size: 150%;
+			font-family: 'Korinna Bold';
+		}
+	}
+	
+	.post-game-summary-ctr {
+		border: 1px solid white;
+		flex: 4 4 auto;
+		overflow-y: auto;
+		.post-game-prize-summary p {
+			
+			font-size: 150%;
+			font-family: 'Korinna Bold';
+			color: white;
+		}
+	}
+	
+	.post-game-button {
+		border: 1px solid white;
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+/* Winners Board */
+
+div.board-bonus {
+	display: flex;
+	position: relative;
+	flex: 1 1 auto;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	background-color: $background-color;
+	padding: 5px;
+	max-width: auto;
+}
+
+div.board-bonus-header {
+	flex: 0 0 auto;
+	height: 30px;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	align-items: center;
+	border: 1px solid white;
+	
+	> p {
+	
+		color: white;
+		text-transform: uppercase;
+		font-size: 150%;
+	}
+}
+
+div.winners-board-container {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+	padding: 5px;
+	border: 1px solid white;
+}
+
+div.winners-board-option-row {
+	flex: 1 1 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: stretch;
+}
+
+div.winners-board-option {
+	flex: 1 1 50px;
+	border: 1px solid white;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+
+	> p {
+		font-size: 400%;
+		color: white;
+		font-family: "Verdana";
+	}
+
+	&.revealed {
+		cursor: default;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		&.prize {
+			background-color: orange;
+
+			> p {
+				color: yellow;
+				font-size: 200%;
+			}
+			
+		}
+
+		&.win {
+			background-color: green;
+
+			> p {
+				color: yellow;
+				font-style: italic;
+				font-size: 500%;
+			}
+			
+		}
+
+		&.generic {
+			background-color: $background-color;
+
+			> p {
+				color: white;
+
+			}
 		}
 	}
 
-	div.main-panel {
-		height: calc(100% - (70px + 1px));
+	&.inactive {
+		cursor: default;
 	}
 
-	div.select-question-panel {
-		justify-content: flex-start;
-		overflow: scroll;
+	&.removed {
+		cursor: default;
+		> p {
+			display: none;
+		}
 	}
+}
 
-	div.category-group {
-		flex-shrink: 0;
-		flex-basis: auto;
-		justify-content: flex-start;
+div.board-bonus-bottom {
+	flex: 0 0 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+
+	> p {
+		color: white;
+		font-family: 'Korinna Bold';
+		font-size: 150%;
+		margin: auto;
 	}
+}
 
-	div.category-clue-group {
-		flex-shrink: 0;
-		flex-basis: auto;
+
+
+/* Winner Decision Panel */
+
+.decision {
+	position: relative;
+	flex: 1 1 auto;
+	align-items: stretch;
+	padding: 5px;
+	max-width: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: $background-color;
+	.decision-heading {
+		border: 1px solid white;
+		flex: 1 1 auto;
+		display: flex;
 		flex-direction: column;
-		justify-content: flex-start;
+		justify-content: center;
+		align-items: stretch;
+		> p {
+			color: white;
+			font-size: 150%;
+			font-family: 'Korinna Bold';
+		}
+	}
+	
+	.decision-summary-ctr {
+		border: 1px solid white;
+		flex: 4 4 auto;
+		overflow-y: auto;
+		h2 {
+			font-size: 200%;
+			font-family: 'Korinna Bold';
+			color: white;
+			text-align: center;
+		}
+		p {
+			font-size: 150%;
+			font-family: 'Korinna Bold';
+			color: white;
+		}
 	}
 
-	div.clue-button {
-		flex-basis: 40px;
-		margin: 2.5px 0 2.5px 0;
-	}
+	.decision-made {
+		border: 1px solid white;
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 
+		p {
+			font-size: 150%;
+			font-family: 'Korinna Bold';
+			color: white;
+		}
+	}
+	
+	.decision-button {
+		border: 1px solid white;
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 }

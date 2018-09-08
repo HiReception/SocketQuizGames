@@ -67,14 +67,13 @@
 			"major": true,
 			"slotImage": "",
 			"shortName": "$5,000",
-			"prizeValue": 5000,
-			"major": true
+			"prizeValue": 5000
 		},
 		{
 			"generic": true,
 			"slotImage": "",
-			"shortName": "The Car on the Board",
-			"prizeValue": 0
+			"shortName": "The Joker",
+			"scoreValue": 0
 		},
 		{
 			"score": true,
@@ -109,13 +108,12 @@
 		{"image": "", "name": "Pillows", "prizeValue": 1200, "description": "", "removable": true}
 	],
 	"bonusPrizes": [
-		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": ""},
-		{"photo": "", "cardImage": "", "name": "Watch", "prizeValue": 12950, "description": ""},
-		{"photo": "", "cardImage": "", "name": "Sea-Doo", "prizeValue": 14990, "description": ""},
-		{"photo": "", "cardImage": "", "name": "Computers", "prizeValue": 8230, "description": ""},
-		{"photo": "", "cardImage": "", "name": "Some Other Prize", "prizeValue": 8230, "description": ""},
-		{"photo": "", "cardImage": "", "name": "Yet Another Prize", "prizeValue": 8230, "description": ""},
-		{"photo": "", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 65900, "description": "", "requiresWin": true}
+		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": "", "prizeLevel": 1},
+		{"photo": "", "cardImage": "", "name": "Watch", "prizeValue": 12950, "description": "", "prizeLevel": 2},
+		{"photo": "", "cardImage": "", "name": "Sea-Doo", "prizeValue": 14990, "description": "", "prizeLevel": 3},
+		{"photo": "", "cardImage": "", "name": "Computers", "prizeValue": 8230, "description": "", "prizeLevel": 4},
+		{"photo": "", "cardImage": "", "name": "Some Other Prize", "prizeValue": 8230, "description": "", "prizeLevel": 5},
+		{"photo": "", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 65900, "description": "", "requiresWin": true, "prizeLevel": 6}
 	]
 
 }

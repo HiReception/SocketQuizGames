@@ -46,7 +46,7 @@ export default class CashCard extends React.Component {
 										prizeContent = <p>PRIZE</p>;
 									} else if (s.prize.scoreValue) {
 										prizeClass = "score";
-										prizeContent = <p>${s.prize.scoreValue}</p>;
+										prizeContent = <p>{this.props.formatCurrency(s.prize.scoreValue)}</p>;
 									} else {
 										prizeClass = "generic";
 										prizeContent = s.prize.slotImage ? <img src={s.prize.slotImage}/> : <p>{s.prize.shortName}</p>;
@@ -80,7 +80,7 @@ export default class CashCard extends React.Component {
 							<div key={p.shortName} className="cash-card-prize">
 								<p>{p.shortName}</p>
 								<p>{p.description}</p>
-								<p>Value: ${p.prizeValue || p.scoreValue}</p>
+								<p>Value: {this.props.formatCurrency(p.prizeValue || p.scoreValue)}</p>
 							</div>
 						))}
 						
@@ -189,4 +189,5 @@ CashCard.propTypes = {
 	addToPrizes: PropTypes.func,
 	addToScore: PropTypes.func,
 	nextItem: PropTypes.func,
+	formatCurrency: PropTypes.func,
 };

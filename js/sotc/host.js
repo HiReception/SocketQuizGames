@@ -26,8 +26,6 @@ socket.on("connect_error", function(err) {
 });
 
 socket.on("game details", function(details) {
-	console.log("Game Details received");
-	console.log(details);
 	$("#game-code").text(details.gameCode);
 	$("#game-title").text(details.gameTitle);
 	var state;
@@ -41,9 +39,14 @@ socket.on("game details", function(details) {
 			carryOverScore: 0,
 			carryOverDecisionMade: false,
 			carryOverDecisionStaying: false,
+
 			winnersBoardState: [],
-			winnersBoardStarted: false,
 			winnersBoardCompleted: false,
+			winnersBoardPrizeWon: {},
+			winnersBoardMajorRevealed: false,
+			winnersBoardInactiveNumbers: [],
+			winnersBoardWinFound: false,
+			bonusPrizes: [],
 
 			currentRound: 0,
 			playerAnswering: "",
@@ -53,6 +56,9 @@ socket.on("game details", function(details) {
 			currentItemType: "NoQuestionPanel",
 			currentItemOver: false,
 			newPanelKey: 0,
+
+			tiebreakQuestion: {},
+			tiebreakEligiblePlayers: [],
 
 			prefix: "",
 			suffix: "",
@@ -96,7 +102,7 @@ socket.on("game details", function(details) {
 			fmCurrentQuestionNo: 0,
 			fmCurrentQuestion: {},
 
-			bonusPrizes: [],
+			
 
 			buzzersOpen: false,
 		};

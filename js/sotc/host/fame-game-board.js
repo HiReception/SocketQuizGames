@@ -69,7 +69,7 @@ export default class FameGameBoard extends React.Component {
 
 			if (unrevealedMoneyOptions.length > 0) {
 				unrevealedMoneyString = unrevealedMoneyOptions.map((o) => 
-					`${o.prize.scoreValue ? "$" + o.prize.scoreValue : "Wild"} Card was behind ${o.face.name}`
+					`${o.prize.scoreValue ? this.props.formatCurrency(o.prize.scoreValue) : "Wild"} Card was behind ${o.face.name}`
 				).join("\n");
 
 			} else {
@@ -112,7 +112,7 @@ export default class FameGameBoard extends React.Component {
 				<div className="fame-game-wild-card">
 					<p className="buzzer-panel">Behind {selection.face.name} is:</p>
 					<p className="buzzer-panel">{selection.prize.name}</p>
-					<p className="buzzer-panel">Value: ${selection.prize.prizeValue || selection.prize.scoreValue}</p>
+					<p className="buzzer-panel">Value: {this.props.formatCurrency(selection.prize.prizeValue || selection.prize.scoreValue)}</p>
 
 					<div className="add-question-button" onClick={this.concludeRound}>
 						<p>{buttonString}</p>
@@ -176,4 +176,5 @@ FameGameBoard.propTypes = {
 	revealMoney: PropTypes.func,
 	setWildCardDecision: PropTypes.func,
 	nextItem: PropTypes.func,
+	formatCurrency: PropTypes.func,
 };

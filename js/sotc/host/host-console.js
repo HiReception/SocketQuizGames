@@ -1,6 +1,7 @@
 const React = require("react");
 const io = require("socket.io-client");
 const PropTypes = require("prop-types");
+import accounting from "accounting";
 
 import PlayerDetailsPanel from "./player-details-panel";
 import PlayerListing from "./player-listing";
@@ -19,6 +20,7 @@ import BoardBonus from "./board-bonus";
 import WinnerDecision from "./winner-decision";
 
 import PlayerPanelToggleBar from "../../common/player-panel-bar";
+import TiebreakQuestion from "./tiebreak-question";
 
 
 export default class HostConsole extends React.Component {
@@ -40,8 +42,10 @@ export default class HostConsole extends React.Component {
 	}
 
 	handleNewAnswer = (details) => {
-		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FameGame" || this.state.currentItemType === "FastMoney") {
-			if (this.state.buzzersOpen && this.state.playerAnswering === "" && !this.state.lockedOutPlayerNames.includes(details.player)) {
+		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FameGame"
+		|| this.state.currentItemType === "FastMoney") {
+			if (this.state.buzzersOpen && this.state.playerAnswering === ""
+				&& !this.state.lockedOutPlayerNames.includes(details.player)) {
 				this.setAnsweringPlayer(details.player);
 			}
 		} else if (this.state.currentItemType === "GiftShop" || this.state.currentItemType === "CashCard") {
@@ -49,6 +53,12 @@ export default class HostConsole extends React.Component {
 			&& this.state.eligibleToBuy.includes(details.player)
 			&& this.state.availableToBuy) {
 				this.setPurchasingPlayer(details.player);
+			}
+		} else if (this.state.currentItemType === "TiebreakQuestion") {
+			if (this.state.buzzersOpen
+				&& this.state.playerAnswering === ""
+				&& this.state.tiebreakEligiblePlayers.includes(details.player)) {
+				this.setAnsweringPlayer(details.player);
 			}
 		}
 		
@@ -103,7 +113,9 @@ export default class HostConsole extends React.Component {
 	}
 
 	playerRight = () => {
-		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FastMoney") {
+		if (this.state.currentItemType === "StandardQuestion"
+			|| this.state.currentItemType === "FastMoney"
+			|| this.state.currentItemType === "TiebreakQuestion") {
 			var newPlayers = this.state.players;
 			var newAnswering = newPlayers.find((p) => p.screenName === this.state.playerAnswering);
 			newAnswering.score = newAnswering.score + this.state.standardCorrectAmount;
@@ -118,9 +130,10 @@ export default class HostConsole extends React.Component {
 	}
 
 	playerWrong = () => {
+		var newPlayers = this.state.players;
+		var newAnswering = newPlayers.find((p) => p.screenName === this.state.playerAnswering);
 		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FastMoney") {
-			var newPlayers = this.state.players;
-			var newAnswering = newPlayers.find((p) => p.screenName === this.state.playerAnswering);
+			
 			newAnswering.score = newAnswering.score - this.state.standardIncorrectAmount;
 			this.setGameState({
 				players: newPlayers,
@@ -142,6 +155,32 @@ export default class HostConsole extends React.Component {
 				});
 			}
 			this.clearAnsweringPlayer();
+		} else if (this.state.currentItemType === "TiebreakQuestion") {
+			// deduct the standard amount from the player's total
+			newAnswering.score = newAnswering.score - this.state.standardIncorrectAmount;
+
+			// remove this player from those eligible for the tiebreak question (and therefore eligible to win)
+			const newEligible = this.state.tiebreakEligiblePlayers
+				.filter(p => p.screenName !== this.state.playerAnswering);
+			
+			// if only one eligible player is left, that player wins by default and the question is over
+			if (newEligible.length === 1) {
+				this.setGameState({
+					players: newPlayers,
+					currentItemOver: true,
+					buzzersOpen: false,
+					
+				});
+			
+			}
+			// otherwise, open the buzzers again
+			else {
+				this.setGameState({
+					players: newPlayers,
+					buzzersOpen: true,
+					tiebreakEligiblePlayers: newEligible
+				});
+			}
 		}
 	}
 
@@ -180,6 +219,10 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
+	formatCurrency = (value, commas = true) => {
+		return `${this.state.prefix}${accounting.formatNumber(value, 0, commas ? "," : "")}${this.state.suffix}`;
+	}
+
 	goToFameGameBoard = () => {
 		this.setGameState({
 			fameGameBoardShowing: true,
@@ -205,6 +248,8 @@ export default class HostConsole extends React.Component {
 
 	addBonusPrize = (name, prize) => {
 		var newPlayers = this.state.players;
+		console.log("name = " + name);
+		console.log(newPlayers);
 		var player = newPlayers.find((p) => p.screenName === name);
 		player.bonusPrizes.push(prize);
 		this.setGameState({
@@ -333,7 +378,8 @@ export default class HostConsole extends React.Component {
 	fmNextQuestion = () => {
 		this.setGameState({
 			fmCurrentQuestionNo: this.state.fmCurrentQuestionNo + 1,
-			fmCurrentQuestion: this.state.items[this.state.currentItemNo].questions[this.state.fmCurrentQuestionNo + 1],
+			fmCurrentQuestion: this.state.items[this.state.currentItemNo]
+				.questions[this.state.fmCurrentQuestionNo + 1],
 			buzzersOpen: true,
 			timerStarted: false,
 			timerRunning: false,
@@ -342,11 +388,48 @@ export default class HostConsole extends React.Component {
 	}
 
 	goToTiebreaker = () => {
-		// TODO
+		const leadingScore = Math.max(...this.state.players.map(p => p.score));
+		this.setGameState({
+			currentItemType: "TiebreakQuestion",
+			tiebreakEligiblePlayers: this.state.players.filter(p => p.score === leadingScore).map(p => p.screenName),
+		});
 	}
 
 	selectWinnersBoardNumber = (number) => {
-		// TODO
+		if (!this.state.winnersBoardCompleted) {
+			// set option at position number as selected
+			const newBoard = this.state.winnersBoard;
+			newBoard[number - 1].selected = true;
+			// if win card has been previously found, or same prize as this one has already been uncovered
+			const prizePairFound = newBoard[number - 1].name
+				&& this.state.winnersBoard.some((opt, i) => opt.selected && i !== number - 1 && opt.name && opt.name === newBoard[number - 1].name);
+			if ((newBoard[number - 1].name && this.state.winnersBoardWinFound) || prizePairFound) {
+				// mark board game as over, set won prize to prize found
+				this.setGameState({
+					winnersBoardCompleted: true,
+					winnersBoardPrizeWon: newBoard[number - 1],
+				});
+				// TODO add the two numbers that held this prize's cards (or if major, the prize card and the win) to the inactive numbers list
+			}
+			// else if this selection is a win card
+			else if (newBoard[number - 1].winCard) {
+				// mark win card as found
+				this.setGameState({
+					winnersBoardWinFound: true,
+				});
+			}
+
+			this.setGameState({
+				winnersBoard: newBoard,
+			});
+		}
+		
+	}
+
+	revealWinnersBoardMajor = () => {
+		this.setGameState({
+			winnersBoardMajorRevealed: true,
+		});
 	}
 
 	setCarryOverDecision = (staying) => {
@@ -490,7 +573,8 @@ export default class HostConsole extends React.Component {
 			}
 
 			if (newItemType === "FameGame") {
-				// TODO add verification that there will never be a situation where there are fewer removable prizes on the board than there are ones to be added for a new round
+				// TODO add verification that there will never be a situation where there are fewer
+				//	 removable prizes on the board than there are ones to be added for a new round
 				// TODO add validation to prevent duplicate names of prizes in fame game
 				var newBoard = this.state.fameGameBoard;
 				const fameGameNo = this.state.fameGamesCompleted + 1;
@@ -502,7 +586,10 @@ export default class HostConsole extends React.Component {
 				if (toAdd.length > 0) {
 					const removablePrizes = this.state.fameGameBoard.filter(o => !o.selected && o.prize.removable);
 					// select random elements, one for each new prize
-					const selectedToRemove = removablePrizes.sort(() => 0.5 < Math.random()).slice(0,toAdd.length).map(o => o.prize.name);
+					const selectedToRemove = removablePrizes
+						.sort(() => 0.5 < Math.random())
+						.slice(0,toAdd.length)
+						.map(o => o.prize.name);
 					console.log("Prize(s) selected to remove: ");
 					console.log(selectedToRemove);
 					newBoard = newBoard.map(o => {
@@ -528,12 +615,110 @@ export default class HostConsole extends React.Component {
 
 
 		} else {
-			// TODO handle end of regular game
+			this.setGameState({
+				currentItemType: "PostGame"
+			});
 		}
 		
 	}
-	
 
+	goToEndgame = () => {
+		const winner = this.state.players.sort((a, b) => b.score - a.score)[0];
+		this.setGameState({
+			carryOverChampion: winner.screenName,
+		});
+		switch (this.state.endgame) {
+		case "BoardBonus":
+			console.log("Setting up Board Bonus now");
+			// if winner is not carry over champion, clear the inactive numbers for the winners board
+			if (winner.screenName !== this.state.carryOverChampion) {
+				this.setGameState({
+					winnersBoardInactiveNumbers: []
+				});
+			}
+			// if this player has already won all the bonus prizes, they win the cash jackpot as well, and are retired
+			if (winner.bonusPrizes.length === this.state.bonusPrizes.length) {
+				// TODO
+			} else {
+
+				// filter out prizes at the same level as carry over champion's already won bonus prizes
+				const availablePrizes = this.state.bonusPrizes.filter(prize => !winner.bonusPrizes.some(wp => wp.prizeLevel === prize.prizeLevel));
+				const prizeCards = [];
+
+				const boardSpaces = this.state.bonusPrizes.length * 2;
+
+				availablePrizes.forEach(prize => {
+					if (prize.requiresWin) {
+						// add one prize card, and one "WIN" card - the first prize found after revealing a WIN card is won
+						prizeCards.push({...prize});
+						prizeCards.push({winCard: true});
+					} else {
+						// add two prize cards to the board - if both cards are uncovered, the prize is won
+						prizeCards.push({...prize});
+						prizeCards.push({...prize});
+					}
+				});
+				// shuffle list
+				const shuffledCards = this.shuffleList(prizeCards);
+
+				const startingBoard = [...Array(boardSpaces).keys()].map((i) => {
+					// if i is in list of inactive numbers (where carry over champion has already won a prize),
+					// leave this space entirely blank
+					if (this.state.winnersBoardInactiveNumbers.includes(i + 1)) {
+						return {inactive: true};
+					}
+					// otherwise, assign it the next card from the shuffled list
+					else {
+						return shuffledCards.pop();
+					}
+				});
+
+				this.setGameState({
+					winnersBoard: startingBoard,
+					currentItemType: "BoardBonus"
+				});
+			}
+			break;
+
+		case "ShoppingBonus":
+			// TODO
+			// if carry over champion has won
+				// add winning score to this.state.carryOverScore
+			// else
+				// set this.state.carryOverScore to winning score
+			
+			// if player has high enough score to buy the lot and the jackpot
+				// player is automatically retired
+			// else
+
+				// if this.state.carryOverScore is lower than lowest price of bonus prizes
+					// set availablePrize to lowest-priced prize
+					// change availablePrize.price to winning score
+				// else
+					// set availablePrize to highest-priced prize where price <= winningScore
+				// set currentItemType to ShoppingBonus
+			break;
+		default:
+			// TODO
+			break;
+		}
+		
+	}
+
+	followOnGame = () => {
+		// TODO
+		// Set all game state values to initial, EXCEPT:
+			// Make default selections for NoQuestionPanel the ones used previously
+			// Do not touch Players array
+			// Increment Cash Jackpot
+			// If carry over champion retired, move their Bonus Prizes to Prizes (keep them as "won", for recordkeeping)
+	}
+
+	goToWinnerDecision = () => {
+		this.setGameState({
+			currentItemType: "WinnerDecision"
+		});
+	}
 
 	setGameState = (changedItems) => {
 		console.log("setGameState called");
@@ -584,6 +769,14 @@ export default class HostConsole extends React.Component {
 			
 		});
 
+		// finally, pick another fame game question to act as a potential tiebreaker
+		index = Math.floor(Math.random() * fameGameQuestions.length);
+		while (fameGameQuestionsUsed.includes(index)) {
+			index = Math.floor(Math.random() * fameGameQuestions.length);
+		}
+		const tiebreakQuestion = fameGameQuestions[index];
+		fameGameQuestionsUsed.push(index);
+
 		if (gameProps.items.some(i => i.type === "FameGame")) {
 			// prepare fame game board
 			// take prizes that start on fame game board and randomise them
@@ -614,9 +807,6 @@ export default class HostConsole extends React.Component {
 				return suit;
 			});
 
-			console.log("Cash Card Suits: ");
-			console.log(cashCardSuits);
-
 			this.setGameState({
 				cashCardSuits: cashCardSuits,
 			});
@@ -635,6 +825,7 @@ export default class HostConsole extends React.Component {
 			suffix: gameProps.suffix,
 			players: newPlayers,
 			items: gameProps.items,
+			tiebreakQuestion: tiebreakQuestion,
 			endgame: gameProps.endgame,
 			endgamePrizes: gameProps.endgamePrizes,
 			currentRound: 1,
@@ -644,6 +835,7 @@ export default class HostConsole extends React.Component {
 			normalAnsweringTimer: gameProps.normalAnsweringTimer,
 			fastMoneyAnsweringTimer: gameProps.fastMoneyAnsweringTimer,
 			newPanelKey: this.state.newPanelKey + 1,
+			bonusPrizes: gameProps.bonusPrizes,
 		});
 		this.goToNextItem();
 	}
@@ -668,7 +860,8 @@ export default class HostConsole extends React.Component {
 							player={player}
 							key={i}
 							answering={this.state.playerAnswering === player.screenName}
-							lockedOut={this.state.playerAnswering.length > 0 && this.state.playerAnswering !== player.screenName}/>));
+							lockedOut={this.state.playerAnswering.length > 0
+								&& this.state.playerAnswering !== player.screenName}/>));
 				}
 				playerPanel = <div>{list}</div>;
 			} else {
@@ -690,7 +883,9 @@ export default class HostConsole extends React.Component {
 
 		let mainPanel;
 		const leadingScore = Math.max(...this.state.players.map(p => p.score));
-		const currentItem = this.state.items[this.state.currentItemNo];
+		const currentItem = this.state.currentItemNo >= this.state.items.length
+			? {}
+			: this.state.items[this.state.currentItemNo];
 		switch (this.state.currentItemType) {
 		case "NoQuestionPanel":
 			mainPanel = (
@@ -718,11 +913,12 @@ export default class HostConsole extends React.Component {
 			);
 			break;
 		case "FameGame":
-			console.log(currentItem);
 			mainPanel = !this.state.fameGameBoardShowing ? (
 				<FameGameQuestion
 					question={currentItem.question}
-					eligiblePlayers={this.state.players.map(p => p.screenName).filter(n => !this.state.lockedOutPlayerNames.includes(n))}
+					eligiblePlayers={this.state.players
+						.map(p => p.screenName)
+						.filter(n => !this.state.lockedOutPlayerNames.includes(n))}
 					playerAnswering={this.state.playerAnswering}
 					timerStarted={this.state.timerStarted}
 					timeRemaining={this.state.timeRemaining}
@@ -748,6 +944,7 @@ export default class HostConsole extends React.Component {
 					revealMoney={this.revealFGMoney}
 					setWildCardDecision={this.setWildCardDecision}
 					nextItem={this.goToNextItem}
+					formatCurrency={this.formatCurrency}
 				/>
 			);
 			break;
@@ -766,16 +963,17 @@ export default class HostConsole extends React.Component {
 					deductFromScore={this.deductPlayerScore}
 					addToPrizes={this.addPlayerPrize}
 					nextItem={this.goToNextItem}
+					formatCurrency={this.formatCurrency}
 				/>
 			);
 			break;
 		case "CashCard":
-			console.log(this.state.cashCardSuits);
-			const prizesSorted = this.state.cashCardSuits.map(s => s.prize).sort((a,b) => (a.prizeValue || a.scoreValue) > (b.prizeValue || b.scoreValue));
 			mainPanel = (
 				<CashCard
 					suits={this.state.cashCardSuits}
-					prizes={prizesSorted}
+					prizes={this.state.cashCardSuits
+						.map(s => s.prize)
+						.sort((a,b) => (a.prizeValue || a.scoreValue) > (b.prizeValue || b.scoreValue))}
 					eligibleToBuy={this.state.eligibleToBuy}
 					currentPrice={this.state.sellingPrice}
 					availableToBuy={this.state.availableToBuy}
@@ -792,6 +990,7 @@ export default class HostConsole extends React.Component {
 					addToPrizes={this.addPlayerPrize}
 					addToScore={this.addPlayerScore}
 					nextItem={this.goToNextItem}
+					formatCurrency={this.formatCurrency}
 				/>
 			);
 			break;
@@ -829,7 +1028,23 @@ export default class HostConsole extends React.Component {
 			mainPanel = (
 				<PostGame
 					leaderOrLeaders={this.state.players.filter((p) => p.score === leadingScore)}
+					players={this.state.players}
 					goToTiebreaker={this.goToTiebreaker}
+					goToEndgame={this.goToEndgame}
+					formatCurrency={this.formatCurrency}
+				/>
+			);
+			break;
+		case "TiebreakQuestion":
+			mainPanel = (
+				<TiebreakQuestion
+					question={this.state.tiebreakQuestion}
+					eligiblePlayers={this.state.tiebreakEligiblePlayers}
+					playerAnswering={this.state.playerAnswering}
+					questionOver={this.state.currentItemOver}
+					playerRight={this.playerRight}
+					playerWrong={this.playerWrong}
+					cancelBuzz={this.cancelBuzz}
 					nextItem={this.goToNextItem}
 				/>
 			);
@@ -850,19 +1065,32 @@ export default class HostConsole extends React.Component {
 					champion={this.state.carryOverChampion}
 					wonPrizes={this.state.carryOverPrizes}
 					boardState={this.state.winnersBoard}
-					boardGameCommenced={this.state.winnersBoardStarted}
+					winCardFound={this.state.winnersBoardWinFound}
 					boardGameFinished={this.state.winnersBoardCompleted}
+					majorPrizeRevealed={this.state.winnersBoardMajorRevealed}
 					selectWBNumber={this.selectWinnersBoardNumber}
-					addBonusPrize={this.addBonusPrize}/>
+					prizeWon={this.state.winnersBoardPrizeWon}
+					addBonusPrize={this.addBonusPrize}
+					revealMajorPrize={this.revealWinnersBoardMajor}
+					goToDecision={this.goToWinnerDecision}
+					formatCurrency={this.formatCurrency}/>
 			);
 			break;
 		case "WinnerDecision":
 			mainPanel = (
 				<WinnerDecision
 					champion={this.state.carryOverChampion}
+					safePrizes={this.state.players.find(p => p.screenName === this.state.carryOverChampion).prizes}
+					bonusPrizesWon={this.state.players.find(p => p.screenName === this.state.carryOverChampion).bonusPrizes}
+					bonusPrizesLeft={this.state.bonusPrizes
+						.filter(bp => !this.state.players
+							.find(p => p.screenName === this.state.carryOverChampion)
+							.bonusPrizes.some(wp => wp.prizeLevel === bp.prizeLevel))}
 					decisionMade={this.state.carryOverDecisionMade}
 					playerStaying={this.state.carryOverDecisionStaying}
 					makeDecision={this.setCarryOverDecision}
+					formatCurrency={this.formatCurrency}
+					followOnGame={this.followOnGame}
 				/>
 			);
 			break;

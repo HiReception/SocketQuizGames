@@ -64,8 +64,8 @@ export default class GiftShop extends React.Component {
 				<div className="gift-shop-prize-desc">
 					<p>{this.props.prize.shortName}</p>
 					<p>{this.props.prize.description}</p>
-					<p>Normally priced at ${this.props.prize.retailPrice}</p>
-					<p>Starting price: ${this.props.prize.startingPrice}</p>
+					<p>Normally priced at {this.props.formatCurrency(this.props.prize.retailPrice)}</p>
+					<p>Starting price: {this.props.formatCurrency(this.props.prize.startingPrice)}</p>
 				</div>
 				<div className="gift-shop-variable-panel">
 					<div className="gift-shop-variable">

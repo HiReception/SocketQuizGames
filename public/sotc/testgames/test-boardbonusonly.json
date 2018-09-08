@@ -6,9 +6,7 @@
 	"fastMoneyAnsweringTimer": 1000,
 	"standardCorrectAmount": 5,
 	"standardIncorrectAmount": 5,
-	"items": [
-		{"type": "FastMoney", "length": 60}
-	],
+	"items": [],
 	"endgame": "BoardBonus",
 	"bonusPrizes": [
 		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": "", "prizeLevel": 1},

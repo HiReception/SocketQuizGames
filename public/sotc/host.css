@@ -109,6 +109,9 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: stretch; }
+  @media screen and (max-width: 799px) {
+    .main-panel {
+      height: calc(100% - (1px + 50px + 20px)); } }
 
 #question-panel {
   display: flex;
@@ -158,12 +161,6 @@ body {
   flex: 0 0 50px;
   max-height: 50px;
   border-bottom: 0.5px solid #999999; }
-
-.footer {
-  flex: 0 0 50px;
-  max-height: 50px;
-  border-top: 0.5px solid #999999;
-  overflow: hidden; }
 
 .content {
   flex: 1 1 auto; }
@@ -224,6 +221,15 @@ body {
   flex-direction: column;
   background-color: brown;
   overflow-y: auto; }
+  @media screen and (max-width: 799px) {
+    #player-list {
+      flex-grow: 1;
+      position: absolute;
+      width: 100%;
+      z-index: 1;
+      height: calc(100% - (1px + 50px + 20px)); }
+      #player-list.hidden {
+        display: none; } }
 
 p .no-players {
   text-align: center;
@@ -765,29 +771,188 @@ div.fast-money-button {
     background-color: red;
     cursor: default; }
 
-@media screen and (max-width: 799px) {
-  #player-list {
-    flex-grow: 1;
-    position: absolute;
-    width: 100%;
-    z-index: 1;
-    height: calc(100% - (70px + 1px)); }
-    #player-list.hidden {
-      display: none; }
-  div.main-panel {
-    height: calc(100% - (70px + 1px)); }
-  div.select-question-panel {
-    justify-content: flex-start;
-    overflow: scroll; }
-  div.category-group {
-    flex-shrink: 0;
-    flex-basis: auto;
-    justify-content: flex-start; }
-  div.category-clue-group {
-    flex-shrink: 0;
-    flex-basis: auto;
+/* Post Game Panel */
+.post-game {
+  position: relative;
+  flex: 1 1 auto;
+  align-items: stretch;
+  padding: 5px;
+  max-width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #0B1885; }
+  .post-game .post-game-winner {
+    border: 1px solid white;
+    flex: 1 1 auto;
+    display: flex;
     flex-direction: column;
-    justify-content: flex-start; }
-  div.clue-button {
-    flex-basis: 40px;
-    margin: 2.5px 0 2.5px 0; } }
+    justify-content: center;
+    align-items: stretch; }
+    .post-game .post-game-winner > p {
+      color: white;
+      font-size: 150%;
+      font-family: 'Korinna Bold'; }
+  .post-game .post-game-summary-ctr {
+    border: 1px solid white;
+    flex: 4 4 auto;
+    overflow-y: auto; }
+    .post-game .post-game-summary-ctr .post-game-prize-summary p {
+      font-size: 150%;
+      font-family: 'Korinna Bold';
+      color: white; }
+  .post-game .post-game-button {
+    border: 1px solid white;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+
+/* Winners Board */
+div.board-bonus {
+  display: flex;
+  position: relative;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  background-color: #0B1885;
+  padding: 5px;
+  max-width: auto; }
+
+div.board-bonus-header {
+  flex: 0 0 auto;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid white; }
+  div.board-bonus-header > p {
+    color: white;
+    text-transform: uppercase;
+    font-size: 150%; }
+
+div.winners-board-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 5px;
+  border: 1px solid white; }
+
+div.winners-board-option-row {
+  flex: 1 1 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch; }
+
+div.winners-board-option {
+  flex: 1 1 50px;
+  border: 1px solid white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; }
+  div.winners-board-option > p {
+    font-size: 400%;
+    color: white;
+    font-family: "Verdana"; }
+  div.winners-board-option.revealed {
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+    div.winners-board-option.revealed.prize {
+      background-color: orange; }
+      div.winners-board-option.revealed.prize > p {
+        color: yellow;
+        font-size: 200%; }
+    div.winners-board-option.revealed.win {
+      background-color: green; }
+      div.winners-board-option.revealed.win > p {
+        color: yellow;
+        font-style: italic;
+        font-size: 500%; }
+    div.winners-board-option.revealed.generic {
+      background-color: #0B1885; }
+      div.winners-board-option.revealed.generic > p {
+        color: white; }
+  div.winners-board-option.inactive {
+    cursor: default; }
+  div.winners-board-option.removed {
+    cursor: default; }
+    div.winners-board-option.removed > p {
+      display: none; }
+
+div.board-bonus-bottom {
+  flex: 0 0 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white; }
+  div.board-bonus-bottom > p {
+    color: white;
+    font-family: 'Korinna Bold';
+    font-size: 150%;
+    margin: auto; }
+
+/* Winner Decision Panel */
+.decision {
+  position: relative;
+  flex: 1 1 auto;
+  align-items: stretch;
+  padding: 5px;
+  max-width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #0B1885; }
+  .decision .decision-heading {
+    border: 1px solid white;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch; }
+    .decision .decision-heading > p {
+      color: white;
+      font-size: 150%;
+      font-family: 'Korinna Bold'; }
+  .decision .decision-summary-ctr {
+    border: 1px solid white;
+    flex: 4 4 auto;
+    overflow-y: auto; }
+    .decision .decision-summary-ctr h2 {
+      font-size: 200%;
+      font-family: 'Korinna Bold';
+      color: white;
+      text-align: center; }
+    .decision .decision-summary-ctr p {
+      font-size: 150%;
+      font-family: 'Korinna Bold';
+      color: white; }
+  .decision .decision-made {
+    border: 1px solid white;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+    .decision .decision-made p {
+      font-size: 150%;
+      font-family: 'Korinna Bold';
+      color: white; }
+  .decision .decision-button {
+    border: 1px solid white;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
