@@ -49,7 +49,7 @@ export default class GiftShop extends React.Component {
 			bottomPanel = (
 				<div className="gift-shop-end-button">
 					<p>No Sale called</p>
-					<div className="cancel-question-button" onClick={this.props.nextItem}>
+					<div className="add-question-button" onClick={this.props.nextItem}>
 						<p>Continue</p>
 					</div>
 				</div>

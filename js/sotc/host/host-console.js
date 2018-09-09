@@ -5,6 +5,7 @@ import accounting from "accounting";
 
 import PlayerDetailsPanel from "./player-details-panel";
 import PlayerListing from "./player-listing";
+import initialState from "./initial-state";
 
 import NoQuestionPanel from "./no-question-panel";
 import StandardQuestion from "./standard-question";
@@ -248,8 +249,6 @@ export default class HostConsole extends React.Component {
 
 	addBonusPrize = (name, prize) => {
 		var newPlayers = this.state.players;
-		console.log("name = " + name);
-		console.log(newPlayers);
 		var player = newPlayers.find((p) => p.screenName === name);
 		player.bonusPrizes.push(prize);
 		this.setGameState({
@@ -471,7 +470,7 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
-	showPlayerDetails = (name, event) => {
+	showPlayerDetails = (name) => {
 		this.setGameState({
 			detailPlayerName: name,
 		});
@@ -535,6 +534,7 @@ export default class HostConsole extends React.Component {
 					fmTimeRemaining: newItem.length * 1000,
 					fmCurrentQuestionNo: 0,
 					fmCurrentQuestion: newItem.questions[0],
+					fmStarted: false,
 				});
 			}
 
@@ -629,7 +629,6 @@ export default class HostConsole extends React.Component {
 		});
 		switch (this.state.endgame) {
 		case "BoardBonus":
-			console.log("Setting up Board Bonus now");
 			// if winner is not carry over champion, clear the inactive numbers for the winners board
 			if (winner.screenName !== this.state.carryOverChampion) {
 				this.setGameState({
@@ -706,12 +705,25 @@ export default class HostConsole extends React.Component {
 	}
 
 	followOnGame = () => {
-		// TODO
 		// Set all game state values to initial, EXCEPT:
-			// Make default selections for NoQuestionPanel the ones used previously
-			// Do not touch Players array
-			// Increment Cash Jackpot
-			// If carry over champion retired, move their Bonus Prizes to Prizes (keep them as "won", for recordkeeping)
+		let newState = initialState;
+		// TODO Make default selections for NoQuestionPanel the ones used previously (if possible...?)
+		// Reinstate existing players array, but revert their scores to zero
+		newState.players = this.state.players;
+		newState.players.forEach(p => p.score = 0);
+		// TODO Increment Cash Jackpot (if applicable)
+		// If carry over champion is playing on, put their name back in as carry over champion
+		if (this.state.carryOverDecisionStaying) {
+			newState.carryOverChampion = this.state.carryOverChampion;
+		}
+		// If carry over champion retired, move their Bonus Prizes to Prizes (keep them as "won", for recordkeeping)
+		else {
+			var carryOverChampion = newState.players.find(p => p.screenName === this.state.carryOverChampion);
+			carryOverChampion.prizes.push(...carryOverChampion.bonusPrizes);
+			carryOverChampion.bonusPrizes = [];
+		}
+
+		this.setGameState(newState);
 	}
 
 	goToWinnerDecision = () => {
@@ -721,7 +733,6 @@ export default class HostConsole extends React.Component {
 	}
 
 	setGameState = (changedItems) => {
-		console.log("setGameState called");
 		this.setState(changedItems);
 		this.props.socket.emit("set state", changedItems);
 	}
@@ -856,7 +867,7 @@ export default class HostConsole extends React.Component {
 					const player = playersByScore[i];
 					list.push((
 						<PlayerListing
-							onClick={this.showPlayerDetails.bind(this, player.screenName)}
+							onClick={() => this.showPlayerDetails(player.screenName)}
 							player={player}
 							key={i}
 							answering={this.state.playerAnswering === player.screenName}

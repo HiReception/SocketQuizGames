@@ -29,10 +29,10 @@ export default class PostGame extends React.Component {
 						{this.props.players.map(p => (
 							<div key={p} className="post-game-prize-summary">
 								<p>{p.screenName}'s prizes:</p>
-								{p.prizes.map(prize => (
-									<p>{prize.shortName} ({this.formatCurrency(prize.prizeValue)})</p>
+								{p.prizes.map((prize,i) => (
+									<p key={i}>{prize.shortName || prize.name} ({this.props.formatCurrency(prize.prizeValue)})</p>
 								))}
-								<p>Total: {this.formatCurrency(p.prizes.reduce((total, prize) => total + prize.prizeValue, 0))}</p>
+								<p>Total: {this.props.formatCurrency(p.prizes.reduce((total, prize) => total + prize.prizeValue, 0))}</p>
 							</div>
 						))}
 					</div>

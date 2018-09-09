@@ -45,7 +45,7 @@ export default class WinnerDecision extends React.Component {
 					</div>
 					<div className="decision-button">
 						<div className="add-question-button" onClick={this.props.followOnGame}>
-							<p>New Game With Same Players (coming soon)</p>
+							<p>New Game With Same Players</p>
 						</div>
 					</div>
 					

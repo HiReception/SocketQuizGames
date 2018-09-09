@@ -565,7 +565,7 @@ div.cash-card-suit-container {
 }
 
 div.cash-card-suit-row {
-	flex: 1 1 auto;
+	flex: 1 1 10px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -891,6 +891,10 @@ div.fast-money-button {
 	&.over {
 		background-color: red;
 		cursor: default;
+
+		> p {
+			font-size: 150%;
+		}
 	}
 }
 
@@ -1016,6 +1020,13 @@ div.winners-board-option {
 		align-items: center;
 		&.prize {
 			background-color: orange;
+
+			&.major {
+				background-color: black;
+				> p {
+					color: white;
+				}
+			}
 
 			> p {
 				color: yellow;

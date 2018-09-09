@@ -52,7 +52,7 @@ export default class NoQuestionPanel extends React.Component {
 			// TODO let user pick question file
 			url: "question-databases/standard/dummy-standard.csv",
 			success: (sqFile) => {
-				const standardQuestions = sqFile.split("\n").map(str => {
+				const standardQuestions = sqFile.split("\n").filter(str => str.length > 0).map(str => {
 					const parts = str.split("\t");
 					return {
 						body: parts[0],
@@ -64,7 +64,7 @@ export default class NoQuestionPanel extends React.Component {
 					// TODO let user pick question file
 					url: "question-databases/famegame/dummy-famegame.csv",
 					success: (fgFile) => {
-						const fameGameQuestions = fgFile.split("\n").map(str => {
+						const fameGameQuestions = fgFile.split("\n").filter(str => str.length > 0).map(str => {
 							const parts = str.split("\t");
 							return {
 								body: parts[0],

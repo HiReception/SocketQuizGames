@@ -25,7 +25,7 @@ export default class BoardBonus extends React.Component {
 							const revealed = (option.selected) || ((option.requiresWin || option.winCard) && this.props.majorPrizeRevealed);
 							if (revealed && option.prizeValue) {
 								return (
-									<div key={i} className={"winners-board-option revealed prize"}>
+									<div key={i} className={`winners-board-option revealed prize${option.requiresWin ? " major" : ""}`}>
 										<p>{option.name}</p>
 										<p>{this.props.formatCurrency(option.prizeValue)}</p>
 									</div>

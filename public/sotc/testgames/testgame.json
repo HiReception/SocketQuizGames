@@ -105,7 +105,7 @@
 		{"image": "", "name": "Pillows", "prizeValue": 999, "description": "", "removable": true},
 		{"image": "", "name": "Artwork", "prizeValue": 1000, "description": "", "removable": true},
 		{"image": "", "name": "Television", "prizeValue": 1100, "description": "", "removable": true},
-		{"image": "", "name": "Pillows", "prizeValue": 1200, "description": "", "removable": true}
+		{"image": "", "name": "Nicer Pillows", "prizeValue": 1200, "description": "", "removable": true}
 	],
 	"bonusPrizes": [
 		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": "", "prizeLevel": 1},
