@@ -3,7 +3,7 @@ var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
 
-import initialState from "./host/initial-state";
+import initialState from "./initial-state";
 
 import HostConsole from "./host/host-console";
 

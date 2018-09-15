@@ -5,7 +5,7 @@ import accounting from "accounting";
 
 import PlayerDetailsPanel from "./player-details-panel";
 import PlayerListing from "./player-listing";
-import initialState from "./initial-state";
+import initialState from "../initial-state";
 
 import NoQuestionPanel from "./no-question-panel";
 import StandardQuestion from "./standard-question";
@@ -279,12 +279,13 @@ export default class HostConsole extends React.Component {
 	}
 
 	selectFace = (index) => {
-		if (this.state.fameGameCurrentSelection === -1) {
+		if (this.state.fameGameCurrentSelection === -1 || this.state.wildCardDecision === 1) {
 			const newBoard = this.state.fameGameBoard;
 			newBoard[index].selected = true;
 			this.setGameState({
 				fameGameCurrentSelection: index,
 				fameGameBoard: newBoard,
+				wildCardDecision: -1,
 			});
 		}
 		
@@ -609,7 +610,7 @@ export default class HostConsole extends React.Component {
 					fameGameBoard: newBoard,
 					fameGameBoardShowing: false,
 					fameGameCurrentSelection: -1,
-					fameGameWildCardDecision: -1,
+					wildCardDecision: -1,
 				});
 			}
 
@@ -662,8 +663,9 @@ export default class HostConsole extends React.Component {
 
 				const startingBoard = [...Array(boardSpaces).keys()].map((i) => {
 					// if i is in list of inactive numbers (where carry over champion has already won a prize),
+					// or if there are no more cards to be assigned,
 					// leave this space entirely blank
-					if (this.state.winnersBoardInactiveNumbers.includes(i + 1)) {
+					if (this.state.winnersBoardInactiveNumbers.includes(i + 1) || shuffledCards.length === 0) {
 						return {inactive: true};
 					}
 					// otherwise, assign it the next card from the shuffled list
@@ -945,7 +947,7 @@ export default class HostConsole extends React.Component {
 					playerSelecting={this.state.playerAnswering}
 					boardState={this.state.fameGameBoard}
 					currentSelection={this.state.fameGameCurrentSelection}
-					wildCardDecision={this.state.fameGameWildCardDecision}
+					wildCardDecision={this.state.wildCardDecision}
 					first={this.state.fameGamesCompleted === 0}
 					last={this.state.fameGamesCompleted + 1 === this.state.items.filter((i) => i.type === "FameGame")}
 					moneyRevealed={this.state.fameGameMoneyRevealed}

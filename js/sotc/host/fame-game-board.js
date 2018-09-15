@@ -83,7 +83,7 @@ export default class FameGameBoard extends React.Component {
 			);
 		}
 		// no selection made yet
-		else if (this.props.currentSelection === -1) {
+		else if (this.props.currentSelection === -1 || this.props.wildCardDecision === 1) {
 			const numRows = Math.ceil(Math.sqrt(this.props.boardState.length));
 
 			// Show button for all faces (disabled if selected)
@@ -124,7 +124,7 @@ export default class FameGameBoard extends React.Component {
 		// selection made, wild card, prize taken
 		else if (this.props.wildCardDecision === 0) {
 			// Announce that player has taken prize
-			const prizeOption = this.props.boardState[this.props.currentSelection].prize.prizeOptionString;
+			const prizeOption = this.props.boardState[this.props.currentSelection].prize.prizeOptionText;
 			const btnString = this.state.moneyToBeRevealedThisRound ? "Reveal Undiscovered Money Cards" : "Continue";
 			contentPanel = (
 				<div className="fame-game-wild-card">
@@ -145,7 +145,7 @@ export default class FameGameBoard extends React.Component {
 					<p className="buzzer-panel">{this.props.playerSelecting} can choose between:</p>
 
 					<div className="add-question-button" onClick={() => this.props.setWildCardDecision(0)}>
-						<p>{this.props.boardState[this.props.currentSelection].prize.prizeOptionString}</p>
+						<p>{this.props.boardState[this.props.currentSelection].prize.prizeOptionText}</p>
 					</div>
 					<div className="add-question-button" onClick={() => this.props.setWildCardDecision(1)}>
 						<p>Pick Again</p>
