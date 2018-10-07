@@ -14,9 +14,17 @@ module.exports = function(grunt) {
 			options: {
 				livereload: true
 			},
-			sotc_js: {
-				files: ["js/sotc/**/*.js"],
-				tasks: ["browserify:sotc_host", "browserify:sotc_player"]
+			sotc_host_js: {
+				files: ["js/sotc/host/*.js", "js/sotc/host.js"],
+				tasks: ["browserify:sotc_host"]
+			},
+			sotc_player_js: {
+				files: ["js/sotc/player/*.js", "js/sotc/player.js"],
+				tasks: ["browserify:sotc_player"]
+			},
+			sotc_display_js: {
+				files: ["js/sotc/display/*.js", "js/sotc/display.js"],
+				tasks: ["browserify:sotc_display"]
 			},
 			sotc_css: {
 				files: ["js/sotc/**/*.scss"],
@@ -42,6 +50,11 @@ module.exports = function(grunt) {
 			sotc_host: {
 				src: "js/sotc/host.js",
 				dest: "public/sotc/host.js",
+				options: browserifyOptions
+			},
+			sotc_display: {
+				src: "js/sotc/display.js",
+				dest: "public/sotc/display.js",
 				options: browserifyOptions
 			},
 			feud_test: {
@@ -182,6 +195,7 @@ module.exports = function(grunt) {
 					"public/sotc/podiums.css": "js/sotc/podiums.scss",
 					"public/sotc/host.css": "js/sotc/host.scss",
 					"public/sotc/player.css": "js/sotc/player.scss",
+					"public/sotc/display.css": "js/sotc/display.scss",
 				}
 			},
 			tpir_plinko: {

@@ -59,13 +59,21 @@ export default class FastMoney extends React.Component {
 
 
 			let buzzerPanel;
-			// No answers or question answered, fast money time over
-			if ((this.props.playerAnswering === "" || this.props.currentQuestionOver) && this.props.fmTimeRemaining <= 0) {
+			// Player Answering
+			if (this.props.playerAnswering !== "" && !this.props.currentQuestionOver) {
 				buzzerPanel = (
 					<div className="buzzer-panel">
-						<p className="buzzer-panel">Fast Money Over</p>
-						<div className="add-question-button" onClick={this.props.nextItem}>
-							<p>Continue</p>
+						<p className="buzzer-panel">{this.props.playerAnswering} is Answering</p>
+						<div className="button-row">
+							<div className="add-question-button" onClick={this.props.playerRight}>
+								<p>Correct</p>
+							</div>
+							<div className="add-question-button" onClick={this.props.cancelBuzz}>
+								<p>Cancel</p>
+							</div>
+							<div className="add-question-button" onClick={this.props.playerWrong}>
+								<p>Incorrect</p>
+							</div>
 						</div>
 					</div>
 				);
@@ -90,21 +98,13 @@ export default class FastMoney extends React.Component {
 				);
 			
 			}
-			// Player Answering
-			else if (this.props.playerAnswering !== "" && !this.props.currentQuestionOver) {
+			// No answers or question answered, fast money time over
+			else if ((this.props.playerAnswering === "" || this.props.currentQuestionOver) && this.props.fmTimeRemaining <= 0) {
 				buzzerPanel = (
 					<div className="buzzer-panel">
-						<p className="buzzer-panel">{this.props.playerAnswering} is Answering</p>
-						<div className="button-row">
-							<div className="add-question-button" onClick={this.props.playerRight}>
-								<p>Correct</p>
-							</div>
-							<div className="add-question-button" onClick={this.props.cancelBuzz}>
-								<p>Cancel</p>
-							</div>
-							<div className="add-question-button" onClick={this.props.playerWrong}>
-								<p>Incorrect</p>
-							</div>
+						<p className="buzzer-panel">Fast Money Over</p>
+						<div className="add-question-button" onClick={this.props.nextItem}>
+							<p>Continue</p>
 						</div>
 					</div>
 				);

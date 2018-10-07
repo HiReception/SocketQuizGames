@@ -353,7 +353,6 @@ export default class HostConsole extends React.Component {
 				this.setGameState({
 					fmClockRunning: false,
 					buzzersOpen: false,
-					currentItemOver: true,
 				});
 				clearInterval(this.state.fmTimer);
 			} 
