@@ -12,11 +12,11 @@
 	"endgame": "BoardBonus",
 	"bonusPrizes": [
 		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": "", "prizeLevel": 1},
-		{"photo": "", "cardImage": "", "name": "Watch", "prizeValue": 12950, "description": "", "prizeLevel": 2},
-		{"photo": "", "cardImage": "", "name": "Sea-Doo", "prizeValue": 14990, "description": "", "prizeLevel": 3},
-		{"photo": "", "cardImage": "", "name": "Computers", "prizeValue": 8230, "description": "", "prizeLevel": 4},
-		{"photo": "", "cardImage": "", "name": "Some Other Prize", "prizeValue": 8230, "description": "", "prizeLevel": 5},
-		{"photo": "", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 65900, "description": "", "requiresWin": true, "prizeLevel": 6}
+		{"photo": "", "cardImage": "", "name": "Computers", "prizeValue": 8230, "description": "", "prizeLevel": 2},
+		{"photo": "", "cardImage": "", "name": "Watch", "prizeValue": 12950, "description": "", "prizeLevel": 3},
+		{"photo": "", "cardImage": "", "name": "Sea-Doo", "prizeValue": 14990, "description": "", "prizeLevel": 4},
+		{"photo": "/public/sotc/images/bonus-prizes/pearl-necklace.png", "cardImage": "", "name": "Pearl Necklace", "prizeValue": 20000, "description": "Boasting artistry which only nature could create, this opal and pearl necklace is sure to steal the show. With perfect turns from a string of 66 round, lustrous pearls, plus a hand-crafted yellow gold enhancer, and the highlight of the piece: a deep cabochon dark opal, magnificently surrounded by a cast of dazzling diamonds. Valued at $20,000, from Germani Jewellery", "prizeLevel": 5},
+		{"photo": "/public/sotc/images/bonus-prizes/alfa-romeo-spider.png", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 71500, "description": "When the Spider bites, there is no known antidote. Boasting the most agile and seductive form of all, the Spider will empower you with genuine sporting finesse. With a racetrack-bred engine, and an adrenaline-charged pounce that leaves its competitors gasping, every ride in the Spider is a sensory feast. Thrill to the throaty growl of its engine; marvel at a body so sublime that none could possibly forget it. Along with a leather-lined cockpit, it's valued at $69,500 plus on-road costs. Alfa Romeo, the Heart and Soul of Sports Cars. And befitting both a champion and vehicle of this calibre, our 18-carat gold diamond-studded keyring valued at $2,000, from Germani Jewellery and $ale of the Century.", "requiresWin": true, "prizeLevel": 6}
 	]
 
 }
