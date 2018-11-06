@@ -38,6 +38,15 @@ export default class ContestantPanel extends Component {
 
 	componentWillMount = () => {
 		this.updateDimensions();
+		const image = new window.Image();
+		image.src = "88-93background.png";
+		image.onload = () => {
+			this.setState({
+				backgroundImage: image,
+				backgroundNatHeight: image.naturalHeight,
+				backgroundNatWidth: image.naturalWidth,
+			});
+		};
 		[...Array(10).keys()].map(i => {
 			const image = new window.Image();
 			image.src = `timer-blue/${i}.png`;
@@ -129,15 +138,28 @@ export default class ContestantPanel extends Component {
 	}
 
 	render = () => {
-		var width = window.innerWidth;
-		var height = window.innerHeight;
+		var {width, height, backgroundNatWidth, backgroundNatHeight, backgroundImage, clockNatHeight, clockNatWidth, answeringLightProgress} = this.state;
+		const screenRatio = width / height;
+		const backgroundRatio = backgroundNatWidth / backgroundNatHeight;
+		var backgroundScale = 1;
+		var backgroundOffsetX = 0, backgroundOffsetY = 0;
+		if (backgroundNatHeight) {
+			if (screenRatio > backgroundRatio) {
+				backgroundScale = width / backgroundNatWidth;
+				backgroundOffsetY = (backgroundNatHeight - height/backgroundScale)/2;
+			} else {
+				backgroundScale = height / backgroundNatHeight;
+				backgroundOffsetX = (backgroundNatWidth - width/backgroundScale)/2;
+			}
+			backgroundScale = screenRatio > backgroundRatio ? width / backgroundNatWidth : height/backgroundNatHeight;
+		}
+		
 
 		const { players, playerAnswering } = this.props;
 
 		
 		var nameFont = "Times New Roman";
 		var scoreFont = "EggCrate";
-		const topMarginHeight = 0.1 * height;
 		const bottomMarginHeight = 0.1 * height;
 		const marginWidth = 0.1 * width;
 		const pHeight = 0.4 * height;
@@ -237,7 +259,7 @@ export default class ContestantPanel extends Component {
 				{[...Array(lightBlockCount).keys()].map((i) => (
 					<Rect key={i} x={lightBlockGapWidth} y={lightBlockOffsetY + lightBlockHeight - ((i + 1) * lightBlockSingleHeight)}
 						height={lightBlockSingleHeight} width={lightBlockWidth}
-						fill={player.podiumLit && this.state.answeringLightProgress >= i/lightBlockCount ? "gold" : "brown"} stroke="grey" strokeWidth={1}/>
+						fill={player.podiumLit && answeringLightProgress >= i/lightBlockCount ? "gold" : "brown"} stroke="grey" strokeWidth={1}/>
 				))}
 
 				<Rect x={podiumBaseGapWidth} y={podiumBaseOffsetY}
@@ -266,20 +288,33 @@ export default class ContestantPanel extends Component {
 		));
 		
 		return (
-			<Layer>
-				{podiums}
-				<Rect
-					x={0} y={height - bottomMarginHeight}
-					height={bottomMarginHeight} width={width}
-					fill="grey"/>
-				<Group x={clockMargin} y={height - (clockHeight + clockBottomOffset)} height={clockHeight} width={clockTotalWidth}>
-					{this.props.clockDisplay.split("").map((c,i) => (
-						<Rect key={i} x={i * clockNumberWidth} y={0} height={clockHeight} width={clockNumberWidth}
-							fillPatternImage={this.state["clock" + c]}
-							fillPatternScaleX={clockHeight/this.state.clockNatHeight} fillPatternScaleY={clockNumberWidth/this.state.clockNatWidth}/>
-					))}
-				</Group>
-			</Layer>
+			<Stage x={0} y={0} height={height} width={width}>
+				<Layer>
+					<Rect x={0} y={0} height={height} width={width} fillPatternImage={backgroundImage}
+						fillPatternScaleX={backgroundScale} fillPatternScaleY={backgroundScale}
+						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
+				</Layer>
+				<Layer>
+					{/* Contestant Podiums */}
+					{podiums}
+
+					{/* Floor */}
+					<Rect
+						x={0} y={height - bottomMarginHeight}
+						height={bottomMarginHeight} width={width}
+						fill="grey"/>
+					
+					{/* Fast Money Timer */}
+					<Group x={clockMargin} y={height - (clockHeight + clockBottomOffset)} height={clockHeight} width={clockTotalWidth}>
+						{this.props.clockDisplay.split("").map((c,i) => (
+							<Rect key={i} x={i * clockNumberWidth} y={0} height={clockHeight} width={clockNumberWidth}
+								fillPatternImage={this.state["clock" + c]}
+								fillPatternScaleX={clockHeight/clockNatHeight} fillPatternScaleY={clockNumberWidth/clockNatWidth}/>
+						))}
+					</Group>
+				</Layer>
+			</Stage>
+			
 		);
 	}
 }

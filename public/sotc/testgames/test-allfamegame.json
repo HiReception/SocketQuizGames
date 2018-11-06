@@ -1,0 +1,55 @@
+{
+	"prefix": "$",
+	"suffix": "",
+	"startingScore": 20,
+	"normalAnsweringTimer": 3000,
+	"fastMoneyAnsweringTimer": 1000,
+	"standardCorrectAmount": 5,
+	"standardIncorrectAmount": 5,
+	"items": [
+		{"type": "FameGame"},
+
+        {"type": "RoundBreak"},
+        
+		{"type": "FameGame"},
+
+		{"type": "RoundBreak"},
+
+		{"type": "FameGame"}
+	],
+	"endgame": "BoardBonus",
+	"fameGameFaces": [
+		{"image": "", "name": "Max Walker", "comment": "Some sort of comment"},
+		{"image": "", "name": "Rebecca Gilling", "comment": "Some sort of comment"},
+		{"image": "", "name": "Russell Gilbert", "comment": "Some sort of comment"},
+		{"image": "", "name": "Janine Perrett", "comment": "Some sort of comment"},
+		{"image": "", "name": "Alexander Pasalidis (HV)", "comment": "Some sort of comment"},
+		{"image": "", "name": "Lisa Kudrow", "comment": "Some sort of comment"},
+		{"image": "", "name": "John Burgess", "comment": "Some sort of comment"},
+		{"image": "", "name": "Kelly Conroy", "comment": "Some sort of comment"},
+		{"image": "", "name": "Charles Woolley", "comment": "Some sort of comment"}
+	],
+	"fameGamePrizes": [
+		{"image": "", "name": "$10", "scoreValue": 10},
+		{"image": "", "name": "$15", "scoreValue": 15, "added": 2},
+		{"image": "", "name": "$25", "scoreValue": 25, "added": 3},
+		{"image": "", "name": "$1,000 or Pick Again", "wildCard": true, "prizeOption": 1000, "prizeOptionText": "$1,000 in Cash", "added": 3},
+		{"image": "", "name": "Carpets", "prizeValue": 550, "description": "", "removable": true},
+		{"image": "", "name": "Silverware", "prizeValue": 660, "description": "", "removable": true},
+		{"image": "", "name": "Toys", "prizeValue": 770, "description": "", "removable": true},
+		{"image": "", "name": "Sports Equipment", "prizeValue": 880, "description": "", "removable": true},
+		{"image": "", "name": "Pillows", "prizeValue": 999, "description": "", "removable": true},
+		{"image": "", "name": "Artwork", "prizeValue": 1000, "description": "", "removable": true},
+		{"image": "", "name": "Television", "prizeValue": 1100, "description": "", "removable": true},
+		{"image": "", "name": "Nicer Pillows", "prizeValue": 1200, "description": "", "removable": true}
+	],
+	"bonusPrizes": [
+		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": "", "prizeLevel": 1},
+		{"photo": "", "cardImage": "", "name": "Watch", "prizeValue": 12950, "description": "", "prizeLevel": 2},
+		{"photo": "", "cardImage": "", "name": "Sea-Doo", "prizeValue": 14990, "description": "", "prizeLevel": 3},
+		{"photo": "", "cardImage": "", "name": "Computers", "prizeValue": 8230, "description": "", "prizeLevel": 4},
+		{"photo": "", "cardImage": "", "name": "Some Other Prize", "prizeValue": 8230, "description": "", "prizeLevel": 5},
+		{"photo": "", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 65900, "description": "", "requiresWin": true, "prizeLevel": 6}
+	]
+
+}

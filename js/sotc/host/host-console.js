@@ -48,18 +48,21 @@ export default class HostConsole extends React.Component {
 			if (this.state.buzzersOpen && this.state.playerAnswering === ""
 				&& !this.state.lockedOutPlayerNames.includes(details.player)) {
 				this.setAnsweringPlayer(details.player);
+				this.props.socket.emit("play sound", "buzz-in");
 			}
 		} else if (this.state.currentItemType === "GiftShop" || this.state.currentItemType === "CashCard") {
 			if (this.state.playerPurchasing === ""
 			&& this.state.eligibleToBuy.includes(details.player)
 			&& this.state.availableToBuy) {
 				this.setPurchasingPlayer(details.player);
+				this.props.socket.emit("play sound", "buzz-in");
 			}
 		} else if (this.state.currentItemType === "TiebreakQuestion") {
 			if (this.state.buzzersOpen
 				&& this.state.playerAnswering === ""
 				&& this.state.tiebreakEligiblePlayers.includes(details.player)) {
 				this.setAnsweringPlayer(details.player);
+				this.props.socket.emit("play sound", "buzz-in");
 			}
 		}
 		
@@ -120,6 +123,7 @@ export default class HostConsole extends React.Component {
 			var newPlayers = this.state.players;
 			var newAnswering = newPlayers.find((p) => p.screenName === this.state.playerAnswering);
 			newAnswering.score = newAnswering.score + this.state.standardCorrectAmount;
+			this.props.socket.emit("play sound", "correct");
 			this.setGameState({
 				players: newPlayers,
 				buzzersOpen: false,
@@ -133,6 +137,7 @@ export default class HostConsole extends React.Component {
 	playerWrong = () => {
 		var newPlayers = this.state.players;
 		var newAnswering = newPlayers.find((p) => p.screenName === this.state.playerAnswering);
+		this.props.socket.emit("play sound", "incorrect");
 		if (this.state.currentItemType === "StandardQuestion" || this.state.currentItemType === "FastMoney") {
 			
 			newAnswering.score = newAnswering.score - this.state.standardIncorrectAmount;
@@ -195,12 +200,13 @@ export default class HostConsole extends React.Component {
 			this.setGameState({
 				timeRemaining: newTimeRemaining,
 			});
-			if (newTimeRemaining === 0) {
+			if (newTimeRemaining <= 0) {
 				this.setGameState({
 					timerRunning: false,
 					buzzersOpen: false,
 					currentItemOver: true,
 				});
+				this.props.socket.emit("play sound", "incorrect");
 				clearInterval(this.state.lockoutTimer);
 			} 
 		} else {

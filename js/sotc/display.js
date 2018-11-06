@@ -40,9 +40,9 @@ socket.on("accepted", function() {
 
 		onready: function() {
 			// SM2 has loaded, API ready to use e.g., createSound() etc.
-			//soundManager.createSound({id: "final-think", url: "./sounds/finalThink.mp3", autoLoad: true});
-			//soundManager.createSound({id: "daily-double", url: "./sounds/dailyDouble.wav", autoLoad: true});
-			//soundManager.createSound({id: "final-reveal", url: "./sounds/finalReveal.wav", autoLoad: true});
+			soundManager.createSound({id: "buzz-in", url: "./sounds/buzz-in.wav", autoLoad: true});
+			soundManager.createSound({id: "correct", url: "./sounds/correct.wav", autoLoad: true});
+			soundManager.createSound({id: "incorrect", url: "./sounds/incorrect.wav", autoLoad: true});
 		},
 
 		ontimeout: function() {

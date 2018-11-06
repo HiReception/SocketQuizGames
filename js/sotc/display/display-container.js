@@ -26,15 +26,6 @@ export default class DisplayContainer extends React.Component {
 
 	componentWillMount = () => {
 		this.updateDimensions();
-		const image = new window.Image();
-		image.src = "88-93background.png";
-		image.onload = () => {
-			this.setState({
-				backgroundImage: image,
-				backgroundNatHeight: image.naturalHeight,
-				backgroundNatWidth: image.naturalWidth,
-			});
-		};
 	}
 
 	componentDidMount = () => {
@@ -49,23 +40,9 @@ export default class DisplayContainer extends React.Component {
 
 
 	render = () => {
-		const {height, width, players, currentItemType, playerAnswering, playerPurchasing, fameGameBoardShowing, fameGameBoard} = this.state;
+		const {players, currentItemType, playerAnswering, playerPurchasing, fameGameBoardShowing, fameGameBoard} = this.state;
 		var mainPanel;
 
-		const screenRatio = width / height;
-		const backgroundRatio = this.state.backgroundNatWidth / this.state.backgroundNatHeight;
-		var backgroundScale = 1;
-		var backgroundOffsetX = 0, backgroundOffsetY = 0;
-		if (this.state.backgroundNatHeight) {
-			if (screenRatio > backgroundRatio) {
-				backgroundScale = width / this.state.backgroundNatWidth;
-				backgroundOffsetY = (this.state.backgroundNatHeight - height/backgroundScale)/2;
-			} else {
-				backgroundScale = height / this.state.backgroundNatHeight;
-				backgroundOffsetX = (this.state.backgroundNatWidth - width/backgroundScale)/2;
-			}
-			backgroundScale = screenRatio > backgroundRatio ? width / this.state.backgroundNatWidth : height/this.state.backgroundNatHeight;
-		}
 
 		switch (currentItemType) {
 		case "NoQuestionPanel":
@@ -95,6 +72,7 @@ export default class DisplayContainer extends React.Component {
 					<ContestantPanel
 						players={players}
 						playerAnswering={playerAnswering || playerPurchasing}
+						clockDisplay={currentItemType === "FastMoney" ? Math.ceil(this.state.fmTimeRemaining/1000).toString() : ""}
 					/>
 				);
 			}
@@ -124,16 +102,7 @@ export default class DisplayContainer extends React.Component {
 
 
 
-		return (
-			<Stage x={0} y={0} height={this.state.height} width={this.state.width}>
-				<Layer>
-					<Rect x={0} y={0} height={height} width={width} fillPatternImage={this.state.backgroundImage}
-						fillPatternScaleX={backgroundScale} fillPatternScaleY={backgroundScale}
-						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
-				</Layer>
-				{mainPanel}
-			</Stage>
-		);
+		return mainPanel;
 	}
 }
 
