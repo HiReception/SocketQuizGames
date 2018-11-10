@@ -17,7 +17,7 @@
 			"shortName": "Sleepwear",
 			"retailPrice": 1000,
 			"startingPrice": 6,
-			"image": "/public/sotc/images/giftshop-prizes/nightwear.png",
+			"image": "images/giftshop-prizes/nightwear.png",
 			"description": "Let me introduce to you the ideal way to look your best in the morning, with your choice of quality sleepwear. Firstly, we have Leah in an elegant pure silk peach kimono, with a matching nightie underneath. Next, Murray is dessed in a double-sided navy gown, made of warm thick toweling with a handsome roped design. And finally we see Kathy; Kathy is looking pretty in pink in full satin pyjamas with long pants and a nightshirt. Your choice of attire is normally $1,000, but tonight, only $6. From Yves Saint Laurent, and $ale of the Century."
 		}},
 		{"type": "StandardQuestion"},
@@ -36,7 +36,7 @@
 			"shortName": "Car Care Package",
 			"retailPrice": 1560,
 			"startingPrice": 9,
-			"image": "/public/sotc/images/giftshop-prizes/nightwear.png",
+			"image": "images/giftshop-prizes/nightwear.png",
 			"description": "If caring for your car lacks a little drive, then this total car care package will really put you AND your car into high gear. Providing monthly services for two cars, it includes hand wash, dry polish, interior vacuum and clean, and even attention to the windows and the tyres - so that your car will feel young again. Normally $1,560, but tonight it's yours for a polished $9. From VIP Car Care and $ale of the Century."
 		}},
 
@@ -85,37 +85,37 @@
 		}
 	],
 	"fameGameFaces": [
-		{"image": "/public/sotc/images/famegame-faces/Bruno Campos.png", "name": "Bruno Campos", "comment": "Jesse"},
-		{"image": "/public/sotc/images/famegame-faces/Tracy Grimshaw.png", "name": "Tracy Grimshaw", "comment": "The Today Show and Our Country"},
-		{"image": "/public/sotc/images/famegame-faces/Peter Phelps.png", "name": "Peter Phelps", "comment": "Stingers"},
-		{"image": "/public/sotc/images/famegame-faces/Fiona Fearon.png", "name": "Fiona Fearon", "comment": "Burke's Backyard"},
-		{"image": "/public/sotc/images/famegame-faces/Tassos Stephanopoulos.png", "name": "Tassos Stephanopoulos (HV)", "comment": "Tassos comes from Richmond in Victoria, and would like to dance like John Travolta, and also play soccer like Maradona."},
-		{"image": "/public/sotc/images/famegame-faces/Laura Innes.png", "name": "Laura Innes", "comment": "ER"},
-		{"image": "/public/sotc/images/famegame-faces/Molly Meldrum.png", "name": "Molly Meldrum", "comment": "Hey Hey it's Saturday"},
-		{"image": "/public/sotc/images/famegame-faces/Kathy Najimy.png", "name": "Kathy Najimy", "comment": "Veronica's Closet"},
-		{"image": "/public/sotc/images/famegame-faces/Mike Munro.png", "name": "Mike Munro", "comment": "A Current Affair"}
+		{"image": "images/famegame-faces/Bruno Campos.png", "name": "Bruno Campos", "comment": "Jesse"},
+		{"image": "images/famegame-faces/Tracy Grimshaw.png", "name": "Tracy Grimshaw", "comment": "The Today Show and Our Country"},
+		{"image": "images/famegame-faces/Peter Phelps.png", "name": "Peter Phelps", "comment": "Stingers"},
+		{"image": "images/famegame-faces/Fiona Fearon.png", "name": "Fiona Fearon", "comment": "Burke's Backyard"},
+		{"image": "images/famegame-faces/Tassos Stephanopoulos.png", "name": "Tassos Stephanopoulos (HV)", "comment": "Tassos comes from Richmond in Victoria, and would like to dance like John Travolta, and also play soccer like Maradona."},
+		{"image": "images/famegame-faces/Laura Innes.png", "name": "Laura Innes", "comment": "ER"},
+		{"image": "images/famegame-faces/Molly Meldrum.png", "name": "Molly Meldrum", "comment": "Hey Hey it's Saturday"},
+		{"image": "images/famegame-faces/Kathy Najimy.png", "name": "Kathy Najimy", "comment": "Veronica's Closet"},
+		{"image": "images/famegame-faces/Mike Munro.png", "name": "Mike Munro", "comment": "A Current Affair"}
 	],
 	"fameGamePrizes": [
-		{"image": "/public/sotc/images/famegame-faces/10-dollars.png", "name": "$10", "scoreValue": 10},
-		{"image": "/public/sotc/images/famegame-faces/15-dollars.png", "name": "$15", "scoreValue": 15, "added": 2},
-		{"image": "/public/sotc/images/famegame-faces/25-dollars.png", "name": "$25", "scoreValue": 25, "added": 3},
-		{"image": "/public/sotc/images/famegame-faces/wild-card.png", "name": "$1,000 or Pick Again", "wildCard": true, "prizeOption": 1000, "prizeOptionText": "$1,000 in Cash", "added": 3},
+		{"image": "images/famegame-faces/10-dollars.png", "name": "$10", "scoreValue": 10},
+		{"image": "images/famegame-faces/15-dollars.png", "name": "$15", "scoreValue": 15, "added": 2},
+		{"image": "images/famegame-faces/25-dollars.png", "name": "$25", "scoreValue": 25, "added": 3},
+		{"image": "images/famegame-faces/wild-card.png", "name": "$1,000 or Pick Again", "wildCard": true, "prizeOption": 1000, "prizeOptionText": "$1,000 in Cash", "added": 3},
 		{"image": "", "name": "Carpets", "prizeValue": 550, "description": "", "removable": true},
 		{"image": "", "name": "Silverware", "prizeValue": 660, "description": "", "removable": true},
 		{"image": "", "name": "Toys", "prizeValue": 770, "description": "", "removable": true},
-		{"image": "/public/sotc/images/famegame-faces/sports-equipment.png", "name": "Sports Equipment", "prizeValue": 880, "description": "", "removable": true},
+		{"image": "images/famegame-faces/sports-equipment.png", "name": "Sports Equipment", "prizeValue": 880, "description": "", "removable": true},
 		{"image": "", "name": "Pillows", "prizeValue": 999, "description": "", "removable": true},
 		{"image": "", "name": "Artwork", "prizeValue": 1000, "description": "", "removable": true},
 		{"image": "", "name": "Television", "prizeValue": 1100, "description": "", "removable": true},
-		{"image": "/public/sotc/images/famegame-faces/hair-appliances.png", "name": "Haircare Package", "prizeValue": 417, "description": "Keep your Crowning Glory looking regal with this haircare package with curl rollers, a dryer, brushes and more. It's valued at $417 from Vidal Sassoon.", "removable": true}
+		{"image": "images/famegame-faces/hair-appliances.png", "name": "Haircare Package", "prizeValue": 417, "description": "Keep your Crowning Glory looking regal with this haircare package with curl rollers, a dryer, brushes and more. It's valued at $417 from Vidal Sassoon.", "removable": true}
 	],
 	"bonusPrizes": [
 		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": "", "prizeLevel": 1},
 		{"photo": "", "cardImage": "", "name": "Computers", "prizeValue": 8230, "description": "", "prizeLevel": 2},
 		{"photo": "", "cardImage": "", "name": "Watch", "prizeValue": 12950, "description": "", "prizeLevel": 3},
 		{"photo": "", "cardImage": "", "name": "Sea-Doo", "prizeValue": 14990, "description": "", "prizeLevel": 4},
-		{"photo": "/public/sotc/images/bonus-prizes/pearl-necklace.png", "cardImage": "", "name": "Pearl Necklace", "prizeValue": 20000, "description": "Boasting artistry which only nature could create, this opal and pearl necklace is sure to steal the show. With perfect turns from a string of 66 round, lustrous pearls, plus a hand-crafted yellow gold enhancer, and the highlight of the piece: a deep cabochon dark opal, magnificently surrounded by a cast of dazzling diamonds. Valued at $20,000, from Germani Jewellery", "prizeLevel": 5},
-		{"photo": "/public/sotc/images/bonus-prizes/alfa-romeo-spider.png", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 71500, "description": "When the Spider bites, there is no known antidote. Boasting the most agile and seductive form of all, the Spider will empower you with genuine sporting finesse. With a racetrack-bred engine, and an adrenaline-charged pounce that leaves its competitors gasping, every ride in the Spider is a sensory feast. Thrill to the throaty growl of its engine; marvel at a body so sublime that none could possibly forget it. Along with a leather-lined cockpit, it's valued at $69,500 plus on-road costs. Alfa Romeo, the Heart and Soul of Sports Cars. And befitting both a champion and vehicle of this calibre, our 18-carat gold diamond-studded keyring valued at $2,000, from Germani Jewellery and $ale of the Century.", "requiresWin": true, "prizeLevel": 6}
+		{"photo": "images/bonus-prizes/pearl-necklace.png", "cardImage": "", "name": "Pearl Necklace", "prizeValue": 20000, "description": "Boasting artistry which only nature could create, this opal and pearl necklace is sure to steal the show. With perfect turns from a string of 66 round, lustrous pearls, plus a hand-crafted yellow gold enhancer, and the highlight of the piece: a deep cabochon dark opal, magnificently surrounded by a cast of dazzling diamonds. Valued at $20,000, from Germani Jewellery", "prizeLevel": 5},
+		{"photo": "images/bonus-prizes/alfa-romeo-spider.png", "cardImage": "", "name": "BMW Z3 Roadster", "prizeValue": 71500, "description": "When the Spider bites, there is no known antidote. Boasting the most agile and seductive form of all, the Spider will empower you with genuine sporting finesse. With a racetrack-bred engine, and an adrenaline-charged pounce that leaves its competitors gasping, every ride in the Spider is a sensory feast. Thrill to the throaty growl of its engine; marvel at a body so sublime that none could possibly forget it. Along with a leather-lined cockpit, it's valued at $69,500 plus on-road costs. Alfa Romeo, the Heart and Soul of Sports Cars. And befitting both a champion and vehicle of this calibre, our 18-carat gold diamond-studded keyring valued at $2,000, from Germani Jewellery and $ale of the Century.", "requiresWin": true, "prizeLevel": 6}
 	]
 
 }
