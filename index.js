@@ -114,7 +114,7 @@ app.post("/hostresume",
 				if (dbRes.rows.length === 0) {
 					next("roomNotFound");
 				} else {
-					var type = dbRes.rows[0].type
+					var type = dbRes.rows[0].type;
 					res.send("/" + type + "/host?gamecode=" + req.body.gamecode.toUpperCase());
 				}
 			}
@@ -261,7 +261,7 @@ app.post("/display",
 
 	function handleErrors(err, req, res, next) {
 		console.log("handleErrors called: " + err);
-		res.status(400).send(err)
+		res.status(400).send(err);
 	}
 );
 

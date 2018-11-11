@@ -2,10 +2,12 @@ div.player-panel-bar {
 	display: none;
 }
 
+$player-panel-bar-height: 20px;
+
 @media screen and (max-width: 799px) {
 	div.player-panel-bar {
 		display: flex;
-		height: 20px;
+		height: $player-panel-bar-height;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
