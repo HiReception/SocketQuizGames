@@ -10,7 +10,7 @@
   "author": "Michael Doyle",
   "contributors": [],
   "engines": {
-    "node": ">= 8.11.2"
+    "node": "8.11.2"
   },
   "nodemonConfig": {
     "ignore": [
