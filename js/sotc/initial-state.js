@@ -47,7 +47,7 @@ const initialState =  {
 	
 	// fame game related
 	lockedOutPlayerNames: [],
-	fameGamesCompleted: 0,
+	fameGamesStarted: 0,
 	fameGameBoard: [],
 	fameGamePrizes: [],
 	fameGameBoardShowing: false,

@@ -51,8 +51,12 @@ $option-shell-border: ($option-width * 0.04);
 				width: 100%;
 				transform-style: preserve-3d;
 				&.selected {
-					animation: option-spin 2s ease-in;
+					animation: option-spin 0s ease-in;
 					animation-fill-mode: forwards;
+
+					&.just-selected {
+						animation-duration: 2s;
+					}
 	
 					> .option-face, > .option-side, > .option-prize {
 						transition: background-color 0.5s;

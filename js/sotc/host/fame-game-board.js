@@ -6,7 +6,7 @@ export default class FameGameBoard extends React.Component {
 		super(props);
 		this.state = {
 			facesIntroduced: props.first ? false : true,
-			moneyToBeRevealedThisRound: (props.last && props.moneyRevealed) ? true : false
+			moneyToBeRevealedThisRound: (props.last && !props.moneyRevealed) ? true : false
 		};
 	}
 
@@ -63,22 +63,25 @@ export default class FameGameBoard extends React.Component {
 		// money has been revealed (in the last round)
 		else if (this.props.last && this.props.moneyRevealed) {
 			// List all previously unrevealed money and the faces they were behind
-			var unrevealedMoneyString;
+			var unrevealedMoneyText;
 			const unrevealedMoneyOptions = this.props.boardState.filter(o => !o.selected && (o.prize.wildCard || o.prize.scoreValue))
 				.sort((a,b) => (a.prize.scoreValue || 0) - (b.prize.scoreValue || 0));
 
 			if (unrevealedMoneyOptions.length > 0) {
-				unrevealedMoneyString = unrevealedMoneyOptions.map((o) => 
-					`${o.prize.scoreValue ? this.props.formatCurrency(o.prize.scoreValue) : "Wild"} Card was behind ${o.face.name}`
-				).join("\n");
+				unrevealedMoneyText = unrevealedMoneyOptions.map((o,i) => 
+					<p className="buzzer-panel" key={i}>{o.prize.scoreValue ? this.props.formatCurrency(o.prize.scoreValue) : "Wild"} Card was behind {o.face.name}</p>
+				);
 
 			} else {
-				unrevealedMoneyString = "All Money Cards and Wild Cards found";
+				unrevealedMoneyText = <p className="buzzer-panel">All Money Cards and Wild Cards found</p>;
 			}
 
 			contentPanel = (
 				<div className="fame-game-names">
-					<p className="buzzer-panel">{unrevealedMoneyString}</p>
+					{unrevealedMoneyText}
+					<div className="add-question-button" onClick={this.props.nextItem}>
+						<p>Continue</p>
+					</div>
 				</div>
 			);
 		}

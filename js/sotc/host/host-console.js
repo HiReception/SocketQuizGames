@@ -231,6 +231,7 @@ export default class HostConsole extends React.Component {
 	}
 
 	goToFameGameBoard = () => {
+		this.props.socket.emit("play sound", "correct");
 		this.setGameState({
 			fameGameBoardShowing: true,
 		});
@@ -445,6 +446,7 @@ export default class HostConsole extends React.Component {
 	}
 
 	revealFGMoney = () => {
+		const newBoard = this.state.fameGameBoard;
 		this.setGameState({
 			fameGameMoneyRevealed: true,
 		});
@@ -573,8 +575,8 @@ export default class HostConsole extends React.Component {
 
 			if (this.state.currentItemType === "FameGame") {
 				this.setGameState({
-					fameGamesCompleted: this.state.fameGamesCompleted + 1,
 					playerAnswering: "",
+					lockedOutPlayerNames: [],
 				});
 			}
 
@@ -583,7 +585,7 @@ export default class HostConsole extends React.Component {
 				//	 removable prizes on the board than there are ones to be added for a new round
 				// TODO add validation to prevent duplicate names of prizes in fame game
 				var newBoard = this.state.fameGameBoard;
-				const fameGameNo = this.state.fameGamesCompleted + 1;
+				const fameGameNo = this.state.fameGamesStarted + 1;
 				// find the prizes which are to be added to the board this round
 				const toAdd = this.state.fameGamePrizes.filter(p => p.added === fameGameNo);
 				console.log("Prizes to be added to Fame Game:");
@@ -615,6 +617,7 @@ export default class HostConsole extends React.Component {
 					fameGameBoard: newBoard,
 					fameGameBoardShowing: false,
 					fameGameCurrentSelection: -1,
+					fameGamesStarted: this.state.fameGamesStarted + 1,
 					wildCardDecision: -1,
 				});
 			}
@@ -953,8 +956,8 @@ export default class HostConsole extends React.Component {
 					boardState={this.state.fameGameBoard}
 					currentSelection={this.state.fameGameCurrentSelection}
 					wildCardDecision={this.state.wildCardDecision}
-					first={this.state.fameGamesCompleted === 0}
-					last={this.state.fameGamesCompleted + 1 === this.state.items.filter((i) => i.type === "FameGame")}
+					first={this.state.fameGamesStarted === 1}
+					last={this.state.fameGamesStarted === this.state.items.filter((i) => i.type === "FameGame").length}
 					moneyRevealed={this.state.fameGameMoneyRevealed}
 					addToPrizes={this.addPlayerPrize}
 					addToScore={this.addPlayerScore}

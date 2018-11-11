@@ -40,7 +40,8 @@ export default class DisplayContainer extends React.Component {
 
 
 	render = () => {
-		const {players, currentItemType, playerAnswering, playerPurchasing, fameGameBoardShowing, fameGameBoard} = this.state;
+		const {players, currentItemType, playerAnswering, playerPurchasing,
+			fameGameBoardShowing, fameGameBoard, fameGameCurrentSelection, fameGameMoneyRevealed} = this.state;
 		var mainPanel;
 
 
@@ -65,6 +66,8 @@ export default class DisplayContainer extends React.Component {
 				mainPanel = (
 					<FameGameBoard
 						board={fameGameBoard}
+						currentSelection={fameGameCurrentSelection}
+						moneyRevealed={fameGameMoneyRevealed}
 					/>
 				);
 			} else {

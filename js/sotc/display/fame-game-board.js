@@ -12,7 +12,13 @@ export default class FameGameBoard extends React.Component {
 					{rows.map((r, ri) => (
 						<div className="option-row" key={ri}>
 							{r.map((o,i) => (
-								<FameGameOption key={i} faceImage={o.face.image} prizeImage={o.prize.image} selected={o.selected}/>
+								<FameGameOption
+									key={i}
+									faceImage={o.face.image}
+									prizeImage={o.prize.image}
+									selected={o.selected || (this.props.moneyRevealed && (o.prize.scoreValue || o.prize.wildCard))}
+									justSelected={this.props.currentSelection == ((ri * optionsPerRow) + i) 
+										|| (this.props.moneyRevealed && (o.prize.scoreValue || o.prize.wildCard))}/>
 							))}
 						</div>
 					))}
@@ -24,6 +30,8 @@ export default class FameGameBoard extends React.Component {
 
 FameGameBoard.propTypes = {
 	board: PropTypes.array,
+	currentSelection: PropTypes.number,
+	moneyRevealed: PropTypes.bool,
 };
 
 class FameGameOption extends React.Component {
@@ -31,7 +39,7 @@ class FameGameOption extends React.Component {
 		
 		return (
 			<div className="board-option-shell">
-				<div className={`board-option${this.props.selected ? " selected" : ""}`}>
+				<div className={`board-option${this.props.selected ? " selected" : ""}${this.props.justSelected ? " just-selected" : ""}`}>
 					<div className="option-face">
 						<div className="option-face-image" style={{backgroundImage: `url(${this.props.faceImage})`}}>
 						</div>
