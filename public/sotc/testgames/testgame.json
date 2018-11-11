@@ -96,18 +96,18 @@
 		{"image": "images/famegame-faces/Mike Munro.png", "name": "Mike Munro", "comment": "A Current Affair"}
 	],
 	"fameGamePrizes": [
-		{"image": "images/famegame-faces/10-dollars.png", "name": "$10", "scoreValue": 10},
-		{"image": "images/famegame-faces/15-dollars.png", "name": "$15", "scoreValue": 15, "added": 2},
-		{"image": "images/famegame-faces/25-dollars.png", "name": "$25", "scoreValue": 25, "added": 3},
-		{"image": "images/famegame-faces/wild-card.png", "name": "$1,000 or Pick Again", "wildCard": true, "prizeOption": 1000, "prizeOptionText": "$1,000 in Cash", "added": 3},
+		{"image": "images/famegame-prizes/10-dollars.png", "name": "$10", "scoreValue": 10},
+		{"image": "images/famegame-prizes/15-dollars.png", "name": "$15", "scoreValue": 15, "added": 2},
+		{"image": "images/famegame-prizes/25-dollars.png", "name": "$25", "scoreValue": 25, "added": 3},
+		{"image": "images/famegame-prizes/wild-card.png", "name": "$1,000 or Pick Again", "wildCard": true, "prizeOption": 1000, "prizeOptionText": "$1,000 in Cash", "added": 3},
 		{"image": "", "name": "Carpets", "prizeValue": 550, "description": "", "removable": true},
 		{"image": "", "name": "Silverware", "prizeValue": 660, "description": "", "removable": true},
 		{"image": "", "name": "Toys", "prizeValue": 770, "description": "", "removable": true},
-		{"image": "images/famegame-faces/sports-equipment.png", "name": "Sports Equipment", "prizeValue": 880, "description": "", "removable": true},
+		{"image": "images/famegame-prizes/sports-equipment.png", "name": "Sports Equipment", "prizeValue": 880, "description": "", "removable": true},
 		{"image": "", "name": "Pillows", "prizeValue": 999, "description": "", "removable": true},
 		{"image": "", "name": "Artwork", "prizeValue": 1000, "description": "", "removable": true},
 		{"image": "", "name": "Television", "prizeValue": 1100, "description": "", "removable": true},
-		{"image": "images/famegame-faces/hair-appliances.png", "name": "Haircare Package", "prizeValue": 417, "description": "Keep your Crowning Glory looking regal with this haircare package with curl rollers, a dryer, brushes and more. It's valued at $417 from Vidal Sassoon.", "removable": true}
+		{"image": "images/famegame-prizes/hair-appliances.png", "name": "Haircare Package", "prizeValue": 417, "description": "Keep your Crowning Glory looking regal with this haircare package with curl rollers, a dryer, brushes and more. It's valued at $417 from Vidal Sassoon.", "removable": true}
 	],
 	"bonusPrizes": [
 		{"photo": "", "cardImage": "", "name": "Kitchen Package", "prizeValue": 5144, "description": "", "prizeLevel": 1},

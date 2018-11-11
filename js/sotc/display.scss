@@ -8,6 +8,11 @@ body {
 	font-family: Verdana, Geneva, sans-serif;
 }
 
+$board-width: 80vmin;
+$board-height: (0.75 * $board-width);
+$option-width: ($board-width / 3) * 0.8;
+$option-height: ($board-height / 3) * 0.8;
+$option-shell-border: ($option-width * 0.04);
 
 .fame-game-board-panel {
 	background-image: url("88-93background.png");
@@ -18,8 +23,8 @@ body {
 	height: 100%;
 	width: 100%;
 	.fame-game-board-ctr {
-		height: 450px;
-		width: 600px;
+		height: $board-height;
+		width: $board-width;
 		padding: 5px;
 		display: flex;
 		flex-direction: column;
@@ -35,15 +40,15 @@ body {
 			
 			.board-option-shell {
 				background-color: black;
-				height: 107px;
-				width: 142px;
-				margin: 5px;
+				height: $option-height;
+				width: $option-width;
+				border: $option-shell-border solid black;
 			}
 			.board-option {
 				position: relative;
 				
-				height: 107px;
-				width: 142px;
+				height: 100%;
+				width: 100%;
 				transform-style: preserve-3d;
 				&.selected {
 					animation: option-spin 2s ease-in;
@@ -57,8 +62,8 @@ body {
 			}
 			
 			.option-face-image, .option-prize-image {
-				height: 60px;
-				width: 80px;
+				height: 50%;
+				width: 50%;
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -72,13 +77,14 @@ body {
 			
 			div.option-face {
 				position: absolute;
-				top: 0;
-				height: 105px;
-				width: 140px;
+				top: 50%;
+				left: 50%;
+				height: 100%;
+				width: 100%;
 				flex: 1 1 auto;
 				border: 1px solid black;
-				background-color: grey;
-				transform: translateZ(15px);
+				background-color: #BBB;
+				transform: translate3d(-50%, -50%, 15px);
 				transform-style: preserve-3d;
 				z-index: 1;
 				backface-visibility: hidden;
@@ -89,30 +95,32 @@ body {
 			
 			div.option-side {
 				position: absolute;
-				height: 105px;
+				top: 50%;
+				height: 100%;
 				width: 30px;
 				border: 1px solid black;
 				background-color: grey;
 				backface-visibility: hidden;
 	
 				&.left {
-					transform: translateX(0px) rotateY(-90deg) translateZ(-15px);
+					transform: translateX(0px) translateY(-50%) rotateY(-90deg) translateZ(-15px);
 				}
 				
 				&.right {
-					transform: translateX(140px) rotateY(90deg) translateZ(-15px);
+					transform: translateX($option-width) translateY(-50%) rotateY(90deg) translateZ(-15px);
 				}
 			}
 			
 			div.option-prize {
 				position: absolute;
-				top: 0;
-				height: 105px;
-				width: 140px;
+				top: 50%;
+				left: 50%;
+				height: 100%;
+				width: 100%;
 				border: 1px solid black;
 				flex: 1 1 auto;
 				background-color: grey;
-				transform: rotateY(180deg) translateZ(15px);
+				transform: rotateY(180deg) translate3d(50%, -50%, 15px);
 				transform-style: preserve-3d;
 				backface-visibility: hidden;
 				display: flex;
