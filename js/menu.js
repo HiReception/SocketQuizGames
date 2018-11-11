@@ -20,7 +20,7 @@ class MainMenu extends React.Component {
 
 			displayCode: "",
 			currentError: "",
-		}
+		};
 	}
 
 	hostableGames = [

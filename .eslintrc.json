@@ -1,37 +1,47 @@
-module.exports = {
+{
     "env": {
         "browser": true,
         "commonjs": true,
         "es6": true,
-        "node": true,
+        "node": true
     },
     "extends": "eslint:recommended",
     "parser": "babel-eslint",
-    "plugins": [
-        "react",
-    ],
     "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
             "jsx": true
         },
-        "ecmaVersion": 2017,
         "sourceType": "module"
     },
+    "plugins": [
+        "react"
+    ],
     "rules": {
+        "react/jsx-uses-react": "error",
         "indent": [
             "error",
             "tab"
         ],
-        "react/jsx-uses-vars": [2],
+        "no-unused-vars": ["warn"],
+        "no-warning-comments": [
+            "warn"
+        ],
+        "no-console": [
+            "warn"
+        ],
         "linebreak-style": [
             "error",
-            "unix"
+            "windows"
         ],
         "quotes": [
             "error",
             "double"
         ],
-        "strict": [2],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "react/jsx-uses-vars": [2]
     }
-};
+}
