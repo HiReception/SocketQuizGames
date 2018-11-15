@@ -85,15 +85,15 @@
 		}
 	],
 	"fameGameFaces": [
-		{"image": "images/famegame-faces/Bruno Campos.png", "name": "Bruno Campos", "comment": "Jesse"},
-		{"image": "images/famegame-faces/Tracy Grimshaw.png", "name": "Tracy Grimshaw", "comment": "The Today Show and Our Country"},
-		{"image": "images/famegame-faces/Peter Phelps.png", "name": "Peter Phelps", "comment": "Stingers"},
-		{"image": "images/famegame-faces/Fiona Fearon.png", "name": "Fiona Fearon", "comment": "Burke's Backyard"},
-		{"image": "images/famegame-faces/Tassos Stephanopoulos.png", "name": "Tassos Stephanopoulos (HV)", "comment": "Tassos comes from Richmond in Victoria, and would like to dance like John Travolta, and also play soccer like Maradona."},
-		{"image": "images/famegame-faces/Laura Innes.png", "name": "Laura Innes", "comment": "ER"},
-		{"image": "images/famegame-faces/Molly Meldrum.png", "name": "Molly Meldrum", "comment": "Hey Hey it's Saturday"},
-		{"image": "images/famegame-faces/Kathy Najimy.png", "name": "Kathy Najimy", "comment": "Veronica's Closet"},
-		{"image": "images/famegame-faces/Mike Munro.png", "name": "Mike Munro", "comment": "A Current Affair"}
+		{"image": "images/famegame-faces/Bruno-Campos.png", "name": "Bruno Campos", "comment": "Jesse"},
+		{"image": "images/famegame-faces/Tracy-Grimshaw.png", "name": "Tracy Grimshaw", "comment": "The Today Show and Our Country"},
+		{"image": "images/famegame-faces/Peter-Phelps.png", "name": "Peter Phelps", "comment": "Stingers"},
+		{"image": "images/famegame-faces/Fiona-Fearon.png", "name": "Fiona Fearon", "comment": "Burke's Backyard"},
+		{"image": "images/famegame-faces/Tassos-Stephanopoulos.png", "name": "Tassos Stephanopoulos (HV)", "comment": "Tassos comes from Richmond in Victoria, and would like to dance like John Travolta, and also play soccer like Maradona."},
+		{"image": "images/famegame-faces/Laura-Innes.png", "name": "Laura Innes", "comment": "ER"},
+		{"image": "images/famegame-faces/Molly-Meldrum.png", "name": "Molly Meldrum", "comment": "Hey Hey it's Saturday"},
+		{"image": "images/famegame-faces/Kathy-Najimy.png", "name": "Kathy Najimy", "comment": "Veronica's Closet"},
+		{"image": "images/famegame-faces/Mike-Munro.png", "name": "Mike Munro", "comment": "A Current Affair"}
 	],
 	"fameGamePrizes": [
 		{"image": "images/famegame-prizes/10-dollars.png", "name": "$10", "scoreValue": 10},
