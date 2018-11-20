@@ -2,8 +2,6 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
-var ReactCSSTransitionReplace = require("react-css-transition-replace");
-var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 
 import HostConsole from "./host/host-console";
 

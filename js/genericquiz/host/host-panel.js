@@ -2,7 +2,6 @@ var $ = require("jquery");
 var React = require("react");
 var PropTypes = require("prop-types");
 const io = require("socket.io-client");
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 import PlayerPanelToggleBar from "../../common/player-panel-bar";
 import PlayerDetailsPanel from "./player-details-panel";
@@ -194,12 +193,7 @@ export default class HostPanel extends React.Component {
 			}
 			playerPanel = (
 				<div>
-					<ReactCSSTransitionGroup
-						transitionName="listing"
-						transitionEnterTimeout={500}
-						transitionLeaveTimeout={500}>
-						{playerPanelContent}
-					</ReactCSSTransitionGroup>
+					{playerPanelContent}
 				</div>
 			);
 		} else {
