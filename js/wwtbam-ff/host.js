@@ -4,8 +4,6 @@ const io = require("socket.io-client");
 const socket = io();
 const $ = require("jquery");
 
-const ReactCSSTransitionReplace = require("react-css-transition-replace");
-const ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 
 import HostConsole from "./host/host-console";
 
