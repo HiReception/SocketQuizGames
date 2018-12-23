@@ -27,7 +27,8 @@ class MainMenu extends React.Component {
 		{folder: "jeopardy", name: "Jeopardy!"},
 		{folder: "genericquiz", name: "Generic Quiz"},
 		{folder: "wof-board", name: "Wheel of Fortune"},
-		{folder: "wwtbam-ff", name: "Fastest Finger First"}
+		{folder: "wwtbam-ff", name: "Fastest Finger First"},
+		{folder: "wwtbam", name: "Who Wants to Be a Millionaire"}
 	];
 
 	minigames = [

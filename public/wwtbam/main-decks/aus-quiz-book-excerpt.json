@@ -1,0 +1,4384 @@
+{
+	"questions": [
+		{
+			"Value": 1,
+			"Q No": 1,
+			"Question": "In the Walt Disney film of the same name, what type of creature is Bambi?",
+			"A": "Deer",
+			"B": "Elephant",
+			"C": "Mouse",
+			"D": "Cat",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 2,
+			"Question": "In which country was the 1992 film 'Strictly Ballroom' set?",
+			"A": "South Africa",
+			"B": "Canada",
+			"C": "New Zealand",
+			"D": "Australia",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 3,
+			"Question": "In Australia, comradeship as an ideal is known by what name?",
+			"A": "Mateship",
+			"B": "Buddy system",
+			"C": "Equality",
+			"D": "Old school tie",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 4,
+			"Question": "Who is colloquially known as a 'bookie'?",
+			"A": "Bookmaker",
+			"B": "Bookkeeper",
+			"C": "Bookbinder",
+			"D": "Bookseller",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 5,
+			"Question": "A huge hit in 1967, what was the name of John Farnham's 'cleaning lady'?",
+			"A": "Josie",
+			"B": "Sadie",
+			"C": "Betty",
+			"D": "Milly",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 6,
+			"Question": "Which of these words is slang for 'money'?",
+			"A": "Dosh",
+			"B": "Mush",
+			"C": "Kudos",
+			"D": "Hash",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 7,
+			"Question": "A dangerously soft-hearted person is sometimes described as a bleeding what?",
+			"A": "Brain",
+			"B": "Kidney",
+			"C": "Spleen",
+			"D": "Heart",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 8,
+			"Question": "An Australian invention, the flight memory recorder in an aircraft is better known as the what colour box?",
+			"A": "Black",
+			"B": "Brown",
+			"C": "Yellow",
+			"D": "Grey",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 9,
+			"Question": "Probably the most famous portrait ever painted is Leonardo da Vinci's 'Mona who'?",
+			"A": "Priscilla",
+			"B": "Stella",
+			"C": "Lisa",
+			"D": "Sophia",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 10,
+			"Question": "When one is in a hallucinatory state, which animals are said to be pink?",
+			"A": "Panthers",
+			"B": "Elephants",
+			"C": "Aardvarks",
+			"D": "Goannas",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 11,
+			"Question": "Which large structure in New South Wales is colloquially known as the coathanger?",
+			"A": "Sydney Opera House",
+			"B": "Sydney Harbour Bridge",
+			"C": "Anzac Bridge",
+			"D": "Cahill Expressway",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 12,
+			"Question": "From which language do we get the word cappuccino?",
+			"A": "Italian",
+			"B": "French",
+			"C": "German",
+			"D": "Japanese",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 13,
+			"Question": "Which of the following pioneered frozen food production?",
+			"A": "Clarence Birdseye",
+			"B": "Henrik Crowsfoot",
+			"C": "Ivor Nestegg",
+			"D": "William Duckbill",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 14,
+			"Question": "Originally made by Bryant and May of Melbourne, Redheads are a famous brand of which product?",
+			"A": "Hair dye",
+			"B": "Ice blocks",
+			"C": "Matches",
+			"D": "Toothpicks",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 15,
+			"Question": "Which Australian animal has a duck-like bill?",
+			"A": "Emu",
+			"B": "Koala",
+			"C": "Platypus",
+			"D": "Wombat",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 16,
+			"Question": "What is the official unit of currency in Japan?",
+			"A": "Ben",
+			"B": "Hen",
+			"C": "Yen",
+			"D": "Zen",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 17,
+			"Question": "An Australian classic novel by Rolf Boldrewood is 'Robbery Under what'?",
+			"A": "Arms",
+			"B": "Legs",
+			"C": "Water",
+			"D": "Pants",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 18,
+			"Question": "The habit of denigrating or 'cutting down' those who are successful is often described as the tall what syndrome?",
+			"A": "Pansy",
+			"B": "Poppy",
+			"C": "Polyanthus",
+			"D": "Petunia",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 19,
+			"Question": "In Australia, scones with jam and cream served with tea and coffee is known as a Devonshire what?",
+			"A": "Tea",
+			"B": "Treat",
+			"C": "Supper",
+			"D": "Snack",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 20,
+			"Question": "How many legs does a tripod have?",
+			"A": "One",
+			"B": "Three",
+			"C": "Nine",
+			"D": "One hundred",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 21,
+			"Question": "Popular at fetes, a pink and white sweet of icing sugar and desiccated coconut is known as coconut what?",
+			"A": "Ice",
+			"B": "Roughs",
+			"C": "Fudge",
+			"D": "Chutney",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 22,
+			"Question": "To remain neutral or undecided in a dispute is to sit on the what?",
+			"A": "Bench",
+			"B": "Fence",
+			"C": "Saddle",
+			"D": "Gate",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 23,
+			"Question": "The abbreviation EFTPOS literally stands for electronic funds transfer at point of what?",
+			"A": "Safety",
+			"B": "Sale",
+			"C": "Station",
+			"D": "Stand-off",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 24,
+			"Question": "A didgeridoo is made from what material?",
+			"A": "Steel",
+			"B": "Bone",
+			"C": "Wood",
+			"D": "Plastic",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 25,
+			"Question": "By what name is an elk known in North America?",
+			"A": "Heron",
+			"B": "Killer whale",
+			"C": "Moose",
+			"D": "Eel",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 26,
+			"Question": "Which hat is worn as part of the Australian soldier's uniform?",
+			"A": "Sombrero",
+			"B": "Deerstalker",
+			"C": "Slouch",
+			"D": "Boater",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 27,
+			"Question": "What is the abbreviation for the organisation, founded in Britain in 1824, to enforce laws to protect animals?",
+			"A": "NSPCA",
+			"B": "RSPCC",
+			"C": "RSPCA",
+			"D": "NSPCC",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 28,
+			"Question": "The 1984 Australian federal election was contested by Prime Minister Bob Hawke and Opposition leader Andrew who?",
+			"A": "Finch",
+			"B": "Partridge",
+			"C": "Peacock",
+			"D": "Wren",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 29,
+			"Question": "Mount Gambier's famous Blue Lake turns a brilliant shade of what colour in summer?",
+			"A": "Blue",
+			"B": "Green",
+			"C": "Grey",
+			"D": "Yellow",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 30,
+			"Question": "Cadbury Schweppes is Australia's leading manufacturer of which product?",
+			"A": "Champagne",
+			"B": "Cheese",
+			"C": "Chocolate",
+			"D": "Chop suey",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 31,
+			"Question": "In an Australian pub, to buy a drink for someone is to what?",
+			"A": "Roar",
+			"B": "Scream",
+			"C": "Shout",
+			"D": "Yell",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 32,
+			"Question": "Which spelling is correct for the word meaning 'a slight hesitation'?",
+			"A": "PORES",
+			"B": "PAWS",
+			"C": "PAUSE",
+			"D": "POURS",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 33,
+			"Question": "Which birds are kept in lofts and used for racing?",
+			"A": "Chickens",
+			"B": "Ducks",
+			"C": "Ostriches",
+			"D": "Pigeons",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 34,
+			"Question": "Which Australian politician was a former television quiz show champion?",
+			"A": "Barry Jones",
+			"B": "Jeff Kennett",
+			"C": "Tim Fischer",
+			"D": "Pauline Hanson",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 35,
+			"Question": "A slab, case or box is a carton of 24 cans of what beverage?",
+			"A": "Soft drink",
+			"B": "Beer",
+			"C": "Fruit juice",
+			"D": "Milk",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 36,
+			"Question": "Which of these is not an Australian term for a swimming costume?",
+			"A": "Togs",
+			"B": "Bathers",
+			"C": "Cossie",
+			"D": "Birthday suit",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 37,
+			"Question": "A popular consumer magazine is the 'Australian Women's what'?",
+			"A": "Daily",
+			"B": "Weekly",
+			"C": "Fortnightly",
+			"D": "Monthly",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 38,
+			"Question": "Brothers Tim and Neil Finn led the band Split what?",
+			"A": "Personalities",
+			"B": "Peas",
+			"C": "Hairs",
+			"D": "Enz",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 39,
+			"Question": "Who is the head of the Roman Catholic church?",
+			"A": "Pope",
+			"B": "Cardinal",
+			"C": "Shah",
+			"D": "Godfather",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 40,
+			"Question": "Which title goes before the name of a man who has been knighted?",
+			"A": "Sir",
+			"B": "Madam",
+			"C": "Count",
+			"D": "Prince",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 41,
+			"Question": "Who or what would somebody write about in an autobiography?",
+			"A": "Themselves",
+			"B": "A car",
+			"C": "Wildlife",
+			"D": "The future",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 42,
+			"Question": "Which of the following is traditionally associated with a Maypole?",
+			"A": "Marriage",
+			"B": "Dancing",
+			"C": "Barber's shop",
+			"D": "Pole-vaulting",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 43,
+			"Question": "Which form of transport moves along on a cushion of air?",
+			"A": "Monorail",
+			"B": "Ferry",
+			"C": "Tank",
+			"D": "Hovercraft",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 44,
+			"Question": "Which part of a book is also a type of finger?",
+			"A": "Epilogue",
+			"B": "Index",
+			"C": "Appendix",
+			"D": "Prologue",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 45,
+			"Question": "Which of these people might use a rolling pin?",
+			"A": "Builder",
+			"B": "Fisherman",
+			"C": "Gardener",
+			"D": "Baker",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 46,
+			"Question": "Who 'sat in the corner', according to the nursery rhyme?",
+			"A": "Little Boy Blue",
+			"B": "Little Jack Horner",
+			"C": "Little Miss Muffet",
+			"D": "Little Johnny Green",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 47,
+			"Question": "What sort of animal is Walt Disney's 'Dumbo'?",
+			"A": "Deer",
+			"B": "Rabbit",
+			"C": "Elephant",
+			"D": "Donkey",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 48,
+			"Question": "Which group released an album called 'Sergeant Pepper's Lonely Hearts Club Band'?",
+			"A": "Spice Girls",
+			"B": "Oasis",
+			"C": "Rolling Stones",
+			"D": "Beatles",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 49,
+			"Question": "What is the name of Queen Elizabeth II's husband?",
+			"A": "Prince Michael",
+			"B": "Prince Planet",
+			"C": "Prince Charming",
+			"D": "Prince Philip",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 50,
+			"Question": "In which country did spaghetti originate?",
+			"A": "France",
+			"B": "Wales",
+			"C": "Italy",
+			"D": "Australia",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 51,
+			"Question": "An admiral is a high-ranking officer in which force?",
+			"A": "Navy",
+			"B": "Army",
+			"C": "Police",
+			"D": "Air force",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 52,
+			"Question": "What is a twelfth of a foot called?",
+			"A": "A toe",
+			"B": "An inch",
+			"C": "A metre",
+			"D": "A pound",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 53,
+			"Question": "Where on the body should a helmet be worn?",
+			"A": "On the feet",
+			"B": "Around the waist",
+			"C": "Between the knees",
+			"D": "On the head",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 54,
+			"Question": "How many seasons are there in a year?",
+			"A": "Four",
+			"B": "Six",
+			"C": "Twelve",
+			"D": "Twenty four",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 55,
+			"Question": "What colour ball should normally be struck by the cue in snooker?",
+			"A": "Black",
+			"B": "Mauve",
+			"C": "Orange",
+			"D": "White",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 56,
+			"Question": "Which part of a lettuce is usually eaten in salads?",
+			"A": "Seeds",
+			"B": "Roots",
+			"C": "Berries",
+			"D": "Leaves",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 57,
+			"Question": "What is another name for a moving staircase?",
+			"A": "Elevator",
+			"B": "Escalator",
+			"C": "Perambulator",
+			"D": "Rotavator",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 58,
+			"Question": "How would a musician play a triangle?",
+			"A": "Suck it",
+			"B": "Blow it",
+			"C": "Pluck it",
+			"D": "Strike it",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 59,
+			"Question": "Which of these does a horse rider sit on?",
+			"A": "Stirrup",
+			"B": "Spur",
+			"C": "Saddle",
+			"D": "Throne",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 60,
+			"Question": "Which fictional little girl explored Wonderland?",
+			"A": "Alice",
+			"B": "Madeline",
+			"C": "Violet Elizabeth Bott",
+			"D": "Matilda",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 61,
+			"Question": "The ostrich is the largest example of which group of creatures?",
+			"A": "Birds",
+			"B": "Frogs",
+			"C": "Reptiles",
+			"D": "Insects",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 62,
+			"Question": "What do we call the act of thumbing a lift?",
+			"A": "Hitch-hiking",
+			"B": "Camping",
+			"C": "Joyriding",
+			"D": "Orienteering",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 63,
+			"Question": "Which of these is not the colour of a snooker ball?",
+			"A": "Blue",
+			"B": "Yellow",
+			"C": "Red",
+			"D": "Purple",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 64,
+			"Question": "What is the main item stored in a camel's hump?",
+			"A": "Sand",
+			"B": "Pyjamas",
+			"C": "Maps",
+			"D": "Fat",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 65,
+			"Question": "Which of these animals does not belong to the cat family?",
+			"A": "Cheetah",
+			"B": "Leopard",
+			"C": "Rottweiler",
+			"D": "Tiger",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 66,
+			"Question": "Which of these is a prickly plant that usually grows in the desert?",
+			"A": "Cactus",
+			"B": "Daffodil",
+			"C": "Hyacinth",
+			"D": "Begonia",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 67,
+			"Question": "What would you do with a truffle?",
+			"A": "Play it",
+			"B": "Wear it",
+			"C": "Spend it",
+			"D": "Eat it",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 68,
+			"Question": "In Aussie rhyming slang, what are your mince pies?",
+			"A": "Ears",
+			"B": "Eyes",
+			"C": "Mouth",
+			"D": "Nose",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 69,
+			"Question": "The Jason Reclina is synonymous in Australia with which furniture item?",
+			"A": "Banana lounge",
+			"B": "Lounge chair",
+			"C": "Dining table",
+			"D": "Water bed",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 70,
+			"Question": "A northern Australian marine crustacean popular as food is the Moreton Bay what?",
+			"A": "Beetle",
+			"B": "Bug",
+			"C": "Creepy",
+			"D": "Crawly",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 71,
+			"Question": "What is an Australian colloquial contraction of afternoon?",
+			"A": "Arfto",
+			"B": "Arvo",
+			"C": "Ternoon",
+			"D": "PM",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 72,
+			"Question": "A classic Australian song is 'Click Go the what'?",
+			"A": "Scissors",
+			"B": "Secateurs",
+			"C": "Shears",
+			"D": "Castanets",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 73,
+			"Question": "What was the name of the baby who disappeared from an Uluru camping ground in August 1980?",
+			"A": "Antonia",
+			"B": "Azaria",
+			"C": "Amelia",
+			"D": "Alison",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 74,
+			"Question": "Until 1984, what was Australia's official national anthem?",
+			"A": "Rule Britannia",
+			"B": "Waltzing Matilda",
+			"C": "Land of Hope and Glory",
+			"D": "God Save the Queen",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 75,
+			"Question": "Proclaimed in 1984, the official colours of Australia are green and which other?",
+			"A": "Gold",
+			"B": "White",
+			"C": "Red",
+			"D": "Blue",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 76,
+			"Question": "Anything wonderful or first rate is often described as the greatest thing since sliced what?",
+			"A": "Salami",
+			"B": "Bread",
+			"C": "Cheese",
+			"D": "Corned beef",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 77,
+			"Question": "In which industry is Hoyts a famous Australian name?",
+			"A": "Cinema",
+			"B": "Ice cream",
+			"C": "Fast food",
+			"D": "Light rail",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 78,
+			"Question": "Promoting Australian tourism, Paul Hogan would say 'throw another what on the barbie'?",
+			"A": "Shrimp",
+			"B": "Chop",
+			"C": "Steak",
+			"D": "Sausage",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 79,
+			"Question": "The abbreviation J.P. literally stands for Justice of the what?",
+			"A": "Parole",
+			"B": "Police",
+			"C": "Peace",
+			"D": "Parliament",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 80,
+			"Question": "Artist Kevin Hart is best known by what nickname?",
+			"A": "Pro",
+			"B": "Doc",
+			"C": "Turps",
+			"D": "Leonardo",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 81,
+			"Question": "Remembrance Day is observed on which date in November?",
+			"A": "1st",
+			"B": "11th",
+			"C": "15th",
+			"D": "29th",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 82,
+			"Question": "A drinking tour at a series of hotels in the one outing is called a pub what?",
+			"A": "Attack",
+			"B": "Binge",
+			"C": "Crawl",
+			"D": "Cruise",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 83,
+			"Question": "In Australia, what is a lottery in which the prize is a chicken?",
+			"A": "Chook raffle",
+			"B": "Fowl contest",
+			"C": "Chicken prix",
+			"D": "Hen's night",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 84,
+			"Question": "According to a classic Australian song, 'Kookaburra sits on the old what'?",
+			"A": "Man's head",
+			"B": "Gum tree",
+			"C": "Picket fence",
+			"D": "Shed out the back",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 85,
+			"Question": "Australian Wally Lewis was a champion in which sport?",
+			"A": "Australian Rules",
+			"B": "Racing",
+			"C": "Rugby League",
+			"D": "Netball",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 86,
+			"Question": "James Reyne was the lead singer for the rock band Australian what?",
+			"A": "Salute",
+			"B": "Crawl",
+			"C": "Rules",
+			"D": "Drawl",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 87,
+			"Question": "What is Australian tennis champion John Newcombe's nickname?",
+			"A": "Scud",
+			"B": "Johnno",
+			"C": "Fitzy",
+			"D": "Newk",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 88,
+			"Question": "Actor Lorrayne Bayly played the beloved character Grace, in which popular Australian TV series?",
+			"A": "All Together Now",
+			"B": "The Bob Morrison Show",
+			"C": "Hey Dad!",
+			"D": "The Sullivans",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 89,
+			"Question": "In what direction is the Gold Coast from Brisbane?",
+			"A": "East",
+			"B": "North",
+			"C": "South",
+			"D": "West",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 90,
+			"Question": "An Australian exclamation of astonishment is 'stone the what'?",
+			"A": "Emus",
+			"B": "Galahs",
+			"C": "Crows",
+			"D": "Cockatoos",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 91,
+			"Question": "An Australian silent film of 1916 is 'Mutiny on the what'?",
+			"A": "Beagle",
+			"B": "Bounty",
+			"C": "Endeavour",
+			"D": "Murray",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 92,
+			"Question": "The remote and inland country of Australia is known as the what?",
+			"A": "Background",
+			"B": "Backyard",
+			"C": "Hinterback",
+			"D": "Outback",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 93,
+			"Question": "Which of these sportsmen is a champion of Australian Rugby League?",
+			"A": "Polly Farmer",
+			"B": "Ron Barassi",
+			"C": "Clive Churchill",
+			"D": "Charlie Yankos",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 94,
+			"Question": "Who is the widow of Australian tycoon Robert Holmes à Court?",
+			"A": "Janet",
+			"B": "Megan",
+			"C": "Susan",
+			"D": "Tracy",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 95,
+			"Question": "What particular Australian term describes a trouble-maker?",
+			"A": "Lackey",
+			"B": "Larrikin",
+			"C": "Layabout",
+			"D": "Lorikeet",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 96,
+			"Question": "Fremantle is a city within the metropolitan area of which Australian state capital?",
+			"A": "Adelaide",
+			"B": "Brisbane",
+			"C": "Hobart",
+			"D": "Perth",
+			"Correct": "D"
+		},
+		{
+			"Value": 1,
+			"Q No": 97,
+			"Question": "In 1972, Australia's Helen Reddy had a huge hit with the song 'I am what'?",
+			"A": "Strong",
+			"B": "Invincible",
+			"C": "Woman",
+			"D": "What I Am",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 98,
+			"Question": "The 'baggy green cap' is associated with the Australian national team of which sport?",
+			"A": "Rugby League",
+			"B": "Cricket",
+			"C": "Rugby Union",
+			"D": "Soccer",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 99,
+			"Question": "An Australian expression for moving very quickly is to be like a what up a drain pipe?",
+			"A": "Rat",
+			"B": "Mole",
+			"C": "Hamster",
+			"D": "Gerbil",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 100,
+			"Question": "A famous ice-skating partnership is Torvill and who?",
+			"A": "Bishop",
+			"B": "Vicar",
+			"C": "Dean",
+			"D": "Parson",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 101,
+			"Question": "What mode of transport is traditionally used by witches in fairy tales?",
+			"A": "Penny-farthing",
+			"B": "Scooter",
+			"C": "Broomstick",
+			"D": "Unicycle",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 102,
+			"Question": "What does a display of 'five o'clock shadow' warrant?",
+			"A": "Shave",
+			"B": "Haircut",
+			"C": "Sunbathe",
+			"D": "Scrub down",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 103,
+			"Question": "According to the proverb, 'Every dog has what'?",
+			"A": "Bad breath",
+			"B": "Fleas",
+			"C": "His day",
+			"D": "A cold wet nose",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 104,
+			"Question": "What kind of eagle is the national bird of the USA?",
+			"A": "One-legged",
+			"B": "Hairy",
+			"C": "Bald",
+			"D": "Red-nosed",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 105,
+			"Question": "What is the name of the famous bell in the clock tower at the Houses of Parliament in London?",
+			"A": "Big Time",
+			"B": "Big Bang",
+			"C": "Big Ben",
+			"D": "Big Noise",
+			"Correct": "C"
+		},
+		{
+			"Value": 1,
+			"Q No": 106,
+			"Question": "Which of these boys' names is also a herb?",
+			"A": "Bertram",
+			"B": "Basil",
+			"C": "Boris",
+			"D": "Bartholomew",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 107,
+			"Question": "Which English soccer club shares its name with Bill Clinton's daughter?",
+			"A": "Arsenal",
+			"B": "Chelsea",
+			"C": "Newcastle",
+			"D": "Watford",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 108,
+			"Question": "Which of these was a leader of the Sioux at the Battle of the Little Bighorn?",
+			"A": "Sitting Up",
+			"B": "Sitting Bull",
+			"C": "Sitting Duck",
+			"D": "Sitting Pretty",
+			"Correct": "B"
+		},
+		{
+			"Value": 1,
+			"Q No": 109,
+			"Question": "What is a hundredth of a metre called?",
+			"A": "Centimetre",
+			"B": "Gram",
+			"C": "Litre",
+			"D": "Inch",
+			"Correct": "A"
+		},
+		{
+			"Value": 1,
+			"Q No": 110,
+			"Question": "Who married Fred Flintstone?",
+			"A": "Wilma",
+			"B": "Barney",
+			"C": "Pebbles",
+			"D": "Dino",
+			"Correct": "A"
+		},
+		{
+			"Value": 2,
+			"Q No": 1,
+			"Question": "According to folklore, what does the sandman help children to do?",
+			"A": "Sleep",
+			"B": "Grow",
+			"C": "Cross the road",
+			"D": "Build sandcastles",
+			"Correct": "A"
+		},
+		{
+			"Value": 2,
+			"Q No": 2,
+			"Question": "On TV from 1959 to 1999, puppeteer Norman Hetherington's most famous creation is Mr who?",
+			"A": "Squiggle",
+			"B": "Doodle",
+			"C": "Dotty",
+			"D": "Graffiti",
+			"Correct": "A"
+		},
+		{
+			"Value": 2,
+			"Q No": 3,
+			"Question": "In which sport do the Australian and New Zealand teams contest the Bledisloe Cup?",
+			"A": "Rugby Union",
+			"B": "Soccer",
+			"C": "Hockey",
+			"D": "Rugby League",
+			"Correct": "A"
+		},
+		{
+			"Value": 2,
+			"Q No": 4,
+			"Question": "By what name is a cantaloupe more commonly known in Australia?",
+			"A": "Mandarin",
+			"B": "Rockmelon",
+			"C": "Pawpaw",
+			"D": "Watermelon",
+			"Correct": "B"
+		},
+		{
+			"Value": 2,
+			"Q No": 5,
+			"Question": "Dramatically declining in numbers since the mid-1980s, one of the main species of fish caught off Australia's south-east coast is the orange what?",
+			"A": "Smoothy",
+			"B": "Shiny",
+			"C": "Scaly",
+			"D": "Roughy",
+			"Correct": "D"
+		},
+		{
+			"Value": 2,
+			"Q No": 6,
+			"Question": "As what is saccharin mainly used?",
+			"A": "Adhesive",
+			"B": "Sweetener",
+			"C": "Whitener",
+			"D": "Solvent",
+			"Correct": "B"
+		},
+		{
+			"Value": 2,
+			"Q No": 7,
+			"Question": "Who starred in the films 'Saturday Night Fever' and 'Pulp Fiction'?",
+			"A": "John Travolta",
+			"B": "Samuel L. Jackson",
+			"C": "Bruce Willis",
+			"D": "Tim Roth",
+			"Correct": "A"
+		},
+		{
+			"Value": 2,
+			"Q No": 8,
+			"Question": "Founded in Newcastle in 1930 a social welfare organisation and religious order of the Anglican Church is the Brotherhood of Saint who?",
+			"A": "Gregory",
+			"B": "Stephen",
+			"C": "Laurence",
+			"D": "Thomas",
+			"Correct": "C"
+		},
+		{
+			"Value": 2,
+			"Q No": 9,
+			"Question": "A prominent Melbourne newspaper is 'The what'?",
+			"A": "Age",
+			"B": "Gauge",
+			"C": "Page",
+			"D": "Sage",
+			"Correct": "A"
+		},
+		{
+			"Value": 2,
+			"Q No": 10,
+			"Question": "Which sign of the zodiac has a sting in the tail?",
+			"A": "Sagittarius",
+			"B": "Aries",
+			"C": "Cancer",
+			"D": "Scorpio",
+			"Correct": "D"
+		},
+		{
+			"Value": 3,
+			"Q No": 1,
+			"Question": "What do you do if you 'grease someone's palm'?",
+			"A": "Tell a fortune",
+			"B": "Bribe someone",
+			"C": "Give a warning",
+			"D": "Shake hands",
+			"Correct": "B"
+		},
+		{
+			"Value": 3,
+			"Q No": 2,
+			"Question": "What is used to hit the ball in a game of croquet?",
+			"A": "Racquet",
+			"B": "Bat",
+			"C": "Foot",
+			"D": "Mallet",
+			"Correct": "D"
+		},
+		{
+			"Value": 3,
+			"Q No": 3,
+			"Question": "Babe Ruth was famous for playing which sport?",
+			"A": "Ice Hockey",
+			"B": "American Football",
+			"C": "Basketball",
+			"D": "Baseball",
+			"Correct": "D"
+		},
+		{
+			"Value": 3,
+			"Q No": 4,
+			"Question": "Which professionals are called 'realtors' in the USA?",
+			"A": "Undertakers",
+			"B": "Lawyers",
+			"C": "Estate agents",
+			"D": "Bankers",
+			"Correct": "C"
+		},
+		{
+			"Value": 3,
+			"Q No": 5,
+			"Question": "In which classic TV western series did Lorne Greene play Ben Cartwright?",
+			"A": "Bonanza",
+			"B": "The High Chaparral",
+			"C": "The Virginian",
+			"D": "Alias Smith and Jones",
+			"Correct": "A"
+		},
+		{
+			"Value": 3,
+			"Q No": 6,
+			"Question": "Who played Thelma in the film 'Thelma and Louise'?",
+			"A": "Geena Davis",
+			"B": "Annette Bening",
+			"C": "Juliette Lewis",
+			"D": "Sally Field",
+			"Correct": "A"
+		},
+		{
+			"Value": 3,
+			"Q No": 7,
+			"Question": "What is a yak?",
+			"A": "Sweet potato",
+			"B": "Muslim veil",
+			"C": "Boat",
+			"D": "Long-haired Tibetan ox",
+			"Correct": "D"
+		},
+		{
+			"Value": 3,
+			"Q No": 8,
+			"Question": "Featured as a Mad Max movie theme is Tina Turner's 'We Don't Need Another what'?",
+			"A": "Madman",
+			"B": "Price rise",
+			"C": "Politician",
+			"D": "Hero",
+			"Correct": "D"
+		},
+		{
+			"Value": 3,
+			"Q No": 9,
+			"Question": "To which group of people was Senator Don Chipp referring when he said the Democrats were there 'to keep the bastards honest'?",
+			"A": "Major political parties",
+			"B": "Police",
+			"C": "Trade unions",
+			"D": "Big business",
+			"Correct": "A"
+		},
+		{
+			"Value": 3,
+			"Q No": 10,
+			"Question": "Who invented psychoanalysis?",
+			"A": "Lucien Freud",
+			"B": "Clement Freud",
+			"C": "Emma Freud",
+			"D": "Sigmund Freud",
+			"Correct": "D"
+		},
+		{
+			"Value": 4,
+			"Q No": 1,
+			"Question": "Who married Prince Rainier of Monaco in 1956?",
+			"A": "Marilyn Monroe",
+			"B": "Grace Kelly",
+			"C": "Ava Gardner",
+			"D": "Judy Garland",
+			"Correct": "B"
+		},
+		{
+			"Value": 4,
+			"Q No": 2,
+			"Question": "What was the name of Napoleon Bonaparte's first empress?",
+			"A": "Claudette",
+			"B": "Marie Antoinette",
+			"C": "Emma",
+			"D": "Josephine",
+			"Correct": "D"
+		},
+		{
+			"Value": 4,
+			"Q No": 3,
+			"Question": "Who is Shirley MacLaine's famous film star brother?",
+			"A": "Jack Nicholson",
+			"B": "Warren Beatty",
+			"C": "Gene Hackman",
+			"D": "Paul Newman",
+			"Correct": "B"
+		},
+		{
+			"Value": 4,
+			"Q No": 4,
+			"Question": "What was Tony Nelson's job in the 1960s sitcom 'I Dream of Jeannie'?",
+			"A": "Airline pilot",
+			"B": "Fireman",
+			"C": "Astronaut",
+			"D": "Doctor",
+			"Correct": "C"
+		},
+		{
+			"Value": 4,
+			"Q No": 5,
+			"Question": "Which fish has the kinds John, silver and mirror?",
+			"A": "Whiting",
+			"B": "Trevally",
+			"C": "Trout",
+			"D": "Dory",
+			"Correct": "D"
+		},
+		{
+			"Value": 4,
+			"Q No": 6,
+			"Question": "Who played fictional movie star Anna Scott in the film 'Notting Hill'?",
+			"A": "Andie MacDowell",
+			"B": "Sandra Bullock",
+			"C": "Julia Roberts",
+			"D": "Cameron Diaz",
+			"Correct": "C"
+		},
+		{
+			"Value": 4,
+			"Q No": 7,
+			"Question": "On the market for many years, which brand of tea features a swagman and a kangaroo?",
+			"A": "Billy Tea",
+			"B": "Bushell's",
+			"C": "Dilmah",
+			"D": "Kinkara",
+			"Correct": "A"
+		},
+		{
+			"Value": 4,
+			"Q No": 8,
+			"Question": "In which city is the permanent home of the Bolshoi Ballet?",
+			"A": "Moscow",
+			"B": "New York",
+			"C": "Milan",
+			"D": "Paris",
+			"Correct": "A"
+		},
+		{
+			"Value": 4,
+			"Q No": 9,
+			"Question": "What was the first name of President Mitterand of France?",
+			"A": "Jacques",
+			"B": "Charles",
+			"C": "Francois",
+			"D": "Edouard",
+			"Correct": "C"
+		},
+		{
+			"Value": 4,
+			"Q No": 10,
+			"Question": "Woolloomooloo and Woollahra are suburbs of which Australian capital city?",
+			"A": "Melbourne",
+			"B": "Sydney",
+			"C": "Brisbane",
+			"D": "Perth",
+			"Correct": "B"
+		},
+		{
+			"Value": 5,
+			"Q No": 1,
+			"Question": "What is the longest river in Italy?",
+			"A": "Po",
+			"B": "Laa-Laa",
+			"C": "Dipsy",
+			"D": "Tinky Winky",
+			"Correct": "A"
+		},
+		{
+			"Value": 5,
+			"Q No": 2,
+			"Question": "In knitting, what is the name of the stitch made by doing a plain stitch backwards?",
+			"A": "Purl",
+			"B": "Curl",
+			"C": "Whurl",
+			"D": "Gurl",
+			"Correct": "A"
+		},
+		{
+			"Value": 5,
+			"Q No": 3,
+			"Question": "A Mancunian is a native of which English city?",
+			"A": "Birmingham",
+			"B": "Liverpool",
+			"C": "Manchester",
+			"D": "London",
+			"Correct": "C"
+		},
+		{
+			"Value": 5,
+			"Q No": 4,
+			"Question": "Which day occurs first in an Australian calendar year?",
+			"A": "Boxing Day",
+			"B": "Easter Sunday",
+			"C": "Queen's Birthday",
+			"D": "Melbourne Cup Day",
+			"Correct": "B"
+		},
+		{
+			"Value": 5,
+			"Q No": 5,
+			"Question": "In July, 1997, 18 people were killed in a landslide in what Snowy Mountains resort?",
+			"A": "Smiggins Holes",
+			"B": "Thredbo",
+			"C": "Perisher",
+			"D": "Mt. Hotham",
+			"Correct": "B"
+		},
+		{
+			"Value": 5,
+			"Q No": 6,
+			"Question": "Who quit the Spice Girls in 1998?",
+			"A": "Geri",
+			"B": "Victoria",
+			"C": "Emma",
+			"D": "Mel C",
+			"Correct": "A"
+		},
+		{
+			"Value": 5,
+			"Q No": 7,
+			"Question": "In colloquial language, to depart hastily is to shoot through like a Bondi what?",
+			"A": "Bus",
+			"B": "Tram",
+			"C": "Train",
+			"D": "Taxi",
+			"Correct": "B"
+		},
+		{
+			"Value": 5,
+			"Q No": 8,
+			"Question": "What name is usually given to the International Criminal Police Organisation?",
+			"A": "The Professionals",
+			"B": "Scotland Yard",
+			"C": "Interpol",
+			"D": "Flying Squad",
+			"Correct": "C"
+		},
+		{
+			"Value": 5,
+			"Q No": 9,
+			"Question": "How many players take the field in an Australian Rules football team?",
+			"A": 18,
+			"B": 11,
+			"C": 15,
+			"D": 13,
+			"Correct": "A"
+		},
+		{
+			"Value": 5,
+			"Q No": 10,
+			"Question": "Which state is home to over 40% of Australia's vineyards?",
+			"A": "New South Wales",
+			"B": "South Australia",
+			"C": "Tasmania",
+			"D": "Western Australia",
+			"Correct": "B"
+		},
+		{
+			"Value": 6,
+			"Q No": 1,
+			"Question": "Which of these films did not star Cher?",
+			"A": "Mask",
+			"B": "Mermaids",
+			"C": "Misery",
+			"D": "Moonstruck",
+			"Correct": "C"
+		},
+		{
+			"Value": 6,
+			"Q No": 2,
+			"Question": "Which superhero has been portrayed on screen by Michael Keaton, Val Kilmer and George Clooney?",
+			"A": "Batman",
+			"B": "Spiderman",
+			"C": "Captain America",
+			"D": "Wonder Woman",
+			"Correct": "A"
+		},
+		{
+			"Value": 6,
+			"Q No": 3,
+			"Question": "Which US state is nicknamed the Empire State?",
+			"A": "New York",
+			"B": "California",
+			"C": "Alaska",
+			"D": "Texas",
+			"Correct": "A"
+		},
+		{
+			"Value": 6,
+			"Q No": 4,
+			"Question": "The Eureka Stockade is the name given to an armed uprising in 1854 by miners at which goldfield?",
+			"A": "Ballarat",
+			"B": "Hill End",
+			"C": "Charters Towers",
+			"D": "Kalgoorlie",
+			"Correct": "A"
+		},
+		{
+			"Value": 6,
+			"Q No": 5,
+			"Question": "What kind of animal is Nipper, in the famous HMV logo?",
+			"A": "Budgerigar",
+			"B": "Piranha",
+			"C": "Giraffe",
+			"D": "Dog",
+			"Correct": "D"
+		},
+		{
+			"Value": 6,
+			"Q No": 6,
+			"Question": "According to the nursery rhyme, who killed Cock Robin?",
+			"A": "The wren",
+			"B": "The rook",
+			"C": "The thrush",
+			"D": "The sparrow",
+			"Correct": "D"
+		},
+		{
+			"Value": 6,
+			"Q No": 7,
+			"Question": "As what did Sir Walter Raleigh become famous?",
+			"A": "Explorer",
+			"B": "Bicycle maker",
+			"C": "Composer",
+			"D": "Court jester",
+			"Correct": "A"
+		},
+		{
+			"Value": 6,
+			"Q No": 8,
+			"Question": "Which former racing driver set up his own international airline?",
+			"A": "Alain Prost",
+			"B": "Jackie Stewart",
+			"C": "Niki Lauda",
+			"D": "Nigel Mansell",
+			"Correct": "C"
+		},
+		{
+			"Value": 6,
+			"Q No": 9,
+			"Question": "On which continent is the country of South Korea?",
+			"A": "Africa",
+			"B": "Antarctica",
+			"C": "South America",
+			"D": "Asia",
+			"Correct": "D"
+		},
+		{
+			"Value": 6,
+			"Q No": 10,
+			"Question": "In which country is the Gallipoli Peninsula?",
+			"A": "France",
+			"B": "Turkey",
+			"C": "Libya",
+			"D": "Egypt",
+			"Correct": "B"
+		},
+		{
+			"Value": 7,
+			"Q No": 1,
+			"Question": "Which country features a bird of paradise on its national flag?",
+			"A": "Papua New Guinea",
+			"B": "Indonesia",
+			"C": "Thailand",
+			"D": "Sri Lanka",
+			"Correct": "A"
+		},
+		{
+			"Value": 7,
+			"Q No": 2,
+			"Question": "What is a yashmak?",
+			"A": "Veil",
+			"B": "Bracelet",
+			"C": "Prayer mat",
+			"D": "Belt",
+			"Correct": "A"
+		},
+		{
+			"Value": 7,
+			"Q No": 3,
+			"Question": "Which of these hit songs was by Australian group The Easybeats?",
+			"A": "Eagle Rock",
+			"B": "Friday on My Mind",
+			"C": "She's My Baby",
+			"D": "Yellow River",
+			"Correct": "B"
+		},
+		{
+			"Value": 7,
+			"Q No": 4,
+			"Question": "Racehorse trainer Gai Waterhouse is the daughter of which great Australian racehorse trainer?",
+			"A": "Bart Cummings",
+			"B": "Colin Hayes",
+			"C": "T J Smith",
+			"D": "Tommy Woodcock",
+			"Correct": "C"
+		},
+		{
+			"Value": 7,
+			"Q No": 5,
+			"Question": "Which island is also known as Great Sandy Island?",
+			"A": "Kangaroo",
+			"B": "Lizard",
+			"C": "Fraser",
+			"D": "Thursday",
+			"Correct": "C"
+		},
+		{
+			"Value": 7,
+			"Q No": 6,
+			"Question": "In 1950s Australia, what was the female equivalent of a bodgie?",
+			"A": "Widgie",
+			"B": "Widgeon",
+			"C": "Gidget",
+			"D": "Gadget",
+			"Correct": "A"
+		},
+		{
+			"Value": 7,
+			"Q No": 7,
+			"Question": "Mount Kosciuszko is located in which mountain range?",
+			"A": "Flinders Ranges",
+			"B": "Grampians",
+			"C": "Macdonnell Ranges",
+			"D": "Snowy Mountains",
+			"Correct": "D"
+		},
+		{
+			"Value": 7,
+			"Q No": 8,
+			"Question": "Alexander Dumas wrote a play titled 'Lady of the what flowers'?",
+			"A": "Lilacs",
+			"B": "Petunias",
+			"C": "Daffodils",
+			"D": "Camelias",
+			"Correct": "D"
+		},
+		{
+			"Value": 7,
+			"Q No": 9,
+			"Question": "In the sitcom 'Are You Being Served?', whose catchphrase was 'I'm Free'?",
+			"A": "Mr Lucas",
+			"B": "Captain Peacock",
+			"C": "Mrs Slocombe",
+			"D": "Mr Humphries",
+			"Correct": "D"
+		},
+		{
+			"Value": 7,
+			"Q No": 10,
+			"Question": "The Albert's lyrebird was named after what 19th century historical figure?",
+			"A": "Prince Albert",
+			"B": "Albert Einstein",
+			"C": "Albert I",
+			"D": "Albert of Moravia",
+			"Correct": "A"
+		},
+		{
+			"Value": 8,
+			"Q No": 1,
+			"Question": "What is the correct term for the rotating part of a windmill?",
+			"A": "Sails",
+			"B": "Propellers",
+			"C": "Spinners",
+			"D": "Wings",
+			"Correct": "A"
+		},
+		{
+			"Value": 8,
+			"Q No": 2,
+			"Question": "What is the name for a short pithy saying such as 'In for a penny, in for a pound'?",
+			"A": "Simile",
+			"B": "Epithet",
+			"C": "Proverb",
+			"D": "Analogy",
+			"Correct": "C"
+		},
+		{
+			"Value": 8,
+			"Q No": 3,
+			"Question": "Which emperor built a famous wall to limit incursions of Northern tribes into Roman England?",
+			"A": "Hadrian",
+			"B": "Julius Caesar",
+			"C": "Nero",
+			"D": "Claudius",
+			"Correct": "A"
+		},
+		{
+			"Value": 8,
+			"Q No": 4,
+			"Question": "In which country did the Impressionist art movement begin?",
+			"A": "Great Britain",
+			"B": "Italy",
+			"C": "France",
+			"D": "The Netherlands",
+			"Correct": "C"
+		},
+		{
+			"Value": 8,
+			"Q No": 5,
+			"Question": "Who assassinated Senator Robert Kennedy in 1968?",
+			"A": "Sirhan Sirhan",
+			"B": "Lee Harvey Oswald",
+			"C": "James Earl Ray",
+			"D": "John Wilkes Booth",
+			"Correct": "A"
+		},
+		{
+			"Value": 8,
+			"Q No": 6,
+			"Question": "What is the name for a word made up from initials, such as 'radar' or 'scuba'?",
+			"A": "Antonym",
+			"B": "Anagram",
+			"C": "Acrostic",
+			"D": "Acronym",
+			"Correct": "D"
+		},
+		{
+			"Value": 8,
+			"Q No": 7,
+			"Question": "What is the chemical symbol for lead?",
+			"A": "K",
+			"B": "Hg",
+			"C": "L",
+			"D": "Pb",
+			"Correct": "D"
+		},
+		{
+			"Value": 8,
+			"Q No": 8,
+			"Question": "Jacob's Creek is a famous wine-growing location in which valley?",
+			"A": "Hunter",
+			"B": "Barossa",
+			"C": "Clare",
+			"D": "Yarra",
+			"Correct": "B"
+		},
+		{
+			"Value": 8,
+			"Q No": 9,
+			"Question": "What is the cube of the number eight?",
+			"A": 512,
+			"B": 64,
+			"C": 216,
+			"D": 16,
+			"Correct": "A"
+		},
+		{
+			"Value": 8,
+			"Q No": 10,
+			"Question": "Which classic television series starred Jeremy Irons and Anthony Andrews?",
+			"A": "Jewel in the Crown",
+			"B": "The Far Pavilions",
+			"C": "Brideshead Revisited",
+			"D": "The Forsyte Saga",
+			"Correct": "C"
+		},
+		{
+			"Value": 9,
+			"Q No": 1,
+			"Question": "In darts, how many points is the outer bull's-eye worth?",
+			"A": 20,
+			"B": 25,
+			"C": 40,
+			"D": 50,
+			"Correct": "B"
+		},
+		{
+			"Value": 9,
+			"Q No": 2,
+			"Question": "Who played Nicole Kidman's husband in the 1995 movie 'To Die For'?",
+			"A": "Matt Dillon",
+			"B": "Tom Cruise",
+			"C": "Rob Lowe",
+			"D": "Brad Pitt",
+			"Correct": "A"
+		},
+		{
+			"Value": 9,
+			"Q No": 3,
+			"Question": "Which garment is secured by a sash called an 'obi'?",
+			"A": "Kimono",
+			"B": "Sari",
+			"C": "Jellaba",
+			"D": "Judo robe",
+			"Correct": "A"
+		},
+		{
+			"Value": 9,
+			"Q No": 4,
+			"Question": "Mt. Wellington overlooks which Australian state capital city?",
+			"A": "Melbourne",
+			"B": "Adelaide",
+			"C": "Hobart",
+			"D": "Brisbane",
+			"Correct": "C"
+		},
+		{
+			"Value": 9,
+			"Q No": 5,
+			"Question": "Which fictional resort is terrorised by a great white shark in the film 'Jaws'?",
+			"A": "Long Beach",
+			"B": "Bodega Bay",
+			"C": "Newport News",
+			"D": "Amity Island",
+			"Correct": "D"
+		},
+		{
+			"Value": 9,
+			"Q No": 6,
+			"Question": "Which Hollywood star made an early appearance in the 1984 film 'BMX Bandits'?",
+			"A": "Michelle Pfeiffer",
+			"B": "Julia Roberts",
+			"C": "Nicole Kidman",
+			"D": "Meg Ryan",
+			"Correct": "C"
+		},
+		{
+			"Value": 9,
+			"Q No": 7,
+			"Question": "What was the full first name of gangster Al Capone?",
+			"A": "Alan",
+			"B": "Alfredo",
+			"C": "Alphonse",
+			"D": "Alberto",
+			"Correct": "C"
+		},
+		{
+			"Value": 9,
+			"Q No": 8,
+			"Question": "What is lithium?",
+			"A": "A metal",
+			"B": "A gas",
+			"C": "A fossil",
+			"D": "A rock",
+			"Correct": "A"
+		},
+		{
+			"Value": 9,
+			"Q No": 9,
+			"Question": "Where is the Yukon river?",
+			"A": "Europe",
+			"B": "Asia",
+			"C": "Africa",
+			"D": "North America",
+			"Correct": "D"
+		},
+		{
+			"Value": 9,
+			"Q No": 10,
+			"Question": "In which country is the opera Aida set?",
+			"A": "India",
+			"B": "Egypt",
+			"C": "China",
+			"D": "Thailand",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 1,
+			"Question": "Who co-wrote the song 'Do They Know It's Christmas' with Bob Geldof?",
+			"A": "David Bowie",
+			"B": "Midge Ure",
+			"C": "Phil Collins",
+			"D": "Paul McCartney",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 2,
+			"Question": "Which sea laps the east coast of Scotland?",
+			"A": "North",
+			"B": "Caspian",
+			"C": "Baltic",
+			"D": "Irish",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 3,
+			"Question": "Which city replaced Calcutta as India's capital in 1912?",
+			"A": "Delhi",
+			"B": "Bombay",
+			"C": "Colombo",
+			"D": "Madras",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 4,
+			"Question": "Who invented the spinning jenny?",
+			"A": "Richard Arkwright",
+			"B": "James Hargreaves",
+			"C": "James Watt",
+			"D": "Samuel Crompton",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 5,
+			"Question": "A banshee is a spirit in the folklore of which people?",
+			"A": "Basque",
+			"B": "Irish",
+			"C": "Native American",
+			"D": "Maori",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 6,
+			"Question": "Which religious movement was founded by Mary Baker Eddy?",
+			"A": "Jehovah's Witnesses",
+			"B": "Christian Science",
+			"C": "Salvation Army",
+			"D": "7th-Day Adventists",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 7,
+			"Question": "Which king was killed at the Battle of Hastings?",
+			"A": "William",
+			"B": "John",
+			"C": "Edward",
+			"D": "Harold",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 8,
+			"Question": "Which seat did Pauline Hanson win as an Independent in the 1996 federal election?",
+			"A": "Bennelong",
+			"B": "Dickson",
+			"C": "Oxley",
+			"D": "Wills",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 9,
+			"Question": "What was the name of the world's first test-tube baby?",
+			"A": "Louise Brown",
+			"B": "Sarah Evans",
+			"C": "Lucy Bryant",
+			"D": "Sharon Fuller",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 10,
+			"Question": "In what artistic occupation is Australian Richard Bonynge internationally renowned?",
+			"A": "Conductor",
+			"B": "Ballet dancer",
+			"C": "Actor",
+			"D": "Violinist",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 11,
+			"Question": "By what name is the baobab tree better known in Australia?",
+			"A": "Bottle tree",
+			"B": "Banyan",
+			"C": "Banyalla",
+			"D": "Bangalow",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 12,
+			"Question": "Which of these great Australian opera singers is known by her original name?",
+			"A": "Florence Austral",
+			"B": "June Bronhill",
+			"C": "Nellie Melba",
+			"D": "Joan Sutherland",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 13,
+			"Question": "In which city is the Hermitage Museum?",
+			"A": "Paris",
+			"B": "Helsinki",
+			"C": "Copenhagen",
+			"D": "Saint Petersburg",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 14,
+			"Question": "Which character in the Sherlock Holmes stories was an Inspector from Scotland Yard?",
+			"A": "Lestrade",
+			"B": "Hudson",
+			"C": "Mycroft",
+			"D": "Watson",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 15,
+			"Question": "How many times was Australia's Jack Brabham the world Formula One drivers' champion?",
+			"A": "One",
+			"B": "Two",
+			"C": "Three",
+			"D": "Four",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 16,
+			"Question": "Which of these island groups is situated in the Indian Ocean?",
+			"A": "Canary Islands",
+			"B": "Hawaii",
+			"C": "Bahamas",
+			"D": "Maldives",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 17,
+			"Question": "The late Sir Mark Oliphant specialised in which field of science?",
+			"A": "Astronomy",
+			"B": "Biochemistry",
+			"C": "Medicine",
+			"D": "Physics",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 18,
+			"Question": "What nationality is former World Motor Racing Champion Keke Rosberg?",
+			"A": "Belgian",
+			"B": "Swedish",
+			"C": "Danish",
+			"D": "Finnish",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 19,
+			"Question": "In which country is Fez, home of the famous hat?",
+			"A": "Turkey",
+			"B": "Morocco",
+			"C": "Algeria",
+			"D": "Tunisia",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 20,
+			"Question": "Which is the largest city in the USA's largest state?",
+			"A": "Dallas",
+			"B": "Los Angeles",
+			"C": "New York",
+			"D": "Anchorage",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 21,
+			"Question": "In which year did an earthquake cause extensive damage to the New South Wales city of Newcastle?",
+			"A": 1987,
+			"B": 1988,
+			"C": 1989,
+			"D": 1990,
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 22,
+			"Question": "Which of these spices comes from tree bark?",
+			"A": "Turmeric",
+			"B": "Cinnamon",
+			"C": "Nutmeg",
+			"D": "Ginger",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 23,
+			"Question": "By what name is Camille Javal better known?",
+			"A": "Brigitte Bardot",
+			"B": "Greta Garbo",
+			"C": "Marlene Dietrich",
+			"D": "Jeanne Moreau",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 24,
+			"Question": "What is the sum of the interior angles of a triangle?",
+			"A": "360 degrees",
+			"B": "90 degrees",
+			"C": "180 degrees",
+			"D": "3 degrees",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 25,
+			"Question": "Who wrote 'Das Kapital'?",
+			"A": "Lenin",
+			"B": "Stalin",
+			"C": "Trotsky",
+			"D": "Marx",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 26,
+			"Question": "Where did Moses receive the Ten Commandments?",
+			"A": "Mount Ararat",
+			"B": "Mount of Olives",
+			"C": "Mount Sinai",
+			"D": "Mount Olympus",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 27,
+			"Question": "Who was the third president of the United States?",
+			"A": "Thomas Jefferson",
+			"B": "John Adams",
+			"C": "Abraham Lincoln",
+			"D": "James Madison",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 28,
+			"Question": "Who wrote the opera 'Turandot'?",
+			"A": "Verdi",
+			"B": "Rossini",
+			"C": "Bellini",
+			"D": "Puccini",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 29,
+			"Question": "What is a positive electrode called?",
+			"A": "Anode",
+			"B": "Cathode",
+			"C": "Diode",
+			"D": "Triode",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 30,
+			"Question": "In boxing, which of these categories is closest in weight to flyweight?",
+			"A": "Featherweight",
+			"B": "Bantamweight",
+			"C": "Lightweight",
+			"D": "Welterweight",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 31,
+			"Question": "What was Peter Cosgrove's rank as leader of the InterFET forces in East Timor?",
+			"A": "General",
+			"B": "Brigadier general",
+			"C": "Lieutenant general",
+			"D": "Major general",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 32,
+			"Question": "A colour variant of the greengrocer, a black prince is which insect?",
+			"A": "Grasshopper",
+			"B": "Slater",
+			"C": "Cicada",
+			"D": "Cricket",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 33,
+			"Question": "What does 'impecunious' mean?",
+			"A": "Poor",
+			"B": "Cheeky",
+			"C": "Bald",
+			"D": "Ugly",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 34,
+			"Question": "Which natural disaster occurred at Meckering, WA, in October, 1968?",
+			"A": "Flood",
+			"B": "Tornado",
+			"C": "Earthquake",
+			"D": "Bushfire",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 35,
+			"Question": "Film director, Dr. George Miller is a graduate in which profession?",
+			"A": "Law",
+			"B": "Veterinary science",
+			"C": "Medicine",
+			"D": "Engineering",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 36,
+			"Question": "What instrument does a 'timpanist' play?",
+			"A": "Snare drum",
+			"B": "Steel drum",
+			"C": "Bass drum",
+			"D": "Kettle drum",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 37,
+			"Question": "The Blake Prize is awarded annually in which special subject area of painting, drawing or sculpture?",
+			"A": "Religious art",
+			"B": "Landscape",
+			"C": "Portraiture",
+			"D": "Genre",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 38,
+			"Question": "For most of its length, the International Date Line is how many degrees away from the Prime Meridian?",
+			"A": "90 degrees",
+			"B": "100 degrees",
+			"C": "180 degrees",
+			"D": "360 degrees",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 39,
+			"Question": "Who led a slaves' revolt against Rome in 73 BC?",
+			"A": "Spartacus",
+			"B": "Mark Antony",
+			"C": "Brutus",
+			"D": "Ben Hur",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 40,
+			"Question": "'Poppy' and 'After Venice' are works by which dancer and choreographer?",
+			"A": "Robert Helpmann",
+			"B": "Graeme Murphy",
+			"C": "Twyla Tharp",
+			"D": "Maina Gielgud",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 41,
+			"Question": "Which painter had the surname Van Rijn?",
+			"A": "Michelangelo",
+			"B": "Rembrandt",
+			"C": "Magritte",
+			"D": "Titian",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 42,
+			"Question": "Which of these religions was founded first?",
+			"A": "Buddhism",
+			"B": "Christianity",
+			"C": "Islam",
+			"D": "Sikhism",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 43,
+			"Question": "Before undertaking his ill-fated expedition in 1860, Robert O'Hara Burke was employed in which area of public administration?",
+			"A": "Prisons",
+			"B": "Police",
+			"C": "Schools",
+			"D": "Hospitals",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 44,
+			"Question": "What is the literal meaning of the word 'gymnasium'?",
+			"A": "Exercise hall",
+			"B": "Physical fitness",
+			"C": "Exercise naked",
+			"D": "Keeping fit",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 45,
+			"Question": "In 1894, which Australian state was the first colony to give women the right to vote?",
+			"A": "Queensland",
+			"B": "New South Wales",
+			"C": "South Australia",
+			"D": "Tasmania",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 46,
+			"Question": "The world's largest deposit of which material has been mined at Weipa since 1960?",
+			"A": "Uranium",
+			"B": "Copper",
+			"C": "Bauxite",
+			"D": "Manganese",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 47,
+			"Question": "How many senators represent each state in the federal parliament?",
+			"A": 6,
+			"B": 8,
+			"C": 10,
+			"D": 12,
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 48,
+			"Question": "Australian stage actress Ruth Cracknell wrote a memoir titled 'Journey from where'?",
+			"A": "Venice",
+			"B": "Florence",
+			"C": "Rome",
+			"D": "Paris",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 49,
+			"Question": "The Anzac forces at Gallipoli were commanded by William who?",
+			"A": "Birdwood",
+			"B": "Bennett",
+			"C": "Birdseye",
+			"D": "Birch",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 50,
+			"Question": "Which famous Dutch ship was wrecked at Houtman Abrolhos on the west coast of Australia in 1629?",
+			"A": "Duyfken",
+			"B": "Sardham",
+			"C": "Cygnet",
+			"D": "Batavia",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 51,
+			"Question": "What was the name of the ship of underwater explorer, Jacques Cousteau?",
+			"A": "Echo",
+			"B": "Calypso",
+			"C": "Ariadne",
+			"D": "Daphne",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 52,
+			"Question": "Common in northern and eastern Australia during summer, the koel or cooeebird is a species of which bird?",
+			"A": "Parrot",
+			"B": "Cuckoo",
+			"C": "Curlew",
+			"D": "Wren",
+			"Correct": "B"
+		},
+		{
+			"Value": 10,
+			"Q No": 53,
+			"Question": "Which Noel Coward play formed the basis for the classic film 'Brief Encounter'?",
+			"A": "Blithe Spirit",
+			"B": "The Vortex",
+			"C": "Still Life",
+			"D": "Private Lives",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 54,
+			"Question": "Which singer was known as 'The Swedish Nightingale'?",
+			"A": "Adelina Patti",
+			"B": "Maria Callas",
+			"C": "Jenny Lind",
+			"D": "Nellie Melba",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 55,
+			"Question": "Which Australian painter and sculptor, who died in 1999, bequeathed to the nation his Shoalhaven River property, 'Bundanon'?",
+			"A": "John Perceval",
+			"B": "John Olsen",
+			"C": "Arthur Boyd",
+			"D": "Brett Whiteley",
+			"Correct": "C"
+		},
+		{
+			"Value": 10,
+			"Q No": 56,
+			"Question": "Who replaced the ailing Ringo Starr for part of the Beatles' Australian tour in 1964?",
+			"A": "Pete Best",
+			"B": "Brian Epstein",
+			"C": "Stuart Sutcliffe",
+			"D": "Jimmy Nicol",
+			"Correct": "D"
+		},
+		{
+			"Value": 10,
+			"Q No": 57,
+			"Question": "Having a Norwegian ancestry, which Australian writer's original surname was Larsen?",
+			"A": "Henry Lawson",
+			"B": "Rolf Boldrewood",
+			"C": "Marcus Clarke",
+			"D": "Norman Lindsay",
+			"Correct": "A"
+		},
+		{
+			"Value": 10,
+			"Q No": 58,
+			"Question": "Which highest military honour was first awarded to an Australian on July 24, 1900?",
+			"A": "George Cross",
+			"B": "Medal of Honour",
+			"C": "Victoria Cross",
+			"D": "Medal of Valour",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 1,
+			"Question": "The name of which chemical element is derived from the Greek word for 'sun'?",
+			"A": "Radon",
+			"B": "Helium",
+			"C": "Argon",
+			"D": "Oxygen",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 2,
+			"Question": "Which Queensland city was named after a British Prime Minister?",
+			"A": "Gladstone",
+			"B": "Bowen",
+			"C": "Townsville",
+			"D": "Mackay",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 3,
+			"Question": "In Egyptian mythology, which of these became ruler of the underworld?",
+			"A": "Osiris",
+			"B": "Ra",
+			"C": "Isis",
+			"D": "Horus",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 4,
+			"Question": "Which of these dances originated in Poland?",
+			"A": "Waltz",
+			"B": "Mazurka",
+			"C": "Polka",
+			"D": "Jive",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 5,
+			"Question": "The game mah-jong takes its name from the Chinese word meaning what?",
+			"A": "Sparrows",
+			"B": "Dragons",
+			"C": "Ribbons",
+			"D": "Goldfish",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 6,
+			"Question": "Which country is the world's largest producer of coal?",
+			"A": "India",
+			"B": "Russia",
+			"C": "China",
+			"D": "USA",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 7,
+			"Question": "Which of the following vitamins is also called 'retinol'?",
+			"A": "Vitamin A",
+			"B": "Vitamin B2",
+			"C": "Vitamin E",
+			"D": "Vitamin K",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 8,
+			"Question": "Niagara Falls, on the border between the USA and Canada, are situated on which river?",
+			"A": "Niagara",
+			"B": "Erie",
+			"C": "Ontario",
+			"D": "St Lawrence",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 9,
+			"Question": "Boxer Johnny Famechon won a world title in which weight division?",
+			"A": "Fly",
+			"B": "Bantam",
+			"C": "Feather",
+			"D": "Light",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 10,
+			"Question": "How many stars are on the flag of New Zealand?",
+			"A": "Four",
+			"B": "Five",
+			"C": "Six",
+			"D": "Seven",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 11,
+			"Question": "Born in 1886, what was the first name of Rupert Murdoch's journalist father?",
+			"A": "Alan",
+			"B": "Harvey",
+			"C": "Keith",
+			"D": "Roger",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 12,
+			"Question": "On which river does Baghdad stand?",
+			"A": "Tigris",
+			"B": "Euphrates",
+			"C": "Jordan",
+			"D": "Bosporus",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 13,
+			"Question": "How are Dominican monks also known?",
+			"A": "Whitefriars",
+			"B": "Greyfriars",
+			"C": "Blackfriars",
+			"D": "Trappists",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 14,
+			"Question": "What does the letter F indicate on a Plimsoll line?",
+			"A": "Fresh water",
+			"B": "Full",
+			"C": "Freight",
+			"D": "Fuel",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 15,
+			"Question": "Captain Cook's ship Endeavour, was formerly a collier with what name?",
+			"A": "Marquis of Queensberry",
+			"B": "Earl of Pembroke",
+			"C": "Whitby",
+			"D": "Pelican",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 16,
+			"Question": "A fierce hunter, the Australian hobby is otherwise known as the little what?",
+			"A": "Owl",
+			"B": "Butcher bird",
+			"C": "Falcon",
+			"D": "Eagle",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 17,
+			"Question": "Which of these Presidents was not a Republican?",
+			"A": "Gerald Ford",
+			"B": "Richard Nixon",
+			"C": "George H. W. Bush",
+			"D": "Jimmy Carter",
+			"Correct": "D"
+		},
+		{
+			"Value": 11,
+			"Q No": 18,
+			"Question": "Which of these people was alive in the year 100 BC?",
+			"A": "Hannibal",
+			"B": "Julius Caesar",
+			"C": "Confucius",
+			"D": "Cleopatra",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 19,
+			"Question": "If a chemical substance is 'volatile', what is it likely to form?",
+			"A": "Acid",
+			"B": "Vapour",
+			"C": "Compound",
+			"D": "Liquid",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 20,
+			"Question": "In terms of population, what is the largest Portuguese speaking city in the world?",
+			"A": "Lisbon",
+			"B": "Rio de Janeiro",
+			"C": "Sao Paulo",
+			"D": "Oporto",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 21,
+			"Question": "Before becoming vice president of the USA, Al Gore was a senator for which state?",
+			"A": "Alabama",
+			"B": "Mississippi",
+			"C": "Florida",
+			"D": "Tennessee",
+			"Correct": "D"
+		},
+		{
+			"Value": 11,
+			"Q No": 22,
+			"Question": "In which body of water is the Isle of Man?",
+			"A": "North Sea",
+			"B": "Irish Sea",
+			"C": "Cardigan Bay",
+			"D": "Bristol Channel",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 23,
+			"Question": "Directed by Joseph Perry, the 1900 film 'Soldiers of the Cross' was made under the auspices of which organisation?",
+			"A": "Red Cross",
+			"B": "Salvation Army",
+			"C": "Methodist Church",
+			"D": "Legacy",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 24,
+			"Question": "The new Federal Parliament House was opened in which year?",
+			"A": 1984,
+			"B": 1986,
+			"C": 1987,
+			"D": 1988,
+			"Correct": "D"
+		},
+		{
+			"Value": 11,
+			"Q No": 25,
+			"Question": "Which of these primates live on the Rock of Gibraltar?",
+			"A": "Orangutans",
+			"B": "Chimpanzees",
+			"C": "Barbary apes",
+			"D": "Baboons",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 26,
+			"Question": "By winning at Wimbledon in 2000, US tennis star Pete Sampras broke which Australian's long-standing record of 12 grand slam men's singles titles?",
+			"A": "Roy Emerson",
+			"B": "Rod Laver",
+			"C": "John Newcombe",
+			"D": "Frank Sedgman",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 27,
+			"Question": "What was the pen name of the author Eric Blair?",
+			"A": "George Eliot",
+			"B": "George Bernard Shaw",
+			"C": "George Orwell",
+			"D": "Georges Simenon",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 28,
+			"Question": "Who was the Australian cycling Olympic gold medallist killed in a road accident in 1958?",
+			"A": "Lionel Cox",
+			"B": "Dunc Gray",
+			"C": "Russell Mockridge",
+			"D": "Kevin Sefton",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 29,
+			"Question": "In which mountain range is K2, the second highest mountain in the world?",
+			"A": "Karakoram",
+			"B": "Himalayas",
+			"C": "Hindu Kush",
+			"D": "Urals",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 30,
+			"Question": "Which salad vegetable belongs to the same family as the poisonous 'deadly nightshade'?",
+			"A": "Tomato",
+			"B": "Radish",
+			"C": "Cucumber",
+			"D": "Beetroot",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 31,
+			"Question": "Grunge music originated in which American city?",
+			"A": "Seattle",
+			"B": "Pittsburgh",
+			"C": "Detroit",
+			"D": "Boston",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 32,
+			"Question": "What sort of creature is Gandalf in J.R.R. Tolkien's novel 'The Hobbit'?",
+			"A": "Elf",
+			"B": "Dragon",
+			"C": "Wizard",
+			"D": "Goblin",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 33,
+			"Question": "Which snake is the only adder native to Australia?",
+			"A": "Puff adder",
+			"B": "Night adder",
+			"C": "Common adder",
+			"D": "Death adder",
+			"Correct": "D"
+		},
+		{
+			"Value": 11,
+			"Q No": 34,
+			"Question": "Which of these Peter Carey novels did not win the Miles Franklin Award?",
+			"A": "Bliss",
+			"B": "Illywhacker",
+			"C": "Jack Maggs",
+			"D": "Oscar and Lucinda",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 35,
+			"Question": "Which Australian film concerns the staging of a Mozart opera?",
+			"A": "Radiance",
+			"B": "Proof",
+			"C": "Praise",
+			"D": "Cosi",
+			"Correct": "D"
+		},
+		{
+			"Value": 11,
+			"Q No": 36,
+			"Question": "What type of mammal is the Australian quokka?",
+			"A": "Bandicoot",
+			"B": "Possum",
+			"C": "Rodent",
+			"D": "Wallaby",
+			"Correct": "D"
+		},
+		{
+			"Value": 11,
+			"Q No": 37,
+			"Question": "Who wrote the Miles Franklin Award-winning novel 'Cloudstreet'?",
+			"A": "Thea Astley",
+			"B": "Kate Grenville",
+			"C": "Peter Corris",
+			"D": "Tim Winton",
+			"Correct": "D"
+		},
+		{
+			"Value": 11,
+			"Q No": 38,
+			"Question": "Which Australian swimmer won the 200m Freestyle gold medal at the 1988 Seoul Olympics?",
+			"A": "Duncan Armstrong",
+			"B": "Jon Sieben",
+			"C": "Mark Stockwell",
+			"D": "Rob Woodhouse",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 39,
+			"Question": "Which Australian actor is especially remembered for his performances in the one-man play 'The Elocution of Benjamin Franklin'?",
+			"A": "Gordon Chater",
+			"B": "John Meillon",
+			"C": "Barry Creyton",
+			"D": "Ron Haddrick",
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 40,
+			"Question": "Because only about 3,000 were struck, the penny of which year is the most famous rare Australian coin?",
+			"A": 1920,
+			"B": 1930,
+			"C": 1940,
+			"D": 1950,
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 41,
+			"Question": "Which artistic movement was founded by Hunt, Millais and Rossetti?",
+			"A": "Surrealists",
+			"B": "Arts and Crafts",
+			"C": "Fauvists",
+			"D": "Pre-Raphaelites",
+			"Correct": "D"
+		},
+		{
+			"Value": 11,
+			"Q No": 42,
+			"Question": "What was the first bird Noah let out of the Ark?",
+			"A": "Owl",
+			"B": "Raven",
+			"C": "Dove",
+			"D": "Skylark",
+			"Correct": "B"
+		},
+		{
+			"Value": 11,
+			"Q No": 43,
+			"Question": "How many degrees are there in an 'octant'?",
+			"A": 45,
+			"B": 60,
+			"C": 75,
+			"D": 90,
+			"Correct": "A"
+		},
+		{
+			"Value": 11,
+			"Q No": 44,
+			"Question": "What does a numismatist collect?",
+			"A": "Stamps",
+			"B": "Fossils",
+			"C": "Teddy bears",
+			"D": "Coins",
+			"Correct": "D"
+		},
+		{
+			"Value": 11,
+			"Q No": 45,
+			"Question": "What kind of bridge is the Golden Gate Bridge?",
+			"A": "Cantilever",
+			"B": "Bascule",
+			"C": "Suspension",
+			"D": "Steel arch",
+			"Correct": "C"
+		},
+		{
+			"Value": 11,
+			"Q No": 46,
+			"Question": "On Father's Day in 1984, seven people were shot dead in Sydney because of a clash between the Bandidos and which other rival bikie gang?",
+			"A": "Comanches",
+			"B": "Comancheros",
+			"C": "Commandos",
+			"D": "Conquistadores",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 1,
+			"Question": "What was the first vineyard established in the Barossa Valley?",
+			"A": "Orlando",
+			"B": "Penfolds",
+			"C": "Seppelt",
+			"D": "Yalumba",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 2,
+			"Question": "What is a trumpet manucode?",
+			"A": "Tropical bird",
+			"B": "Beetle",
+			"C": "Musical instrument",
+			"D": "Hearing device",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 3,
+			"Question": "Who wrote the 1915 classic of polar exploration, 'The Home of the Blizzard'?",
+			"A": "John Davis",
+			"B": "Ernest Shackleton",
+			"C": "Douglas Mawson",
+			"D": "Edgeworth David",
+			"Correct": "C"
+		},
+		{
+			"Value": 12,
+			"Q No": 4,
+			"Question": "Which poison is obtained from wolf's-bane?",
+			"A": "Strychnine",
+			"B": "Aconite",
+			"C": "Curare",
+			"D": "Cyanide",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 5,
+			"Question": "Which modern country is the region known in ancient times as Cappadocia?",
+			"A": "Greece",
+			"B": "Turkey",
+			"C": "Bulgaria",
+			"D": "Romania",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 6,
+			"Question": "What structure has two basic types called 'gravity' and 'arch'?",
+			"A": "Bridge",
+			"B": "Dam",
+			"C": "Pier",
+			"D": "Road",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 7,
+			"Question": "Balls Pyramid is a basalt pinnacle located off the east coast of Australia near which island?",
+			"A": "Great Sandy",
+			"B": "Hook",
+			"C": "Lord Howe",
+			"D": "Norfolk",
+			"Correct": "C"
+		},
+		{
+			"Value": 12,
+			"Q No": 8,
+			"Question": "Which Australian athlete won the 80m Hurdles at the 1968 Mexico City Olympics?",
+			"A": "Pam Kilborn",
+			"B": "Marilyn Black",
+			"C": "Maureen Caird",
+			"D": "Jennifer Lamy",
+			"Correct": "C"
+		},
+		{
+			"Value": 12,
+			"Q No": 9,
+			"Question": "Who was Australia's only Tasmanian-born Prime Minister of the 20th century?",
+			"A": "Arthur Fadden",
+			"B": "Joseph Lyons",
+			"C": "George Reid",
+			"D": "James Scullin",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 10,
+			"Question": "Which part of an animal's body is known as the 'carapace'?",
+			"A": "Shell",
+			"B": "Snout",
+			"C": "Hoof",
+			"D": "Tail",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 11,
+			"Question": "What was 'Che' Guevara's real first name?",
+			"A": "Ernesto",
+			"B": "Alfredo",
+			"C": "Edmundo",
+			"D": "Ricardo",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 12,
+			"Question": "Which of these is a former name for the Russian city of Volgograd?",
+			"A": "Leningrad",
+			"B": "St Petersburg",
+			"C": "Minsk",
+			"D": "Stalingrad",
+			"Correct": "D"
+		},
+		{
+			"Value": 12,
+			"Q No": 13,
+			"Question": "In American football, which team won the most Super Bowls in the 1980s?",
+			"A": "Washington Redskins",
+			"B": "Chicago Bears",
+			"C": "New York Giants",
+			"D": "San Francisco 49ers",
+			"Correct": "D"
+		},
+		{
+			"Value": 12,
+			"Q No": 14,
+			"Question": "'Varicella' is the technical term for which disease?",
+			"A": "Scarlet fever",
+			"B": "Chickenpox",
+			"C": "Diabetes",
+			"D": "Measles",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 15,
+			"Question": "What type of living thing is the dugite of south-western Australia?",
+			"A": "Lizard",
+			"B": "Marsupial",
+			"C": "Snake",
+			"D": "Tree",
+			"Correct": "C"
+		},
+		{
+			"Value": 12,
+			"Q No": 16,
+			"Question": "Who unofficially cut the ribbon at the opening of the Sydney Harbour Bridge in 1932?",
+			"A": "Sir Philip Game",
+			"B": "Francis de Groot",
+			"C": "Sir Isaac Isaacs",
+			"D": "Jack Lang",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 17,
+			"Question": "Which British comedian comitted suicide in Sydney in 1968?",
+			"A": "Tony Hancock",
+			"B": "Frankie Howard",
+			"C": "Sid James",
+			"D": "Kenneth Williams",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 18,
+			"Question": "How many Olympic gold medals did champion Australian athlete Ron Clarke win?",
+			"A": "None",
+			"B": "One",
+			"C": "Two",
+			"D": "Three",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 19,
+			"Question": "The wreckage of what airliner was found in the Snowy Mountains 27 years after it disappeared on a flight in 1931?",
+			"A": "Kyeema",
+			"B": "Miss Hobart",
+			"C": "Southern Cloud",
+			"D": "Stella Australis",
+			"Correct": "C"
+		},
+		{
+			"Value": 12,
+			"Q No": 20,
+			"Question": "In Australia, what is Geraldton wax?",
+			"A": "Plant",
+			"B": "Pest",
+			"C": "Floor polish",
+			"D": "Ear problem",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 21,
+			"Question": "What commercially important fish was formerly known as hake?",
+			"A": "Flathead",
+			"B": "Ocean perch",
+			"C": "Gemfish",
+			"D": "Ling",
+			"Correct": "C"
+		},
+		{
+			"Value": 12,
+			"Q No": 22,
+			"Question": "Balboa made the first recorded European sighting of which ocean in 1513?",
+			"A": "Atlantic",
+			"B": "Indian",
+			"C": "Arctic",
+			"D": "Pacific",
+			"Correct": "D"
+		},
+		{
+			"Value": 12,
+			"Q No": 23,
+			"Question": "The heroic Australian nurse and prisoner-of-war who survived the Banka Island massacre by Japanese soldiers, was Vivian who?",
+			"A": "Thompson",
+			"B": "Bullwinkel",
+			"C": "Shaw",
+			"D": "Cavell",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 24,
+			"Question": "In commemoration of which monarch's birthday did Australians once celebrate Empire Day on the 24th March?",
+			"A": "George III",
+			"B": "George IV",
+			"C": "Edward VII",
+			"D": "Victoria",
+			"Correct": "D"
+		},
+		{
+			"Value": 12,
+			"Q No": 25,
+			"Question": "Written in 1939 while still living in England, what was Patrick White's first novel?",
+			"A": "The Eye of the Storm",
+			"B": "Happy Valley",
+			"C": "The Tree of Man",
+			"D": "Voss",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 26,
+			"Question": "Springfield is the capital of which American state?",
+			"A": "Illinois",
+			"B": "Michigan",
+			"C": "Missouri",
+			"D": "Ohio",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 27,
+			"Question": "In which of the arts was Charles Conder a prominent Australian?",
+			"A": "Literature",
+			"B": "Painting",
+			"C": "Music",
+			"D": "Sculpture",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 28,
+			"Question": "The Dominican Republic is situated on which island?",
+			"A": "Hispaniola",
+			"B": "Puerto Rico",
+			"C": "Cuba",
+			"D": "Dominica",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 29,
+			"Question": "Which Australian prime minister died in office just before the end of World War II?",
+			"A": "Chifley",
+			"B": "Scullin",
+			"C": "Lyons",
+			"D": "Curtin",
+			"Correct": "D"
+		},
+		{
+			"Value": 12,
+			"Q No": 30,
+			"Question": "With which athletics event is Bob Beamon most associated?",
+			"A": "Triple jump",
+			"B": "Pole vault",
+			"C": "Long jump",
+			"D": "Javelin",
+			"Correct": "C"
+		},
+		{
+			"Value": 12,
+			"Q No": 31,
+			"Question": "Which Shakespeare play is set in the forest of Arden?",
+			"A": "As You Like It",
+			"B": "Twelfth Night",
+			"C": "Measure For Measure",
+			"D": "A Midsummer Night's Dream",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 32,
+			"Question": "The Victoria Falls separate Zimbabwe from which other country?",
+			"A": "Swaziland",
+			"B": "Zambia",
+			"C": "Botswana",
+			"D": "Mozambique",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 33,
+			"Question": "Which metal is obtained from bauxite?",
+			"A": "Aluminium",
+			"B": "Sodium",
+			"C": "Copper",
+			"D": "Tin",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 34,
+			"Question": "Which European language is officially used in Madagascar?",
+			"A": "French",
+			"B": "Spanish",
+			"C": "Dutch",
+			"D": "Italian",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 35,
+			"Question": "What was the profession of John Maynard Keynes?",
+			"A": "Clergyman",
+			"B": "Economist",
+			"C": "Mountaineer",
+			"D": "Soldier",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 36,
+			"Question": "A Monégasque is a native of which country?",
+			"A": "Mongolia",
+			"B": "Madagascar",
+			"C": "Monaco",
+			"D": "Malta",
+			"Correct": "C"
+		},
+		{
+			"Value": 12,
+			"Q No": 37,
+			"Question": "The dodo was native to which island?",
+			"A": "Mauritius",
+			"B": "Borneo",
+			"C": "Zanzibar",
+			"D": "Madagascar",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 38,
+			"Question": "The world's second largest barrier reef is off the coast of which country?",
+			"A": "Belize",
+			"B": "Kenya",
+			"C": "Dominican Republic",
+			"D": "Papua New Guinea",
+			"Correct": "A"
+		},
+		{
+			"Value": 12,
+			"Q No": 39,
+			"Question": "Which of these world leaders died in 1953?",
+			"A": "Winston Churchill",
+			"B": "Josef Stalin",
+			"C": "Franklin D. Roosevelt",
+			"D": "Konrad Adenauer",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 40,
+			"Question": "At the Burke and Wills expedition's depot 65, what simple message was cut into the trunk of a coolibah tree on the banks of Cooper's Creek?",
+			"A": "Head south",
+			"B": "Dig",
+			"C": "SOS",
+			"D": "Water here",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 41,
+			"Question": "What does 'stegosaurus' mean?",
+			"A": "Spiny lizard",
+			"B": "Roof lizard",
+			"C": "Claw lizard",
+			"D": "Flat lizard",
+			"Correct": "B"
+		},
+		{
+			"Value": 12,
+			"Q No": 42,
+			"Question": "Until it was dissolved in 2008, which Australian federal electorate was the world's largest in area?",
+			"A": "Capricornia",
+			"B": "Casey",
+			"C": "Corinella",
+			"D": "Kalgoorlie",
+			"Correct": "D"
+		},
+		{
+			"Value": 13,
+			"Q No": 1,
+			"Question": "In which two years did Australian tennis star Evonne Goolagong-Cawley win the Wimbledon ladies singles title?",
+			"A": "1970 & 1981",
+			"B": "1971 & 1980",
+			"C": "1972 & 1981",
+			"D": "1973 & 1980",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 2,
+			"Question": "Which was the first film to feature the on-screen pairing of Spencer Tracy and Katharine Hepburn?",
+			"A": "Morning Glory",
+			"B": "Adam's Rib",
+			"C": "Guess Who's Coming to Dinner?",
+			"D": "Woman of the Year",
+			"Correct": "D"
+		},
+		{
+			"Value": 13,
+			"Q No": 3,
+			"Question": "Who was awarded the Nobel Peace Prize in 1979?",
+			"A": "Desmond Tutu",
+			"B": "Amnesty International",
+			"C": "The Dalai Lama",
+			"D": "Mother Teresa of Calcutta",
+			"Correct": "D"
+		},
+		{
+			"Value": 13,
+			"Q No": 4,
+			"Question": "Which Australian artist apinted the 'Half-Caste Bride' series?",
+			"A": "Arthur Boyd",
+			"B": "Albert Namatjira",
+			"C": "Lloyd Rees",
+			"D": "Brett Whiteley",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 5,
+			"Question": "Who wrote the music of the German national anthem?",
+			"A": "Josef Haydn",
+			"B": "Richard Wagner",
+			"C": "Johannes Brahms",
+			"D": "Ludwig van Beethoven",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 6,
+			"Question": "'View of Delft' is one of the best known works by which artist?",
+			"A": "Van Dyck",
+			"B": "Rembrandt",
+			"C": "Van Eyck",
+			"D": "Vermeer",
+			"Correct": "D"
+		},
+		{
+			"Value": 13,
+			"Q No": 7,
+			"Question": "In March 1965, who became the first person to walk in space?",
+			"A": "Ed White",
+			"B": "Vladimir Komarov",
+			"C": "James McDivett",
+			"D": "Alexei Leonov",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 8,
+			"Question": "Where is the largest volcano known to man?",
+			"A": "Hawaii",
+			"B": "Mars",
+			"C": "Peru",
+			"D": "Venus",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 9,
+			"Question": "In which year was Marie Antoinette, the wife of Louis XVI of France, executed?",
+			"A": 1791,
+			"B": 1793,
+			"C": 1795,
+			"D": 1797,
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 10,
+			"Question": "Which country has a parliament building known as the 'Beehive'?",
+			"A": "England",
+			"B": "Canada",
+			"C": "Ireland",
+			"D": "New Zealand",
+			"Correct": "D"
+		},
+		{
+			"Value": 13,
+			"Q No": 11,
+			"Question": "What nationality was the astronomer Copernicus?",
+			"A": "Swedish",
+			"B": "Dutch",
+			"C": "Polish",
+			"D": "Greek",
+			"Correct": "C"
+		},
+		{
+			"Value": 13,
+			"Q No": 12,
+			"Question": "Who was the first Republican President of the United States?",
+			"A": "John Adams",
+			"B": "Abraham Lincoln",
+			"C": "Grover Cleveland",
+			"D": "Theodore Roosevelt",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 13,
+			"Question": "As the crow flies, which mainland Australian state capital is furthest from Uluru?",
+			"A": "Brisbane",
+			"B": "Melbourne",
+			"C": "Sydney",
+			"D": "Perth",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 14,
+			"Question": "The King and Crown Prince of which country were assassinated on the same day in 1908?",
+			"A": "Italy",
+			"B": "Portugal",
+			"C": "Greece",
+			"D": "Romania",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 15,
+			"Question": "Which of these waves has the shortest wavelength?",
+			"A": "Gamma rays",
+			"B": "X-rays",
+			"C": "Ultraviolet waves",
+			"D": "Infrared waves",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 16,
+			"Question": "How many major satellites has the planet Uranus?",
+			"A": "Three",
+			"B": "Five",
+			"C": "Seven",
+			"D": "Nine",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 17,
+			"Question": "With which of these composers did the female French novelist George Sand have an affair?",
+			"A": "Bizet",
+			"B": "Berlioz",
+			"C": "Chopin",
+			"D": "Debussy",
+			"Correct": "C"
+		},
+		{
+			"Value": 13,
+			"Q No": 18,
+			"Question": "Which knight of the Round Table fought a mysterious Green Knight?",
+			"A": "Sir Lancelot",
+			"B": "Sir Gawain",
+			"C": "Sir Percival",
+			"D": "Sir Galahad",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 19,
+			"Question": "Which other Victorian city hosted Olympic events during the 1956 Melbourne Olympics?",
+			"A": "Ballarat",
+			"B": "Bendigo",
+			"C": "Geelong",
+			"D": "Shepparton",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 20,
+			"Question": "Gariwerd is the Aboriginal name for which Australian mountain range?",
+			"A": "Blue Mountains",
+			"B": "Flinders Ranges",
+			"C": "Grampians",
+			"D": "Macdonnell Ranges",
+			"Correct": "C"
+		},
+		{
+			"Value": 13,
+			"Q No": 21,
+			"Question": "In Greek mythology, Penelope was the faithful wife of which hero?",
+			"A": "Jason",
+			"B": "Achilles",
+			"C": "Odysseus",
+			"D": "Hector",
+			"Correct": "C"
+		},
+		{
+			"Value": 13,
+			"Q No": 22,
+			"Question": "Which Australian novelist published 'The Timeless Land' in 1941?",
+			"A": "Ivan Southall",
+			"B": "Christina Stead",
+			"C": "Lennie Lower",
+			"D": "Eleanor Dark",
+			"Correct": "D"
+		},
+		{
+			"Value": 13,
+			"Q No": 23,
+			"Question": "Which of these leading Australian poets died in 2000?",
+			"A": "Judith Wright",
+			"B": "Kenneth Slessor",
+			"C": "Gwen Harwood",
+			"D": "Geoffrey Dutton",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 24,
+			"Question": "On which date in Octover 1929 was 'Black Thursday', the day the Wall Street Crash began?",
+			"A": "24th",
+			"B": "25th",
+			"C": "28th",
+			"D": "29th",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 25,
+			"Question": "At the 1976 Montreal Olympics, Australia's best result was a solitary silver medal won by whom?",
+			"A": "Michelle Ford",
+			"B": "Stephen Holland",
+			"C": "Men's coxed pairs",
+			"D": "Men's hockey team",
+			"Correct": "D"
+		},
+		{
+			"Value": 13,
+			"Q No": 26,
+			"Question": "In 1987, who became the first woman to be appointed a judge of the High Court?",
+			"A": "Elizabeth Evatt",
+			"B": "Roma Mitchell",
+			"C": "Mary Gaudron",
+			"D": "Pat O'Shane",
+			"Correct": "C"
+		},
+		{
+			"Value": 13,
+			"Q No": 27,
+			"Question": "Which high-profile Australian married Jessie Menzies in 1932?",
+			"A": "Don Bradman",
+			"B": "Frank Packer",
+			"C": "Robert Menzies",
+			"D": "Charles Kingsford-Smith",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 28,
+			"Question": "Which town was the site of the first European settlement in Western Australia?",
+			"A": "Albany",
+			"B": "Esperance",
+			"C": "Bunbury",
+			"D": "Fremantle",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 29,
+			"Question": "What is former Labor leader Kim Beazley's middle name?",
+			"A": "George",
+			"B": "Christian Science",
+			"C": "Francis",
+			"D": "Edward",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 30,
+			"Question": "Published in 1981, Patrick White's autobiography is titled 'Flaws in the what'?",
+			"A": "Glass",
+			"B": "Mirror",
+			"C": "Character",
+			"D": "Pattern",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 31,
+			"Question": "Frank Lloyd Wright designed which famous New York building?",
+			"A": "UN Headquarters",
+			"B": "The Twin Towers",
+			"C": "Empire State Building",
+			"D": "Guggenheim Museum",
+			"Correct": "D"
+		},
+		{
+			"Value": 13,
+			"Q No": 32,
+			"Question": "Which of these Italian cities lies on the river Arno?",
+			"A": "Florence",
+			"B": "Milan",
+			"C": "Rome",
+			"D": "Venice",
+			"Correct": "A"
+		},
+		{
+			"Value": 13,
+			"Q No": 33,
+			"Question": "How many stars are there on the national flag of China?",
+			"A": "Four",
+			"B": "Five",
+			"C": "Six",
+			"D": "Seven",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 34,
+			"Question": "Who wrote the song 'I Will Always Love You', a hit in 1992 for Whitney Houston?",
+			"A": "Henry Mancini",
+			"B": "Burt Bacharach",
+			"C": "Don Black",
+			"D": "Dolly Parton",
+			"Correct": "D"
+		},
+		{
+			"Value": 13,
+			"Q No": 35,
+			"Question": "What was the name fo the first US space shuttle?",
+			"A": "Discovery",
+			"B": "Columbia",
+			"C": "Challenger",
+			"D": "Atlantis",
+			"Correct": "B"
+		},
+		{
+			"Value": 13,
+			"Q No": 36,
+			"Question": "Who wrote the music for 'West Side Story'?",
+			"A": "Stephen Sondheim",
+			"B": "George Gershwin",
+			"C": "Leonard Bernstein",
+			"D": "Richard Rodgers",
+			"Correct": "C"
+		},
+		{
+			"Value": 13,
+			"Q No": 37,
+			"Question": "Which Formula One Grand Prix takes place at the Spa circuit?",
+			"A": "German",
+			"B": "Austrian",
+			"C": "Belgian",
+			"D": "Hungarian",
+			"Correct": "C"
+		},
+		{
+			"Value": 13,
+			"Q No": 38,
+			"Question": "What do the initials stand for in the name of the author H.G. Wells?",
+			"A": "Horace George",
+			"B": "Herbert George",
+			"C": "Harold Gilbert",
+			"D": "Henry Gilbert",
+			"Correct": "B"
+		},
+		{
+			"Value": 14,
+			"Q No": 1,
+			"Question": "The legendary 16th-century Portuguese shipwreck, believed buried beneath sand dunes on Victoria's west coast, is called the 'what' ship?",
+			"A": "Ebony",
+			"B": "Mahogany",
+			"C": "Oak",
+			"D": "Teak",
+			"Correct": "B"
+		},
+		{
+			"Value": 14,
+			"Q No": 2,
+			"Question": "Minsk, a city of the former Soviet Union, is now the capital of which country?",
+			"A": "Belarus",
+			"B": "Kazakhstan",
+			"C": "Armenia",
+			"D": "Lithuania",
+			"Correct": "A"
+		},
+		{
+			"Value": 14,
+			"Q No": 3,
+			"Question": "In which year were the first honours awards made under the Order of Australia?",
+			"A": 1973,
+			"B": 1974,
+			"C": 1975,
+			"D": 1976,
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 4,
+			"Question": "What is the name of the highest waterfall in North America?",
+			"A": "Niagara",
+			"B": "Horseshoe",
+			"C": "Yosemite",
+			"D": "Ribbon",
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 5,
+			"Question": "What name did the artist Michelangelo Merisi adopt?",
+			"A": "Correggio",
+			"B": "Titian",
+			"C": "Botticelli",
+			"D": "Caravaggio",
+			"Correct": "D"
+		},
+		{
+			"Value": 14,
+			"Q No": 6,
+			"Question": "Australian Florence Austral was famous in which stage profession?",
+			"A": "Acting",
+			"B": "Ballet",
+			"C": "Cabaret",
+			"D": "Opera",
+			"Correct": "D"
+		},
+		{
+			"Value": 14,
+			"Q No": 7,
+			"Question": "Which of the following towns is located north of the Tropic of Capricorn?",
+			"A": "Winton",
+			"B": "Alice Springs",
+			"C": "Carnarvon",
+			"D": "Roma",
+			"Correct": "A"
+		},
+		{
+			"Value": 14,
+			"Q No": 8,
+			"Question": "Who composed the opera 'Lohengrin'?",
+			"A": "Mahler",
+			"B": "Puccini",
+			"C": "Wagner",
+			"D": "Rossini",
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 9,
+			"Question": "After the allied surrender in February 1942, which general made a daring escape from Singapore?",
+			"A": "Gordon Bennett",
+			"B": "Thomas Blamey",
+			"C": "Leslie Morshead",
+			"D": "Ian Campbell",
+			"Correct": "A"
+		},
+		{
+			"Value": 14,
+			"Q No": 10,
+			"Question": "From which author's work did scientists take the word 'quark'?",
+			"A": "Lewis Carroll",
+			"B": "Edward Lear",
+			"C": "James Joyce",
+			"D": "Aldous Huxley",
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 11,
+			"Question": "Which planet has a moon called Larissa?",
+			"A": "Jupiter",
+			"B": "Saturn",
+			"C": "Uranus",
+			"D": "Neptune",
+			"Correct": "D"
+		},
+		{
+			"Value": 14,
+			"Q No": 12,
+			"Question": "What colour is the mineral malachite?",
+			"A": "Black",
+			"B": "White",
+			"C": "Purple",
+			"D": "Green",
+			"Correct": "D"
+		},
+		{
+			"Value": 14,
+			"Q No": 13,
+			"Question": "Which aviator was at the centre of the 1929 'Coffee Royal' incident?",
+			"A": "Charles Kingsford-Smith",
+			"B": "Bert Hinkler",
+			"C": "Arthur Butler",
+			"D": "Amelia Earhart",
+			"Correct": "A"
+		},
+		{
+			"Value": 14,
+			"Q No": 14,
+			"Question": "In the early 1890s in which South American country did William Lane establish his short-lived utopian community?",
+			"A": "Uruguay",
+			"B": "Argentina",
+			"C": "Paraguay",
+			"D": "Chile",
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 15,
+			"Question": "Which family fought the Earp brothers at the OK Corral?",
+			"A": "The Clantons",
+			"B": "The Clintons",
+			"C": "The Cliftons",
+			"D": "The Graftons",
+			"Correct": "A"
+		},
+		{
+			"Value": 14,
+			"Q No": 16,
+			"Question": "The Somerset Maugham novel 'The Moon and Sixpence' is set on which island?",
+			"A": "Cuba",
+			"B": "Isle of Wight",
+			"C": "Madeira",
+			"D": "Tahiti",
+			"Correct": "D"
+		},
+		{
+			"Value": 14,
+			"Q No": 17,
+			"Question": "Which of these elements is contained in a strip-lighting tube?",
+			"A": "Mercury",
+			"B": "Cobalt",
+			"C": "Sodium",
+			"D": "Carbon",
+			"Correct": "A"
+		},
+		{
+			"Value": 14,
+			"Q No": 18,
+			"Question": "What is the name of the largest asteroid in the Solar System?",
+			"A": "Ceres",
+			"B": "Pallas",
+			"C": "Hygeia",
+			"D": "Vesta",
+			"Correct": "A"
+		},
+		{
+			"Value": 14,
+			"Q No": 19,
+			"Question": "Which of these novels is not part of Henry Handel Richardson's trilogy 'The Fortunes of Richard Mahony'?",
+			"A": "Australia Felix",
+			"B": "Maurice Guest",
+			"C": "Ultima Thule",
+			"D": "The Way Home",
+			"Correct": "B"
+		},
+		{
+			"Value": 14,
+			"Q No": 20,
+			"Question": "On which Australian islands did British scientists first explode an atomic bomb in 1952?",
+			"A": "Cartier",
+			"B": "Cocos",
+			"C": "Monte Bello",
+			"D": "Muiron",
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 21,
+			"Question": "With only two survivors, what iron clipper was wrecked near Cape Otway off Victoria's coast in 1878?",
+			"A": "Lake Illawarra",
+			"B": "Lady Bird",
+			"C": "Loch Ard",
+			"D": "Loch Maree",
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 22,
+			"Question": "Yellowstone National Park is mainly in which US state?",
+			"A": "North Dakota",
+			"B": "Kansas",
+			"C": "Wyoming",
+			"D": "Nevada",
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 23,
+			"Question": "Which of these was first to be introduced in 1960s Australia?",
+			"A": "National Service",
+			"B": "Four-digit postcodes",
+			"C": "Contraceptive pill",
+			"D": "Decimal currency",
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 24,
+			"Question": "Who published several Australian children's books featuring the character Digit Dick?",
+			"A": "Martin Boyd",
+			"B": "Leslie Rees",
+			"C": "Louis Stone",
+			"D": "Francis Webb",
+			"Correct": "B"
+		},
+		{
+			"Value": 14,
+			"Q No": 25,
+			"Question": "To which bird family does the brolga belong?",
+			"A": "Heron",
+			"B": "Ibis",
+			"C": "Stork",
+			"D": "Crane",
+			"Correct": "D"
+		},
+		{
+			"Value": 14,
+			"Q No": 26,
+			"Question": "Ginger Rogers won a Best Actress Oscar for the film 'Kitty Foyle', released in which year?",
+			"A": 1934,
+			"B": 1936,
+			"C": 1938,
+			"D": 1940,
+			"Correct": "D"
+		},
+		{
+			"Value": 14,
+			"Q No": 27,
+			"Question": "Which German author wrote 'All Quiet on the Western Front'?",
+			"A": "Rainer Maria Rilke",
+			"B": "Bertolt Brecht",
+			"C": "Gunter Grass",
+			"D": "Erich Maria Remarque",
+			"Correct": "D"
+		},
+		{
+			"Value": 14,
+			"Q No": 28,
+			"Question": "In which century was the artist Michelangelo born?",
+			"A": "13th",
+			"B": "14th",
+			"C": "15th",
+			"D": "16th",
+			"Correct": "C"
+		},
+		{
+			"Value": 14,
+			"Q No": 29,
+			"Question": "Which of these wine bottles is about six times the standard size?",
+			"A": "Methuselah",
+			"B": "Rehoboam",
+			"C": "Salmanazar",
+			"D": "Balthazar",
+			"Correct": "B"
+		},
+		{
+			"Value": 14,
+			"Q No": 30,
+			"Question": "In which month in 1952 did Queen Elizabeth II accede to the throne?",
+			"A": "January",
+			"B": "February",
+			"C": "March",
+			"D": "April",
+			"Correct": "B"
+		},
+		{
+			"Value": 14,
+			"Q No": 31,
+			"Question": "Which Moscow building was the headquarters of the Parliament of the Russian Republic?",
+			"A": "The White House",
+			"B": "The Red Citadel",
+			"C": "The Winter Palace",
+			"D": "The Dome",
+			"Correct": "A"
+		},
+		{
+			"Value": 14,
+			"Q No": 32,
+			"Question": "What is the official language of Guyana?",
+			"A": "Spanish",
+			"B": "Portuguese",
+			"C": "French",
+			"D": "English",
+			"Correct": "D"
+		},
+		{
+			"Value": 14,
+			"Q No": 33,
+			"Question": "Which Australian cricketer was born the same year that the Smith brothers became the first to fly from England to Australia?",
+			"A": "Don Bradman",
+			"B": "Keith Miller",
+			"C": "Bill Ponsford",
+			"D": "Bill Woodfull",
+			"Correct": "B"
+		},
+		{
+			"Value": 14,
+			"Q No": 34,
+			"Question": "Who was the second Roman emperor?",
+			"A": "Claudius",
+			"B": "Tiberius",
+			"C": "Nero",
+			"D": "Augustus",
+			"Correct": "B"
+		},
+		{
+			"Value": 15,
+			"Q No": 1,
+			"Question": "The largest of the great salt lakes of South Australia, Lake Eyre North is connected to Lake Eyre South by which usually dry channel?",
+			"A": "Stuart",
+			"B": "Torrens",
+			"C": "Gawler",
+			"D": "Goyder",
+			"Correct": "D"
+		},
+		{
+			"Value": 15,
+			"Q No": 2,
+			"Question": "Which Australian architect designed the $160 million Yulara tourist resort at Uluru?",
+			"A": "Richard Thorp",
+			"B": "Daryl Jackson",
+			"C": "Glen Murcutt",
+			"D": "Philip Cox",
+			"Correct": "D"
+		},
+		{
+			"Value": 15,
+			"Q No": 3,
+			"Question": "The Four Noble Truths are central to which religion?",
+			"A": "Buddhism",
+			"B": "Islam",
+			"C": "Hinduism",
+			"D": "Judaism",
+			"Correct": "A"
+		},
+		{
+			"Value": 15,
+			"Q No": 4,
+			"Question": "What electoral reform was introduced in South Australia and Victoria in 1856?",
+			"A": "Secret ballot",
+			"B": "Preferential voting",
+			"C": "Compulsory voting",
+			"D": "Postal voting",
+			"Correct": "A"
+		},
+		{
+			"Value": 15,
+			"Q No": 5,
+			"Question": "Which bushranger had the nickname 'Captain Melville'?",
+			"A": "Frederick Ward",
+			"B": "Frank McCallum",
+			"C": "Martin Cash",
+			"D": "John Donahoe",
+			"Correct": "B"
+		},
+		{
+			"Value": 15,
+			"Q No": 6,
+			"Question": "In which year was the anniversary of Australia's settlement, now called Australia Day, first celebrated as a public holiday?",
+			"A": 1818,
+			"B": 1838,
+			"C": 1888,
+			"D": 1938,
+			"Correct": "B"
+		},
+		{
+			"Value": 15,
+			"Q No": 7,
+			"Question": "What is the title of the third part of T.S. Eliot's poem 'The Waste Land'?",
+			"A": "A Game of Chess",
+			"B": "Death by Water",
+			"C": "What the Thunder Said",
+			"D": "The Fire Sermon",
+			"Correct": "D"
+		},
+		{
+			"Value": 15,
+			"Q No": 8,
+			"Question": "What is 'phylloxera'?",
+			"A": "A lung infection",
+			"B": "An insect",
+			"C": "A shrub",
+			"D": "Green pigment",
+			"Correct": "B"
+		},
+		{
+			"Value": 15,
+			"Q No": 9,
+			"Question": "In area, which of these Australian national parks is the largest?",
+			"A": "Lakefield, QLD",
+			"B": "Rudall River, WA",
+			"C": "Southwest, TAS",
+			"D": "Witjira, SA",
+			"Correct": "B"
+		},
+		{
+			"Value": 15,
+			"Q No": 10,
+			"Question": "The fall in pitch of a vehicle's siren as it passes is associated with which scientist?",
+			"A": "Coriolis",
+			"B": "Newton",
+			"C": "Doppler",
+			"D": "Hooke",
+			"Correct": "C"
+		},
+		{
+			"Value": 15,
+			"Q No": 11,
+			"Question": "Sir Seretse Khama was the first president of which country?",
+			"A": "Botswana",
+			"B": "Tanzania",
+			"C": "Ghana",
+			"D": "Zambia",
+			"Correct": "A"
+		},
+		{
+			"Value": 15,
+			"Q No": 12,
+			"Question": "Which decimal number is equal to the binary number 10?",
+			"A": "Ten",
+			"B": "Two",
+			"C": "One",
+			"D": "Three",
+			"Correct": "B"
+		},
+		{
+			"Value": 15,
+			"Q No": 13,
+			"Question": "Which star type has the hottest surface temperature?",
+			"A": "White",
+			"B": "Red",
+			"C": "Blue",
+			"D": "Yellow",
+			"Correct": "C"
+		},
+		{
+			"Value": 15,
+			"Q No": 14,
+			"Question": "Which New South Wales overnor's achievements in astronomy brought him greater fame than his military or vice-regal careers?",
+			"A": "Bourke",
+			"B": "Fitzroy",
+			"C": "Darling",
+			"D": "Brisbane",
+			"Correct": "D"
+		},
+		{
+			"Value": 15,
+			"Q No": 15,
+			"Question": "Which of these colours does not appear on the national flag of Lithuania?",
+			"A": "Blue",
+			"B": "Yellow",
+			"C": "Red",
+			"D": "Green",
+			"Correct": "A"
+		},
+		{
+			"Value": 15,
+			"Q No": 16,
+			"Question": "The first regular census in New South Wales was taken in which year?",
+			"A": 1826,
+			"B": 1828,
+			"C": 1836,
+			"D": 1840,
+			"Correct": "B"
+		},
+		{
+			"Value": 15,
+			"Q No": 17,
+			"Question": "Linking the eastern states to Perth, in which year was the Trans-Australian Railway completed?",
+			"A": 1915,
+			"B": 1916,
+			"C": 1917,
+			"D": 1918,
+			"Correct": "C"
+		},
+		{
+			"Value": 15,
+			"Q No": 18,
+			"Question": "Which of these is not a mineral used on the Mohs scale of hardness?",
+			"A": "Orthoclase",
+			"B": "Apatite",
+			"C": "Graphite",
+			"D": "Gypsum",
+			"Correct": "C"
+		},
+		{
+			"Value": 15,
+			"Q No": 19,
+			"Question": "Which extensive tableland area's highest peaks are Round Mountain and Point Lookout?",
+			"A": "Kimberley",
+			"B": "Atherton",
+			"C": "New England",
+			"D": "Barkly",
+			"Correct": "C"
+		},
+		{
+			"Value": 15,
+			"Q No": 20,
+			"Question": "At the 1956 Melbourne Olympics, by what score did Hungary defeat the Soviet Union in the notorious abandoned 'bloodbath' water polo match?",
+			"A": "4-0",
+			"B": "4-1",
+			"C": "4-2",
+			"D": "4-3",
+			"Correct": "A"
+		},
+		{
+			"Value": 15,
+			"Q No": 21,
+			"Question": "Tasmania is larger in area than which of these European countries?",
+			"A": "Austria",
+			"B": "Greece",
+			"C": "Ireland",
+			"D": "Denmark",
+			"Correct": "D"
+		},
+		{
+			"Value": 15,
+			"Q No": 22,
+			"Question": "Which cartoon character made his screen debut in 1935?",
+			"A": "Porky Pig",
+			"B": "Popeye",
+			"C": "Pluto",
+			"D": "Bugs Bunny",
+			"Correct": "A"
+		},
+		{
+			"Value": 15,
+			"Q No": 23,
+			"Question": "Near which Victorian town was the huge Welcome Stranger gold nugget found in 1869?",
+			"A": "Avoca",
+			"B": "Bendigo",
+			"C": "Creswick",
+			"D": "Dunolly",
+			"Correct": "D"
+		},
+		{
+			"Value": 15,
+			"Q No": 24,
+			"Question": "What invention did Frederick Wolseley patent in Australia in 1877?",
+			"A": "Curved sail windmill",
+			"B": "Irrigation pump",
+			"C": "Sheep shearing machine",
+			"D": "Spun concrete",
+			"Correct": "C"
+		},
+		{
+			"Value": 15,
+			"Q No": 25,
+			"Question": "In which northern English town was navigator Captain Cook born in 1728?",
+			"A": "Marton-in-Cleveland",
+			"B": "Berwick-upon-Tweed",
+			"C": "Chester-le-Street",
+			"D": "Stockton-on-Tees",
+			"Correct": "A"
+		},
+		{
+			"Value": 15,
+			"Q No": 26,
+			"Question": "Which of these Torres Strait islands is closest to the island of New Guinea?",
+			"A": "Boigu",
+			"B": "Moa",
+			"C": "Prince of Wales",
+			"D": "Thursday",
+			"Correct": "A"
+		},
+		{
+			"Value": 15,
+			"Q No": 27,
+			"Question": "What was the first name of L. Frank Baum, author of 'The Wonderful Wizard of Oz'?",
+			"A": "Linus",
+			"B": "Lyman",
+			"C": "Lionel",
+			"D": "Leon",
+			"Correct": "B"
+		},
+		{
+			"Value": 15,
+			"Q No": 28,
+			"Question": "In which year was Mahatma Gandhi assassinated?",
+			"A": 1946,
+			"B": 1947,
+			"C": 1948,
+			"D": 1949,
+			"Correct": "C"
+		},
+		{
+			"Value": 15,
+			"Q No": 29,
+			"Question": "Edward Whymper was the first man to climb which of these mountains?",
+			"A": "Matterhorn",
+			"B": "K2",
+			"C": "Olympus",
+			"D": "Eiger",
+			"Correct": "A"
+		},
+		{
+			"Value": 15,
+			"Q No": 30,
+			"Question": "Which of Henry VIII's wives was the widow of his elder brother Arthur?",
+			"A": "Catherine of Aragon",
+			"B": "Anne of Cleves",
+			"C": "Catherine Howard",
+			"D": "Catherine Parr",
+			"Correct": "A"
+		}
+	]
+}

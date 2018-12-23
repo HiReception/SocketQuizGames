@@ -4,9 +4,6 @@ const io = require("socket.io-client");
 const socket = io();
 const $ = require("jquery");
 
-const ReactCSSTransitionReplace = require("react-css-transition-replace");
-const ReactCSSTransitionGroup = require("react-addons-css-transition-group");
-
 import HostConsole from "./host/host-console";
 
 const gameCode = getParameterByName("gamecode");
@@ -37,25 +34,39 @@ socket.on("game details", (details) => {
 		state = {
 			players: [],
 			detailPlayerName: "",
+			
+			prefix: "",
+			suffix: "",
 
-			questions: [],
-			currentQuestion: 0,
+			ffQuestions: [],
+			ffCurrentQuestion: 0,
 			currentPanel: "NoQuestionPanel",
 			newPanelKey: 0,
 
-			questionRecapped: false,
-			numAnswersRevealed: 0,
-			fullAnswerRevealed: false,
+			ffQuestionRecapped: false,
+			ffNumAnswersRevealed: 0,
+			ffFullAnswerRevealed: false,
 
 			playerPanelHidden: false,
 
-			correctPlayersRevealed: false,
-			fastestCorrectRevealed: false,
-			fastestFlashOn: false,
+			ffCorrectPlayersRevealed: false,
+			ffFastestCorrectRevealed: false,
+			ffFastestFlashOn: false,
 
-			buzzersPending: false,
-			buzzersOpen: false,
+			ffBuzzersPending: false,
+			ffBuzzersOpen: false,
 			playerStats: [],
+
+			mainGameMoneyTree: [],
+			mainGameQuestions: [],
+
+			mainGamePlayer: {},
+			mainGameQuestionNo: 1,
+			mainGameCurrentQuestion: {},
+			mainGameLifelinesAvailable: [],
+			mainGameCorrectRevealed: false,
+			mainGameChosenAnswer: "",
+
 		};
 		socket.emit("set state", state);
 	} else {

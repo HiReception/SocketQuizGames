@@ -9,18 +9,18 @@ export default class FFQuestionResultsPanel extends Component {
 	}
 	revealAnswer = () => {
 		const numOptions = this.props.question.options.length;
-		const numRevealed = this.props.gameState.numAnswersRevealed;
+		const numRevealed = this.props.gameState.ffNumAnswersRevealed;
 		if (this.props.question.type === "sequence") {
 			if (numOptions > numRevealed) {
 				this.setGameState({
-					numAnswersRevealed: numRevealed + 1,
-					fullAnswerRevealed: (numRevealed + 1 === numOptions),
+					ffNumAnswersRevealed: numRevealed + 1,
+					ffFullAnswerRevealed: (numRevealed + 1 === numOptions),
 				});
 				this.props.socket.emit("play sound", "answer" + (numRevealed + 1));
 			}
 		} else {
 			this.setGameState({
-				fullAnswerRevealed: true,
+				ffFullAnswerRevealed: true,
 			});
 			this.props.socket.emit("play sound", "light-answer");
 		}
@@ -28,16 +28,16 @@ export default class FFQuestionResultsPanel extends Component {
 
 	recapQuestion = () => {
 		this.setGameState({
-			questionRecapped: true,
+			ffQuestionRecapped: true,
 		})
 		this.props.socket.emit("play sound", "order-bed");
 	}
 
 	goToPlayerResults = () => {
 		this.setGameState({
-			numAnswersRevealed: 0,
-			fullAnswerRevealed: false,
-			questionRecapped: false,
+			ffNumAnswersRevealed: 0,
+			ffFullAnswerRevealed: false,
+			ffQuestionRecapped: false,
 			currentPanel: "PlayerResultsPanel",
 		});
 	}
@@ -62,7 +62,7 @@ export default class FFQuestionResultsPanel extends Component {
 		const questionPanel = (
 			<div className='open-question-body'>
 				<p className='open-question-body'>
-					{gameState.questionRecapped ? question.body : ""}
+					{gameState.ffQuestionRecapped ? question.body : ""}
 				</p>
 			</div>
 		);
@@ -77,16 +77,16 @@ export default class FFQuestionResultsPanel extends Component {
 		}
 
 		const options = optionOrder.map((option, index) => {
-			const correctLit = question.type !== "sequence" && question.correctResponse.includes(option.key) && gameState.fullAnswerRevealed;
+			const correctLit = question.type !== "sequence" && question.correctResponse.includes(option.key) && gameState.ffFullAnswerRevealed;
 			return <div key={option.key} className={`open-question-option${correctLit ? " correct" : ""}`}>
 				<div className={`open-question-option-icon${correctLit ? " correct" : ""}`}>
-					{(question.type !== "sequence" || this.props.gameState.numAnswersRevealed - 1 >= index) ? option.key : ""}
+					{(question.type !== "sequence" || this.props.gameState.ffNumAnswersRevealed - 1 >= index) ? option.key : ""}
 				</div>
 
 
 
 				<p className={`open-question-option${correctLit ? " correct" : ""}`}>
-					{(question.type !== "sequence" || this.props.gameState.numAnswersRevealed - 1 >= index) ? option.text : ""}
+					{(question.type !== "sequence" || this.props.gameState.ffNumAnswersRevealed - 1 >= index) ? option.text : ""}
 				</p>
 			</div>;
 		});
@@ -96,7 +96,7 @@ export default class FFQuestionResultsPanel extends Component {
 				{options}
 			</div>
 		);
-		if (!gameState.questionRecapped && question.type === "sequence") {
+		if (!gameState.ffQuestionRecapped && question.type === "sequence") {
 			buzzerPanel = (
 				<div className='buzzer-panel'>
 					<div className='add-question-button' onClick={this.recapQuestion}>
@@ -104,7 +104,7 @@ export default class FFQuestionResultsPanel extends Component {
 					</div>
 				</div>
 			);
-		} else if (gameState.fullAnswerRevealed) {
+		} else if (gameState.ffFullAnswerRevealed) {
 			buzzerPanel = (
 				<div className='buzzer-panel'>
 					<div className='add-question-button' onClick={this.goToPlayerResults}>

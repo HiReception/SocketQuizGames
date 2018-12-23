@@ -75,8 +75,8 @@ class PlayerPanel extends React.Component {
 
 	render = () => {
 		var input;
-		const currentQ = this.state.questions[this.state.currentQuestion];
-		if (this.state.buzzersOpen && !currentQ.answers.some((answer) => { return answer.screenName === screenName; })) {
+		const currentQ = this.state.ffQuestions[this.state.ffCurrentQuestion];
+		if (this.state.ffBuzzersOpen && !currentQ.answers.some((answer) => { return answer.screenName === screenName; })) {
 			const optionButtons = currentQ.options.map((option) => {
 				return (
 					<AnswerButton
@@ -118,7 +118,7 @@ class PlayerPanel extends React.Component {
 				);
 				break;
 			default:
-				input = <EmptyPanel/>
+				input = <EmptyPanel/>;
 			}
 		} else {
 			input = <EmptyPanel/>;

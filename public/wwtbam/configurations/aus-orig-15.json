@@ -1,7 +1,7 @@
-[{
+{
 	"name": "Australia/USA Original 15Q",
 	"lifelines": [
-		"PhoneAFriend", "5050", "AskTheAudience",
+		"PhoneAFriend", "5050", "AskTheAudience"
 	],
 	"soundfolder": "classic",
 	"prefix": "$",
@@ -80,6 +80,6 @@
 			"value": 1000000,
 			"textValue": "$1 MILLION",
 			"endBGMusic": ["lock-in"]
-		},
+		}
 	]
-}]
+}

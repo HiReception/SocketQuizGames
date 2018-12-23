@@ -29,7 +29,23 @@ module.exports = function(grunt) {
 			sotc_css: {
 				files: ["js/sotc/**/*.scss"],
 				tasks: ["sass:sotc"]
-			}
+			},
+			wwtbam_host_js: {
+				files: ["js/wwtbam/host/*.js", "js/wwtbam/host.js"],
+				tasks: ["browserify:wwtbam_host"]
+			},
+			wwtbam_player_js: {
+				files: ["js/wwtbam/player/*.js", "js/wwtbam/player.js"],
+				tasks: ["browserify:wwtbam_player"]
+			},
+			wwtbam_display_js: {
+				files: ["js/wwtbam/display/*.js", "js/wwtbam/display.js"],
+				tasks: ["browserify:wwtbam_display"]
+			},
+			wwtbam_css: {
+				files: ["js/wwtbam/**/*.scss"],
+				tasks: ["sass:wwtbam"]
+			},
 		},
 		browserify: {
 			menu: {
@@ -109,7 +125,7 @@ module.exports = function(grunt) {
 			},
 			wwtbam_player: {
 				src: "js/wwtbam/player.js",
-				dest: "public/wwtbam/playerBundle.js",
+				dest: "public/wwtbam/player.js",
 				options: {
 					transform: [
 						["babelify", {
@@ -120,7 +136,7 @@ module.exports = function(grunt) {
 			},
 			wwtbam_host: {
 				src: "js/wwtbam/host.js",
-				dest: "public/wwtbam/hostBundle.js",
+				dest: "public/wwtbam/host.js",
 				options: {
 					transform: [
 						["babelify", {
@@ -132,7 +148,7 @@ module.exports = function(grunt) {
 			},
 			wwtbam_display: {
 				src: "js/wwtbam/display.js",
-				dest: "public/wwtbam/displayBundle.js",
+				dest: "public/wwtbam/display.js",
 				options: {
 					transform: [
 						["babelify", {

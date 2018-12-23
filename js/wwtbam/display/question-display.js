@@ -64,7 +64,7 @@ export default class QuestionDisplay extends Component {
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 
-		const { question, fullAnswerRevealed, questionVisible, answersVisible, correctFlashOn } = this.props;
+		const { question, ffFullAnswerRevealed, questionVisible, answersVisible, correctFlashOn } = this.props;
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
 		var gradient = ctx.createLinearGradient(0,0,width,0);
@@ -78,7 +78,7 @@ export default class QuestionDisplay extends Component {
 			return {
 				key: a.key,
 				answer: a.text,
-				correctLit: question.correctResponse.includes(a.key) && fullAnswerRevealed && correctFlashOn,
+				correctLit: question.correctResponse.includes(a.key) && ffFullAnswerRevealed && correctFlashOn,
 			};
 		})
 
@@ -212,7 +212,7 @@ export default class QuestionDisplay extends Component {
 
 QuestionDisplay.propTypes = {
 	question: PropTypes.object,
-	fullAnswerRevealed: PropTypes.bool,
+	ffFullAnswerRevealed: PropTypes.bool,
 	questionVisible: PropTypes.bool,
 	answersVisible: PropTypes.bool,
 	correctFlashOn: PropTypes.bool,

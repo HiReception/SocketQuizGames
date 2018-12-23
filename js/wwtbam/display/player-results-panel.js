@@ -11,7 +11,7 @@ export default class PlayerResultsPanel extends Component {
 			height: 0,
 			width: 0,
 			backgroundImage: null,
-			fastestFlashOn: false,
+			ffFastestFlashOn: false,
 			numPlayersRevealed: 0,
 			
 		}
@@ -32,7 +32,7 @@ export default class PlayerResultsPanel extends Component {
 	}
 
 	flashFastest = () => {
-		this.setState({fastestFlashOn: !this.state.fastestFlashOn});
+		this.setState({ffFastestFlashOn: !this.state.ffFastestFlashOn});
 	}
 
 	componentWillMount = () => {
@@ -49,7 +49,7 @@ export default class PlayerResultsPanel extends Component {
 	}
 	componentDidMount = () => {
 		window.addEventListener("resize", this.updateDimensions);
-		if (this.props.fastestCorrectRevealed) {
+		if (this.props.ffFastestCorrectRevealed) {
 			setInterval(this.flashFastest, 250);
 		}
 	}
@@ -59,11 +59,11 @@ export default class PlayerResultsPanel extends Component {
 	}
 
 	componentWillReceiveProps = (props) => {
-		if (props.correctPlayersRevealed && !this.props.correctPlayersRevealed) {
+		if (props.ffCorrectPlayersRevealed && !this.props.ffCorrectPlayersRevealed) {
 			setInterval(this.state.iterateCorrectReveal, 200);
 		}
 
-		if (props.fastestCorrectRevealed && !this.props.fastestCorrectRevealed) {
+		if (props.ffFastestCorrectRevealed && !this.props.ffFastestCorrectRevealed) {
 			setInterval(this.flashFastest, 250);
 		}
 	}
@@ -94,7 +94,7 @@ export default class PlayerResultsPanel extends Component {
 
 		
 
-		const { question, players, correctPlayersRevealed, fastestCorrectRevealed } = this.props;
+		const { question, players, ffCorrectPlayersRevealed, ffFastestCorrectRevealed } = this.props;
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
 		var gradient = ctx.createLinearGradient(0,0,width,0);
@@ -128,8 +128,8 @@ export default class PlayerResultsPanel extends Component {
 			return {
 				screenName: p.screenName.toUpperCase(),
 				timeTaken: answer ? (answer.timeTaken/1000).toFixed(2) : "0.00",
-				correctLit: typeof answer !== "undefined" && answer.answer === question.correctResponse && correctPlayersRevealed && this.state.numPlayersRevealed > index,
-				fastestLit: typeof answer !== "undefined" && answer.answer === question.correctResponse && answer.timeTaken === fastestTime && fastestCorrectRevealed,
+				correctLit: typeof answer !== "undefined" && answer.answer === question.correctResponse && ffCorrectPlayersRevealed && this.state.numPlayersRevealed > index,
+				fastestLit: typeof answer !== "undefined" && answer.answer === question.correctResponse && answer.timeTaken === fastestTime && ffFastestCorrectRevealed,
 			};
 		});
 		const screenRatio = width / height;
@@ -163,7 +163,7 @@ export default class PlayerResultsPanel extends Component {
 							<Group key={index}>
 								<Lozenge xStart={0} yStart={topY}
 									height={pHeight} width={pWidth} leftSideWidth={sideWidth} rightSideWidth={sideWidth}
-									fillStyle={player.fastestLit ? (this.state.fastestFlashOn ? "#00ff00" : "black") : (player.correctLit ? "#00ff00" : "black")} strokeStyle={gradient} lineWidth={lineWidth}/>
+									fillStyle={player.fastestLit ? (this.state.ffFastestFlashOn ? "#00ff00" : "black") : (player.correctLit ? "#00ff00" : "black")} strokeStyle={gradient} lineWidth={lineWidth}/>
 
 								<Rect
 									x={sideWidth+(pHeight*(2/5))} y={topY + pHeight/2}
@@ -199,6 +199,6 @@ export default class PlayerResultsPanel extends Component {
 PlayerResultsPanel.propTypes = {
 	question: PropTypes.object,
 	players: PropTypes.array,
-	correctPlayersRevealed: PropTypes.bool,
-	fastestCorrectRevealed: PropTypes.bool,
+	ffCorrectPlayersRevealed: PropTypes.bool,
+	ffFastestCorrectRevealed: PropTypes.bool,
 };

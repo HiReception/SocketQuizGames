@@ -51,14 +51,14 @@ export default class FFQuestionResultsPanel extends Component {
 	}
 
 	componentWillReceiveProps = (props) => {
-		if (props.fullAnswerRevealed && !this.props.fullAnswerRevealed) {
+		if (props.ffFullAnswerRevealed && !this.props.ffFullAnswerRevealed) {
 			setInterval(this.flashCorrect, 250);
 		}
 	}
 
 	componentDidMount = () => {
 		window.addEventListener("resize", this.updateDimensions);
-		if (this.props.fullAnswerRevealed) {
+		if (this.props.ffFullAnswerRevealed) {
 			setInterval(this.flashCorrect, 250);
 		}
 	}
@@ -89,7 +89,7 @@ export default class FFQuestionResultsPanel extends Component {
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 
-		const { question, fullAnswerRevealed, numAnswersRevealed, questionRecapped } = this.props;
+		const { question, ffFullAnswerRevealed, ffNumAnswersRevealed, ffQuestionRecapped } = this.props;
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
 		var gradient = ctx.createLinearGradient(0,0,width,0);
@@ -103,7 +103,7 @@ export default class FFQuestionResultsPanel extends Component {
 			return {
 				key: a.key,
 				answer: a.text,
-				correctLit: question.correctResponse.includes(a.key) && fullAnswerRevealed && this.state.correctFlashOn,
+				correctLit: question.correctResponse.includes(a.key) && ffFullAnswerRevealed && this.state.correctFlashOn,
 			};
 		})
 
@@ -158,7 +158,7 @@ export default class FFQuestionResultsPanel extends Component {
 			const panelBackgroundOffset = this.state.panelBackgroundNatWidth + (panelWidth / panelBackgroundScale);
 			return (
 				<Stage width={width} height={height}>
-					<Motion defaultStyle={{x: 0}} style={{x: spring(questionRecapped ? recapBackgroundX : 0)}}>
+					<Motion defaultStyle={{x: 0}} style={{x: spring(ffQuestionRecapped ? recapBackgroundX : 0)}}>
 						{({x}) => (
 							<Layer>
 								<Rect x={x} y={0} height={height} width={width} fillPatternImage={this.state.backgroundImage}
@@ -170,7 +170,7 @@ export default class FFQuestionResultsPanel extends Component {
 
 					
 					
-					<Motion defaultStyle={{x: width}} style={{x: spring(questionRecapped ? width - panelWidth : width)}}>
+					<Motion defaultStyle={{x: width}} style={{x: spring(ffQuestionRecapped ? width - panelWidth : width)}}>
 						{({x}) => (
 							<Layer>
 								<Rect x={x} y={0} height={height} width={panelWidth} fillPatternImage={this.state.panelBackgroundImage}
@@ -184,11 +184,11 @@ export default class FFQuestionResultsPanel extends Component {
 						)}
 					</Motion>
 					
-					<Layer visible={questionRecapped}>
+					<Layer visible={ffQuestionRecapped}>
 						
 
 						{answersInOrder.map((ans, index) => {
-							const xStart = numAnswersRevealed > index ? aLeft : width;
+							const xStart = ffNumAnswersRevealed > index ? aLeft : width;
 							return (
 								<Motion key={index} defaultStyle={{x: width}} style={{x: spring(xStart)}}>
 									{({x}) => {
@@ -236,7 +236,7 @@ export default class FFQuestionResultsPanel extends Component {
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
 					</Layer>
 					<QuestionDisplay
-						question={question} fullAnswerRevealed={fullAnswerRevealed}
+						question={question} ffFullAnswerRevealed={ffFullAnswerRevealed}
 						questionVisible={true} answersVisible={true} correctFlashOn={this.state.correctFlashOn}/>
 				</Stage>
 			);
@@ -247,7 +247,7 @@ export default class FFQuestionResultsPanel extends Component {
 
 FFQuestionResultsPanel.propTypes = {
 	question: PropTypes.object,
-	fullAnswerRevealed: PropTypes.bool,
-	numAnswersRevealed: PropTypes.number,
-	questionRecapped: PropTypes.bool,
+	ffFullAnswerRevealed: PropTypes.bool,
+	ffNumAnswersRevealed: PropTypes.number,
+	ffQuestionRecapped: PropTypes.bool,
 };

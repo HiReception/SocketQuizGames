@@ -27,7 +27,7 @@ var MainMenu = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (MainMenu.__proto__ || Object.getPrototypeOf(MainMenu)).call(this, props));
 
-		_this.hostableGames = [{ folder: "jeopardy", name: "Jeopardy!" }, { folder: "genericquiz", name: "Generic Quiz" }, { folder: "wof-board", name: "Wheel of Fortune" }, { folder: "wwtbam-ff", name: "Fastest Finger First" }];
+		_this.hostableGames = [{ folder: "jeopardy", name: "Jeopardy!" }, { folder: "genericquiz", name: "Generic Quiz" }, { folder: "wof-board", name: "Wheel of Fortune" }, { folder: "wwtbam-ff", name: "Fastest Finger First" }, { folder: "wwtbam", name: "Who Wants to Be a Millionaire" }];
 		_this.minigames = [{ folder: "tpir-plinko", name: "Plinko" }, { folder: "wof-wheel", name: "WOF Wheel" }, { folder: "tpir-wheel", name: "TPIR Big Wheel" }];
 		_this.availablePages = [{ name: "home", heading: "Welcome to Trivle!" }, { name: "host", heading: "Host a Game" }, { name: "join", heading: "Join a Game" }, { name: "display", heading: "Display a Game" }, { name: "minigames", heading: "Minigames" }];
 

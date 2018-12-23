@@ -48,10 +48,10 @@ export default class HostConsole extends Component {
 			hidden: false,
 			correctAnswers: 0,
 			aggregateTime: 0.0,
-			currentQuestionAnswer: "",
-			answeredCurrentQuestion: false,
-			answeredCurrentQuestionCorrectly: false,
-			currentQuestionTime: 0.0,
+			ffCurrentQuestionAnswer: "",
+			answeredffCurrentQuestion: false,
+			answeredffCurrentQuestionCorrectly: false,
+			ffCurrentQuestionTime: 0.0,
 		};
 		const newPlayers = this.state.players;
 
@@ -106,7 +106,7 @@ export default class HostConsole extends Component {
 
 	goToNextRound = () => {
 		this.setGameState({
-			currentQuestion: this.state.currentQuestion + 1,
+			ffCurrentQuestion: this.state.ffCurrentQuestion + 1,
 			currentPanel: "FFQuestionPanel",
 			newPanelKey: this.state.newPanelKey + 1,
 		});
@@ -118,12 +118,16 @@ export default class HostConsole extends Component {
 		this.props.socket.emit("set state", changedItems);
 	}
 
-	setGameData = (questions) => {
-		console.log(questions);
+	setGameData = (configuration, mainQuestions, ffQuestions) => {
+		console.log(ffQuestions);
 
 		this.setGameState({
-			questions: questions,
-			currentQuestion: 0,
+			ffQuestions: ffQuestions,
+			mainGameQuestions: mainQuestions,
+			mainGameMoneyTree: configuration.levels,
+			prefix: configuration.prefix || "",
+			suffix: configuration.suffix || "",
+			ffCurrentQuestion: 0,
 			players: this.state.players,
 			currentPanel: "FFQuestionPanel",
 			newPanelKey: this.state.newPanelKey + 1,
@@ -132,7 +136,7 @@ export default class HostConsole extends Component {
 
 	render = () => {
 		const { players, detailPlayerName, currentPanel,
-			newPanelKey, currentQuestion, questions, playerPanelHidden } = this.state;
+			newPanelKey, ffCurrentQuestion, ffQuestions, playerPanelHidden } = this.state;
 		// render player list panel
 		let playerPanel;
 		if (detailPlayerName === "") {
@@ -145,7 +149,7 @@ export default class HostConsole extends Component {
 				});
 
 				const list = playersByScore.map((player) => {
-					const waiting = questions.length > 0 && !questions[currentQuestion].answers.some((a) => {
+					const waiting = ffQuestions.length > 0 && !ffQuestions[ffCurrentQuestion].answers.some((a) => {
 						return a.screenName === player.screenName;
 					});
 					return (
@@ -188,7 +192,7 @@ export default class HostConsole extends Component {
 			mainPanel = (
 				<NextRoundPanel
 					key={newPanelKey}
-					lastRound={currentQuestion === questions.length - 1}
+					lastRound={ffCurrentQuestion === ffQuestions.length - 1}
 					callback={this.goToNextRound}
 					socket={this.props.socket}/>
 			);
@@ -201,14 +205,14 @@ export default class HostConsole extends Component {
 				changePlayerScore={this.changePlayerScore}
 				gameState={this.state}
 				setGameState={this.setGameState}
-				question={questions[currentQuestion]}
+				question={ffQuestions[ffCurrentQuestion]}
 				socket={this.props.socket}/>);
 			break;
 
 		case "FFQuestionResultsPanel":
 			mainPanel = (<FFQuestionResultsPanel
 				key={newPanelKey}
-				question={questions[currentQuestion]}
+				question={ffQuestions[ffCurrentQuestion]}
 				gameState={this.state}
 				setGameState={this.setGameState}
 				socket={this.props.socket}/>);
@@ -216,6 +220,14 @@ export default class HostConsole extends Component {
 
 		case "PlayerResultsPanel":
 			mainPanel = (<PlayerResultsPanel
+				key={newPanelKey}
+				gameState={this.state}
+				setGameState={this.setGameState}
+				socket={this.props.socket}/>);
+			break;
+
+		case "PostMainGamePanel":
+			mainPanel = (<PostMainGamePanel
 				key={newPanelKey}
 				gameState={this.state}
 				setGameState={this.setGameState}

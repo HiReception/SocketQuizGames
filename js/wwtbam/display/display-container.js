@@ -14,21 +14,21 @@ export default class DisplayContainer extends React.Component {
 			players: [],
 			detailPlayerName: "",
 
-			questions: [],
-			currentQuestion: 0,
+			ffQuestions: [],
+			ffCurrentQuestion: 0,
 			currentPanel: "NoQuestionPanel",
 			newPanelKey: 0,
 
-			numAnswersRevealed: 0,
-			fullAnswerRevealed: false,
+			ffNumAnswersRevealed: 0,
+			ffFullAnswerRevealed: false,
 
 			playerPanelHidden: false,
 
-			correctPlayersRevealed: false,
-			fastestCorrectRevealed: false,
-			fastestFlashOn: false,
+			ffCorrectPlayersRevealed: false,
+			ffFastestCorrectRevealed: false,
+			ffFastestFlashOn: false,
 
-			buzzersOpen: false,
+			ffBuzzersOpen: false,
 			playerStats: [],
 		};
 	}
@@ -48,7 +48,7 @@ export default class DisplayContainer extends React.Component {
 	}
 
 	render = () => {
-		const question = this.state.questions[this.state.currentQuestion];
+		const question = this.state.ffQuestions[this.state.ffCurrentQuestion];
 		var questionPanel;
 
 		switch (this.state.currentPanel) {
@@ -60,23 +60,23 @@ export default class DisplayContainer extends React.Component {
 			questionPanel = (<FFQuestionPanel
 				question={question}
 				questionVisble={true}
-				answersVisible={this.state.buzzersOpen}
+				answersVisible={this.state.ffBuzzersOpen}
 			/>);
 			break;
 		case "FFQuestionResultsPanel":
 			questionPanel = (
 				<FFQuestionResultsPanel
 					question={question}
-					fullAnswerRevealed={this.state.fullAnswerRevealed}
-					numAnswersRevealed={this.state.numAnswersRevealed}
-					questionRecapped={this.state.questionRecapped}
+					ffFullAnswerRevealed={this.state.ffFullAnswerRevealed}
+					ffNumAnswersRevealed={this.state.ffNumAnswersRevealed}
+					ffQuestionRecapped={this.state.ffQuestionRecapped}
 				/>
 			);
 			break;
 		case "PlayerResultsPanel":
 			questionPanel = (
 				<PlayerResultsPanel
-					question={question} players={this.state.players} correctPlayersRevealed={this.state.correctPlayersRevealed} fastestCorrectRevealed={this.state.fastestCorrectRevealed}
+					question={question} players={this.state.players} ffCorrectPlayersRevealed={this.state.ffCorrectPlayersRevealed} ffFastestCorrectRevealed={this.state.ffFastestCorrectRevealed}
 				/>
 			);
 			break;

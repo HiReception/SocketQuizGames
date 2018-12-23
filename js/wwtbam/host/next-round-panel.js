@@ -2,7 +2,7 @@ const PropTypes = require("prop-types");
 const io = require("socket.io-client");
 import React, { Component } from "react";
 
-// panel for between questions
+// panel for between ffQuestions
 export default class NextRoundPanel extends Component {
 	render = () => {
 		const buttonText = "Go to Next Question";
