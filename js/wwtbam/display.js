@@ -46,11 +46,11 @@ socket.on("accepted", function() {
 		}
 
 	});
-	soundManager.createSound({id: "pre-question", url: "./sounds/pre-question.mp3", autoLoad: true, onplay: function() {
+	soundManager.createSound({id: "explainff", url: "./sounds/explainff.mp3", autoLoad: true, onplay: function() {
 		soundManager.stop("order-bed");
 	}});
 	soundManager.createSound({id: "read-question", url: "./sounds/read-question.mp3", autoLoad: true, onplay: function() {
-		soundManager.stop("pre-question");
+		soundManager.stop("explainff");
 	}});
 	soundManager.createSound({id: "start-clock", url: "./sounds/start-clock.mp3", autoLoad: true});
 	soundManager.createSound({id: "clock-bed", url: "./sounds/clock-bed.mp3", autoLoad: true, onplay: function() {
@@ -66,7 +66,7 @@ socket.on("accepted", function() {
 	soundManager.createSound({id: "end-clock-early", url: "./sounds/end-clock-early.mp3", autoLoad: true, onplay: function() {
 		soundManager.stop("clock-bed");
 	}});
-	soundManager.createSound({id: "order-bed", url: "./sounds/order-bed.mp3", autoLoad: true})
+	soundManager.createSound({id: "order-bed", url: "./sounds/order-bed.mp3", autoLoad: true});
 	soundManager.createSound({id: "answer1", url: "./sounds/answer1.mp3", autoLoad: true});
 	soundManager.createSound({id: "answer2", url: "./sounds/answer2.mp3", autoLoad: true});
 	soundManager.createSound({id: "answer3", url: "./sounds/answer3.mp3", autoLoad: true});

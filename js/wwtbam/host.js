@@ -53,19 +53,27 @@ socket.on("game details", (details) => {
 			ffFastestCorrectRevealed: false,
 			ffFastestFlashOn: false,
 
+			ffFastestCorrectPlayer: "",
+			ffFastestCorrectTime: 0,
+
 			ffBuzzersPending: false,
 			ffBuzzersOpen: false,
 			playerStats: [],
 
 			mainGameMoneyTree: [],
+			mainGameMoneyTreeVisible: false,
 			mainGameQuestions: [],
 
 			mainGamePlayer: {},
 			mainGameQuestionNo: 1,
-			mainGameCurrentQuestion: {},
+			mainGameActiveLifeline: "",
+			mainGameOptionsShown: 0,
+			mainGameWinnings: 0,
+			mainGameWinningsString: "",
 			mainGameLifelinesAvailable: [],
 			mainGameCorrectRevealed: false,
 			mainGameChosenAnswer: "",
+			mainGameQuestionStack: [],
 
 		};
 		socket.emit("set state", state);

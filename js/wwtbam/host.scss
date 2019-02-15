@@ -404,31 +404,48 @@ div.open-question-option {
 	font-size: 150%;
 	align-items: center;
 	border: 1px solid aqua;
+	cursor: pointer;
 
 	&.correct {
 		background-color: green;
+		cursor: default;
+
+		div.open-question-option-icon {
+			color: black;
+		}
+
+		p.open-question-option {
+			color: black;
+		}
+	}
+
+	&.orange {
+		background-color: orange;
+		cursor: default;
+
+		div.open-question-option-icon {
+			color: black;
+		}
+
+		p.open-question-option {
+			color: black;
+		}
+	}
+
+	div.open-question-option-icon {
+		flex: 0 0 auto;
+		color: orange;
+		padding: 10px;
+		font-weight: bold;
+	}
+	
+	
+	p.open-question-option {
+		color: white;
 	}
 }
 
-div.open-question-option-icon {
-	flex: 0 0 auto;
-	color: orange;
-	padding: 10px;
-	font-weight: bold;
 
-	&.correct {
-		color: black;
-	}
-}
-
-
-p.open-question-option {
-	color: white;
-
-	&.correct {
-		color: black;
-	}
-}
 
 .remaining-players-header > p {
 	color: white;

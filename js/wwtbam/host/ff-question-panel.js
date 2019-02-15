@@ -28,7 +28,7 @@ export default class FFQuestionPanel extends Component {
 				screenName: details.player,
 				answer: details.answer,
 				timeTaken: details.time,
-			})
+			});
 
 			this.props.setGameState({
 				ffQuestions: newQuestions,

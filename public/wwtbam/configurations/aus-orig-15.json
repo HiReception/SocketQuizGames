@@ -1,10 +1,12 @@
 {
-	"name": "Australia/USA Original 15Q",
+	"name": "Australia Original 15Q",
 	"lifelines": [
 		"PhoneAFriend", "5050", "AskTheAudience"
 	],
 	"soundfolder": "classic",
+	"locale": "en-AU",
 	"prefix": "$",
+	"suffix": "",
 	"levels": [
 		{
 			"value": 100,
@@ -29,7 +31,8 @@
 		{
 			"value": 1000,
 			"textValue": "$1,000",
-			"endBGMusic": ["right", "wrong"]
+			"endBGMusic": ["right", "wrong"],
+			"safeHaven": true
 		},
 		{
 			"value": 2000,
@@ -54,7 +57,8 @@
 		{
 			"value": 32000,
 			"textValue": "$32,000",
-			"endBGMusic": ["lock-in"]
+			"endBGMusic": ["lock-in"],
+			"safeHaven": true
 		},
 		{
 			"value": 64000,
