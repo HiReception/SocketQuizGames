@@ -43,9 +43,81 @@ export default class HostConsole extends Component {
 		});
 	}
 
+	activateLifeline = (llName) => {
+		if (this.state.mainGameLifelinesAvailable.includes(llName)) {
+			switch (llName) {
+			case "50:50":
+				this.perform5050();
+			// TODO add more lifelines:
+				// phone a friend
+				// ask the audience
+				// double dip
+				// ask the expert/three wise men (effectively just phone a friend with different music)
+				// plus-one (does nothing within the game code)
+			}
+
+			// remove this lifeline from the available ones
+			// (a single type of lifeline can potentially be used multiple times; only remove one at a time)
+			const newLifelines = this.state.mainGameLifelinesAvailable;
+			newLifelines.splice(newLifelines.indexOf(llName), 1);
+
+			this.setGameState({
+				mainGameLifelinesAvailable: newLifelines,
+			});
+		}
+	}
+
+	perform5050 = () => {
+		const newQuestions = this.state.mainGameQuestionStack;
+		const newCurrentQ = newQuestions[this.state.mainGameQuestionNo - 1];
+		
+
+		// pick random integer between 0 and 2 (inclusive) to decide which of the three incorrect answers to retain
+		var randNo = Math.floor(Math.random() * 2);
+		// if correct answer's index is below or equal to random number, add one to random integer
+		if (newCurrentQ.options.findIndex(o => o.key === newCurrentQ.correctResponse) <= randNo) {
+			randNo = randNo + 1;
+		}
+
+		// mark two answers not at random integer index AND not correct as disabled;
+		newCurrentQ.options.forEach((o, index) => {
+			if (o.key !== newCurrentQ.correctResponse && index !== randNo) {
+				o.disabled = true;
+			}
+		});
+
+		newQuestions[this.state.mainGameQuestionNo - 1] = newCurrentQ;
+
+		this.setGameState({
+			mainGameQuestionStack: newQuestions
+		});
+	}
+
+	activatePAF = () => {
+
+	}
+
+	beginPAFtimer = () => {
+
+	}
+
+	endPAFCall = () => {
+
+	}
+
+	activateATA = () => {
+
+	}
+
+	beginATAVoting = () => {
+
+	}
+
+	endATAVoting = () => {
+		
+	}
+
 	handleNewPlayer = (screenName) => {
-		console.log("new player:");
-		console.log(screenName);
 		var newPlayer = {
 			screenName: screenName,
 			score: 0,
@@ -181,6 +253,7 @@ export default class HostConsole extends Component {
 			players: this.state.players,
 			currentPanel: "FFQuestionPanel",
 			newPanelKey: this.state.newPanelKey + 1,
+			mainGameStartingLifelines: configuration.lifelines,
 		});
 	}
 
@@ -306,7 +379,8 @@ export default class HostConsole extends Component {
 				setGameState={this.setGameState}
 				gameState={this.state}
 				socket={this.props.socket}
-				formatNumber={this.formatNumber}/>);
+				formatNumber={this.formatNumber}
+				activateLifeline={this.activateLifeline}/>);
 			break;
 
 		case "PostMainGamePanel":

@@ -220,10 +220,14 @@ export default class MainQuestionPanel extends Component {
 			case "lifelines":
 				buzzerPanel = (
 					<div className='buzzer-panel'>
-						<p className='buzzer-panel'>
+						<div className='button-row'>
 							{/* TODO show all available lifelines as buttons, plus Back button to return to default*/}
-							lifeline machine broke
-						</p>
+							{gameState.mainGameLifelinesAvailable.map((l,i) => (
+								<div className='add-question-button' key={i} onClick={() => this.props.activateLifeline(l)}>
+									<p>{l}</p>
+								</div>
+							))}
+						</div>
 						<div className='add-question-button' onClick={this.showDefaultPanel}>
 							<p>Back</p>
 						</div>
@@ -315,6 +319,11 @@ export default class MainQuestionPanel extends Component {
 		return (
 			<div id='open-question-panel'>
 				<div className='column'>
+					<div className='open-question-header'>
+						<p className='open-question-header'>
+							QUESTION {gameState.mainGameQuestionNo} - {gameState.mainGameMoneyTree[gameState.mainGameQuestionNo - 1].textValue}
+						</p>
+					</div>
 					{questionPanel}
 					{optionsPanel}
 					{buzzerPanel}
@@ -330,4 +339,5 @@ MainQuestionPanel.propTypes = {
 	gameState: PropTypes.object,
 	socket: PropTypes.instanceOf(io.Socket),
 	formatNumber: PropTypes.func,
+	activateLifeline: PropTypes.func,
 };

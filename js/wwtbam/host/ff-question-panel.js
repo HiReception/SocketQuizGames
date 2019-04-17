@@ -74,7 +74,7 @@ export default class FFQuestionPanel extends Component {
 
 		const header = (
 			<div className='open-question-header'>
-				<p className='open-question-header'>{question.type}</p>
+				<p className='open-question-header'>FASTEST FINGER - {question.type}</p>
 			</div>
 		);
 

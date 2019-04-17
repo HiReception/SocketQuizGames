@@ -59,7 +59,7 @@ export default class PlayerResultsPanel extends Component {
 			mainGameOptionsShown: 0,
 			mainGameChosenAnswer: "",
 			mainGameQuestionStack: [],
-
+			mainGameLifelinesAvailable: this.props.gameState.mainGameStartingLifelines,
 		});
 	}
 

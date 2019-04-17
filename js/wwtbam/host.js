@@ -70,10 +70,19 @@ socket.on("game details", (details) => {
 			mainGameOptionsShown: 0,
 			mainGameWinnings: 0,
 			mainGameWinningsString: "",
+			mainGameStartingLifelines: [],
 			mainGameLifelinesAvailable: [],
 			mainGameCorrectRevealed: false,
 			mainGameChosenAnswer: "",
 			mainGameQuestionStack: [],
+
+			pafTimerStarted: false,
+			pafSecondsRemaining: 30,
+			pafTimer: null,
+
+			ataVotesOpen: false,
+			ataVotes: [],
+			ataVotesFinished: false,
 
 		};
 		socket.emit("set state", state);
