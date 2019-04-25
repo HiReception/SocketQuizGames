@@ -92,7 +92,6 @@ class PlayerPanel extends React.Component {
 			case "sequence":
 				input = (
 					<OrderedChoiceQuestion
-						questionNo={parseInt(currentQ.questionNo, 10)}
 						body={currentQ.body}>
 						{optionButtons}
 					</OrderedChoiceQuestion>
@@ -101,7 +100,6 @@ class PlayerPanel extends React.Component {
 			case "double-answer":
 				input = (
 					<MultipleAnswerQuestion
-						questionNo={parseInt(currentQ.questionNo, 10)}
 						body={currentQ.body}
 						numCorrectAnswers={2}>
 						{optionButtons}
@@ -111,8 +109,8 @@ class PlayerPanel extends React.Component {
 			case "single-answer":
 				input = (
 					<MultipleChoiceQuestion
-						questionNo={parseInt(currentQ.questionNo, 10)}
-						body={currentQ.body}>
+						body={currentQ.body}
+						fastestFinger={true}>
 						{optionButtons}
 					</MultipleChoiceQuestion>
 				);
@@ -120,6 +118,27 @@ class PlayerPanel extends React.Component {
 			default:
 				input = <EmptyPanel/>;
 			}
+		} else if (this.state.ataVotesOpen && !this.state.ataVotesFinished 
+			&& !this.state.ataVotes.some((answer) => answer.screenName === screenName)
+			&& this.state.mainGamePlayer.screenName !== screenName) {
+			const question = this.state.mainGameQuestionStack[this.state.mainGameQuestionNo];
+			const optionButtons = question.options.map((option) => {
+				return (
+					<AnswerButton
+						key={option.key}
+						answerKey={option.key}
+						body={option.text}/>
+
+				);
+			});
+
+			input = (
+				<MultipleChoiceQuestion
+					body={question.body}
+					fastestFinger={false}>
+					{optionButtons}
+				</MultipleChoiceQuestion>
+			);
 		} else {
 			input = <EmptyPanel/>;
 		}
@@ -159,7 +178,7 @@ class Question extends Component {
 		return (
 			<div className='playerQuestion'>
 				<div className='playerQuestionDetails'>
-					Question {this.props.questionNo}
+					{this.props.fastestFinger ? "Fastest Finger First" : "Ask the Audience"}
 				</div>
 				<p className='playerQuestion'>{this.props.body}</p>
 				{this.props.children}
@@ -169,7 +188,7 @@ class Question extends Component {
 }
 
 Question.propTypes = {
-	questionNo: PropTypes.number,
+	fastestFinger: PropTypes.bool,
 	body: PropTypes.string,
 	children: PropTypes.node,
 };
@@ -219,7 +238,6 @@ class OrderedChoiceQuestion extends Component {
 			const timeTaken = timeAnswered.getTime() -
 				this.state.timeReceived.getTime();
 			socket.emit("send answer", {
-				questionNo: this.props.questionNo,
 				submittedAnswer: this.state.currentAnswer,
 				timeTaken: timeTaken,
 			});
@@ -269,7 +287,7 @@ class OrderedChoiceQuestion extends Component {
 		console.log(options);
 
 		return (
-			<Question questionNo={this.props.questionNo} body={this.props.body}>
+			<Question fastestFinger={true} body={this.props.body}>
 				{options}
 				{selectedPanel}
 				<div className='button-row'>
@@ -288,7 +306,6 @@ class OrderedChoiceQuestion extends Component {
 }
 
 OrderedChoiceQuestion.propTypes = {
-	questionNo: PropTypes.number,
 	body: PropTypes.string,
 	children: PropTypes.node,
 };
@@ -339,7 +356,6 @@ class MultipleAnswerQuestion extends Component {
 			const timeTaken = timeAnswered.getTime() -
 				this.state.timeReceived.getTime();
 			socket.emit("send answer", {
-				questionNo: this.props.questionNo,
 				submittedAnswer: this.state.currentAnswer.split("").sort().join(""),
 				timeTaken: timeTaken,
 			});
@@ -389,7 +405,7 @@ class MultipleAnswerQuestion extends Component {
 		console.log(options);
 
 		return (
-			<Question questionNo={this.props.questionNo} body={this.props.body}>
+			<Question fastestFinger={true} body={this.props.body}>
 				{options}
 				{selectedPanel}
 				<div className='button-row'>
@@ -408,7 +424,6 @@ class MultipleAnswerQuestion extends Component {
 }
 
 MultipleAnswerQuestion.propTypes = {
-	questionNo: PropTypes.number,
 	body: PropTypes.string,
 	children: PropTypes.node,
 	numCorrectAnswers: PropTypes.number,
@@ -466,7 +481,6 @@ class MultipleChoiceQuestion extends Component {
 		const timeTaken = timeAnswered.getTime() -
 			this.state.timeReceived.getTime();
 		socket.emit("send answer", {
-			questionNo: this.props.questionNo,
 			submittedAnswer: option.props.answerKey,
 			timeTaken: timeTaken,
 		});
@@ -494,7 +508,7 @@ class MultipleChoiceQuestion extends Component {
 		console.log(options);
 
 		return (
-			<Question questionNo={this.props.questionNo} body={this.props.body}>
+			<Question fastestFinger={this.props.fastestFinger} body={this.props.body}>
 				{options}
 			</Question>
 		);
@@ -502,9 +516,9 @@ class MultipleChoiceQuestion extends Component {
 }
 
 MultipleChoiceQuestion.propTypes = {
-	questionNo: PropTypes.number,
 	body: PropTypes.string,
 	children: PropTypes.node,
+	fastestFinger: PropTypes.bool,
 };
 
 class SubmitButton extends Component {

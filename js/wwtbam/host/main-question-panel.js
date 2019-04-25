@@ -21,6 +21,23 @@ export default class MainQuestionPanel extends Component {
 		this.props.socket.removeListener("new answer", this.handleNewAnswer);
 	}
 
+	handleNewAnswer = (details) => {
+		if (this.props.gameState.ataVotesOpen && !this.props.gameState.ataVotesFinished && 
+			details.player.screenName !== "") {
+			console.log("new answer:");
+			console.log(details);
+			console.log(this);
+
+			const newATAVotes = this.state.gameState.ataVotes;
+
+			newATAVotes.push(details.answer);
+
+			this.props.setGameState({
+				ataVotes: newATAVotes,
+			});
+		}
+	}
+
 	lastSafeHaven = () => {
 		// find all safe havens that player has passed
 		const passedSafeHavens = this.props.gameState.mainGameMoneyTree
@@ -194,7 +211,54 @@ export default class MainQuestionPanel extends Component {
 			);
 		}
 		else if (gameState.mainGameActiveLifeline !== "") {
-			// TODO handle any active lifelines
+			switch (gameState.mainGameActiveLifeline) {
+			case "Ask the Audience":
+				if (!gameState.ataVotesOpen) {
+					buzzerPanel = (
+						<div className='buzzer-panel'>
+							<p className='buzzer-panel'>Ask the Audience activated</p>
+							<div className="button-row">
+								<div className='add-question-button' onClick={this.beginATAVoting}>
+									<p>Begin Voting</p>
+								</div>
+							</div>
+						</div>
+					);
+				} else if (!gameState.ataVotesFinished) {
+					buzzerPanel = (
+						<div className='buzzer-panel'>
+							<p className='buzzer-panel'>Audience voting open - {gameState.ataVotes.length} answers received</p>
+							<div className="button-row">
+								<div className='add-question-button' onClick={this.endATAVoting}>
+									<p>End Voting and Show Results</p>
+								</div>
+							</div>
+						</div>
+					);
+				} else {
+					buzzerPanel = (
+						<div className='buzzer-panel'>
+							<p className='buzzer-panel'>
+								Ask the Audience results ({gameState.ataVotes.length} total): <br/>
+								{question.options.map(o => {
+									const optionCount = gameState.ataVotes.filter(v => v == o.key).length;
+									const optionPct = gameState.ataVotes.length > 0 ? Math.round((optionCount/gameState.ataVotes.length) * 100) : 0;
+									return `${o.key}: ${optionPct}%`;
+								}).mkString(" | ")}
+							</p>
+							<div className="button-row">
+								<div className='add-question-button' onClick={this.dismissLifeline}>
+									<p>Dismiss Results</p>
+								</div>
+							</div>
+						</div>
+					);
+				}
+				break;
+			case "Phone a Friend":
+				// TODO
+				break;
+			}
 		}
 		else if (gameState.mainGameChosenAnswer === "") {
 			switch (this.state.buzzerPanelMode) {
@@ -340,4 +404,7 @@ MainQuestionPanel.propTypes = {
 	socket: PropTypes.instanceOf(io.Socket),
 	formatNumber: PropTypes.func,
 	activateLifeline: PropTypes.func,
+	dismissLifeline: PropTypes.func,
+	beginATAVoting: PropTypes.func,
+	endATAVoting: PropTypes.func,
 };

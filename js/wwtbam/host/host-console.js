@@ -48,6 +48,10 @@ export default class HostConsole extends Component {
 			switch (llName) {
 			case "50:50":
 				this.perform5050();
+				break;
+			case "Ask the Audience":
+				this.activateATA();
+				break;
 			// TODO add more lifelines:
 				// phone a friend
 				// ask the audience
@@ -94,27 +98,44 @@ export default class HostConsole extends Component {
 	}
 
 	activatePAF = () => {
-
+		// TODO
 	}
 
 	beginPAFtimer = () => {
-
+		// TODO
 	}
 
 	endPAFCall = () => {
-
+		// TODO
 	}
 
 	activateATA = () => {
-
+		// TODO
+		this.setGameState({
+			mainGameActiveLifeline: "Ask the Audience"
+		});
 	}
 
 	beginATAVoting = () => {
-
+		// TODO
+		this.setGameState({
+			ataVotesOpen: true,
+			ataVotes: []
+		});
 	}
 
 	endATAVoting = () => {
-		
+		// TODO
+		this.setGameState({
+			ataVotesFinished: true,
+		});
+	}
+
+	dismissLifeline = () => {
+		// TODO
+		this.setGameState({
+			currentLifeline: "",
+		});
 	}
 
 	handleNewPlayer = (screenName) => {
@@ -241,7 +262,6 @@ export default class HostConsole extends Component {
 	}
 
 	setGameData = (configuration, mainQuestions, ffQuestions) => {
-		console.log(ffQuestions);
 
 		this.setGameState({
 			ffQuestions: ffQuestions,
@@ -380,7 +400,10 @@ export default class HostConsole extends Component {
 				gameState={this.state}
 				socket={this.props.socket}
 				formatNumber={this.formatNumber}
-				activateLifeline={this.activateLifeline}/>);
+				activateLifeline={this.activateLifeline}
+				dismissLifeline={this.dismissLifeline}
+				beginATAVoting={this.beginATAVoting}
+				endATAVoting={this.endATAVoting}/>);
 			break;
 
 		case "PostMainGamePanel":
