@@ -49,7 +49,7 @@ export default class HostConsole extends Component {
 			case "50:50":
 				this.perform5050();
 				break;
-			case "Ask the Audience":
+			case "Ask The Audience":
 				this.activateATA();
 				break;
 			// TODO add more lifelines:
@@ -112,12 +112,15 @@ export default class HostConsole extends Component {
 	activateATA = () => {
 		// TODO
 		this.setGameState({
-			mainGameActiveLifeline: "Ask the Audience"
+			mainGameActiveLifeline: "Ask The Audience",
+			ataVotesOpen: false,
+			ataVotesFinished: false,
 		});
 	}
 
 	beginATAVoting = () => {
 		// TODO
+		console.log("beginATAVoting called");
 		this.setGameState({
 			ataVotesOpen: true,
 			ataVotes: []
@@ -134,7 +137,7 @@ export default class HostConsole extends Component {
 	dismissLifeline = () => {
 		// TODO
 		this.setGameState({
-			currentLifeline: "",
+			mainGameActiveLifeline: "",
 		});
 	}
 
@@ -299,7 +302,7 @@ export default class HostConsole extends Component {
 						<PlayerListing
 							onClick={this.showPlayerDetails.bind(this, player.screenName)}
 							player={player}
-							key={player}
+							key={player.screenName}
 							waitingForAnswer={waiting}
 							formatNumber={this.formatNumber}/>
 					);

@@ -28,9 +28,12 @@ export default class MainQuestionPanel extends Component {
 			console.log(details);
 			console.log(this);
 
-			const newATAVotes = this.state.gameState.ataVotes;
+			const newATAVotes = this.props.gameState.ataVotes;
 
-			newATAVotes.push(details.answer);
+			newATAVotes.push({
+				screenName: details.player,
+				answer: details.answer,
+			});
 
 			this.props.setGameState({
 				ataVotes: newATAVotes,
@@ -53,7 +56,7 @@ export default class MainQuestionPanel extends Component {
 
 	lockInAnswer = (option) => {
 		if (this.props.gameState.mainGameOptionsShown === this.props.question.options.length
-			&& !option.disabled && this.props.gameState.mainGameChosenAnswer == "") {
+			&& !option.disabled && this.props.gameState.mainGameChosenAnswer == "" && this.props.gameState.mainGameActiveLifeline == "") {
 			this.setGameState({
 				mainGameChosenAnswer: option.key,
 			});
@@ -212,13 +215,13 @@ export default class MainQuestionPanel extends Component {
 		}
 		else if (gameState.mainGameActiveLifeline !== "") {
 			switch (gameState.mainGameActiveLifeline) {
-			case "Ask the Audience":
+			case "Ask The Audience":
 				if (!gameState.ataVotesOpen) {
 					buzzerPanel = (
 						<div className='buzzer-panel'>
 							<p className='buzzer-panel'>Ask the Audience activated</p>
 							<div className="button-row">
-								<div className='add-question-button' onClick={this.beginATAVoting}>
+								<div className='add-question-button' onClick={this.props.beginATAVoting}>
 									<p>Begin Voting</p>
 								</div>
 							</div>
@@ -229,7 +232,7 @@ export default class MainQuestionPanel extends Component {
 						<div className='buzzer-panel'>
 							<p className='buzzer-panel'>Audience voting open - {gameState.ataVotes.length} answers received</p>
 							<div className="button-row">
-								<div className='add-question-button' onClick={this.endATAVoting}>
+								<div className='add-question-button' onClick={this.props.endATAVoting}>
 									<p>End Voting and Show Results</p>
 								</div>
 							</div>
@@ -241,13 +244,13 @@ export default class MainQuestionPanel extends Component {
 							<p className='buzzer-panel'>
 								Ask the Audience results ({gameState.ataVotes.length} total): <br/>
 								{question.options.map(o => {
-									const optionCount = gameState.ataVotes.filter(v => v == o.key).length;
+									const optionCount = gameState.ataVotes.filter(v => v.answer == o.key).length;
 									const optionPct = gameState.ataVotes.length > 0 ? Math.round((optionCount/gameState.ataVotes.length) * 100) : 0;
 									return `${o.key}: ${optionPct}%`;
-								}).mkString(" | ")}
+								}).join(" - ")}
 							</p>
 							<div className="button-row">
-								<div className='add-question-button' onClick={this.dismissLifeline}>
+								<div className='add-question-button' onClick={this.props.dismissLifeline}>
 									<p>Dismiss Results</p>
 								</div>
 							</div>

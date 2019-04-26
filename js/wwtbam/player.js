@@ -121,7 +121,7 @@ class PlayerPanel extends React.Component {
 		} else if (this.state.ataVotesOpen && !this.state.ataVotesFinished 
 			&& !this.state.ataVotes.some((answer) => answer.screenName === screenName)
 			&& this.state.mainGamePlayer.screenName !== screenName) {
-			const question = this.state.mainGameQuestionStack[this.state.mainGameQuestionNo];
+			const question = this.state.mainGameQuestionStack[this.state.mainGameQuestionNo - 1];
 			const optionButtons = question.options.map((option) => {
 				return (
 					<AnswerButton
@@ -178,7 +178,7 @@ class Question extends Component {
 		return (
 			<div className='playerQuestion'>
 				<div className='playerQuestionDetails'>
-					{this.props.fastestFinger ? "Fastest Finger First" : "Ask the Audience"}
+					{this.props.fastestFinger ? "Fastest Finger First" : "Ask The Audience"}
 				</div>
 				<p className='playerQuestion'>{this.props.body}</p>
 				{this.props.children}
