@@ -29,7 +29,55 @@ module.exports = function(grunt) {
 			sotc_css: {
 				files: ["js/sotc/**/*.scss"],
 				tasks: ["sass:sotc"]
-			}
+			},
+			wwtbam_host_js: {
+				files: ["js/wwtbam/host/*.js", "js/wwtbam/host.js"],
+				tasks: ["browserify:wwtbam_host"]
+			},
+			wwtbam_player_js: {
+				files: ["js/wwtbam/player/*.js", "js/wwtbam/player.js"],
+				tasks: ["browserify:wwtbam_player"]
+			},
+			wwtbam_display_js: {
+				files: ["js/wwtbam/display/*.js", "js/wwtbam/display.js"],
+				tasks: ["browserify:wwtbam_display"]
+			},
+			wwtbam_css: {
+				files: ["js/wwtbam/**/*.scss"],
+				tasks: ["sass:wwtbam"]
+			},
+			wwtbam_ff_host_js: {
+				files: ["js/wwtbam-ff/host/*.js", "js/wwtbam-ff/host.js"],
+				tasks: ["browserify:wwtbam_ff_host"]
+			},
+			wwtbam_ff_player_js: {
+				files: ["js/wwtbam-ff/player/*.js", "js/wwtbam-ff/player.js"],
+				tasks: ["browserify:wwtbam_ff_player"]
+			},
+			wwtbam_ff_display_js: {
+				files: ["js/wwtbam-ff/display/*.js", "js/wwtbam-ff/display.js"],
+				tasks: ["browserify:wwtbam_ff_display"]
+			},
+			wwtbam_ff_css: {
+				files: ["js/wwtbam-ff/**/*.scss"],
+				tasks: ["sass:wwtbam_ff"]
+			},
+			jeopardy_host_js: {
+				files: ["js/jeopardy/host/*.js", "js/jeopardy/host.js"],
+				tasks: ["browserify:jeopardy_host"]
+			},
+			jeopardy_player_js: {
+				files: ["js/jeopardy/player/*.js", "js/jeopardy/player.js"],
+				tasks: ["browserify:jeopardy_player"]
+			},
+			jeopardy_display_js: {
+				files: ["js/jeopardy/display/*.js", "js/jeopardy/display.js"],
+				tasks: ["browserify:jeopardy_display"]
+			},
+			jeopardy_css: {
+				files: ["js/jeopardy/**/*.scss"],
+				tasks: ["sass:jeopardy"]
+			},
 		},
 		browserify: {
 			menu: {
@@ -54,17 +102,17 @@ module.exports = function(grunt) {
 			},
 			jeopardy_player: {
 				src: "js/jeopardy/player.js",
-				dest: "public/jeopardy/playerBundle.js",
+				dest: "public/jeopardy/player.js",
 				options: browserifyOptions
 			},
 			jeopardy_host: {
 				src: "js/jeopardy/host.js",
-				dest: "public/jeopardy/hostBundle.js",
+				dest: "public/jeopardy/host.js",
 				options: browserifyOptions
 			},
 			jeopardy_display: {
 				src: "js/jeopardy/display.js",
-				dest: "public/jeopardy/displayBundle.js",
+				dest: "public/jeopardy/display.js",
 				options: browserifyOptions
 			},
 			genericquiz_player: {
@@ -109,17 +157,17 @@ module.exports = function(grunt) {
 			},
 			wwtbam_ff_player: {
 				src: "js/wwtbam-ff/player.js",
-				dest: "public/wwtbam-ff/playerBundle.js",
+				dest: "public/wwtbam-ff/player.js",
 				options: browserifyOptions
 			},
 			wwtbam_ff_host: {
 				src: "js/wwtbam-ff/host.js",
-				dest: "public/wwtbam-ff/hostBundle.js",
+				dest: "public/wwtbam-ff/host.js",
 				options: browserifyOptions
 			},
 			wwtbam_ff_display: {
 				src: "js/wwtbam-ff/display.js",
-				dest: "public/wwtbam-ff/displayBundle.js",
+				dest: "public/wwtbam-ff/display.js",
 				options: browserifyOptions
 			}
 		},

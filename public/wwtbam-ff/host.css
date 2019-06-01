@@ -98,7 +98,8 @@ body {
   flex-direction: row;
   padding: 0;
   margin: 0;
-  font-family: "Conduit", Verdana, sans-serif; }
+  font-family: "Conduit", Verdana, sans-serif;
+  height: 100%; }
 
 #sidebar {
   flex: 0 0 300px;
@@ -135,18 +136,28 @@ body {
 #body-panel {
   flex: 1 1 auto;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  height: 100%; }
 
 #body-footer {
   text-align: center; }
 
+.panel-bar-ctr {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  height: 100%; }
+
 .main-panel {
   flex: 1 1 auto;
-  height: calc(100% - (50px + 1px));
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: stretch; }
+  align-items: stretch;
+  position: relative; }
 
 #question-panel {
   display: flex;
@@ -203,7 +214,8 @@ body {
   overflow: hidden; }
 
 .content {
-  flex: 1 1 auto; }
+  flex: 1 1 auto;
+  display: flex; }
 
 #body-header {
   display: flex;
@@ -527,11 +539,11 @@ p.player-result-time {
     position: absolute;
     width: 100%;
     z-index: 1;
-    height: calc(100% - (70px + 1px)); }
+    height: 100%; }
     #player-list.hidden {
       display: none; }
   div.main-panel {
-    height: calc(100% - (70px + 1px)); }
+    height: calc(100% - 20px); }
   div.select-question-panel {
     justify-content: flex-start;
     overflow: scroll; } }

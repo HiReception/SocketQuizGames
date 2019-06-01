@@ -228,7 +228,7 @@ export default class HostConsole extends Component {
 		}
 
 		return (
-			<div>
+			<div class="panel-bar-ctr">
 				<div className='main-panel'>
 					<div id='player-list' className={`content${
 							this.state.playerPanelHidden ? " hidden" : "" }`}>

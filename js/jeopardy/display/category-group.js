@@ -10,7 +10,7 @@ export default class CategoryGroup extends React.Component {
 		const fontStyle = "";
 		const totalCluesHeight = (5/6) * this.props.height;
 		const headerHeight = this.props.height - totalCluesHeight;
-		const headerTextHeightMargin = 0.1 * headerHeight;
+		const headerTextHeightMargin = 0.2 * headerHeight;
 		const headerTextHeight = (headerHeight - 2 * headerTextHeightMargin) / 2;
 		const headerTextWidthMargin = 0.1 * this.props.width;
 		const headerTextWidth = this.props.width - 2*headerTextWidthMargin;
@@ -34,7 +34,7 @@ export default class CategoryGroup extends React.Component {
 
 		return (
 			<Group x={this.props.left} y={0}>
-				<Rect width={this.props.width} height={this.props.height} x={0} y={0} fill="#0B1885" stroke="black" strokeWidth={5}/>
+				<Rect width={this.props.width} height={this.props.height} x={0} y={0} fill="#0B1885" stroke="black" strokeWidth={2}/>
 				<Text x={headerTextWidthMargin + gf.textHorizontalSpacing(splitCategory, fontFamily, headerTextHeight, headerTextWidth, fontStyle)}
 					y={headerTextHeightMargin + gf.textVerticalSpacing(splitCategory, headerTextHeight)}
 					height={headerTextHeight * 2} wrap="none" textAlign="center"

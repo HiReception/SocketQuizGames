@@ -8,7 +8,7 @@ export default class ClueButton extends React.Component {
 		const fontFamily = "Oswald Bold";
 		const fontStyle = "";
 		const valueString = `${this.props.prefix}${this.props.value}${this.props.suffix}`;
-		const textHeightMargin = 0.2 * this.props.height;
+		const textHeightMargin = 0.25 * this.props.height;
 		const textHeight = this.props.height - 2*textHeightMargin;
 		const textWidthMargin = 0.1 * this.props.width;
 		const textWidth = this.props.width - 2*textWidthMargin;

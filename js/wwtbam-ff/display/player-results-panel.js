@@ -168,12 +168,12 @@ export default class PlayerResultsPanel extends Component {
 								<Rect
 									x={sideWidth+(pHeight*(2/5))} y={topY + pHeight/2}
 									width={pHeight/5} height={pHeight/5}
-									fill="white" rotation="-45"/>
+									fill="white" rotation={-45}/>
 
 								<Rect
 									x={width-(sideWidth+(pHeight*(2/5)))} y={topY + pHeight/2}
 									width={pHeight/5} height={pHeight/5}
-									fill="white" rotation="135"/>
+									fill="white" rotation={135}/>
 								<Text
 									x={sideWidth + pTextGapWidth} y={topY + pTextGapHeight}
 									height={pTextHeight} scaleX={this.textScale(player.screenName, fontFamily, pTextHeight, pTextNameWidth)}

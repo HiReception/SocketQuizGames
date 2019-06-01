@@ -72,7 +72,7 @@ export default class QuestionDisplay extends Component {
 		gradient.addColorStop(0.5,"skyblue");
 		gradient.addColorStop(1,"#4286f4");
 		
-		var fontFamily = "ConduitITC TT";
+		var fontFamily = "Conduit";
 	
 		const answers = question.options.map((a) => {
 			return {
@@ -80,7 +80,7 @@ export default class QuestionDisplay extends Component {
 				answer: a.text,
 				correctLit: question.correctResponse.includes(a.key) && fullAnswerRevealed && correctFlashOn,
 			};
-		})
+		});
 
 
 		var lineWidth = 0.005 * width;
@@ -140,7 +140,7 @@ export default class QuestionDisplay extends Component {
 				<Rect
 					x={sideWidth+(aHeight*(2/5))} y={row2Start+aHeight/2}
 					width={aHeight/5} height={aHeight/5} visible={answersVisible}
-					fill={answers[0].correctLit ? "black" : "orange"} rotation="-45"/>
+					fill={answers[0].correctLit ? "black" : "orange"} rotation={-45}/>
 				<Text
 					x={sideWidth + aTextGapWidth} y={row2Start + aTextGapHeight}
 					width={aLetterWidth} height={aTextHeight} visible={answersVisible}
@@ -157,7 +157,7 @@ export default class QuestionDisplay extends Component {
 				<Rect
 					x={(width+aGapWidth)/2 + (aHeight*(2/5))} y={row2Start+aHeight/2}
 					width={aHeight/5} height={aHeight/5} visible={answersVisible}
-					fill={answers[1].correctLit ? "black" : "orange"} rotation="-45"/>
+					fill={answers[1].correctLit ? "black" : "orange"} rotation={-45}/>
 				<Text
 					x={(width+aGapWidth)/2 + aTextGapWidth} y={row2Start + aTextGapHeight}
 					width={aLetterWidth} height={aTextHeight} visible={answersVisible}
@@ -174,7 +174,7 @@ export default class QuestionDisplay extends Component {
 				<Rect
 					x={sideWidth+(aHeight*(2/5))} y={row3Start+aHeight/2}
 					width={aHeight/5} height={aHeight/5} visible={answersVisible}
-					fill={answers[2].correctLit ? "black" : "orange"} rotation="-45"/>
+					fill={answers[2].correctLit ? "black" : "orange"} rotation={-45}/>
 				<Text
 					x={sideWidth + aTextGapWidth} y={row3Start + aTextGapHeight}
 					width={aLetterWidth} height={aTextHeight} visible={answersVisible}
@@ -191,7 +191,7 @@ export default class QuestionDisplay extends Component {
 				<Rect
 					x={(width+aGapWidth)/2 + (aHeight*(2/5))} y={row3Start+aHeight/2}
 					width={aHeight/5} height={aHeight/5} visible={answersVisible}
-					fill={answers[3].correctLit ? "black" : "orange"} rotation="-45"/>
+					fill={answers[3].correctLit ? "black" : "orange"} rotation={-45}/>
 				<Text
 					x={(width+aGapWidth)/2 + aTextGapWidth} y={row3Start + aTextGapHeight}
 					width={aLetterWidth} height={aTextHeight} visible={answersVisible}

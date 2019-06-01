@@ -97,7 +97,7 @@ export default class QuestionResultsPanel extends Component {
 		gradient.addColorStop(0.5,"skyblue");
 		gradient.addColorStop(1,"#4286f4");
 		
-		var fontFamily = "ConduitITC TT";
+		var fontFamily = "Conduit";
 		
 		const answers = question.options.map((a) => {
 			return {
@@ -201,7 +201,7 @@ export default class QuestionResultsPanel extends Component {
 												<Rect
 													x={x+(aHeight*(2/5))} y={firstAnswerY + (aHeight + aGapHeight) * index + aHeight/2}
 													width={aHeight/5} height={aHeight/5}
-													fill="orange" rotation="-45"/>
+													fill="orange" rotation={-45}/>
 												<Text
 													x={x + aTextGapWidth} y={firstAnswerY + (aHeight + aGapHeight) * index + aTextGapHeight}
 													width={aLetterWidth} height={aTextHeight}

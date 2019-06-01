@@ -338,7 +338,7 @@ export default class HostConsole extends React.Component {
 		}
 
 		return (
-			<div>
+			<div className="panel-bar-ctr">
 				<div className='main-panel'>
 					<div
 						id='player-list'
