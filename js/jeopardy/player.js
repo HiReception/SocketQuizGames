@@ -47,7 +47,7 @@ socket.on("connect_error", function(err) {
 socket.on("accepted", function(state) {
 	$("#header-bar").text(screenName);
 	console.log(state);
-	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"))
+	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"));
 });
 
 socket.on("end of final", function() {
@@ -96,10 +96,10 @@ class PlayerPanel extends React.Component {
 						socket={this.props.socket}
 					/>
 				);
-			} else if (this.state.finalRespondingOpen
+			} else if ((this.state.finalRespondingOpen || this.state.finalRespondingOver)
 				&& this.state.finalEligiblePlayers.some(p => p.screenName === screenName)
 				&& (!this.state.finalResponses || !this.state.finalResponses.some(r => r.screenName === screenName))) {
-				input = <FinalQuestion body={this.state.final.answer} socket={this.props.socket}/>;
+				input = <FinalQuestion body={this.state.final.answer} socket={this.props.socket} timeUp={this.state.finalRespondingOver}/>;
 			} else {
 				input = <EmptyPanel/>;
 			}

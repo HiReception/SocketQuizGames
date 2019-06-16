@@ -20,15 +20,20 @@ export default class FinalJeopardyPanel extends React.Component {
 	handleNewAnswer = (details) => {
 		console.log("new answer:");
 		console.log(details);
-		if (this.state.finalRespondingOpen && !this.state.finalRespondingOver &&
-			!this.state.finalResponses.some((resp) => {
-				return resp.screenName === details.screenName;
-			})) {
+		if (!this.state.finalResponses.some(resp => resp.screenName === details.screenName)) {
 			const newResponses = this.state.finalResponses;
 			newResponses.push({
 				screenName: details.player,
 				response: details.answer,
 			});
+
+			// if time is up and all responses are now in, allow reveal of responses to proceed
+			if (this.state.finalRespondingOver && newResponses.length === this.state.finalEligiblePlayers.length) {
+				this.setGameState({
+					finalFocusMode: "pending",
+				});
+			}
+
 			this.setGameState({
 				finalResponses: newResponses,
 			});
@@ -143,7 +148,7 @@ export default class FinalJeopardyPanel extends React.Component {
 				return wag.screenName === firstFocusName;
 			})) {
 				firstFocusWagerValue = this.state.finalWagers.find((wag) => {
-					console.log(`wager name = ${ wag.screenName } vs ${ firstFocusName }`)
+					console.log(`wager name = ${ wag.screenName } vs ${ firstFocusName }`);
 					return wag.screenName === firstFocusName;
 				}).wager;
 			} else {
@@ -169,6 +174,11 @@ export default class FinalJeopardyPanel extends React.Component {
 	}
 
 	closeResponses = () => {
+		if (this.state.finalResponses.length === this.state.finalEligiblePlayers.length) {
+			this.setGameState({
+				finalFocusMode: "pending",
+			});
+		}
 		this.setGameState({
 			finalRespondingOver: true,
 			finalRespondingOpen: false,
@@ -315,6 +325,14 @@ export default class FinalJeopardyPanel extends React.Component {
 					</p>
 				</div>
 			);
+		} else if (this.state.finalFocusMode === "not-ready") {
+			correctPanel = (
+				<div className='final-jeopardy-correct'>
+					<p className='final-jeopardy-correct'>
+						Finalising Responses...
+					</p>
+				</div>
+			);
 		} else if (this.state.finalFocusMode === "pending") {
 			correctPanel = (
 				<div className='final-jeopardy-correct'>
@@ -339,7 +357,7 @@ export default class FinalJeopardyPanel extends React.Component {
 
 
 		let responsePanel;
-		if (!this.state.finalRespondingOver || this.state.finalFocusMode === "pending") {
+		if (!this.state.finalRespondingOver || this.state.finalFocusMode === "pending" || this.state.finalFocusMode === "not-ready") {
 			responsePanel = <div className='final-jeopardy-response'/>;
 		} else if (this.state.finalFocusMode === "no-eligible") {
 			// TODO when creating post-game panel, make this button go to that panel

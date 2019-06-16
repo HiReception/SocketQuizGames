@@ -188,6 +188,7 @@ p .no-players {
 div .playerListing {
 	display: flex;
 	flex-direction: column;
+	cursor: pointer;
 
 	margin-left: 10px;
 	margin-right: 10px;
@@ -280,6 +281,7 @@ p.player-details-score {
 }
 
 p.player-details-back {
+	cursor: pointer;
 	color: white;
 	text-align: center;
 }

@@ -10,10 +10,14 @@ export default class CategoryGroup extends React.Component {
 		const fontStyle = "";
 		const totalCluesHeight = (5/6) * this.props.height;
 		const headerHeight = this.props.height - totalCluesHeight;
-		const headerTextHeightMargin = 0.2 * headerHeight;
-		const headerTextHeight = (headerHeight - 2 * headerTextHeightMargin) / 2;
-		const headerTextWidthMargin = 0.1 * this.props.width;
-		const headerTextWidth = this.props.width - 2*headerTextWidthMargin;
+		const headerBorderV = 0.1 * headerHeight;
+		const headerBorderH = 0.01 * headerHeight;
+		const headerTextBoxHeight = headerHeight - 2*headerBorderV;
+		const headerTextBoxWidth = this.props.width - 2*headerBorderH;
+		const headerTextHeightMargin = 0.1 * headerTextBoxHeight;
+		const headerTextHeight = (headerTextBoxHeight - 2 * headerTextHeightMargin) / 2;
+		const headerTextWidthMargin = 0.1 * headerTextBoxWidth;
+		const headerTextWidth = headerTextBoxWidth - 2*headerTextWidthMargin;
 		const clueHeight = totalCluesHeight / this.props.category.clues.length;
 
 		const splitCategory = gf.splitLongString(this.props.category.name.toUpperCase(), fontFamily, headerTextHeight, headerTextWidth);
@@ -34,9 +38,11 @@ export default class CategoryGroup extends React.Component {
 
 		return (
 			<Group x={this.props.left} y={0}>
-				<Rect width={this.props.width} height={this.props.height} x={0} y={0} fill="#0B1885" stroke="black" strokeWidth={2}/>
-				<Text x={headerTextWidthMargin + gf.textHorizontalSpacing(splitCategory, fontFamily, headerTextHeight, headerTextWidth, fontStyle)}
-					y={headerTextHeightMargin + gf.textVerticalSpacing(splitCategory, headerTextHeight)}
+				<Rect width={this.props.width} height={this.props.height} x={0} y={0} fill="black" stroke="black" strokeWidth={2}/>
+				<Rect width={this.props.width} height={headerHeight} x={0} y={0} fill="black"/>
+				<Rect width={headerTextBoxWidth} height={headerTextBoxHeight} x={headerBorderH} y={headerBorderV} fill="#0B1885"/>
+				<Text x={headerBorderH + headerTextWidthMargin + gf.textHorizontalSpacing(splitCategory, fontFamily, headerTextHeight, headerTextWidth, fontStyle)}
+					y={headerBorderV + headerTextHeightMargin + gf.textVerticalSpacing(splitCategory, headerTextHeight)}
 					height={headerTextHeight * 2} wrap="none" textAlign="center"
 					fontSize={headerTextHeight} fontFamily={fontFamily} fontStyle={fontStyle}
 					fill="white" align="center"

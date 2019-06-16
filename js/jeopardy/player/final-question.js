@@ -13,6 +13,16 @@ export default class FinalQuestion extends React.Component {
 		};
 	}
 
+	componentDidUpdate = (prevProps) => {
+		// if time runs out and answer has not yet been submitted, automatically submit whatever is in the text field
+		if (this.props.timeUp && !prevProps.timeUp) {
+			this.props.socket.emit("send answer", {
+				questionNo: 1,
+				submittedAnswer: this.state.input
+			});
+		}
+	}
+
 	inputChange = (event) => {
 		this.setState({
 			input: event.target.value,
@@ -47,4 +57,5 @@ FinalQuestion.propTypes = {
 	questionNo: PropTypes.number,
 	body: PropTypes.string,
 	socket: PropTypes.instanceOf(io.Socket),
-}
+	timeUp: PropTypes.bool,
+};
