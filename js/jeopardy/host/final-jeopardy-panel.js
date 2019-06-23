@@ -185,9 +185,10 @@ export default class FinalJeopardyPanel extends React.Component {
 		});
 	}
 	nextFocus = () => {
+		// if last player's response and wager has been revealed, end game
 		if (this.state.finalFocusPlayerNumber ===
 			this.props.eligiblePlayers.length - 1) {
-			// TODO proceed to end of game screen
+			this.props.endGame();
 		} else {
 			const finalFocusPlayerNumber = this.state.finalFocusPlayerNumber + 1;
 			const finalFocusPlayerName = this.props.eligiblePlayers[finalFocusPlayerNumber]
@@ -360,13 +361,12 @@ export default class FinalJeopardyPanel extends React.Component {
 		if (!this.state.finalRespondingOver || this.state.finalFocusMode === "pending" || this.state.finalFocusMode === "not-ready") {
 			responsePanel = <div className='final-jeopardy-response'/>;
 		} else if (this.state.finalFocusMode === "no-eligible") {
-			// TODO when creating post-game panel, make this button go to that panel
 			responsePanel = (
 				<div className='final-jeopardy-response'>
 					<p className="final-jeopardy-response">
 						No Eligible Players
 					</p>
-					<div className='add-question-button'>
+					<div className='add-question-button' onClick={this.props.endGame}>
 						<p>Continue</p>
 					</div>
 				</div>
@@ -440,5 +440,6 @@ FinalJeopardyPanel.propTypes = {
 	suffix: PropTypes.string,
 	gameState: PropTypes.object,
 	setGameState: PropTypes.func,
+	endGame: PropTypes.func,
 };
 

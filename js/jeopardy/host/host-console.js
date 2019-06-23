@@ -6,11 +6,14 @@ const $ = require("jquery");
 import PlayerDetailsPanel from "./player-details-panel";
 import PlayerListing from "./player-listing";
 import NextRoundPanel from "./next-round-panel";
+import PostGamePanel from "./post-game-panel";
 import SelectQuestionPanel from "./select-question-panel";
 import NoQuestionPanel from "./no-question-panel";
 import OpenQuestionPanel from "./open-question-panel";
 import FinalJeopardyPanel from "./final-jeopardy-panel";
 import PlayerPanelToggleBar from "../../common/player-panel-bar";
+
+import initialState from "../initial-state";
 
 
 export default class HostConsole extends React.Component {
@@ -209,6 +212,22 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
+	endGame = () => {
+		this.setGameState({
+			currentPanel: "PostGamePanel",
+		});
+	}
+
+	followOnGame = () => {
+		// Set all game state values to initial, EXCEPT:
+		let newState = initialState;
+		// Reinstate existing players array, but revert their scores to zero
+		newState.players = this.state.players;
+		newState.players.forEach(p => p.score = 0);
+
+		this.setGameState(newState);
+	}
+
 	render = () => {
 		// render player list panel
 		let playerPanel;
@@ -327,9 +346,17 @@ export default class HostConsole extends React.Component {
 					eligiblePlayers={this.state.finalEligiblePlayers}
 					gameState={this.state}
 					setGameState={this.setGameState}
+					endGame={this.endGame}
 					prefix={this.state.prefix}
 					suffix={this.state.suffix}
 					socket={this.props.socket}/>
+			);
+			break;
+		case "PostGamePanel":
+			mainPanel = (
+				<PostGamePanel
+					key={this.state.newPanelKey}
+					callback={this.followOnGame}/>
 			);
 			break;
 		default:

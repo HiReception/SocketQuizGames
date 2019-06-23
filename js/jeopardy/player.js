@@ -50,14 +50,6 @@ socket.on("accepted", function(state) {
 	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"));
 });
 
-socket.on("end of final", function() {
-	/* TODO
-		retrieve whatever's in the input field
-		send that as the response
-		replace the FinalJeopardyPanel with EmptyPanel
-	*/
-});
-
 class PlayerPanel extends React.Component {
 	constructor(props) {
 		super(props);

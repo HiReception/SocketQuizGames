@@ -11,40 +11,12 @@ import DailyDoublePanel from "./daily-double-panel";
 import FinalJeopardyPanel from "./final-jeopardy-panel";
 import FinalJeopardyResponsePanel from "./final-jeopardy-response-panel";
 
+import initialState from "../initial-state";
+
 export default class DisplayContainer extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			currentRound: 0,
-			buzzersOpen: false,
-			rounds: [],
-			players: [],
-
-			final: {},
-			finalCategoryVisible: false,
-			finalClueVisible: false,
-			finalFocusScreenName: "",
-			finalFocusResponse: "",
-			finalFocusResponseVisible: false,
-			finalFocusWager: "",
-			finalFocusWagerVisible: false,
-
-			
-			currentPanel: "NoQuestionPanel",
-			currentCatNo: 0,
-			currentClueNo: 0,
-			currentClue: {},
-
-			playerAnswering: {},
-
-			dailyDoublePlaySound: true,
-
-			prefix: "",
-			suffix: "",
-
-			height: 0,
-			width: 0,
-		};
+		this.state = initialState;
 	}
 
 	updateDimensions = () => {
@@ -97,6 +69,7 @@ export default class DisplayContainer extends React.Component {
 		switch (this.state.currentPanel) {
 		case "NoQuestionPanel":
 		case "NextRoundPanel":
+		case "PostGamePanel":
 			questionPanel = <NoQuestionPanel height={boardHeight} width={this.state.width}/>;
 			break;
 		case "SelectQuestionPanel":
