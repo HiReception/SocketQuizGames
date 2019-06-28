@@ -78,6 +78,22 @@ module.exports = function(grunt) {
 				files: ["js/jeopardy/**/*.scss"],
 				tasks: ["sass:jeopardy"]
 			},
+			genericquiz_host_js: {
+				files: ["js/genericquiz/host/*.js", "js/genericquiz/host.js"],
+				tasks: ["browserify:genericquiz_host"]
+			},
+			genericquiz_player_js: {
+				files: ["js/genericquiz/player/*.js", "js/genericquiz/player.js"],
+				tasks: ["browserify:genericquiz_player"]
+			},
+			genericquiz_display_js: {
+				files: ["js/genericquiz/display/*.js", "js/genericquiz/display.js"],
+				tasks: ["browserify:genericquiz_display"]
+			},
+			genericquiz_css: {
+				files: ["js/genericquiz/**/*.scss"],
+				tasks: ["sass:genericquiz"]
+			},
 		},
 		browserify: {
 			menu: {
