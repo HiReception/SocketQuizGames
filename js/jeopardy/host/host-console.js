@@ -39,7 +39,6 @@ export default class HostConsole extends React.Component {
 	}
 
 	setAnsweringPlayer = (screenName) => {
-		console.log(`HostConsole setting answering player to ${ screenName}`);
 		this.setGameState({
 			playerAnswering: this.state.players.find((player) => {
 				return player.screenName === screenName;
@@ -80,7 +79,44 @@ export default class HostConsole extends React.Component {
 			wrongPlayerNames: [],
 			ddWagerEntered: false,
 			ddWagerSubmittable: false,
+			buzzingTimeOver: false,
+			buzzingTimerStarted: false,
+
 		});
+	}
+
+	startBuzzingTimer = (limit) => {
+		this.setGameState({
+			playerAnswering: {},
+			buzzersOpen: true,
+			buzzingTimerStarted: true,
+			buzzingTimerRunning: true,
+			buzzingTimeRemaining: limit,
+			buzzingTimer: setInterval(this.buzzingTimerIncrement, 100)
+		});
+	}
+
+	buzzingTimerIncrement = () => {
+		if (this.state.buzzingTimerRunning) {
+			const newTimeRemaining = Math.max(this.state.buzzingTimeRemaining - 100, 0);
+			this.setGameState({
+				buzzingTimeRemaining: newTimeRemaining,
+			});
+			if (newTimeRemaining <= 0) {
+				this.setGameState({
+					buzzingTimerRunning: false,
+					buzzersOpen: false,
+					buzzingTimeOver: true,
+				});
+				this.props.socket.emit("play sound", "answer-timeout");
+				clearInterval(this.state.buzzingTimer);
+			} 
+		} else {
+			this.setGameState({
+				buzzingTimeRemaining: 0,
+			});
+			clearInterval(this.state.buzzingTimer);
+		}
 	}
 
 	changeCurrentPanel = (panelName) => {
@@ -179,7 +215,6 @@ export default class HostConsole extends React.Component {
 	}
 
 	setGameState = (changedItems) => {
-		console.log("setGameState called");
 		this.setState(changedItems);
 		this.props.socket.emit("set state", changedItems);
 	}
@@ -205,8 +240,6 @@ export default class HostConsole extends React.Component {
 
 
 	setSelectingPlayer = (screenName) => {
-		console.log(`HostConsole.setSelectingPlayer called with screenName "
-			+ ${ screenName}`);
 		this.setGameState({
 			selectingPlayer: screenName,
 		});
@@ -309,7 +342,6 @@ export default class HostConsole extends React.Component {
 			const selectingPlayer = this.state.players.find((player) => {
 				return player.screenName === this.state.selectingPlayer;
 			});
-			console.log(selectingPlayer);
 			mainPanel = (<OpenQuestionPanel
 				key={this.state.newPanelKey}
 				catName={this.state.rounds[this.state.currentRound]
@@ -329,6 +361,7 @@ export default class HostConsole extends React.Component {
 				clearAnsweringPlayer={this.clearAnsweringPlayer}
 				gameState={this.state}
 				setGameState={this.setGameState}
+				startBuzzingTimer={this.startBuzzingTimer}
 				prefix={this.state.prefix}
 				suffix={this.state.suffix}
 				socket={this.props.socket}/>);

@@ -28,6 +28,12 @@ const initialState = {
 	ddWager: 0,
 	buzzersOpen: false,
 
+	buzzingTimer: null,
+	buzzingTimerStarted: false,
+	buzzingTimerRunning: false,
+	buzzingTimeRemaining: 0,
+	buzzingTimeOver: false,
+
 	finalCategoryVisible: false,
 	finalClueVisible: false,
 	finalWagers: [],

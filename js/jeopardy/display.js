@@ -43,6 +43,7 @@ socket.on("accepted", function() {
 			soundManager.createSound({id: "final-think", url: "./sounds/finalThink.mp3", autoLoad: true});
 			soundManager.createSound({id: "daily-double", url: "./sounds/dailyDouble.wav", autoLoad: true});
 			soundManager.createSound({id: "final-reveal", url: "./sounds/finalReveal.wav", autoLoad: true});
+			soundManager.createSound({id: "answer-timeout", url: "./sounds/answerTimeOut.wav", autoLoad: true});
 		},
 
 		ontimeout: function() {
