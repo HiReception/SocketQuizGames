@@ -7,6 +7,7 @@ var validator = require("express-validator");
 var session = require("express-session");
 var flash = require("connect-flash");
 var pg = require("pg");
+const crypto = require("crypto");
 const {parse} = require("pg-connection-string");
 
 
@@ -312,6 +313,13 @@ io.on("connection", function(socket) {
 						var preExistingUserArray = room.registerednames.filter(function(player) { return player === screenName; });
 						console.log("Number of current users with matching screenName of " + screenName + ": " + preExistingUserArray.length);
 						if (preExistingUserArray.length === 0) {
+							// Generate random ID for player
+							let id = crypto.randomBytes(8).toString("hex");
+							// Safeguard against the same random ID being generated twice in the same game
+							while (room.state.players.some(p => p.id === id)) {
+								id = crypto.randomBytes(8).toString("hex");
+							}
+							
 							// create a new user with the given data, plus a randomly-generated secret
 							var newUser = {
 								screenName: screenName,
@@ -325,7 +333,9 @@ io.on("connection", function(socket) {
 							pool.query("UPDATE rooms SET registerednames = $1 WHERE gamecode = $2", [room.registerednames, room.gamecode]);
 							console.log("Added new player to list");
 							console.log(room);
-							socket.broadcast.to(room.gamecode).emit("new player", screenName);
+							
+							socket.broadcast.to(room.gamecode).emit("new player", {screenName: screenName, id: id});
+							//socket.broadcast.to(room.gamecode).emit("new player", screenName);
 							console.log("Alerted host of new player");
 							socket.join(gameCode);
 							console.log("Joined player to room " + gameCode);

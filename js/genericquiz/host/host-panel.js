@@ -16,8 +16,9 @@ export default class HostPanel extends React.Component {
 		this.state = newState;
 	}
 
-	handleNewPlayer = (screenName) => {
+	handleNewPlayer = ({screenName, id}) => {
 		var newPlayer = {
+			id: id,
 			screenName: screenName,
 			colour: this.state.playerColours[this.state.players.length % this.state.playerColours.length],
 			score: isNaN(this.state.startingScore) ? 0 : this.state.startingScore,

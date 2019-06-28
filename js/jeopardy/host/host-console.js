@@ -126,10 +126,11 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
-	handleNewPlayer = (screenName) => {
+	handleNewPlayer = ({screenName, id}) => {
 		console.log("new player:");
 		console.log(screenName);
 		const newPlayer = {
+			id: id,
 			screenName: screenName,
 			score: 0,
 			hidden: false

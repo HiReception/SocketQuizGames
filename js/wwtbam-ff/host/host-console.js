@@ -39,10 +39,11 @@ export default class HostConsole extends Component {
 		});
 	}
 
-	handleNewPlayer = (screenName) => {
+	handleNewPlayer = ({screenName, id}) => {
 		console.log("new player:");
 		console.log(screenName);
 		var newPlayer = {
+			id: id,
 			screenName: screenName,
 			score: 0,
 			hidden: false,
