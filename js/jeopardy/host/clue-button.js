@@ -17,7 +17,7 @@ export default class ClueButton extends React.Component {
 				<div
 					className='clue-button active'
 					onClick={this.onClick}>
-					<p className='clue-button'>{this.props.prefix}{this.props.value}{this.props.suffix}</p>
+					<span className='clue-button-text'>{this.props.prefix}{this.props.value}{this.props.suffix}</span>
 				</div>
 			);
 		}

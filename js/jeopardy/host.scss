@@ -336,8 +336,6 @@ div.select-question-panel {
 	height: 100%;
 	justify-content: center;
 	align-items: stretch;
-	padding-top: 5px;
-	padding-bottom: 5px;
 	background-color: $background-color;
 }
 
@@ -393,7 +391,7 @@ div.clue-button {
 	}
 }
 
-p.clue-button {
+.clue-button-text {
 	width: 100%;
 	text-align: center;
 	color: orange;
@@ -633,7 +631,7 @@ p.no-players {
 
 	div.select-question-panel {
 		justify-content: flex-start;
-		overflow: scroll;
+		overflow: auto;
 	}
 
 	div.category-group {
@@ -650,8 +648,8 @@ p.no-players {
 	}
 
 	div.clue-button {
-		flex-basis: 40px;
-		margin: 2.5px 0 2.5px 0;
+		flex-basis: 50px;
+		margin: 2.5px 0;
 	}
 
 }
