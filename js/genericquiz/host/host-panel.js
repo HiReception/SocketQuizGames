@@ -67,7 +67,7 @@ export default class HostPanel extends React.Component {
 		if (this.state.buzzersOpen) {
 
 			var newPlayerAnswering = this.state.players.find(function(p) {
-				return p.screenName === details.player;
+				return p.id === details.player;
 			});
 			if (!newPlayerAnswering.hidden) {
 				this.setGameState({
@@ -81,42 +81,42 @@ export default class HostPanel extends React.Component {
 		}
 	}
 
-	showPlayerDetails = (name) => {
+	showPlayerDetails = (id) => {
 		this.setGameState({
-			detailPlayerName: name,
+			detailPlayerID: id,
 		});
 	}
 
 	clearPlayerDetails = () => {
 		this.setGameState({
-			detailPlayerName: "",
+			detailPlayerID: "",
 		});
 	}
 
-	hidePlayer = (playerName) => {
+	hidePlayer = (id) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === playerName;
+			return player.id === id;
 		}).hidden = true;
 		this.setGameState({
 			players: newPlayers,
 		});
 	}
 
-	unhidePlayer = (playerName) => {
+	unhidePlayer = (id) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === playerName;
+			return player.id === id;
 		}).hidden = false;
 		this.setGameState({
 			players: newPlayers,
 		});
 	}
 
-	changePlayerScore = (screenName, newScore) => {
+	changePlayerScore = (id, newScore) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === screenName;
+			return player.id === id;
 		}).score = newScore;
 		this.setGameState({
 			players: newPlayers,
@@ -130,10 +130,10 @@ export default class HostPanel extends React.Component {
 		});
 	}
 
-	modifyScore = (screenName, scoreChange) => {
+	modifyScore = (id, scoreChange) => {
 		var newPlayers = this.state.players;
 		newPlayers.map(function(p) {
-			if (p.screenName === screenName) {
+			if (p.id === id) {
 				p.score += scoreChange;
 			}
 		});
@@ -164,7 +164,7 @@ export default class HostPanel extends React.Component {
 		// render player list panel
 		let playerPanel;
 		let playerPanelContent;
-		if (this.state.detailPlayerName === "") {
+		if (this.state.detailPlayerID === "") {
 			const nonHiddenPlayers = this.state.players.filter((player) => {
 				return !player.hidden;
 			});
@@ -175,14 +175,14 @@ export default class HostPanel extends React.Component {
 				const list = playersByScore.map((player) => {
 					return (
 						<PlayerListing
-							onClick={this.showPlayerDetails.bind(this, player.screenName)}
+							onClick={this.showPlayerDetails.bind(this, player.id)}
 							player={player}
-							key={player.screenName}
+							key={player.id}
 							answering={!$.isEmptyObject(this.state.playerAnswering) &&
-								this.state.playerAnswering.screenName === player.screenName}
+								this.state.playerAnswering.id === player.id}
 							lockedOut={!$.isEmptyObject(this.state.playerAnswering) &&
-								this.state.playerAnswering.screenName !== player.screenName}
-							selecting={this.state.selectingPlayer === player.screenName}
+								this.state.playerAnswering.id !== player.id}
+							selecting={this.state.selectingPlayer === player.id}
 							prefix={this.state.prefix}
 							suffix={this.state.suffix}/>);
 				});
@@ -199,7 +199,7 @@ export default class HostPanel extends React.Component {
 			);
 		} else {
 			const player = this.state.players.find((player) => {
-				return player.screenName === this.state.detailPlayerName;
+				return player.id === this.state.detailPlayerID;
 			});
 			playerPanel = (<PlayerDetailsPanel
 				player={player}

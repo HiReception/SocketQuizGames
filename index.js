@@ -169,6 +169,7 @@ app.post("/play",
 						next("roomNotFound");
 					} else {
 						var registeredNames = dbRes.rows[0].registerednames;
+						var currentNames = dbRes.rows[0].state.players.map(p => p.screenName);
 						
 						// check if any other user is using this name (this can include the same person reconnecting)
 						var preExistingUserArray = registeredNames.filter(function(player) { return player === screenName; });
@@ -180,7 +181,18 @@ app.post("/play",
 							// check if this user last played in the same room with the exact same name (i.e. left and came back in)
 							var matchingString = dbRes.rows[0].gameCode + "|" + screenName;
 							if (req.session.lastRoomAndName === matchingString) {
-								next();
+								if (currentNames.some(p => p.screenName == screenName)) {
+									next();
+								} else {
+									// TODO user has entered once, had their screen name changed, left, and tried
+									// to enter again using their original username.
+									// This will now result in them being locked out, which should at least prevent
+									// malicious circumventing of the change of username, but there has to be a better
+									// way to handle this
+									next("deadUsernameAttempt");
+								}
+								
+								
 							// if they didn't, reject them
 							} else {
 								next("screenNameTaken");
@@ -203,7 +215,7 @@ app.post("/play",
 				if (dbRes.rows.length === 0) {
 					next("roomNotFound");
 				} else {
-					var type = dbRes.rows[0].type
+					var type = dbRes.rows[0].type;
 					res.send("/" + type + "/play?gamecode=" + req.body.gamecode.toUpperCase() + "&name=" + req.body.name);
 				}
 			}
@@ -307,14 +319,16 @@ io.on("connection", function(socket) {
 				} else {
 					if (dbRes.rows.length === 0) {
 						console.log("room not found");
+						socket.emit("room not found");
 					} else {
 						const room = dbRes.rows[0];
+						var id;
 						// check if this user is reconnecting from earlier
 						var preExistingUserArray = room.registerednames.filter(function(player) { return player === screenName; });
 						console.log("Number of current users with matching screenName of " + screenName + ": " + preExistingUserArray.length);
 						if (preExistingUserArray.length === 0) {
 							// Generate random ID for player
-							let id = crypto.randomBytes(8).toString("hex");
+							id = crypto.randomBytes(8).toString("hex");
 							// Safeguard against the same random ID being generated twice in the same game
 							while (room.state.players.some(p => p.id === id)) {
 								id = crypto.randomBytes(8).toString("hex");
@@ -322,6 +336,7 @@ io.on("connection", function(socket) {
 							
 							// create a new user with the given data, plus a randomly-generated secret
 							var newUser = {
+								id: id,
 								screenName: screenName,
 								correctAnswers: 0,
 								incorrectAnswers: 0,
@@ -340,22 +355,33 @@ io.on("connection", function(socket) {
 							socket.join(gameCode);
 							console.log("Joined player to room " + gameCode);
 							console.log(newUser);
-							socket.emit("accepted", room.state);
+							socket.emit("accepted", {state: room.state, id: id});
 							console.log("sent message of acceptance to user");
 						} else {
-							socket.emit("accepted", room.state);
-							socket.join(gameCode);
-							console.log("Joined player to room " + gameCode);
+							if (room.state.players.some(p => p.screenName == screenName)) {
+								id = room.state.players.find(p => p.screenName == screenName).id;
+								socket.emit("accepted", {state: room.state, id: id});
+								socket.join(gameCode);
+								console.log("Joined player to room " + gameCode);
+							} else {
+								// TODO user has entered once, had their screen name changed, left, and tried
+								// to enter again using their original username.
+								// This will now result in them being locked out, which should at least prevent
+								// malicious circumventing of the change of username, but there has to be a better
+								// way to handle this
+								socket.emit("dead username attempt");
+							}
 						}
 
 						socket.on("send answer", function(details) {
+							console.log(room.state.players);
 							console.log("answer received:");
 							console.log(details);
 							console.log("from player: ");
-							console.log(screenName);
+							console.log(id);
 
 							var answer = {
-								player: screenName,
+								player: id,
 								answer: details.submittedAnswer,
 								time: details.timeTaken,
 							};
@@ -365,16 +391,16 @@ io.on("connection", function(socket) {
 						});
 
 						socket.on("send message to host", function(details) {
-							console.log("player " + screenName + "has sent a private message to the host in room " + gameCode + ":");
+							console.log("player " + id + "has sent a private message to the host in room " + gameCode + ":");
 							console.log(details);
 							socket.broadcast.to(room.gamecode).emit("new message", {
-								player: screenName,
+								player: id,
 								details: details
 							});
 						});
 						
 						socket.on("disconnect", function() {
-							console.log("User " + screenName + " disconnected from room " + gameCode);
+							console.log("User " + id + " disconnected from room " + gameCode);
 						});
 					}
 				}

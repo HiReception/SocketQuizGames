@@ -38,9 +38,9 @@ socket.on("connect_error", function(err) {
 	console.log("connection error: " + err);
 });
 
-socket.on("accepted", function(state) {
+socket.on("accepted", function({state, id}) {
 	console.log("state received:");
 	console.log(state);
 	$("#header-bar").text(screenName);
-	ReactDOM.render(<PlayerPanel screenName={screenName} receivedState={state} socket={socket}/>, document.getElementById("question-window"));
+	ReactDOM.render(<PlayerPanel id={id} receivedState={state} socket={socket}/>, document.getElementById("question-window"));
 });

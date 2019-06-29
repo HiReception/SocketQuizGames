@@ -38,10 +38,10 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
-	setAnsweringPlayer = (screenName) => {
+	setAnsweringPlayer = (id) => {
 		this.setGameState({
 			playerAnswering: this.state.players.find((player) => {
-				return player.screenName === screenName;
+				return player.id === id;
 			}),
 		});
 	}
@@ -76,7 +76,7 @@ export default class HostConsole extends React.Component {
 				"NextRoundPanel" : "SelectQuestionPanel",
 			newPanelKey: this.state.newPanelKey + 1,
 			playerAnswering: {},
-			wrongPlayerNames: [],
+			wrongPlayerIDs: [],
 			ddWagerEntered: false,
 			ddWagerSubmittable: false,
 			buzzingTimeOver: false,
@@ -143,43 +143,43 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
-	changePlayerScore = (screenName, newScore) => {
+	changePlayerScore = (id, newScore) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === screenName;
+			return player.id === id;
 		}).score = newScore;
 		this.setGameState({
 			players: newPlayers,
 		});
 	}
 
-	showPlayerDetails = (name, event) => {
-		console.log(`showPlayerDetails(${ name },${ event }) called`);
+	showPlayerDetails = (id, event) => {
+		console.log(`showPlayerDetails(${ id },${ event }) called`);
 		this.setGameState({
-			detailPlayerName: name,
+			detailPlayerID: id,
 		});
 	}
 
 	clearPlayerDetails = () => {
 		this.setGameState({
-			detailPlayerName: "",
+			detailPlayerID: "",
 		});
 	}
 
-	hidePlayer = (playerName) => {
+	hidePlayer = (id) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === playerName;
+			return player.id === id;
 		}).hidden = true;
 		this.setGameState({
 			players: newPlayers,
 		});
 	}
 
-	unhidePlayer = (playerName) => {
+	unhidePlayer = (id) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === playerName;
+			return player.id === id;
 		}).hidden = false;
 		this.setGameState({
 			players: newPlayers,
@@ -204,7 +204,7 @@ export default class HostConsole extends React.Component {
 				return p1.score < p2.score;
 			});
 			this.setGameState({
-				selectingPlayer: playersToSort[0].screenName,
+				selectingPlayer: playersToSort[0].id,
 				currentRound: this.state.currentRound + 1,
 				cluesLeft: [].concat(...newRound.categories.map((cat) => {
 					return cat.clues;
@@ -240,9 +240,9 @@ export default class HostConsole extends React.Component {
 	}
 
 
-	setSelectingPlayer = (screenName) => {
+	setSelectingPlayer = (id) => {
 		this.setGameState({
-			selectingPlayer: screenName,
+			selectingPlayer: id,
 		});
 	}
 
@@ -265,7 +265,7 @@ export default class HostConsole extends React.Component {
 	render = () => {
 		// render player list panel
 		let playerPanel;
-		if (this.state.detailPlayerName === "") {
+		if (this.state.detailPlayerID === "") {
 			const nonHiddenPlayers = this.state.players.filter((player) => {
 				return !player.hidden;
 			});
@@ -278,14 +278,14 @@ export default class HostConsole extends React.Component {
 					const player = playersByScore[i];
 					list.push((
 						<PlayerListing
-							onClick={this.showPlayerDetails.bind(this, player.screenName)}
+							onClick={this.showPlayerDetails.bind(this, player.id)}
 							player={player}
 							key={i}
 							answering={!$.isEmptyObject(this.state.playerAnswering) &&
-								this.state.playerAnswering.screenName === player.screenName}
+								this.state.playerAnswering.id === player.id}
 							lockedOut={!$.isEmptyObject(this.state.playerAnswering) &&
-								this.state.playerAnswering.screenName !== player.screenName}
-							selecting={this.state.selectingPlayer === player.screenName}
+								this.state.playerAnswering.id !== player.id}
+							selecting={this.state.selectingPlayer === player.id}
 							prefix={this.state.prefix}
 							suffix={this.state.suffix}/>));
 				}
@@ -295,7 +295,7 @@ export default class HostConsole extends React.Component {
 			}
 		} else {
 			const player = this.state.players.find((player) => {
-				return player.screenName === this.state.detailPlayerName;
+				return player.screenName === this.state.detailPlayerID;
 			});
 			playerPanel = (<PlayerDetailsPanel
 				player={player}
@@ -341,7 +341,7 @@ export default class HostConsole extends React.Component {
 		case "DailyDoublePanel":
 		case "OpenQuestionPanel": {
 			const selectingPlayer = this.state.players.find((player) => {
-				return player.screenName === this.state.selectingPlayer;
+				return player.id === this.state.selectingPlayer;
 			});
 			mainPanel = (<OpenQuestionPanel
 				key={this.state.newPanelKey}

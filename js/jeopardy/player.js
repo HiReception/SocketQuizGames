@@ -44,10 +44,10 @@ socket.on("connect_error", function(err) {
 	console.log("connection error: " + err);
 });
 
-socket.on("accepted", function(state) {
+socket.on("accepted", function({state, id}) {
 	$("#header-bar").text(screenName);
 	console.log(state);
-	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"));
+	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket} playerID={id}/>, document.getElementById("question-window"));
 });
 
 class PlayerPanel extends React.Component {
@@ -72,13 +72,13 @@ class PlayerPanel extends React.Component {
 
 	render = () => {
 		var input;
-		if (this.state.currentPanel !== "FinalJeopardyPanel" && this.state.currentPanel !== "FinalJeopardyResponsePanel") {
+		if (this.state.currentPanel !== "FinalJeopardyPanel" && this.state.currentPanel !== "FinalJeopardyResponsePanel" && this.state.currentPanel !== "PostGamePanel") {
 			input = <BuzzInQuestion socket={this.props.socket}/>;
 		} else {
 			if (this.state.finalWageringOpen
-				&& this.state.finalEligiblePlayers.some((p) => p.screenName === screenName)
-				&& (!this.state.finalWagers || !this.state.finalWagers.some(w => w.screenName === screenName))) {
-				const me = this.state.players.find(p => p.screenName === screenName);
+				&& this.state.finalEligiblePlayers.some((p) => p.id === this.props.playerID)
+				&& (!this.state.finalWagers || !this.state.finalWagers.some(w => w.id === this.props.playerID))) {
+				const me = this.state.players.find(p => p.id === this.props.playerID);
 				input = (
 					<WagerQuestion
 						balance={me.score}
@@ -89,8 +89,8 @@ class PlayerPanel extends React.Component {
 					/>
 				);
 			} else if ((this.state.finalRespondingOpen || this.state.finalRespondingOver)
-				&& this.state.finalEligiblePlayers.some(p => p.screenName === screenName)
-				&& (!this.state.finalResponses || !this.state.finalResponses.some(r => r.screenName === screenName))) {
+				&& this.state.finalEligiblePlayers.some(p => p.id === this.props.playerID)
+				&& (!this.state.finalResponses || !this.state.finalResponses.some(r => r.id === this.props.playerID))) {
 				input = <FinalQuestion body={this.state.final.answer} socket={this.props.socket} timeUp={this.state.finalRespondingOver}/>;
 			} else {
 				input = <EmptyPanel/>;

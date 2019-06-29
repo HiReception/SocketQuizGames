@@ -9,13 +9,13 @@ export default class NoQuestionPanel extends React.Component {
 	constructor(props) {
 		super(props);
 		const playerNameList = this.props.players.map((player) => {
-			console.log(player); return player.screenName;
+			console.log(player); return {screenName: player.screenName, id: player.id};
 		});
 		const testFiles = fs.readdirSync("public/jeopardy/testgames");
 		this.state = {
 			playerNameList: playerNameList,
 			selectedFirstPlayer: this.props.players.length > 0 ?
-				this.props.players[0].screenName : "",
+				this.props.players[0].id : "",
 			anyFieldsEmpty: !(this.props.players.length > 0),
 			gameUsed: "upload",
 			testFiles: testFiles,
@@ -26,13 +26,13 @@ export default class NoQuestionPanel extends React.Component {
 		console.log(newProps);
 		console.log(newProps.players);
 		const playerNameList = newProps.players.map((player) => {
-			console.log(player); return player.screenName;
+			console.log(player); return {screenName: player.screenName, id: player.id};
 		});
 		console.log(playerNameList);
 		this.setState({
 			playerNameList: playerNameList,
 			selectedFirstPlayer: newProps.players.length > 0 ?
-				newProps.players[0].screenName : "",
+				newProps.players[0].id : "",
 			anyFieldsEmpty: !(newProps.players.length > 0),
 		});
 	}
@@ -146,9 +146,9 @@ export default class NoQuestionPanel extends React.Component {
 		for (let i = 0; i < this.state.playerNameList.length; i++) {
 			startingPlayerOptions.push((
 				<option
-					value={this.state.playerNameList[i]}
+					value={this.state.playerNameList[i].id}
 					key={i}>
-					{this.state.playerNameList[i]}
+					{this.state.playerNameList[i].screenName}
 				</option>
 			));
 		}

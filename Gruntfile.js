@@ -94,6 +94,14 @@ module.exports = function(grunt) {
 				files: ["js/genericquiz/**/*.scss"],
 				tasks: ["sass:genericquiz"]
 			},
+			menu_js: {
+				files: ["js/menu.js"],
+				tasks: ["browserify:menu"]
+			},
+			menu_css: {
+				files: ["js/menu.css"],
+				tasks: ["sass:menu"]
+			}
 		},
 		browserify: {
 			menu: {
@@ -133,17 +141,17 @@ module.exports = function(grunt) {
 			},
 			genericquiz_player: {
 				src: "js/genericquiz/player.js",
-				dest: "public/genericquiz/playerBundle.js",
+				dest: "public/genericquiz/player.js",
 				options: browserifyOptions
 			},
 			genericquiz_host: {
 				src: "js/genericquiz/host.js",
-				dest: "public/genericquiz/hostBundle.js",
+				dest: "public/genericquiz/host.js",
 				options: browserifyOptions
 			},
 			genericquiz_display: {
 				src: "js/genericquiz/display.js",
-				dest: "public/genericquiz/displayBundle.js",
+				dest: "public/genericquiz/display.js",
 				options: browserifyOptions
 			},
 			wof_board_display: {

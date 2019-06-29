@@ -305,6 +305,10 @@ class MainMenu extends React.Component {
 				case "screenNameTaken":
 					errorText = "Somebody else in this game is using that Screen Name. Please choose another one.";
 					break;
+				case "deadUsernameAttempt":
+					errorText = "You have tried to re-enter a game using a screen name that the host has already replaced; this means that name " +
+					"is no longer available. Please speak to the host about your re-entry into the game.";
+					break;
 				default:
 					errorText = "Sorry, it looks like an unknown error has occurred. Please try again in a bit.";
 					break;

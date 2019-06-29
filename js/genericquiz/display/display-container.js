@@ -52,7 +52,7 @@ export default class DisplayContainer extends React.Component {
 				height={playerHeight}
 				width={width}
 				top={firstPlayerTop + (i * playerHeight)}
-				answering={playerAnswering.screenName === p.screenName}
+				answering={playerAnswering.id === p.id}
 			/>
 		));
 		const playerPanel = <Layer>{list}</Layer>;

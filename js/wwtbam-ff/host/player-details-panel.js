@@ -10,7 +10,7 @@ export default class PlayerDetailsPanel extends Component {
 			} (current score ${ this.props.player.score })`,
 				this.props.player.score.toString());
 			if (!isNaN(parseInt(newScore, 10))) {
-				this.props.changePlayerScore(this.props.player.screenName,
+				this.props.changePlayerScore(this.props.player.id,
 					parseInt(newScore, 10));
 				validNumber = true;
 			}
@@ -23,7 +23,7 @@ export default class PlayerDetailsPanel extends Component {
 				<div
 					className='add-question-button'
 					href='#'
-					onClick={() => this.props.unhidePlayer(this.props.player.screenName)}>
+					onClick={() => this.props.unhidePlayer(this.props.player.id)}>
 					<p>Unhide Player</p>
 				</div>
 			);
@@ -32,7 +32,7 @@ export default class PlayerDetailsPanel extends Component {
 				<div
 					className='cancel-question-button'
 					href='#'
-					onClick={() => this.props.hidePlayer(this.props.player.screenName)}>
+					onClick={() => this.props.hidePlayer(this.props.player.id)}>
 					<p>Hide Player</p>
 				</div>
 			);

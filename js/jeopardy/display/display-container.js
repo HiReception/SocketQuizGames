@@ -143,7 +143,7 @@ export default class DisplayContainer extends React.Component {
 		case "FinalJeopardyResponsePanel":
 			questionPanel = (
 				<FinalJeopardyResponsePanel
-					screenName={this.state.finalFocusPlayerName}
+					screenName={this.state.players.find(p => p.id == this.state.finalFocusPlayerID)}
 					response={this.state.finalFocusResponse}
 					responseVisible={this.state.finalFocusResponseVisible}
 					wager={this.state.finalFocusWager}
@@ -161,11 +161,11 @@ export default class DisplayContainer extends React.Component {
 
 		const list = nonHiddenPlayers.map((p,i) => {
 			// light this display up if they are answering the question
-			const answering = this.state.playerAnswering.screenName === p.screenName;
+			const answering = this.state.playerAnswering.id === p.id;
 
 			// player is "locked out" if someone ELSE is answering, so grey them out
-			const lockedOut = this.state.playerAnswering.hasOwnProperty("screenName")
-				&& this.state.playerAnswering.screenName !== p.screenName;
+			const lockedOut = this.state.playerAnswering.hasOwnProperty("id")
+				&& this.state.playerAnswering.id !== p.id;
 
 			return (<PlayerListing
 				player={p}

@@ -20,10 +20,10 @@ export default class FinalJeopardyPanel extends React.Component {
 	handleNewAnswer = (details) => {
 		console.log("new answer:");
 		console.log(details);
-		if (!this.state.finalResponses.some(resp => resp.screenName === details.screenName)) {
+		if (!this.state.finalResponses.some(resp => resp.id === details.player)) {
 			const newResponses = this.state.finalResponses;
 			newResponses.push({
-				screenName: details.player,
+				id: details.player,
 				response: details.answer,
 			});
 
@@ -44,11 +44,11 @@ export default class FinalJeopardyPanel extends React.Component {
 		console.log(message);
 		if (message.details.type === "wager" && this.state.finalWageringOpen &&
 			!this.state.finalWagers.some((wager) => {
-				return wager.screenName === message.player.screenName;
+				return wager.id === message.player;
 			})) {
 			const newWagers = this.state.finalWagers;
 			newWagers.push({
-				screenName: message.player,
+				id: message.player,
 				wager: message.details.wager,
 			});
 			this.setGameState({
@@ -125,14 +125,14 @@ export default class FinalJeopardyPanel extends React.Component {
 	goToFirstFocus = () => {
 		let finalFocusResponse;
 		if (this.state.finalEligiblePlayers.length > 0) {
-			const firstFocusName = this.state.finalEligiblePlayers[0].screenName;
+			const firstFocusID = this.state.finalEligiblePlayers[0].id;
 
 			if (this.state.finalResponses.some((resp) => {
 				console.log(resp);
-				return resp.screenName === firstFocusName;
+				return resp.id === firstFocusID;
 			})) {
 				finalFocusResponse = this.state.finalResponses.find((resp) => {
-					return resp.screenName === firstFocusName;
+					return resp.id === firstFocusID;
 				}).response;
 			} else {
 				finalFocusResponse = "";
@@ -145,11 +145,11 @@ export default class FinalJeopardyPanel extends React.Component {
 
 			if (this.state.finalWagers.some((wag) => {
 				console.log(wag);
-				return wag.screenName === firstFocusName;
+				return wag.id === firstFocusID;
 			})) {
 				firstFocusWagerValue = this.state.finalWagers.find((wag) => {
-					console.log(`wager name = ${ wag.screenName } vs ${ firstFocusName }`);
-					return wag.screenName === firstFocusName;
+					console.log(`wager name = ${ wag.id } vs ${ firstFocusID }`);
+					return wag.id === firstFocusID;
 				}).wager;
 			} else {
 				firstFocusWagerValue = 0;
@@ -157,7 +157,7 @@ export default class FinalJeopardyPanel extends React.Component {
 
 			this.setGameState({
 				currentPanel: "FinalJeopardyResponsePanel",
-				finalFocusPlayerName: firstFocusName,
+				finalFocusPlayerID: firstFocusID,
 				finalFocusMode: "response",
 				finalFocusWager: this.props.prefix + firstFocusWagerValue + this.props.suffix,
 				finalFocusResponse: finalFocusResponse,
@@ -191,20 +191,19 @@ export default class FinalJeopardyPanel extends React.Component {
 			this.props.endGame();
 		} else {
 			const finalFocusPlayerNumber = this.state.finalFocusPlayerNumber + 1;
-			const finalFocusPlayerName = this.props.eligiblePlayers[finalFocusPlayerNumber]
-			.screenName;
+			const finalFocusPlayerID = this.props.eligiblePlayers[finalFocusPlayerNumber].id;
 			this.setGameState({
 				finalFocusPlayerNumber: finalFocusPlayerNumber,
-				finalFocusPlayerName: finalFocusPlayerName,
+				finalFocusPlayerID: finalFocusPlayerID,
 				finalFocusMode: "response",
 			});
 
 			let finalFocusResponse;
 			if (this.state.finalResponses.some((resp) => {
-				return resp.screenName === finalFocusPlayerName + 1;
+				return resp.id === finalFocusPlayerID + 1;
 			})) {
 				finalFocusResponse = this.state.finalResponses.find((resp) => {
-					return resp.screenName === finalFocusPlayerName + 1;
+					return resp.id === finalFocusPlayerID + 1;
 				}).response;
 			} else {
 				finalFocusResponse = "";
@@ -215,10 +214,10 @@ export default class FinalJeopardyPanel extends React.Component {
 
 			// send message to display to go to next response
 			this.props.socket.emit("set state", {
-				finalFocusPlayerName: finalFocusPlayerName,
+				finalFocusPlayerID: finalFocusPlayerID,
 				finalFocusWager: this.props.prefix +
 					this.state.finalWagers.find((player) => {
-						return player.screenName === finalFocusPlayerName;
+						return player.id === finalFocusPlayerID;
 					}).wager + this.props.suffix,
 				finalFocusResponse: finalFocusResponse,
 				finalFocusResponseVisible: true,
@@ -227,12 +226,12 @@ export default class FinalJeopardyPanel extends React.Component {
 		}
 	}
 	wrongAnswer = () => {
-		this.props.changePlayerScore(this.state.finalFocusPlayerName,
+		this.props.changePlayerScore(this.state.finalFocusPlayerID,
 			this.props.eligiblePlayers.find((player) => {
-				return player.screenName === this.state.finalFocusPlayerName;
+				return player.id === this.state.finalFocusPlayerID;
 			}).score -
 				this.state.finalWagers.find((player) => {
-					return player.screenName === this.state.finalFocusPlayerName;
+					return player.id === this.state.finalFocusPlayerID;
 				}).wager);
 		this.setGameState({
 			finalFocusMode: "wager",
@@ -241,12 +240,12 @@ export default class FinalJeopardyPanel extends React.Component {
 		});
 	}
 	rightAnswer = () => {
-		this.props.changePlayerScore(this.state.finalFocusPlayerName,
+		this.props.changePlayerScore(this.state.finalFocusPlayerID,
 			this.props.eligiblePlayers.find((player) => {
-				return player.screenName === this.state.finalFocusPlayerName;
+				return player.id === this.state.finalFocusPlayerID;
 			}).score +
 				this.state.finalWagers.find((player) => {
-					return player.screenName === this.state.finalFocusPlayerName;
+					return player.id === this.state.finalFocusPlayerID;
 				}).wager);
 		this.setGameState({
 			finalFocusMode: "wager",
@@ -374,11 +373,12 @@ export default class FinalJeopardyPanel extends React.Component {
 		} else if (this.state.finalFocusMode === "response") {
 			console.log(this.state.finalResponses);
 			console.log(this.state.finalFocusResponse);
+			const focusName = this.state.players.find(p => p.id == this.state.finalFocusPlayerID).screenName;
 			responsePanel = (
 				<div className='final-jeopardy-response'>
 					<div className='button-row space-between'>
 						<p className='final-jeopardy-response left'>
-							{this.state.finalFocusPlayerName} responded:
+							{focusName} responded:
 						</p>
 						<div className='button-row recursive'>
 							<div className='add-question-button' onClick={this.rightAnswer}>
@@ -396,13 +396,14 @@ export default class FinalJeopardyPanel extends React.Component {
 			);
 		} else {
 			console.log(this.state.finalWagers);
-			const currentWager = this.state.finalWagers.find(wager => wager.screenName === this.state.finalFocusPlayerName).wager;
+			const currentWager = this.state.finalWagers.find(wager => wager.id === this.state.finalFocusPlayerID).wager;
 			console.log(currentWager);
+			const focusName = this.state.players.find(p => p.id == this.state.finalFocusPlayerID).screenName;
 			responsePanel = (
 				<div className='final-jeopardy-response'>
 					<div className='button-row space-between'>
 						<p className='final-jeopardy-response left'>
-							{this.state.finalFocusPlayerName} wagered:
+							{focusName} wagered:
 						</p>
 						<div className='button-row recursive'>
 							<div className='add-question-button' onClick={this.nextFocus}>

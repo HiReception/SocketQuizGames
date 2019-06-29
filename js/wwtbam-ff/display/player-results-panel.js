@@ -60,7 +60,7 @@ export default class PlayerResultsPanel extends Component {
 
 	componentWillReceiveProps = (props) => {
 		if (props.correctPlayersRevealed && !this.props.correctPlayersRevealed) {
-			setInterval(this.state.iterateCorrectReveal, 200);
+			setInterval(this.iterateCorrectReveal, 200);
 		}
 
 		if (props.fastestCorrectRevealed && !this.props.fastestCorrectRevealed) {
@@ -124,7 +124,7 @@ export default class PlayerResultsPanel extends Component {
 		
 		const fastestTime = Math.min(...question.answers.filter((a) => a.answer === question.correctResponse).map((a) => a.timeTaken));
 		const playerDetails = players.map((p, index) => {
-			const answer = question.answers.find((a) => a.screenName === p.screenName);
+			const answer = question.answers.find((a) => a.id === p.id);
 			return {
 				screenName: p.screenName.toUpperCase(),
 				timeTaken: answer ? (answer.timeTaken/1000).toFixed(2) : "0.00",

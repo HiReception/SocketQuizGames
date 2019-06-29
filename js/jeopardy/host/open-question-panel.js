@@ -12,7 +12,7 @@ export default class OpenQuestionPanel extends React.Component {
 				${ this.props.selectingPlayer.screenName}`);
 			this.setGameState({
 				playerAnswering: this.props.players.find((player) => {
-					return player.screenName === this.props.selectingPlayer.screenName;
+					return player.id === this.props.selectingPlayer.id;
 				}),
 			});
 		}
@@ -45,13 +45,13 @@ export default class OpenQuestionPanel extends React.Component {
 		console.log(details);
 		if (this.props.gameState.buzzersOpen &&
 			details.player !== "" &&
-			!this.props.gameState.wrongPlayerNames.includes(details.player)
+			!this.props.gameState.wrongPlayerIDs.includes(details.player)
 			&& !this.props.clue.dailyDouble) {
 			console.log("new answer (Open inner):");
 			console.log(details);
 			this.setGameState({
 				playerAnswering: this.props.players.find((player) => {
-					return player.screenName === details.player;
+					return player.id === details.player;
 				}),
 				buzzersOpen: false,
 				buzzingTimerRunning: false, // cancel any post-question timer that may be running
@@ -62,17 +62,17 @@ export default class OpenQuestionPanel extends React.Component {
 
 	wrongAnswer = () => {
 		if (!$.isEmptyObject(this.props.gameState.playerAnswering)) {
-			this.props.changePlayerScore(this.props.gameState.playerAnswering.screenName,
+			this.props.changePlayerScore(this.props.gameState.playerAnswering.id,
 				this.props.gameState.playerAnswering.score - (this.props.clue.dailyDouble ? this.props.gameState.ddWager : this.props.gameState.currentClueValue));
 			this.props.clearAnsweringPlayer();
 			if (this.props.clue.dailyDouble) {
 				this.props.endClue();
 			} else {
-				const newWrongPlayerNames = this.props.gameState.wrongPlayerNames;
-				console.log(newWrongPlayerNames);
-				newWrongPlayerNames.push(this.props.gameState.playerAnswering.screenName);
+				const newWrongPlayerIDs = this.props.gameState.wrongPlayerIDs;
+				console.log(newWrongPlayerIDs);
+				newWrongPlayerIDs.push(this.props.gameState.playerAnswering.id);
 				this.setGameState({
-					wrongPlayerNames: newWrongPlayerNames,
+					wrongPlayerIDs: newWrongPlayerIDs,
 				});
 				this.openBuzzers();
 			}
@@ -81,9 +81,9 @@ export default class OpenQuestionPanel extends React.Component {
 
 	rightAnswer = () => {
 		if (!$.isEmptyObject(this.props.gameState.playerAnswering)) {
-			this.props.changePlayerScore(this.props.gameState.playerAnswering.screenName,
+			this.props.changePlayerScore(this.props.gameState.playerAnswering.id,
 				this.props.gameState.playerAnswering.score + (this.props.clue.dailyDouble ? this.props.gameState.ddWager : this.props.gameState.currentClueValue));
-			this.props.setSelectingPlayer(this.props.gameState.playerAnswering.screenName);
+			this.props.setSelectingPlayer(this.props.gameState.playerAnswering.id);
 			this.props.clearAnsweringPlayer();
 			this.props.endClue();
 		}
@@ -93,7 +93,7 @@ export default class OpenQuestionPanel extends React.Component {
 		if (!this.props.gameState.buzzersOpen) {
 			this.props.clearAnsweringPlayer();
 			// if any players left that can answer, set timer on buzz
-			if (this.props.gameState.players.filter(p => !p.hidden).length > this.props.gameState.wrongPlayerNames.length) {
+			if (this.props.gameState.players.filter(p => !p.hidden).length > this.props.gameState.wrongPlayerIDs.length) {
 				this.props.startBuzzingTimer(3000);
 			} else {
 				this.setGameState({
@@ -252,7 +252,7 @@ export default class OpenQuestionPanel extends React.Component {
 				</div>
 			);
 
-			if (this.props.gameState.players.filter(p => !p.hidden).length == this.props.gameState.wrongPlayerNames.length) {
+			if (this.props.gameState.players.filter(p => !p.hidden).length == this.props.gameState.wrongPlayerIDs.length) {
 				buzzerPanel = (
 					<div className='buzzer-panel'>
 						<p className='buzzer-panel'>No Players Left to Answer</p>

@@ -59,7 +59,7 @@ socket.on("game details", function(details) {
 		shuffle(playerColours);
 		state = {
 			players: [],
-			detailPlayerName: "",
+			detailPlayerID: "",
 			playerAnswering: {},
 			buzzersOpen: false,
 			startingScore: 0,

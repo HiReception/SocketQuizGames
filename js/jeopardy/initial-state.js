@@ -1,6 +1,6 @@
 const initialState = {
 	players: [],
-	detailPlayerName: "",
+	detailPlayerID: "",
 
 	currentRound: 0,
 	cluesLeft: 0,
@@ -22,7 +22,7 @@ const initialState = {
 	prefix: "",
 	suffix: "",
 
-	wrongPlayerNames: [],
+	wrongPlayerIDs: [],
 	ddWagerEntered: false,
 	ddWagerSubmittable: false,
 	ddWager: 0,
@@ -44,7 +44,7 @@ const initialState = {
 	finalRespondingTimeRemaining: 30,
 	finalResponses: [],
 	finalFocusPlayerNumber: 0,
-	finalFocusPlayerName: "",
+	finalFocusPlayerID: "",
 	finalFocusResponse: "",
 	finalFocusMode: "not-ready",
 	finalFocusCorrect: false,

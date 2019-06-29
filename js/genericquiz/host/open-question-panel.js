@@ -11,7 +11,7 @@ export default class OpenQuestionPanel extends React.Component {
 
 	wrongAnswer = () => {
 		if (!$.isEmptyObject(this.props.playerAnswering)) {
-			this.props.modifyScore(this.props.playerAnswering.screenName, this.props.incorrectPoints * -1);
+			this.props.modifyScore(this.props.playerAnswering.id, this.props.incorrectPoints * -1);
 			this.openBuzzers();
 		}
 		this.props.socket.emit("play sound", "incorrect");
@@ -19,7 +19,7 @@ export default class OpenQuestionPanel extends React.Component {
 
 	rightAnswer = () => {
 		if (!$.isEmptyObject(this.props.playerAnswering)) {
-			this.props.modifyScore(this.props.playerAnswering.screenName, this.props.correctPoints);
+			this.props.modifyScore(this.props.playerAnswering.id, this.props.correctPoints);
 			this.openBuzzers();
 		}
 		this.props.socket.emit("play sound", "correct");

@@ -46,9 +46,9 @@ socket.on("connect_error", (err) => {
 	console.log(`connection error: ${ err}`);
 });
 
-socket.on("accepted", (state) => {
+socket.on("accepted", ({state, id}) => {
 	$("#header-bar").text(screenName);
-	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"));
+	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket} playerID={id}/>, document.getElementById("question-window"));
 });
 
 
@@ -76,7 +76,7 @@ class PlayerPanel extends React.Component {
 	render = () => {
 		var input;
 		const currentQ = this.state.questions[this.state.currentQuestion];
-		if (this.state.buzzersOpen && !currentQ.answers.some((answer) => { return answer.screenName === screenName; })) {
+		if (this.state.buzzersOpen && !currentQ.answers.some((answer) => { return answer.id === this.props.playerID; })) {
 			const optionButtons = currentQ.options.map((option) => {
 				return (
 					<AnswerButton
@@ -118,7 +118,7 @@ class PlayerPanel extends React.Component {
 				);
 				break;
 			default:
-				input = <EmptyPanel/>
+				input = <EmptyPanel/>;
 			}
 		} else {
 			input = <EmptyPanel/>;
