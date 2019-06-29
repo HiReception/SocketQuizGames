@@ -54,9 +54,8 @@ app.post("/host",
 		var gameCode = generateGameCode();
 		// add new room with given details
 		pool.query("INSERT INTO rooms(gamecode, title, type, registerednames, state, password) VALUES($1,$2,$3,$4,$5,crypt($6, gen_salt($7, 8)))",
-			[gameCode, gameTitle, req.body.format, [], {}, req.body.password, "bf"], (err, dbRes) => {
+			[gameCode, gameTitle, req.body.format, [], {}, req.body.password, "bf"], (err) => {
 				if (err) {
-					console.log(err);
 					next(err);
 				} else {
 					res.send("/" + req.body.format + "/host?gamecode=" + gameCode);
@@ -69,9 +68,7 @@ app.post("/host",
 
 app.post("/hostresume",
 	function checkRoomExists(req, res, next) {
-		console.log("checkRoomExists called");
 		var roomCode = req.body.gamecode.toUpperCase();
-		console.log(roomCode);
 		if (!roomCode || roomCode === "") {
 			next("blankRoom");
 		}
@@ -89,7 +86,6 @@ app.post("/hostresume",
 	},
 
 	function checkPassword(req, res, next) {
-		console.log("checkPassword called");
 		pool.query("SELECT * FROM rooms WHERE gameCode = $1 AND password = crypt($2, password)",
 			[req.body.gamecode.toUpperCase(), req.body.password], (err, dbRes) => {
 				if (err) {
@@ -107,7 +103,6 @@ app.post("/hostresume",
 	},
 
 	function redirect(req, res, next) {
-		console.log("assignCookieAndRedirect called");
 		pool.query("SELECT type FROM rooms WHERE gameCode = $1", [req.body.gamecode.toUpperCase()], (err, dbRes) => {
 			if (err) {
 				next(err);
@@ -123,9 +118,7 @@ app.post("/hostresume",
 		
 	},
 
-	function handleErrors(err, req, res, next) {
-		var errorCode;
-		console.log("handleErrors called: " + err);
+	function handleErrors(err, req, res) {
 		res.status(400).send(err);
 	}
 );
@@ -136,9 +129,7 @@ app.get("/join", function(req, res) {
 
 app.post("/play",
 	function checkRoomExists(req, res, next) {
-		console.log("checkRoomExists called");
 		var roomCode = req.body.gamecode.toUpperCase();
-		console.log(roomCode);
 		if (!roomCode || roomCode === "") {
 			next("blankRoom");
 		}
@@ -156,7 +147,6 @@ app.post("/play",
 	},
 
 	function checkNameNotTaken(req, res, next) {
-		console.log("checkNameNotTaken called");
 		var screenName = req.body.name;
 		if (screenName === "") {
 			next("blankScreenName");
@@ -173,7 +163,6 @@ app.post("/play",
 						
 						// check if any other user is using this name (this can include the same person reconnecting)
 						var preExistingUserArray = registeredNames.filter(function(player) { return player === screenName; });
-						console.log("Number of current users with matching screenName of " + screenName + ": " + preExistingUserArray.length);
 						if (preExistingUserArray.length === 0) {
 							// no other users with this name, so continue on
 							next();
@@ -206,7 +195,6 @@ app.post("/play",
 	},
 
 	function assignCookieAndRedirect(req, res, next) {
-		console.log("assignCookieAndRedirect called");
 		req.session.lastRoomAndName = req.body.gamecode + "|" + req.body.name;
 		pool.query("SELECT type FROM rooms WHERE gameCode = $1", [req.body.gamecode.toUpperCase()], (err, dbRes) => {
 			if (err) {
@@ -223,7 +211,7 @@ app.post("/play",
 		
 	},
 
-	function handleErrors(err, req, res, next) {
+	function handleErrors(err, req, res) {
 		console.log("handleErrors called: " + err);
 		res.status(400).send(err);
 	}
@@ -235,9 +223,7 @@ app.get("/displaygame", function(req, res) {
 
 app.post("/display",
 	function checkRoomExists(req, res, next) {
-		console.log("checkRoomExists called");
 		var roomCode = req.body.gamecode.toUpperCase();
-		console.log(roomCode);
 		if (!roomCode || roomCode === "") {
 			next("blankRoom");
 		}
@@ -255,7 +241,6 @@ app.post("/display",
 	},
 
 	function redirect(req, res, next) {
-		console.log("redirect called");
 		var roomCode = req.body.gamecode.toUpperCase();
 		pool.query("SELECT type FROM rooms WHERE gameCode = $1", [roomCode], (err, dbRes) => {
 			if (err) {
@@ -272,8 +257,7 @@ app.post("/display",
 		
 	},
 
-	function handleErrors(err, req, res, next) {
-		console.log("handleErrors called: " + err);
+	function handleErrors(err, req, res) {
 		res.status(400).send(err);
 	}
 );
@@ -302,7 +286,6 @@ app.use(express.static("public"));
 app.use(express.static("icons"));
 
 io.on("connection", function(socket) {
-	console.log("User Connected");
 	
 	
 	socket.on("join request", function(info) {
@@ -310,22 +293,19 @@ io.on("connection", function(socket) {
 		var screenName = "screen name unknown";
 		gameCode = info.gameCode.toUpperCase();
 		screenName = info.screenName;
-		console.log("Info: code " + gameCode + " name " + screenName);
 
 		try {
 			pool.query("SELECT * FROM rooms WHERE gameCode = $1", [gameCode], (err, dbRes) => {
 				if (err) {
-					console.log(err);
+					socket.emit("room not found");
 				} else {
 					if (dbRes.rows.length === 0) {
-						console.log("room not found");
 						socket.emit("room not found");
 					} else {
 						const room = dbRes.rows[0];
 						var id;
 						// check if this user is reconnecting from earlier
 						var preExistingUserArray = room.registerednames.filter(function(player) { return player === screenName; });
-						console.log("Number of current users with matching screenName of " + screenName + ": " + preExistingUserArray.length);
 						if (preExistingUserArray.length === 0) {
 							// Generate random ID for player
 							id = crypto.randomBytes(8).toString("hex");
@@ -334,35 +314,17 @@ io.on("connection", function(socket) {
 								id = crypto.randomBytes(8).toString("hex");
 							}
 							
-							// create a new user with the given data, plus a randomly-generated secret
-							var newUser = {
-								id: id,
-								screenName: screenName,
-								correctAnswers: 0,
-								incorrectAnswers: 0,
-								score: 0,
-								active: true,
-								colour: userColourList[room.registerednames.length % userColourList.length]
-							};
 							room.registerednames.push(screenName);
 							pool.query("UPDATE rooms SET registerednames = $1 WHERE gamecode = $2", [room.registerednames, room.gamecode]);
-							console.log("Added new player to list");
-							console.log(room);
 							
 							socket.broadcast.to(room.gamecode).emit("new player", {screenName: screenName, id: id});
-							//socket.broadcast.to(room.gamecode).emit("new player", screenName);
-							console.log("Alerted host of new player");
 							socket.join(gameCode);
-							console.log("Joined player to room " + gameCode);
-							console.log(newUser);
 							socket.emit("accepted", {state: room.state, id: id});
-							console.log("sent message of acceptance to user");
 						} else {
 							if (room.state.players.some(p => p.screenName == screenName)) {
 								id = room.state.players.find(p => p.screenName == screenName).id;
 								socket.emit("accepted", {state: room.state, id: id});
 								socket.join(gameCode);
-								console.log("Joined player to room " + gameCode);
 							} else {
 								// TODO user has entered once, had their screen name changed, left, and tried
 								// to enter again using their original username.
@@ -374,25 +336,17 @@ io.on("connection", function(socket) {
 						}
 
 						socket.on("send answer", function(details) {
-							console.log(room.state.players);
-							console.log("answer received:");
-							console.log(details);
-							console.log("from player: ");
-							console.log(id);
 
 							var answer = {
 								player: id,
 								answer: details.submittedAnswer,
 								time: details.timeTaken,
 							};
-							console.log("emitting new answer");
 							socket.broadcast.to(room.gamecode).emit("new answer", answer);
 							
 						});
 
 						socket.on("send message to host", function(details) {
-							console.log("player " + id + "has sent a private message to the host in room " + gameCode + ":");
-							console.log(details);
 							socket.broadcast.to(room.gamecode).emit("new message", {
 								player: id,
 								details: details
@@ -406,7 +360,6 @@ io.on("connection", function(socket) {
 				}
 			});
 		} catch (err) {
-			console.log("room not found");
 			socket.emit("room not found");
 		}
 
@@ -448,7 +401,6 @@ io.on("connection", function(socket) {
 
 	socket.on("host request", function(details) {
 		try {
-			console.log(details);
 			pool.query("SELECT * FROM rooms WHERE gamecode = $1", [details.gameCode], (err, dbRes) => {
 				if (err) {
 					console.log(err);
@@ -477,10 +429,7 @@ io.on("connection", function(socket) {
 									thisRoom.state[propertyName] = newState[propertyName];
 								}
 							}
-							console.log("new game state from host:");
-							console.log(thisRoom.state);
 							pool.query("UPDATE rooms SET state = $1 WHERE gamecode = $2", [thisRoom.state, thisRoom.gamecode]);
-							console.log("Broadcasting state to room " + details.gameCode);
 							socket.broadcast.to(details.gameCode).emit("new game state", thisRoom.state);
 						});
 
@@ -503,7 +452,7 @@ io.on("connection", function(socket) {
 				}
 			});
 		} catch (err) {
-			console.log(err);
+			socket.emit(err);
 		}		
 	});
 });
@@ -519,10 +468,3 @@ var s = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 function generateGameCode() {
 	return Array(4).join().split(",").map(function() { return s.charAt(Math.floor(Math.random() * s.length)); }).join("");
 }
-
-var userColourList = [
-	"#898CFF","#FE89B5","#FFDC8A","#90D4F7",
-	"#71DF96","#F5A26E","#658DE5","#ED6E79",
-	"#59D0E4","#DA96DF","#CEF381","#FE96E3",
-	"#BB96FF","#66EEBC"
-];

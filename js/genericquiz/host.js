@@ -1,6 +1,5 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
-var PropTypes = require("prop-types");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
 import HostPanel from "./host/host-panel";

@@ -10,8 +10,6 @@ export default class PlayerPanel extends React.Component {
 	}
 
 	handleNewState = (state) => {
-		console.log("state received:");
-		console.log(state);
 		this.setState(state);
 	}
 

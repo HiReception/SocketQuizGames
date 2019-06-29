@@ -53,7 +53,6 @@ export default class HostConsole extends React.Component {
 	}
 
 	showClue = (catNo, clueNo, clueValue) => {
-		console.log(catNo);
 		this.setGameState({
 			currentCatNo: catNo,
 			currentClueNo: clueNo,
@@ -127,8 +126,6 @@ export default class HostConsole extends React.Component {
 	}
 
 	handleNewPlayer = ({screenName, id}) => {
-		console.log("new player:");
-		console.log(screenName);
 		const newPlayer = {
 			id: id,
 			screenName: screenName,
@@ -153,8 +150,7 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
-	showPlayerDetails = (id, event) => {
-		console.log(`showPlayerDetails(${ id },${ event }) called`);
+	showPlayerDetails = (id) => {
 		this.setGameState({
 			detailPlayerID: id,
 		});
@@ -221,7 +217,6 @@ export default class HostConsole extends React.Component {
 	}
 
 	setGameData = (rounds, final, firstSelectingPlayer, prefix, suffix) => {
-		console.log(rounds, final, firstSelectingPlayer, prefix, suffix);
 		this.setGameState({
 			prefix: prefix,
 			suffix: suffix,

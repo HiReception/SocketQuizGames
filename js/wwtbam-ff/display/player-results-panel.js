@@ -14,7 +14,7 @@ export default class PlayerResultsPanel extends Component {
 			fastestFlashOn: false,
 			numPlayersRevealed: 0,
 			
-		}
+		};
 	}
 
 	updateDimensions = () => {
@@ -158,7 +158,7 @@ export default class PlayerResultsPanel extends Component {
 				<Layer>
 
 					{playerDetails.map((player, index) => {
-						const topY = firstY + (pHeight + pGapHeight) * index
+						const topY = firstY + (pHeight + pGapHeight) * index;
 						return (
 							<Group key={index}>
 								<Lozenge xStart={0} yStart={topY}

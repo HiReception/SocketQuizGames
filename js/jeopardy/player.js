@@ -3,7 +3,6 @@ var socket = require("socket.io-client")();
 var React = require("react");
 var $ = require("jquery");
 import BuzzInQuestion from "../common/buzz-in-question";
-import Message from "../common/player-message";
 import EmptyPanel from "../common/empty-panel";
 import WagerQuestion from "./player/wager-question";
 import FinalQuestion from "./player/final-question";

@@ -268,7 +268,7 @@ class MainMenu extends React.Component {
 					<div className="error">
 						<p>{errorText}</p>
 					</div>
-				)
+				);
 			}
 			content = (
 				<div className="content">
@@ -317,7 +317,7 @@ class MainMenu extends React.Component {
 					<div className="error">
 						<p>{errorText}</p>
 					</div>
-				)
+				);
 			}
 			content = (
 				<div className="content">
@@ -365,7 +365,7 @@ class MainMenu extends React.Component {
 					<div className="error">
 						<p>{errorText}</p>
 					</div>
-				)
+				);
 			}
 			content = (
 				<div className="content">

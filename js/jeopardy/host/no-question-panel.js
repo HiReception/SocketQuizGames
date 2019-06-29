@@ -9,7 +9,7 @@ export default class NoQuestionPanel extends React.Component {
 	constructor(props) {
 		super(props);
 		const playerNameList = this.props.players.map((player) => {
-			console.log(player); return {screenName: player.screenName, id: player.id};
+			return {screenName: player.screenName, id: player.id};
 		});
 		const testFiles = fs.readdirSync("public/jeopardy/testgames");
 		this.state = {
@@ -23,12 +23,9 @@ export default class NoQuestionPanel extends React.Component {
 		};
 	}
 	componentWillReceiveProps = (newProps) => {
-		console.log(newProps);
-		console.log(newProps.players);
 		const playerNameList = newProps.players.map((player) => {
-			console.log(player); return {screenName: player.screenName, id: player.id};
+			return {screenName: player.screenName, id: player.id};
 		});
-		console.log(playerNameList);
 		this.setState({
 			playerNameList: playerNameList,
 			selectedFirstPlayer: newProps.players.length > 0 ?
@@ -46,10 +43,8 @@ export default class NoQuestionPanel extends React.Component {
 					this.loadGameData(JSON.parse(event.target.result));
 				};
 				reader.readAsText(selectedFile);
-				console.log("readAsText called");
 				// TODO show loading graphic until processing is done
 			} else {
-				console.log(this.state.testFileSelected);
 				$.ajax({
 					type: "GET",
 					url: this.state.testFileSelected,
@@ -59,8 +54,6 @@ export default class NoQuestionPanel extends React.Component {
 		}
 	}
 	loadGameData = (fileObject) => {
-		console.log("reader.onload called");
-		console.log(fileObject);
 		const rounds = fileObject.rounds;
 		const final = fileObject.final;
 		const prefix = fileObject.properties.prefix;
@@ -94,8 +87,6 @@ export default class NoQuestionPanel extends React.Component {
 		});
 	}
 	changeTestFile = (event) => {
-		console.log("changeTestFile called");
-		console.log(event);
 		this.setState({
 			testFileSelected: event.target.value,
 		});
@@ -142,7 +133,6 @@ export default class NoQuestionPanel extends React.Component {
 		}
 
 		const startingPlayerOptions = [];
-		console.log(this.state.playerNameList);
 		for (let i = 0; i < this.state.playerNameList.length; i++) {
 			startingPlayerOptions.push((
 				<option

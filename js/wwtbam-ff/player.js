@@ -60,8 +60,6 @@ class PlayerPanel extends React.Component {
 	}
 
 	handleNewState = (newState) => {
-		console.log("new state");
-		console.log(newState);
 		this.setState(newState);
 	}
 
@@ -87,7 +85,6 @@ class PlayerPanel extends React.Component {
 				);
 			});
 
-			console.log("question type = " + currentQ.type);
 			switch (currentQ.type) {
 			case "sequence":
 				input = (
@@ -191,7 +188,6 @@ class OrderedChoiceQuestion extends Component {
 	}
 
 	selectOption = (option) => {
-		console.log("selectOption called");
 		if (!this.state.currentAnswer.includes(option.props.answerKey)) {
 			this.setState({
 				currentAnswer: this.state.currentAnswer + option.props.answerKey,
@@ -203,7 +199,6 @@ class OrderedChoiceQuestion extends Component {
 	}
 
 	clearAnswer = () => {
-		console.log("clearAnswer called");
 		if (this.state.clearable) {
 			this.setState({
 				currentAnswer: "",
@@ -223,18 +218,14 @@ class OrderedChoiceQuestion extends Component {
 				submittedAnswer: this.state.currentAnswer,
 				timeTaken: timeTaken,
 			});
-			console.log(`Answered with ${ this.state.currentAnswer}`);
 			// TODO produce toast to represent successful answering
 		}
 	}
 
 	render = () => {
 		const selectFunction = this.selectOption;
-		console.log(this.props.children);
 		const options = React.Children.map(this.props.children, (child) => {
-			console.log(`name = ${ child.type.name}`);
 			if (child.type.name === "AnswerButton") {
-				console.log("adding onClick");
 				return (
 					<AnswerButton
 						key={child.key}
@@ -248,8 +239,6 @@ class OrderedChoiceQuestion extends Component {
 			return child;
 		});
 		const selectedOptions = options.map((option, index) => {
-			console.log(`i = ${ index }, currentAnswer.length = ` +
-				`${ this.state.currentAnswer.length}`);
 			if (this.state.currentAnswer.length > index) {
 				return (
 					<div className='selected-option' key={index}>
@@ -265,8 +254,6 @@ class OrderedChoiceQuestion extends Component {
 		const selectedPanel = (<div className='selected-panel'>
 			{selectedOptions}
 		</div>);
-
-		console.log(options);
 
 		return (
 			<Question questionNo={this.props.questionNo} body={this.props.body}>
@@ -311,7 +298,6 @@ class MultipleAnswerQuestion extends Component {
 	}
 
 	selectOption = (option) => {
-		console.log("selectOption called");
 		if (!this.state.currentAnswer.includes(option.props.answerKey)) {
 			this.setState({
 				currentAnswer: this.state.currentAnswer + option.props.answerKey,
@@ -323,7 +309,6 @@ class MultipleAnswerQuestion extends Component {
 	}
 
 	clearAnswer = () => {
-		console.log("clearAnswer called");
 		if (this.state.clearable) {
 			this.setState({
 				currentAnswer: "",
@@ -343,18 +328,14 @@ class MultipleAnswerQuestion extends Component {
 				submittedAnswer: this.state.currentAnswer.split("").sort().join(""),
 				timeTaken: timeTaken,
 			});
-			console.log(`Answered with ${ this.state.currentAnswer.split("").sort().join("") }`);
 			// TODO produce toast to represent successful answering
 		}
 	}
 
 	render = () => {
 		const selectFunction = this.selectOption;
-		console.log(this.props.children);
 		const options = React.Children.map(this.props.children, (child) => {
-			console.log(`name = ${ child.type.name}`);
 			if (child.type.name === "AnswerButton") {
-				console.log("adding onClick");
 				return (
 					<AnswerButton
 						key={child.key}
@@ -368,8 +349,6 @@ class MultipleAnswerQuestion extends Component {
 			return child;
 		});
 		const selectedOptions = Array(this.props.numCorrectAnswers).fill().map((option, index) => {
-			console.log(`i = ${ index }, currentAnswer.length = ` +
-				`${ this.state.currentAnswer.length}`);
 			if (this.state.currentAnswer.length > index) {
 				return (
 					<div className='selected-option' key={index}>
@@ -385,8 +364,6 @@ class MultipleAnswerQuestion extends Component {
 		const selectedPanel = (<div className='selected-panel'>
 			{selectedOptions}
 		</div>);
-
-		console.log(options);
 
 		return (
 			<Question questionNo={this.props.questionNo} body={this.props.body}>
@@ -461,7 +438,6 @@ class MultipleChoiceQuestion extends Component {
 	}
 
 	selectAnswer = (option) => {
-		console.log("selectAnswer called");
 		const timeAnswered = new Date();
 		const timeTaken = timeAnswered.getTime() -
 			this.state.timeReceived.getTime();
@@ -470,17 +446,13 @@ class MultipleChoiceQuestion extends Component {
 			submittedAnswer: option.props.answerKey,
 			timeTaken: timeTaken,
 		});
-		console.log(`Answered with ${ option.props.answerKey}`);
 		// TODO produce toast to represent successful answering
 	}
 
 	render = () => {
 		const selectFunction = this.selectAnswer;
-		console.log(this.props.children);
 		const options = React.Children.map(this.props.children, (child) => {
-			console.log(`name = ${ child.type.name}`);
 			if (child.type.name === "AnswerButton") {
-				console.log("adding onClick");
 				return (
 					<AnswerButton
 						key={child.key}
@@ -491,7 +463,6 @@ class MultipleChoiceQuestion extends Component {
 			}
 			return child;
 		});
-		console.log(options);
 
 		return (
 			<Question questionNo={this.props.questionNo} body={this.props.body}>

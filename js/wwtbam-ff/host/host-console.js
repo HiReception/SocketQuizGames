@@ -40,8 +40,6 @@ export default class HostConsole extends Component {
 	}
 
 	handleNewPlayer = ({screenName, id}) => {
-		console.log("new player:");
-		console.log(screenName);
 		var newPlayer = {
 			id: id,
 			screenName: screenName,
@@ -72,8 +70,7 @@ export default class HostConsole extends Component {
 		});
 	}
 
-	showPlayerDetails = (id, event) => {
-		console.log(`showPlayerDetails(${ id },${ event }) called`);
+	showPlayerDetails = (id) => {
 		this.setGameState({
 			detailPlayerID: id,
 		});
@@ -114,13 +111,11 @@ export default class HostConsole extends Component {
 	}
 
 	setGameState = (changedItems) => {
-		console.log("setGameState called");
 		this.setState(changedItems);
 		this.props.socket.emit("set state", changedItems);
 	}
 
 	setGameData = (questions) => {
-		console.log(questions);
 
 		this.setGameState({
 			questions: questions,
@@ -206,7 +201,6 @@ export default class HostConsole extends Component {
 				socket={this.props.socket}/>);
 			break;
 
-		// TODO QuestionResultsPanel
 		case "QuestionResultsPanel":
 			mainPanel = (<QuestionResultsPanel
 				key={newPanelKey}
@@ -215,7 +209,7 @@ export default class HostConsole extends Component {
 				setGameState={this.setGameState}
 				socket={this.props.socket}/>);
 			break;
-		// TODO PlayerResultsPanel
+
 		case "PlayerResultsPanel":
 			mainPanel = (<PlayerResultsPanel
 				key={newPanelKey}
@@ -229,7 +223,7 @@ export default class HostConsole extends Component {
 		}
 
 		return (
-			<div class="panel-bar-ctr">
+			<div className="panel-bar-ctr">
 				<div className='main-panel'>
 					<div id='player-list' className={`content${
 							this.state.playerPanelHidden ? " hidden" : "" }`}>

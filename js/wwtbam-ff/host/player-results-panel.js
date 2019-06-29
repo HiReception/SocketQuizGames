@@ -2,7 +2,6 @@ const PropTypes = require("prop-types");
 const io = require("socket.io-client");
 import React, { Component } from "react";
 
-// TODO
 export default class PlayerResultsPanel extends Component {
 	constructor(props) {
 		super(props);
@@ -51,18 +50,12 @@ export default class PlayerResultsPanel extends Component {
 
 	render = () => {
 		const q = this.state.questions[this.state.currentQuestion];
-		console.log("q = ");
-		console.log(q);
-		console.log("players = ");
-		console.log(this.state.players);
 		const correctAnswers = q.answers.filter((a) => a.answer === q.correctResponse);
 		const numCorrectAnswerers = correctAnswers.length;
 		var fastestCorrectTime, fastestCorrectPlayer;
 		if (correctAnswers.length > 0) {
 			fastestCorrectTime = Math.min.apply(Math,correctAnswers.map((a) => a.timeTaken));
-			console.log("fastest correct time = " + fastestCorrectTime);
-			const fastestCorrectAnswer = correctAnswers.find((a) => {console.log(a.timeTaken + " vs " + fastestCorrectTime); return a.timeTaken === fastestCorrectTime;});
-			console.log(fastestCorrectAnswer);
+			const fastestCorrectAnswer = correctAnswers.find((a) => {return a.timeTaken === fastestCorrectTime;});
 			fastestCorrectPlayer = fastestCorrectAnswer.id;
 		} else {
 			fastestCorrectTime = 0;
@@ -71,7 +64,6 @@ export default class PlayerResultsPanel extends Component {
 
 		const playerLozenges = this.state.players.map((player, index) => {
 			const answer = q.answers.find((a) => { return a.id === player.id; });
-			console.log(`player = ${player.id} fastest = ${fastestCorrectPlayer}`);
 			var fastest, lit, timeString;
 			if (typeof answer !== "undefined") {
 				fastest = player.id === fastestCorrectPlayer && this.state.fastestCorrectRevealed;

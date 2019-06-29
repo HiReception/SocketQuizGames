@@ -33,8 +33,6 @@ export default class DisplayContainer extends React.Component {
 				dailyDoublePlaySound: true
 			});
 		}
-		console.log("new state received");
-		console.log(state);
 		this.setState(state);
 	}
 

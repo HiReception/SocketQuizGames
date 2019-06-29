@@ -6,10 +6,7 @@ const io = require("socket.io-client");
 export default class OpenQuestionPanel extends React.Component {
 
 	componentWillMount = () => {
-		console.log("componentWillMount called");
 		if (this.props.clue.dailyDouble) {
-			console.log(`Setting answering player to 
-				${ this.props.selectingPlayer.screenName}`);
 			this.setGameState({
 				playerAnswering: this.props.players.find((player) => {
 					return player.id === this.props.selectingPlayer.id;
@@ -41,14 +38,10 @@ export default class OpenQuestionPanel extends React.Component {
 	}
 
 	handleNewAnswer = (details) => {
-		console.log("new answer received (Open outer): ");
-		console.log(details);
 		if (this.props.gameState.buzzersOpen &&
 			details.player !== "" &&
 			!this.props.gameState.wrongPlayerIDs.includes(details.player)
 			&& !this.props.clue.dailyDouble) {
-			console.log("new answer (Open inner):");
-			console.log(details);
 			this.setGameState({
 				playerAnswering: this.props.players.find((player) => {
 					return player.id === details.player;
@@ -56,7 +49,6 @@ export default class OpenQuestionPanel extends React.Component {
 				buzzersOpen: false,
 				buzzingTimerRunning: false, // cancel any post-question timer that may be running
 			});
-			console.log(details.player);
 		}
 	}
 
@@ -69,7 +61,6 @@ export default class OpenQuestionPanel extends React.Component {
 				this.props.endClue();
 			} else {
 				const newWrongPlayerIDs = this.props.gameState.wrongPlayerIDs;
-				console.log(newWrongPlayerIDs);
 				newWrongPlayerIDs.push(this.props.gameState.playerAnswering.id);
 				this.setGameState({
 					wrongPlayerIDs: newWrongPlayerIDs,
