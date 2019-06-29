@@ -119,8 +119,6 @@ class MainMenu extends React.Component {
 			password: this.state.hostPassword,
 		}).then(res => {
 			if (res) {
-				console.log("Response Received: ");
-				console.log(res);
 				window.location.href = res.data;
 			}
 			
@@ -138,8 +136,6 @@ class MainMenu extends React.Component {
 			password: this.state.hostPassword,
 		}).then((res) => {
 			if (res) {
-				console.log("Response Received: ");
-				console.log(res);
 				window.location.href = res.data;
 			}
 			
@@ -157,8 +153,6 @@ class MainMenu extends React.Component {
 			name: this.state.joinName,
 		}).then(res => {
 			if (res) {
-				console.log("Response Received: ");
-				console.log(res);
 				window.location.href = res.data;
 			}
 			
@@ -175,8 +169,6 @@ class MainMenu extends React.Component {
 			gamecode: this.state.displayCode,
 		}).then(res => {
 			if (res) {
-				console.log("Response Received: ");
-				console.log(res);
 				window.location.href = res.data;
 			}
 			

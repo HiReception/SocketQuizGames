@@ -111,7 +111,7 @@ document.getElementById("container").style.top = containerHeightWidth/-24 + "px"
 class WheelPanel extends React.Component {
 	
 	constructor(props) {
-		super(props)
+		super(props);
 		var wedgeArray;
 		switch(this.props.round) {
 		case 1:
@@ -160,10 +160,9 @@ class WheelPanel extends React.Component {
 	}
 	spin = () => {
 		const rotation = Math.random() * 450 + 270; // random number between 270 degrees (3/4 of a rotation) and 720 degrees (2 rotations)
-		const spinForce = Math.random() * 0.03 + 0.06 // random number between 0.06 and 0.09 degrees per millisecond (for a 720deg spin, duration will be between 8 seconds and 12 seconds)
+		const spinForce = Math.random() * 0.03 + 0.06; // random number between 0.06 and 0.09 degrees per millisecond (for a 720deg spin, duration will be between 8 seconds and 12 seconds)
 		const newAngle = this.state.currentAngle + rotation;
 		const spinDuration = rotation/spinForce;
-		console.log(`rotation = ${rotation}, spinForce = ${spinForce}, newAngle = ${newAngle}, spinDuration = ${spinDuration}`);
 		this.setState({
 			currentlySpinning: true,
 			currentAngle: newAngle,
@@ -172,10 +171,9 @@ class WheelPanel extends React.Component {
 
 		setTimeout(() => {
 			this.handlePostSpin();
-		}, spinDuration)
+		}, spinDuration);
 	}
 	handlePostSpin = () => {
-		console.log(this.state);
 		var thisPanel = this;
 		this.setState({
 			currentlySpinning: false,
@@ -219,7 +217,7 @@ class WheelPanel extends React.Component {
 					}}
 				/>
 			);
-		})
+		});
     
 		var spinButton = null;
 
@@ -237,7 +235,7 @@ class WheelPanel extends React.Component {
 			);
 		}
 		const rotateString = "rotate(" + this.state.currentAngle + "deg)";
-		const transitionString = "transform " + this.state.spinDuration/1000 + "s"
+		const transitionString = "transform " + this.state.spinDuration/1000 + "s";
 		
 		return (
 			<div className="inner-container">

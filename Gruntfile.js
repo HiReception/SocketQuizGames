@@ -111,17 +111,17 @@ module.exports = function(grunt) {
 			},
 			sotc_podiums: {
 				src: "js/sotc/podiums.js",
-				dest: "public/sotc/podiumsBundle.js",
+				dest: "public/sotc/podiums.js",
 				options: browserifyOptions
 			},
 			feud_test: {
 				src: "js/feud/test.js",
-				dest: "public/feud/testBundle.js",
+				dest: "public/feud/test.js",
 				options: browserifyOptions
 			},
 			sotc_cashcard: {
 				src: "js/sotc/cashcard.js",
-				dest: "public/sotc/cashcardBundle.js",
+				dest: "public/sotc/cashcard.js",
 				options: browserifyOptions
 			},
 			jeopardy_player: {
@@ -156,27 +156,27 @@ module.exports = function(grunt) {
 			},
 			wof_board_display: {
 				src: "js/wof-board/display.js",
-				dest: "public/wof-board/displayBundle.js",
+				dest: "public/wof-board/display.js",
 				options: browserifyOptions
 			},
 			wof_board_host: {
 				src: "js/wof-board/host.js",
-				dest: "public/wof-board/hostBundle.js",
+				dest: "public/wof-board/host.js",
 				options: browserifyOptions
 			},
 			tpir_wheel_display: {
 				src: "js/tpir-wheel/display.js",
-				dest: "public/tpir-wheel/displayBundle.js",
+				dest: "public/tpir-wheel/display.js",
 				options: browserifyOptions
 			},
 			tpir_plinko_display: {
 				src: "js/tpir-plinko/display.js",
-				dest: "public/tpir-plinko/displayBundle.js",
+				dest: "public/tpir-plinko/display.js",
 				options: browserifyOptions
 			},
 			wof_wheel_display: {
 				src: "js/wof-wheel/display.js",
-				dest: "public/wof-wheel/displayBundle.js",
+				dest: "public/wof-wheel/display.js",
 				options: browserifyOptions
 			},
 			wwtbam_ff_player: {

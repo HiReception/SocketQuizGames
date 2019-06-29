@@ -56,17 +56,15 @@ socket.on("accepted", function() {
 	soundManager.createSound({id: "clock-bed", url: "./sounds/clock-bed.mp3", autoLoad: true, onplay: function() {
 		soundManager.stop("read-question");
 		clockInterruptible = true;
-		console.log("clock now interruptible");
 		setTimeout(() => {
 			clockInterruptible = false;
-			console.log("clock no longer interruptible");
 		}, 20000);
 	}});
 
 	soundManager.createSound({id: "end-clock-early", url: "./sounds/end-clock-early.mp3", autoLoad: true, onplay: function() {
 		soundManager.stop("clock-bed");
 	}});
-	soundManager.createSound({id: "order-bed", url: "./sounds/order-bed.mp3", autoLoad: true})
+	soundManager.createSound({id: "order-bed", url: "./sounds/order-bed.mp3", autoLoad: true});
 	soundManager.createSound({id: "answer1", url: "./sounds/answer1.mp3", autoLoad: true});
 	soundManager.createSound({id: "answer2", url: "./sounds/answer2.mp3", autoLoad: true});
 	soundManager.createSound({id: "answer3", url: "./sounds/answer3.mp3", autoLoad: true});

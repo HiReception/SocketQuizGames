@@ -3,7 +3,7 @@ var ReactDOM = require("react-dom");
 var socket = require("socket.io-client")();
 var soundManager = require("soundmanager2").soundManager;
 
-import DisplayContainer from './display/display-container';
+import DisplayContainer from "./display/display-container";
 
 var wheelTurnInterval = 50;
 
@@ -68,7 +68,7 @@ socket.on("accepted", function() {
 	}});
 	soundManager.createSound({id: "solvePuzzle", url: "./sounds/solvePuzzle.mp3", autoLoad: true, onfinish: () => {
 		soundManager.play("backgroundBed");
-	}})
+	}});
 	soundManager.createSound({id: "bankrupt", url: "./sounds/bankrupt.mp3", autoLoad: true});
 	soundManager.createSound({id: "loseATurn", url: "./sounds/loseATurn.wav", autoLoad: true});
 	soundManager.createSound({id: "noConsonants", url: "./sounds/noConsonants.mp3", autoLoad: true});

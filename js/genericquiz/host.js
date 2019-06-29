@@ -47,7 +47,6 @@ socket.on("connect_error", function(err) {
 });
 
 socket.on("game details", function(details) {
-	console.log(details);
 	socket.emit("send question", {
 		type: "buzz-in",
 		open: true

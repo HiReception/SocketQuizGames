@@ -56,8 +56,6 @@ class PlayerPanel extends React.Component {
 	}
 
 	handleNewState = (newState) => {
-		console.log("new state");
-		console.log(newState);
 		this.setState(newState);
 	}
 

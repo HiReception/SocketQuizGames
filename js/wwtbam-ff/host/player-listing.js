@@ -13,8 +13,6 @@ export default class PlayerListing extends Component {
 			classExt += " waiting";
 		}
 
-		console.log(scoreString);
-
 		return (
 			<div className={`playerListing${ classExt}`} onClick={this.props.onClick}>
 				<div className={`playerListingName${ classExt}`}>

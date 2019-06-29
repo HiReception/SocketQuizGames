@@ -1,6 +1,6 @@
 var React = require("react");
 var PropTypes = require("prop-types");
-import {Text, Group, Rect, Image} from "react-konva";
+import {Text, Group, Image} from "react-konva";
 
 // starting panel, with field to upload question file
 export default class FinalJeopardyLogo extends React.Component {
@@ -8,7 +8,7 @@ export default class FinalJeopardyLogo extends React.Component {
 		super(props);
 		this.state = {
 			logoImage: null,
-		}
+		};
 	}
 	componentDidMount = () => {
 		const logoImage = new window.Image();
@@ -16,7 +16,7 @@ export default class FinalJeopardyLogo extends React.Component {
 			this.setState({
 				logoImage: logoImage,
 			});
-		}
+		};
 		logoImage.src = "images/white logo.png";
 	}
 	render = () => {
@@ -58,4 +58,4 @@ export default class FinalJeopardyLogo extends React.Component {
 FinalJeopardyLogo.propTypes = {
 	height: PropTypes.number,
 	width: PropTypes.number,
-}
+};

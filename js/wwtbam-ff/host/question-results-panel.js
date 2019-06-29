@@ -2,7 +2,6 @@ const PropTypes = require("prop-types");
 const io = require("socket.io-client");
 import React, { Component } from "react";
 
-// TODO
 export default class QuestionResultsPanel extends Component {
 	constructor(props) {
 		super(props);
@@ -29,7 +28,7 @@ export default class QuestionResultsPanel extends Component {
 	recapQuestion = () => {
 		this.setGameState({
 			questionRecapped: true,
-		})
+		});
 		this.props.socket.emit("play sound", "order-bed");
 	}
 
@@ -46,8 +45,7 @@ export default class QuestionResultsPanel extends Component {
 		this.setState(state);
 		this.props.setGameState(state);
 	}
-
-	// TODO
+	
 	render = () => {
 		const { question, gameState } = this.props;
 		let buzzerPanel;

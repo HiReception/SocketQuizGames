@@ -1,8 +1,5 @@
 var Matter = require("matter-js");
-var decomp = require("poly-decomp");
 
-var React = require("react");
-var ReactDOM = require("react-dom");
 var $ = require("jquery");
 var soundManager = require("soundmanager2").soundManager;
 
@@ -84,7 +81,6 @@ Events.on(chipSpawnConstraint, "mousedown", function(event) {
 	if (chip) {
 		World.remove(engine.world, chip);
 	}
-	console.log("(" + event.mouse.position.x + "," + event.mouse.position.x);
 	var rect = document.getElementById("board").getBoundingClientRect();
 	chip = Bodies.circle(event.mouse.position.x - rect.left, event.mouse.position.y - rect.top, chipRadius, {
 		restitution: 0.6,
@@ -115,9 +111,7 @@ var i;
 
 function handleValue(value) {
 	valueDecided = true;
-	console.log("$" + value);
 	playerTotal += value;
-	console.log("Total: $" + playerTotal);
 	$("#scoreboard").text("$" + playerTotal.toLocaleString("en-US"));
 	switch (value) {
 	case 0:
@@ -215,7 +209,6 @@ for (i = 0; i < 10; i++) {
 
 // an example of using collisionStart event on an engine
 Events.on(engine, "collisionStart", function(event) {
-	console.log("plink");
 	soundManager.play("plink", {
 		multiShotEvents: true
 	});

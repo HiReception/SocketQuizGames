@@ -19,9 +19,6 @@ export default class OpenQuestionPanel extends Component {
 	handleNewAnswer = (details) => {
 		if (this.props.gameState.buzzersOpen &&
 			details.player.screenName !== "") {
-			console.log("new answer:");
-			console.log(details);
-			console.log(this);
 
 			const newQuestions = this.props.gameState.questions;
 			newQuestions[this.props.gameState.currentQuestion].answers.push({

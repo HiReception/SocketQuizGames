@@ -34,24 +34,18 @@ export default class HostPanel extends React.Component {
 	}
 
 	setStartingScore = (event) => {
-		console.log("event = ");
-		console.log(event);
 		this.setGameState({
 			startingScore: event.target.value,
 		});
 	}
 
 	setCorrectPoints = (event) => {
-		console.log("event = ");
-		console.log(event);
 		this.setGameState({
 			correctPoints: event.target.value,
 		});
 	}
 
 	setIncorrectPoints = (event) => {
-		console.log("event = ");
-		console.log(event);
 		this.setGameState({
 			incorrectPoints: event.target.value,
 		});
@@ -186,7 +180,6 @@ export default class HostPanel extends React.Component {
 							prefix={this.state.prefix}
 							suffix={this.state.suffix}/>);
 				});
-				console.log(list);
 				playerPanelContent = list;
 				
 			} else {
