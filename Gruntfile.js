@@ -3,7 +3,7 @@ const browserifyOptions = {
 		["babelify", {
 			presets: ["react", "es2015", "stage-1"],
 		}],
-		"brfs",
+		"brfs", "uglifyify"
 	]
 };
 
@@ -196,100 +196,90 @@ module.exports = function(grunt) {
 			}
 		},
 		sass: {
-			menu: {
+			all: {
 				options: {
 					style: "compressed",
 				},
 				files : {
 					"public/menu.css": "js/menu.scss",
-				},
-			},
-			jeopardy: {
-				options: {
-					style: "compressed",
-				},
-				files: {
+
 					"public/jeopardy/host.css": "js/jeopardy/host.scss",
 					"public/jeopardy/player.css": "js/jeopardy/player.scss",
 					"public/jeopardy/display.css": "js/jeopardy/display.scss",
-				}
-			},
-			wwtbam_ff: {
-				options: {
-					style: "compressed",
-				},
-				files: {
+
 					"public/wwtbam-ff/host.css": "js/wwtbam-ff/host.scss",
 					"public/wwtbam-ff/player.css": "js/wwtbam-ff/player.scss",
 					"public/wwtbam-ff/display.css": "js/wwtbam-ff/display.scss",
-				}
-			},
-			genericquiz: {
-				options: {
-					style: "compressed",
-				},
-				files: {
+
 					"public/genericquiz/host.css": "js/genericquiz/host.scss",
 					"public/genericquiz/player.css": "js/genericquiz/player.scss",
 					"public/genericquiz/display.css": "js/genericquiz/display.scss",
-				}
-			},
-			wof_board: {
-				options: {
-					style: "compressed",
-				},
-				files: {
+
 					"public/wof-board/host.css": "js/wof-board/host.scss",
 					"public/wof-board/display.css": "js/wof-board/display.scss",
-				}
-			},
-			sotc: {
-				options: {
-					style: "compressed",
-				},
-				files: {
+
 					"public/sotc/cashcard.css": "js/sotc/cashcard.scss",
 					"public/sotc/podiums.css": "js/sotc/podiums.scss",
-				}
-			},
-			tpir_plinko: {
-				options: {
-					style: "compressed",
-				},
-				files: {
+
 					"public/tpir-plinko/display.css": "js/tpir-plinko/display.scss",
-				}
-			},
-			wof_wheel: {
-				options: {
-					style: "compressed",
-				},
-				files: {
+
 					"public/wof-wheel/display.css": "js/wof-wheel/display.scss",
-				}
-			},
-			tpir_wheel: {
-				options: {
-					style: "compressed",
-				},
-				files: {
+
 					"public/tpir-wheel/display.css": "js/tpir-wheel/display.scss",
-				}
-			},
-			feud: {
-				options: {
-					style: "compressed",
-				},
-				files: {
+
 					"public/feud/test.css": "js/feud/test.scss",
 				}
 			}
 		},
+		uglify: {
+			all: {
+				files: {
+					"public/menu.js": ["public/menu.js"],
+
+					"public/sotc/podiums.js": ["public/sotc/podiums.js"],
+					"public/sotc/cashcard.js": ["public/sotc/cashcard.js"],
+
+					"public/feud/test.js": ["public/feud/test.js"],
+
+					"public/jeopardy/player.js": ["public/jeopardy/player.js"],
+					"public/jeopardy/host.js": ["public/jeopardy/host.js"],
+					"public/jeopardy/display.js": ["public/jeopardy/display.js"],
+
+					"public/genericquiz/player.js": ["public/genericquiz/player.js"],
+					"public/genericquiz/host.js": ["public/genericquiz/host.js"],
+					"public/genericquiz/display.js": ["public/genericquiz/display.js"],
+
+					"public/wof-board/display.js": ["public/wof-board/display.js"],
+					"public/wof-board/host.js": ["public/wof-board/host.js"],
+
+					"public/tpir-wheel/display.js": ["public/tpir-wheel/display.js"],
+
+					"public/tpir-plinko/display.js": ["public/tpir-plinko/display.js"],
+
+					"public/wof-wheel/display.js": ["public/wof-wheel/display.js"],
+
+					"public/wwtbam-ff/player.js": ["public/wwtbam-ff/player.js"],
+					"public/wwtbam-ff/host.js": ["public/wwtbam-ff/host.js"],
+					"public/wwtbam-ff/display.js": ["public/wwtbam-ff/display.js"]
+				}
+			},
+		}, 
+		env: {
+			dev: {
+				NODE_ENV: "development",
+			},
+			prod: {
+				NODE_ENV: "production",
+			}
+		}
 	});
 
 	grunt.loadNpmTasks("grunt-browserify");
 	grunt.loadNpmTasks("grunt-contrib-watch");
+	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-newer");
 	grunt.loadNpmTasks("grunt-sass");
-	grunt.registerTask("default", ["browserify", "sass"]);
+	grunt.loadNpmTasks("grunt-env");
+	grunt.registerTask("default", ["env:dev", "browserify", "sass"]);
+	grunt.registerTask("production", ["env:prod", "browserify", "sass", "uglify"]);
 };
