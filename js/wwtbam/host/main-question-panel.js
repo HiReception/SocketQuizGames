@@ -23,7 +23,7 @@ export default class MainQuestionPanel extends Component {
 
 	handleNewAnswer = (details) => {
 		if (this.props.gameState.ataVotesOpen && !this.props.gameState.ataVotesFinished && 
-			details.player.screenName !== "") {
+			details.player !== "") {
 			console.log("new answer:");
 			console.log(details);
 			console.log(this);
@@ -31,7 +31,7 @@ export default class MainQuestionPanel extends Component {
 			const newATAVotes = this.props.gameState.ataVotes;
 
 			newATAVotes.push({
-				screenName: details.player,
+				id: details.player,
 				answer: details.answer,
 			});
 

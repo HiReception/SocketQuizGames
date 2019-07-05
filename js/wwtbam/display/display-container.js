@@ -12,7 +12,7 @@ export default class DisplayContainer extends React.Component {
 		super(props);
 		this.state = {
 			players: [],
-			detailPlayerName: "",
+			detailPlayerID: "",
 
 			ffQuestions: [],
 			ffCurrentQuestion: 0,

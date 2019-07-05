@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 			},
 			sotc_css: {
 				files: ["js/sotc/**/*.scss"],
-				tasks: ["sass:sotc"]
+				tasks: ["sass:all"]
 			},
 			wwtbam_host_js: {
 				files: ["js/wwtbam/host/*.js", "js/wwtbam/host.js"],
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 			},
 			wwtbam_css: {
 				files: ["js/wwtbam/**/*.scss"],
-				tasks: ["sass:wwtbam"]
+				tasks: ["sass:all"]
 			},
 			wwtbam_ff_host_js: {
 				files: ["js/wwtbam-ff/host/*.js", "js/wwtbam-ff/host.js"],
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 			},
 			wwtbam_ff_css: {
 				files: ["js/wwtbam-ff/**/*.scss"],
-				tasks: ["sass:wwtbam_ff"]
+				tasks: ["sass:all"]
 			},
 			jeopardy_host_js: {
 				files: ["js/jeopardy/host/*.js", "js/jeopardy/host.js"],
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 			},
 			jeopardy_css: {
 				files: ["js/jeopardy/**/*.scss"],
-				tasks: ["sass:jeopardy"]
+				tasks: ["sass:all"]
 			},
 			genericquiz_host_js: {
 				files: ["js/genericquiz/host/*.js", "js/genericquiz/host.js"],
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
 			},
 			genericquiz_css: {
 				files: ["js/genericquiz/**/*.scss"],
-				tasks: ["sass:genericquiz"]
+				tasks: ["sass:all"]
 			},
 			menu_js: {
 				files: ["js/menu.js"],
@@ -100,7 +100,7 @@ module.exports = function(grunt) {
 			},
 			menu_css: {
 				files: ["js/menu.css"],
-				tasks: ["sass:menu"]
+				tasks: ["sass:all"]
 			}
 		},
 		browserify: {

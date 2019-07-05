@@ -18,14 +18,14 @@ export default class FFQuestionPanel extends Component {
 
 	handleNewAnswer = (details) => {
 		if (this.props.gameState.ffBuzzersOpen &&
-			details.player.screenName !== "") {
+			details.player !== "") {
 			console.log("new answer:");
 			console.log(details);
 			console.log(this);
 
 			const newQuestions = this.props.gameState.ffQuestions;
 			newQuestions[this.props.gameState.ffCurrentQuestion].answers.push({
-				screenName: details.player,
+				id: details.player,
 				answer: details.answer,
 				timeTaken: details.time,
 			});
@@ -107,7 +107,7 @@ export default class FFQuestionPanel extends Component {
 		if (gameState.ffBuzzersOpen) {
 			const numRemainingPlayers = players.filter((p) => {
 				return !question.answers.some((a) => {
-					return a.screenName === p.screenName;
+					return a.id === p.id;
 				});
 			}).length;
 			buzzerPanel = (

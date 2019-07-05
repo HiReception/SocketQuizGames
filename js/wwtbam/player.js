@@ -46,9 +46,9 @@ socket.on("connect_error", (err) => {
 	console.log(`connection error: ${ err}`);
 });
 
-socket.on("accepted", (state) => {
+socket.on("accepted", ({state, id}) => {
 	$("#header-bar").text(screenName);
-	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"));
+	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket} playerID={id}/>, document.getElementById("question-window"));
 });
 
 
@@ -76,7 +76,7 @@ class PlayerPanel extends React.Component {
 	render = () => {
 		var input;
 		const currentQ = this.state.ffQuestions[this.state.ffCurrentQuestion];
-		if (this.state.ffBuzzersOpen && !currentQ.answers.some((answer) => { return answer.screenName === screenName; })) {
+		if (this.state.ffBuzzersOpen && !currentQ.answers.some((answer) => { return answer.id === this.props.playerID; })) {
 			const optionButtons = currentQ.options.map((option) => {
 				return (
 					<AnswerButton
@@ -119,8 +119,8 @@ class PlayerPanel extends React.Component {
 				input = <EmptyPanel/>;
 			}
 		} else if (this.state.ataVotesOpen && !this.state.ataVotesFinished 
-			&& !this.state.ataVotes.some((answer) => answer.screenName === screenName)
-			&& this.state.mainGamePlayer.screenName !== screenName) {
+			&& !this.state.ataVotes.some((answer) => answer.id === this.props.playerID)
+			&& this.state.mainGamePlayer.id !== this.props.playerID) {
 			const question = this.state.mainGameQuestionStack[this.state.mainGameQuestionNo - 1];
 			const optionButtons = question.options.map((option) => {
 				return (

@@ -33,7 +33,7 @@ socket.on("game details", (details) => {
 	if ($.isEmptyObject(details.gameState)) {
 		state = {
 			players: [],
-			detailPlayerName: "",
+			detailPlayerID: "",
 			
 			prefix: "",
 			suffix: "",

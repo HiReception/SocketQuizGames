@@ -141,8 +141,9 @@ export default class HostConsole extends Component {
 		});
 	}
 
-	handleNewPlayer = (screenName) => {
+	handleNewPlayer = ({screenName, id}) => {
 		var newPlayer = {
+			id: id,
 			screenName: screenName,
 			score: 0,
 			hidden: false,
@@ -160,43 +161,43 @@ export default class HostConsole extends Component {
 		return this.state.prefix + number.toLocaleString(this.state.locale, {minimumFractionDigits: 0}) + this.state.suffix;
 	}
 
-	changePlayerScore = (screenName, newScore) => {
+	changePlayerScore = (id, newScore) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === screenName;
+			return player.id === id;
 		}).score = newScore;
 		this.setGameState({
 			players: newPlayers,
 		});
 	}
 
-	showPlayerDetails = (name, event) => {
-		console.log(`showPlayerDetails(${ name },${ event }) called`);
+	showPlayerDetails = (id, event) => {
+		console.log(`showPlayerDetails(${ id },${ event }) called`);
 		this.setGameState({
-			detailPlayerName: name,
+			detailPlayerID: id,
 		});
 	}
 
 	clearPlayerDetails = () => {
 		this.setGameState({
-			detailPlayerName: "",
+			detailPlayerID: "",
 		});
 	}
 
-	hidePlayer = (playerName) => {
+	hidePlayer = (playerID) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === playerName;
+			return player.id === playerID;
 		}).hidden = true;
 		this.setGameState({
 			players: newPlayers,
 		});
 	}
 
-	unhidePlayer = (playerName) => {
+	unhidePlayer = (playerID) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === playerName;
+			return player.id === playerID;
 		}).hidden = false;
 		this.setGameState({
 			players: newPlayers,
@@ -230,7 +231,7 @@ export default class HostConsole extends Component {
 	goToNextFF = () => {
 		var newPlayers = this.state.players;
 		newPlayers.forEach(p => {
-			if (p.screenName === this.state.mainGamePlayer.screenName) {
+			if (p.id === this.state.mainGamePlayer.id) {
 				p.score += this.state.mainGameWinnings;
 			}
 		});
@@ -281,11 +282,11 @@ export default class HostConsole extends Component {
 	}
 
 	render = () => {
-		const { players, detailPlayerName, currentPanel,
+		const { players, detailPlayerID, currentPanel,
 			newPanelKey, ffCurrentQuestion, ffQuestions, playerPanelHidden } = this.state;
 		// render player list panel
 		let playerPanel;
-		if (detailPlayerName === "") {
+		if (detailPlayerID === "") {
 			const nonHiddenPlayers = players.filter((player) => {
 				return !player.hidden;
 			});
@@ -296,13 +297,13 @@ export default class HostConsole extends Component {
 
 				const list = playersByScore.map((player) => {
 					const waiting = ffQuestions.length > 0 && !ffQuestions[ffCurrentQuestion].answers.some((a) => {
-						return a.screenName === player.screenName;
+						return a.id === player.id;
 					});
 					return (
 						<PlayerListing
-							onClick={this.showPlayerDetails.bind(this, player.screenName)}
+							onClick={this.showPlayerDetails.bind(this, player.id)}
 							player={player}
-							key={player.screenName}
+							key={player.id}
 							waitingForAnswer={waiting}
 							formatNumber={this.formatNumber}/>
 					);
@@ -313,7 +314,7 @@ export default class HostConsole extends Component {
 			}
 		} else {
 			const player = players.find((player) => {
-				return player.screenName === detailPlayerName;
+				return player.id === detailPlayerID;
 			});
 			playerPanel = (<PlayerDetailsPanel
 				player={player}
@@ -423,7 +424,7 @@ export default class HostConsole extends Component {
 		}
 
 		return (
-			<div>
+			<div className="panel-bar-ctr">
 				<div className='main-panel'>
 					<div id='player-list' className={`content${
 							playerPanelHidden ? " hidden" : "" }`}>

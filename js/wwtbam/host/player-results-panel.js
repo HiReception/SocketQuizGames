@@ -33,7 +33,7 @@ export default class PlayerResultsPanel extends Component {
 			fastestCorrectTime = Math.min.apply(Math,correctAnswers.map((a) => a.timeTaken));
 			const fastestCorrectAnswer = correctAnswers
 				.find((a) => a.timeTaken === fastestCorrectTime);
-			fastestCorrectPlayer = fastestCorrectAnswer.screenName;
+			fastestCorrectPlayer = fastestCorrectAnswer.id;
 		} else {
 			fastestCorrectTime = 0;
 			fastestCorrectPlayer = "";
@@ -50,7 +50,7 @@ export default class PlayerResultsPanel extends Component {
 
 	prepareMainGame = () => {
 		this.setGameState({
-			mainGamePlayer: this.props.gameState.players.find(p => p.screenName === this.state.ffFastestCorrectPlayer),
+			mainGamePlayer: this.props.gameState.players.find(p => p.id === this.state.ffFastestCorrectPlayer),
 			currentPanel: "PreMainGamePanel",
 			ffCorrectPlayersRevealed: false,
 			ffFastestCorrectRevealed: false,
@@ -73,10 +73,10 @@ export default class PlayerResultsPanel extends Component {
 		const numCorrectAnswerers = correctAnswers.length;
 
 		const playerLozenges = this.state.players.map((player, index) => {
-			const answer = q.answers.find((a) => { return a.screenName === player.screenName; });
+			const answer = q.answers.find((a) => { return a.id === player.id; });
 			var fastest, lit, timeString;
 			if (typeof answer !== "undefined") {
-				fastest = player.screenName === this.state.ffFastestCorrectPlayer && this.state.ffFastestCorrectRevealed;
+				fastest = player.id === this.state.ffFastestCorrectPlayer && this.state.ffFastestCorrectRevealed;
 				lit = (answer.answer === q.correctResponse && this.state.ffCorrectPlayersRevealed);
 				timeString = (answer.timeTaken / 1000).toFixed(2);
 			} else {
@@ -100,7 +100,7 @@ export default class PlayerResultsPanel extends Component {
 		if (this.state.ffFastestCorrectRevealed) {
 			buttonFunction = this.prepareMainGame;
 			buttonLabel = "End Question";
-			headerText = `Fastest Correct Answer: ${this.state.ffFastestCorrectPlayer}, ${(this.state.ffFastestCorrectTime / 1000).toFixed(2)}s`;
+			headerText = `Fastest Correct Answer: ${this.state.players.find(p => p.id == this.state.ffFastestCorrectPlayer).screenName}, ${(this.state.ffFastestCorrectTime / 1000).toFixed(2)}s`;
 		} else if (this.state.ffCorrectPlayersRevealed && numCorrectAnswerers === 0) {
 			buttonFunction = this.prepareDoOver;
 			buttonLabel = "End Question";
