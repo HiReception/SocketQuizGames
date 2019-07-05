@@ -19,16 +19,13 @@ export default class OpenQuestionPanel extends Component {
 	handleNewAnswer = (details) => {
 		if (this.props.gameState.buzzersOpen &&
 			details.player.screenName !== "") {
-			console.log("new answer:");
-			console.log(details);
-			console.log(this);
 
 			const newQuestions = this.props.gameState.questions;
 			newQuestions[this.props.gameState.currentQuestion].answers.push({
-				screenName: details.player,
+				id: details.player,
 				answer: details.answer,
 				timeTaken: details.time,
-			})
+			});
 
 			this.props.setGameState({
 				questions: newQuestions,
@@ -107,7 +104,7 @@ export default class OpenQuestionPanel extends Component {
 		if (gameState.buzzersOpen) {
 			const numRemainingPlayers = players.filter((p) => {
 				return !question.answers.some((a) => {
-					return a.screenName === p.screenName;
+					return a.id === p.id;
 				});
 			}).length;
 			buzzerPanel = (

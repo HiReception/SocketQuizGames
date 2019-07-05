@@ -8,7 +8,7 @@ export default class NoQuestionPanel extends React.Component {
 		super(props);
 		this.state = {
 			logoImage: null,
-		}
+		};
 	}
 	componentDidMount = () => {
 		const logoImage = new window.Image();
@@ -16,7 +16,7 @@ export default class NoQuestionPanel extends React.Component {
 			this.setState({
 				logoImage: logoImage,
 			});
-		}
+		};
 		logoImage.src = "images/white logo.png";
 	}
 	render = () => {
@@ -67,4 +67,4 @@ export default class NoQuestionPanel extends React.Component {
 NoQuestionPanel.propTypes = {
 	height: PropTypes.number,
 	width: PropTypes.number,
-}
+};

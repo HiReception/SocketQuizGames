@@ -2,7 +2,6 @@ const PropTypes = require("prop-types");
 const io = require("socket.io-client");
 import React, { Component } from "react";
 
-// TODO
 export default class PlayerResultsPanel extends Component {
 	constructor(props) {
 		super(props);
@@ -18,17 +17,17 @@ export default class PlayerResultsPanel extends Component {
 		const question = this.state.questions[this.state.currentQuestion];
 		const newPlayers = this.state.players.map((p) => {
 			var newP = p;
-			const pAnswer = question.answers.find((a) => a.screenName === p.screenName);
+			const pAnswer = question.answers.find((a) => a.id === p.id);
 			if (pAnswer && pAnswer.answer === question.correctResponse) {
 				newP.score++;
 			}
 			return newP;
-		})
+		});
 		const anyCorrectAnswer = question.answers.find((a) => a.answer === question.correctResponse);
 		this.setGameState({
 			correctPlayersRevealed: true,
 			players: newPlayers,
-		})
+		});
 		if (anyCorrectAnswer) {
 			this.props.socket.emit("play sound", "correct-reveal");
 		}
@@ -37,7 +36,7 @@ export default class PlayerResultsPanel extends Component {
 	revealFastestCorrect = () => {
 		this.setGameState({
 			fastestCorrectRevealed: true
-		})
+		});
 		this.props.socket.emit("play sound", "fastest-reveal");
 	}
 
@@ -46,37 +45,30 @@ export default class PlayerResultsPanel extends Component {
 			currentPanel: "NextRoundPanel",
 			correctPlayersRevealed: false,
 			fastestCorrectRevealed: false,
-		})
+		});
 	}
 
 	render = () => {
 		const q = this.state.questions[this.state.currentQuestion];
-		console.log("q = ");
-		console.log(q);
-		console.log("players = ");
-		console.log(this.state.players);
 		const correctAnswers = q.answers.filter((a) => a.answer === q.correctResponse);
 		const numCorrectAnswerers = correctAnswers.length;
 		var fastestCorrectTime, fastestCorrectPlayer;
 		if (correctAnswers.length > 0) {
 			fastestCorrectTime = Math.min.apply(Math,correctAnswers.map((a) => a.timeTaken));
-			console.log("fastest correct time = " + fastestCorrectTime);
-			const fastestCorrectAnswer = correctAnswers.find((a) => {console.log(a.timeTaken + " vs " + fastestCorrectTime); return a.timeTaken === fastestCorrectTime;})
-			console.log(fastestCorrectAnswer);
-			fastestCorrectPlayer = fastestCorrectAnswer.screenName;
+			const fastestCorrectAnswer = correctAnswers.find((a) => {return a.timeTaken === fastestCorrectTime;});
+			fastestCorrectPlayer = fastestCorrectAnswer.id;
 		} else {
 			fastestCorrectTime = 0;
 			fastestCorrectPlayer = "";
 		}
 
 		const playerLozenges = this.state.players.map((player, index) => {
-			const answer = q.answers.find((a) => { return a.screenName === player.screenName; });
-			console.log(`player = ${player.screenName} fastest = ${fastestCorrectPlayer}`)
+			const answer = q.answers.find((a) => { return a.id === player.id; });
 			var fastest, lit, timeString;
 			if (typeof answer !== "undefined") {
-				fastest = player.screenName === fastestCorrectPlayer && this.state.fastestCorrectRevealed;
+				fastest = player.id === fastestCorrectPlayer && this.state.fastestCorrectRevealed;
 				lit = (answer.answer === q.correctResponse && this.state.correctPlayersRevealed);
-				timeString = (answer.timeTaken / 1000).toFixed(2)
+				timeString = (answer.timeTaken / 1000).toFixed(2);
 			} else {
 				fastest = false;
 				lit = false; 
@@ -97,16 +89,16 @@ export default class PlayerResultsPanel extends Component {
 		var buttonFunction, buttonLabel, headerText;
 		if (this.state.fastestCorrectRevealed) {
 			buttonFunction = this.endRound;
-			buttonLabel = "End Question"
-			headerText = `Fastest Correct Answer: ${fastestCorrectPlayer}, ${(fastestCorrectTime / 1000).toFixed(2)}s`
+			buttonLabel = "End Question";
+			headerText = `Fastest Correct Answer: ${this.state.players.find(p => p.id == fastestCorrectPlayer).screenName}, ${(fastestCorrectTime / 1000).toFixed(2)}s`;
 		} else if (this.state.correctPlayersRevealed && numCorrectAnswerers === 0) {
 			buttonFunction = this.endRound;
-			buttonLabel = "End Question"
-			headerText = "No Correct Answerers"
+			buttonLabel = "End Question";
+			headerText = "No Correct Answerers";
 		} else if (this.state.correctPlayersRevealed) {
 			buttonFunction = this.revealFastestCorrect;
-			buttonLabel = "Show Fastest Correct Answerer"
-			headerText = `${numCorrectAnswerers} players answered correctly`
+			buttonLabel = "Show Fastest Correct Answerer";
+			headerText = `${numCorrectAnswerers} players answered correctly`;
 		} else {
 			buttonFunction = this.revealCorrectPlayers;
 			buttonLabel = "Show Correct Responders";

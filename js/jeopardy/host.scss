@@ -12,6 +12,7 @@ body {
 	padding: 0;
 	margin: 0;
 	font-family: Verdana, Geneva, sans-serif;
+	height: 100%;
 }
 
 
@@ -20,19 +21,30 @@ body {
 	flex: 1 1 auto;
 	display: flex;
 	flex-direction: column;
+	height: 100%;
 }
 
 #body-footer {
 	text-align: center;
 }
 
+.panel-bar-ctr {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+	height: 100%;
+}
+
 .main-panel {
 	flex: 1 1 auto;
-	height: calc(100% - (50px + 1px));
+	height: 100%;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: stretch;
+	position: relative;
 }
 
 #question-panel {
@@ -97,6 +109,7 @@ body {
 
 .content {
 	flex: 1 1 auto;
+	display: flex;
 }
 
 #body-header {
@@ -175,6 +188,7 @@ p .no-players {
 div .playerListing {
 	display: flex;
 	flex-direction: column;
+	cursor: pointer;
 
 	margin-left: 10px;
 	margin-right: 10px;
@@ -267,6 +281,7 @@ p.player-details-score {
 }
 
 p.player-details-back {
+	cursor: pointer;
 	color: white;
 	text-align: center;
 }
@@ -321,8 +336,6 @@ div.select-question-panel {
 	height: 100%;
 	justify-content: center;
 	align-items: stretch;
-	padding-top: 5px;
-	padding-bottom: 5px;
 	background-color: $background-color;
 }
 
@@ -378,7 +391,7 @@ div.clue-button {
 	}
 }
 
-p.clue-button {
+.clue-button-text {
 	width: 100%;
 	text-align: center;
 	color: orange;
@@ -605,7 +618,7 @@ p.no-players {
 		position: absolute;
 		width: 100%;
 		z-index: 1;
-		height: calc(100% - (70px + 1px));
+		height: 100%;
 
 		&.hidden {
 			display: none;
@@ -613,12 +626,12 @@ p.no-players {
 	}
 
 	div.main-panel {
-		height: calc(100% - (70px + 1px));
+		height: calc(100% - 20px);
 	}
 
 	div.select-question-panel {
 		justify-content: flex-start;
-		overflow: scroll;
+		overflow: auto;
 	}
 
 	div.category-group {
@@ -635,8 +648,8 @@ p.no-players {
 	}
 
 	div.clue-button {
-		flex-basis: 40px;
-		margin: 2.5px 0 2.5px 0;
+		flex-basis: 50px;
+		margin: 2.5px 0;
 	}
 
 }

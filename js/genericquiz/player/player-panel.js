@@ -10,8 +10,6 @@ export default class PlayerPanel extends React.Component {
 	}
 
 	handleNewState = (state) => {
-		console.log("state received:");
-		console.log(state);
 		this.setState(state);
 	}
 
@@ -24,7 +22,7 @@ export default class PlayerPanel extends React.Component {
 	}
 
 	render = () => {
-		const thisPlayer = this.state.players.find(p => { return p.screenName === this.props.screenName; });
+		const thisPlayer = this.state.players.find(p => { return p.id === this.props.id; });
 		let background = "#05ABE3";
 		if (thisPlayer) {
 			background = thisPlayer.colour;
@@ -38,7 +36,7 @@ export default class PlayerPanel extends React.Component {
 }
 
 PlayerPanel.propTypes = {
-	screenName: PropTypes.string,
+	id: PropTypes.string,
 	receivedState: PropTypes.object,
 	socket: PropTypes.instanceOf(io.Socket),
 };

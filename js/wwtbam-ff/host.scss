@@ -17,6 +17,7 @@ body {
 	padding: 0;
 	margin: 0;
 	font-family: "Conduit", Verdana, sans-serif;
+	height: 100%;
 }
 
 #sidebar {
@@ -60,19 +61,30 @@ body {
 	flex: 1 1 auto;
 	display: flex;
 	flex-direction: column;
+	height: 100%;
 }
 
 #body-footer {
 	text-align: center;
 }
 
+.panel-bar-ctr {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+	height: 100%;
+}
+
 .main-panel {
 	flex: 1 1 auto;
-	height: calc(100% - (50px + 1px));
+	height: 100%;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: stretch;
+	position: relative;
 }
 
 #question-panel {
@@ -138,6 +150,7 @@ body {
 
 .content {
 	flex: 1 1 auto;
+	display: flex;
 }
 
 #body-header {
@@ -537,7 +550,7 @@ p.player-result-time {
 		position: absolute;
 		width: 100%;
 		z-index: 1;
-		height: calc(100% - (70px + 1px));
+		height: 100%;
 
 		&.hidden {
 			display: none;
@@ -545,7 +558,7 @@ p.player-result-time {
 	}
 
 	div.main-panel {
-		height: calc(100% - (70px + 1px));
+		height: calc(100% - 20px);
 	}
 
 	div.select-question-panel {

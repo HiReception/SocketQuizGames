@@ -5,6 +5,8 @@ var $ = require("jquery");
 
 import HostConsole from "./host/host-console";
 
+import initialState from "./initial-state";
+
 var gameCode = getParameterByName("gamecode");
 
 
@@ -26,57 +28,11 @@ socket.on("connect_error", function(err) {
 });
 
 socket.on("game details", function(details) {
-	console.log("Game Details received");
-	console.log(details);
 	$("#game-code").text(details.gameCode);
 	$("#game-title").text(details.gameTitle);
 	var state;
 	if ($.isEmptyObject(details.gameState)) {
-		state = {
-			players: [],
-			detailPlayerName: "",
-
-			currentRound: 0,
-			cluesLeft: 0,
-			selectingPlayer: "",
-			playerAnswering: {},
-
-			currentPanel: "NoQuestionPanel",
-			newPanelKey: 0,
-
-			finalEligiblePlayers: [],
-
-			rounds: [],
-			final: {},
-
-			currentCatNo: 0,
-			currentClueNo: 0,
-			currentClueValue: 0,
-
-			prefix: "",
-			suffix: "",
-
-			wrongPlayerNames: [],
-			ddWagerEntered: false,
-			ddWagerSubmittable: false,
-			ddWager: 0,
-			buzzersOpen: false,
-
-			finalCategoryVisible: false,
-			finalClueVisible: false,
-			finalWagers: [],
-			finalWageringOpen: false,
-			allFinalWagersIn: false,
-			finalRespondingOpen: false,
-			finalRespondingOver: false,
-			finalRespondingTimeRemaining: 30,
-			finalResponses: [],
-			finalFocusPlayerNumber: 0,
-			finalFocusPlayerName: "",
-			finalFocusResponse: "",
-			finalFocusMode: "pending",
-			finalFocusCorrect: false,
-		};
+		state = initialState;
 		socket.emit("set state", state);
 	} else {
 		state = details.gameState;

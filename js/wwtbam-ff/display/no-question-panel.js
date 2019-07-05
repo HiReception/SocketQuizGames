@@ -10,7 +10,7 @@ export default class OpenQuestionPanel extends Component {
 			height: 0,
 			width: 0,
 			backgroundImage: null,
-		}
+		};
 	}
 
 	updateDimensions = () => {

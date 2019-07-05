@@ -3,7 +3,6 @@ var socket = require("socket.io-client")();
 var React = require("react");
 var $ = require("jquery");
 import BuzzInQuestion from "../common/buzz-in-question";
-import Message from "../common/player-message";
 import EmptyPanel from "../common/empty-panel";
 import WagerQuestion from "./player/wager-question";
 import FinalQuestion from "./player/final-question";
@@ -44,18 +43,10 @@ socket.on("connect_error", function(err) {
 	console.log("connection error: " + err);
 });
 
-socket.on("accepted", function(state) {
+socket.on("accepted", function({state, id}) {
 	$("#header-bar").text(screenName);
 	console.log(state);
-	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket}/>, document.getElementById("question-window"))
-});
-
-socket.on("end of final", function() {
-	/* TODO
-		retrieve whatever's in the input field
-		send that as the response
-		replace the FinalJeopardyPanel with EmptyPanel
-	*/
+	ReactDOM.render(<PlayerPanel receivedState={state} socket={socket} playerID={id}/>, document.getElementById("question-window"));
 });
 
 class PlayerPanel extends React.Component {
@@ -65,8 +56,6 @@ class PlayerPanel extends React.Component {
 	}
 
 	handleNewState = (newState) => {
-		console.log("new state");
-		console.log(newState);
 		this.setState(newState);
 	}
 
@@ -80,13 +69,13 @@ class PlayerPanel extends React.Component {
 
 	render = () => {
 		var input;
-		if (this.state.currentPanel !== "FinalJeopardyPanel" && this.state.currentPanel !== "FinalJeopardyResponsePanel") {
+		if (this.state.currentPanel !== "FinalJeopardyPanel" && this.state.currentPanel !== "FinalJeopardyResponsePanel" && this.state.currentPanel !== "PostGamePanel") {
 			input = <BuzzInQuestion socket={this.props.socket}/>;
 		} else {
 			if (this.state.finalWageringOpen
-				&& this.state.finalEligiblePlayers.some((p) => p.screenName === screenName)
-				&& (!this.state.finalWagers || !this.state.finalWagers.some(w => w.screenName === screenName))) {
-				const me = this.state.players.find(p => p.screenName === screenName);
+				&& this.state.finalEligiblePlayers.some((p) => p.id === this.props.playerID)
+				&& (!this.state.finalWagers || !this.state.finalWagers.some(w => w.id === this.props.playerID))) {
+				const me = this.state.players.find(p => p.id === this.props.playerID);
 				input = (
 					<WagerQuestion
 						balance={me.score}
@@ -96,10 +85,10 @@ class PlayerPanel extends React.Component {
 						socket={this.props.socket}
 					/>
 				);
-			} else if (this.state.finalRespondingOpen
-				&& this.state.finalEligiblePlayers.some(p => p.screenName === screenName)
-				&& (!this.state.finalResponses || !this.state.finalResponses.some(r => r.screenName === screenName))) {
-				input = <FinalQuestion body={this.state.final.answer} socket={this.props.socket}/>;
+			} else if ((this.state.finalRespondingOpen || this.state.finalRespondingOver)
+				&& this.state.finalEligiblePlayers.some(p => p.id === this.props.playerID)
+				&& (!this.state.finalResponses || !this.state.finalResponses.some(r => r.id === this.props.playerID))) {
+				input = <FinalQuestion body={this.state.final.answer} socket={this.props.socket} timeUp={this.state.finalRespondingOver}/>;
 			} else {
 				input = <EmptyPanel/>;
 			}

@@ -14,7 +14,7 @@ export default class QuestionResultsPanel extends Component {
 			backgroundImage: null,
 			panelBackgroundImage: null,
 			correctFlashOn: true,
-		}
+		};
 
 
 	}
@@ -97,7 +97,7 @@ export default class QuestionResultsPanel extends Component {
 		gradient.addColorStop(0.5,"skyblue");
 		gradient.addColorStop(1,"#4286f4");
 		
-		var fontFamily = "ConduitITC TT";
+		var fontFamily = "Conduit";
 		
 		const answers = question.options.map((a) => {
 			return {
@@ -105,7 +105,7 @@ export default class QuestionResultsPanel extends Component {
 				answer: a.text,
 				correctLit: question.correctResponse.includes(a.key) && fullAnswerRevealed && this.state.correctFlashOn,
 			};
-		})
+		});
 
 		const screenRatio = width / height;
 		const backgroundRatio = this.state.backgroundNatWidth / this.state.backgroundNatHeight;
@@ -150,7 +150,7 @@ export default class QuestionResultsPanel extends Component {
 
 			const answersInOrder = question.correctResponse.split("").map((k) => {
 				return answers.find((a) => a.key === k);
-			})
+			});
 
 			const recapBackgroundX = panelWidth/-2;
 
@@ -201,7 +201,7 @@ export default class QuestionResultsPanel extends Component {
 												<Rect
 													x={x+(aHeight*(2/5))} y={firstAnswerY + (aHeight + aGapHeight) * index + aHeight/2}
 													width={aHeight/5} height={aHeight/5}
-													fill="orange" rotation="-45"/>
+													fill="orange" rotation={-45}/>
 												<Text
 													x={x + aTextGapWidth} y={firstAnswerY + (aHeight + aGapHeight) * index + aTextGapHeight}
 													width={aLetterWidth} height={aTextHeight}
@@ -215,7 +215,7 @@ export default class QuestionResultsPanel extends Component {
 													scaleX={this.textScale(ans.answer, fontFamily, aTextHeight, aTextWidth)}
 													text={ans.answer}/>
 											</Group>
-										)
+										);
 										
 									}}
 									

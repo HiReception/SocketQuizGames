@@ -1,6 +1,5 @@
 const gf = {
 	textWidth(text, font, size, style = "") {
-		var textWidth;
 		var c=document.createElement("canvas");
 		var cctx=c.getContext("2d");
 		cctx.font = size + "px " + font + " " + style;
@@ -34,7 +33,7 @@ const gf = {
 					} else {
 						return min;
 					}
-				}, spaces[0])
+				}, spaces[0]);
 				return string.substr(0, splitPoint) + "\n" + string.substr(splitPoint + 1);
 			}
 		}
@@ -94,4 +93,4 @@ const gf = {
 
 
 
-export default gf
+export default gf;

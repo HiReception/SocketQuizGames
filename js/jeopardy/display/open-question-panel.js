@@ -43,7 +43,6 @@ export default class OpenQuestionPanel extends React.Component {
 					const vertSpacing = finalNumLines >= defaultNumLines ? 0 : (textHeight - (textSize * finalNumLines))/2;
 
 					
-					// TODO implement Motion from starting parameters, unless this clue is a Daily Double
 					return (
 						<Group x={x} y={y}>
 							<Rect height={height} width={width} x={0} y={0} fill="#0B1885" stroke="black" strokeWidth={2}/>

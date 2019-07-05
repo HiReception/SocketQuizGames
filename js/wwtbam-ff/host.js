@@ -26,15 +26,13 @@ socket.on("connect_error", function(err) {
 });
 
 socket.on("game details", (details) => {
-	console.log("Game Details received");
-	console.log(details);
 	$("#game-code").text(details.gameCode);
 	$("#game-title").text(details.gameTitle);
 	let state;
 	if ($.isEmptyObject(details.gameState)) {
 		state = {
 			players: [],
-			detailPlayerName: "",
+			detailPlayerID: "",
 
 			questions: [],
 			currentQuestion: 0,

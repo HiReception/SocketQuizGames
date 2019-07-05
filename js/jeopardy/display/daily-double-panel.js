@@ -22,11 +22,11 @@ export default class DailyDoublePanel extends React.Component {
 					const dailyFont = "Brush Script Standard Medium";
 					const doubleFont = "Oswald Bold";
 
-					const dailyHeight = 0.2 * height;
-					const dailyTop = 0.25 * height;
+					const dailyHeight = 0.3 * height;
+					const dailyTop = 0.2 * height;
 					
 					const doubleHeight = 0.4 * height;
-					const doubleTop = 0.35 * height;
+					const doubleTop = 0.45 * height;
 
 					return (
 						<Group x={x} y={y}>
@@ -42,7 +42,7 @@ export default class DailyDoublePanel extends React.Component {
 								y={dailyTop}
 								height={dailyHeight} width={width} wrap="none"
 								fontSize={dailyHeight} fontFamily={dailyFont}
-								fill="yellow" align="center"
+								fill="orange" align="center"
 								text="Daily"/>
 						</Group>
 					);
@@ -59,4 +59,4 @@ DailyDoublePanel.propTypes = {
 	startingWidth: PropTypes.number,
 	height: PropTypes.number,
 	width: PropTypes.number,
-}
+};

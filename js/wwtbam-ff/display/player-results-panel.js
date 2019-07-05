@@ -14,7 +14,7 @@ export default class PlayerResultsPanel extends Component {
 			fastestFlashOn: false,
 			numPlayersRevealed: 0,
 			
-		}
+		};
 	}
 
 	updateDimensions = () => {
@@ -60,7 +60,7 @@ export default class PlayerResultsPanel extends Component {
 
 	componentWillReceiveProps = (props) => {
 		if (props.correctPlayersRevealed && !this.props.correctPlayersRevealed) {
-			setInterval(this.state.iterateCorrectReveal, 200);
+			setInterval(this.iterateCorrectReveal, 200);
 		}
 
 		if (props.fastestCorrectRevealed && !this.props.fastestCorrectRevealed) {
@@ -124,7 +124,7 @@ export default class PlayerResultsPanel extends Component {
 		
 		const fastestTime = Math.min(...question.answers.filter((a) => a.answer === question.correctResponse).map((a) => a.timeTaken));
 		const playerDetails = players.map((p, index) => {
-			const answer = question.answers.find((a) => a.screenName === p.screenName);
+			const answer = question.answers.find((a) => a.id === p.id);
 			return {
 				screenName: p.screenName.toUpperCase(),
 				timeTaken: answer ? (answer.timeTaken/1000).toFixed(2) : "0.00",
@@ -158,7 +158,7 @@ export default class PlayerResultsPanel extends Component {
 				<Layer>
 
 					{playerDetails.map((player, index) => {
-						const topY = firstY + (pHeight + pGapHeight) * index
+						const topY = firstY + (pHeight + pGapHeight) * index;
 						return (
 							<Group key={index}>
 								<Lozenge xStart={0} yStart={topY}
@@ -168,12 +168,12 @@ export default class PlayerResultsPanel extends Component {
 								<Rect
 									x={sideWidth+(pHeight*(2/5))} y={topY + pHeight/2}
 									width={pHeight/5} height={pHeight/5}
-									fill="white" rotation="-45"/>
+									fill="white" rotation={-45}/>
 
 								<Rect
 									x={width-(sideWidth+(pHeight*(2/5)))} y={topY + pHeight/2}
 									width={pHeight/5} height={pHeight/5}
-									fill="white" rotation="135"/>
+									fill="white" rotation={135}/>
 								<Text
 									x={sideWidth + pTextGapWidth} y={topY + pTextGapHeight}
 									height={pTextHeight} scaleX={this.textScale(player.screenName, fontFamily, pTextHeight, pTextNameWidth)}

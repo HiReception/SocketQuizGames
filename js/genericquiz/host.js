@@ -1,6 +1,5 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
-var PropTypes = require("prop-types");
 var socket = require("socket.io-client")();
 var $ = require("jquery");
 import HostPanel from "./host/host-panel";
@@ -48,7 +47,6 @@ socket.on("connect_error", function(err) {
 });
 
 socket.on("game details", function(details) {
-	console.log(details);
 	socket.emit("send question", {
 		type: "buzz-in",
 		open: true
@@ -59,7 +57,7 @@ socket.on("game details", function(details) {
 		shuffle(playerColours);
 		state = {
 			players: [],
-			detailPlayerName: "",
+			detailPlayerID: "",
 			playerAnswering: {},
 			buzzersOpen: false,
 			startingScore: 0,

@@ -24,10 +24,8 @@ export default class NoQuestionPanel extends Component {
 					this.loadGameData(JSON.parse(event.target.result));
 				};
 				reader.readAsText(selectedFile);
-				console.log("readAsText called");
 				// TODO show loading graphic until processing is done
 			} else {
-				console.log(this.state.testFileSelected);
 				$.ajax({
 					type: "GET",
 					url: this.state.testFileSelected,
@@ -37,8 +35,6 @@ export default class NoQuestionPanel extends Component {
 		}
 	}
 	loadGameData = (fileObject) => {
-		console.log("reader.onload called");
-		console.log(fileObject);
 		const questions = fileObject.questions.map((question, index) => {
 			const newQuestion = question;
 			newQuestion.questionNo = index + 1;
@@ -53,8 +49,6 @@ export default class NoQuestionPanel extends Component {
 		});
 	}
 	changeTestFile = (event) => {
-		console.log("changeTestFile called");
-		console.log(event);
 		this.setState({
 			testFileSelected: event.target.value,
 		});

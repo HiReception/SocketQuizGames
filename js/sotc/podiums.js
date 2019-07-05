@@ -24,7 +24,7 @@ class ContestantPodium1993 extends React.Component {
 						(this.state.lit ? " lit" : "")}
 					style={{transitionDelay: delay}}/>
 			);
-		})
+		});
 		
 		return (
 			<div className="contestant-podium" onClick={this.toggleLit}>
@@ -60,7 +60,7 @@ class ContestantPodium1993 extends React.Component {
 ContestantPodium1993.propTypes = {
 	name: PropTypes.string,
 	score: PropTypes.number,
-}
+};
 
 class ContestantPodium1988 extends React.Component {
 	constructor(props) {
@@ -128,7 +128,7 @@ class ContestantPodium1988 extends React.Component {
 ContestantPodium1988.propTypes = {
 	name: PropTypes.string,
 	score: PropTypes.number,
-}
+};
 
 
 

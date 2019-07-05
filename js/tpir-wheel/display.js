@@ -129,7 +129,6 @@ ReactDOM.render(<WheelPanel angle={angle}/>, document.getElementById("wheel-pane
 
 var spin = function() {
 	var maxAngleIncrement = Math.random() * 5 + 10;
-	console.log("maxAngleIncrement = " + maxAngleIncrement);
 	var angleIncrement = 0;
 	var startWheel = setInterval(function() {
 		var wedgeSpan = 360 / wedgeArray.length;

@@ -29,7 +29,7 @@ export default class Lozenge extends Component {
 					var diagonalWidth = Math.tan(Math.PI/2 - angleRads) * diagonalHeight;
 					var straightWidth = width - 2*diagonalWidth-4*curveEndX;
 					var totalWidth = leftSideWidth+rightSideWidth+width;
-					ctx.beginPath()
+					ctx.beginPath();
 					ctx.moveTo(xStart,yStart+height/2);
 
 					ctx.lineTo(xStart+leftSideWidth,yStart+height/2);

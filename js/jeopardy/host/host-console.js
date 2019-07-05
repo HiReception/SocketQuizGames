@@ -6,11 +6,14 @@ const $ = require("jquery");
 import PlayerDetailsPanel from "./player-details-panel";
 import PlayerListing from "./player-listing";
 import NextRoundPanel from "./next-round-panel";
+import PostGamePanel from "./post-game-panel";
 import SelectQuestionPanel from "./select-question-panel";
 import NoQuestionPanel from "./no-question-panel";
 import OpenQuestionPanel from "./open-question-panel";
 import FinalJeopardyPanel from "./final-jeopardy-panel";
 import PlayerPanelToggleBar from "../../common/player-panel-bar";
+
+import initialState from "../initial-state";
 
 
 export default class HostConsole extends React.Component {
@@ -35,11 +38,10 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
-	setAnsweringPlayer = (screenName) => {
-		console.log(`HostConsole setting answering player to ${ screenName}`);
+	setAnsweringPlayer = (id) => {
 		this.setGameState({
 			playerAnswering: this.state.players.find((player) => {
-				return player.screenName === screenName;
+				return player.id === id;
 			}),
 		});
 	}
@@ -51,7 +53,6 @@ export default class HostConsole extends React.Component {
 	}
 
 	showClue = (catNo, clueNo, clueValue) => {
-		console.log(catNo);
 		this.setGameState({
 			currentCatNo: catNo,
 			currentClueNo: clueNo,
@@ -74,10 +75,47 @@ export default class HostConsole extends React.Component {
 				"NextRoundPanel" : "SelectQuestionPanel",
 			newPanelKey: this.state.newPanelKey + 1,
 			playerAnswering: {},
-			wrongPlayerNames: [],
+			wrongPlayerIDs: [],
 			ddWagerEntered: false,
 			ddWagerSubmittable: false,
+			buzzingTimeOver: false,
+			buzzingTimerStarted: false,
+
 		});
+	}
+
+	startBuzzingTimer = (limit) => {
+		this.setGameState({
+			playerAnswering: {},
+			buzzersOpen: true,
+			buzzingTimerStarted: true,
+			buzzingTimerRunning: true,
+			buzzingTimeRemaining: limit,
+			buzzingTimer: setInterval(this.buzzingTimerIncrement, 100)
+		});
+	}
+
+	buzzingTimerIncrement = () => {
+		if (this.state.buzzingTimerRunning) {
+			const newTimeRemaining = Math.max(this.state.buzzingTimeRemaining - 100, 0);
+			this.setGameState({
+				buzzingTimeRemaining: newTimeRemaining,
+			});
+			if (newTimeRemaining <= 0) {
+				this.setGameState({
+					buzzingTimerRunning: false,
+					buzzersOpen: false,
+					buzzingTimeOver: true,
+				});
+				this.props.socket.emit("play sound", "answer-timeout");
+				clearInterval(this.state.buzzingTimer);
+			} 
+		} else {
+			this.setGameState({
+				buzzingTimeRemaining: 0,
+			});
+			clearInterval(this.state.buzzingTimer);
+		}
 	}
 
 	changeCurrentPanel = (panelName) => {
@@ -87,10 +125,9 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
-	handleNewPlayer = (screenName) => {
-		console.log("new player:");
-		console.log(screenName);
+	handleNewPlayer = ({screenName, id}) => {
 		const newPlayer = {
+			id: id,
 			screenName: screenName,
 			score: 0,
 			hidden: false
@@ -103,43 +140,42 @@ export default class HostConsole extends React.Component {
 		});
 	}
 
-	changePlayerScore = (screenName, newScore) => {
+	changePlayerScore = (id, newScore) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === screenName;
+			return player.id === id;
 		}).score = newScore;
 		this.setGameState({
 			players: newPlayers,
 		});
 	}
 
-	showPlayerDetails = (name, event) => {
-		console.log(`showPlayerDetails(${ name },${ event }) called`);
+	showPlayerDetails = (id) => {
 		this.setGameState({
-			detailPlayerName: name,
+			detailPlayerID: id,
 		});
 	}
 
 	clearPlayerDetails = () => {
 		this.setGameState({
-			detailPlayerName: "",
+			detailPlayerID: "",
 		});
 	}
 
-	hidePlayer = (playerName) => {
+	hidePlayer = (id) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === playerName;
+			return player.id === id;
 		}).hidden = true;
 		this.setGameState({
 			players: newPlayers,
 		});
 	}
 
-	unhidePlayer = (playerName) => {
+	unhidePlayer = (id) => {
 		const newPlayers = this.state.players;
 		newPlayers.find((player) => {
-			return player.screenName === playerName;
+			return player.id === id;
 		}).hidden = false;
 		this.setGameState({
 			players: newPlayers,
@@ -164,7 +200,7 @@ export default class HostConsole extends React.Component {
 				return p1.score < p2.score;
 			});
 			this.setGameState({
-				selectingPlayer: playersToSort[0].screenName,
+				selectingPlayer: playersToSort[0].id,
 				currentRound: this.state.currentRound + 1,
 				cluesLeft: [].concat(...newRound.categories.map((cat) => {
 					return cat.clues;
@@ -176,13 +212,11 @@ export default class HostConsole extends React.Component {
 	}
 
 	setGameState = (changedItems) => {
-		console.log("setGameState called");
 		this.setState(changedItems);
 		this.props.socket.emit("set state", changedItems);
 	}
 
 	setGameData = (rounds, final, firstSelectingPlayer, prefix, suffix) => {
-		console.log(rounds, final, firstSelectingPlayer, prefix, suffix);
 		this.setGameState({
 			prefix: prefix,
 			suffix: suffix,
@@ -201,18 +235,32 @@ export default class HostConsole extends React.Component {
 	}
 
 
-	setSelectingPlayer = (screenName) => {
-		console.log(`HostConsole.setSelectingPlayer called with screenName "
-			+ ${ screenName}`);
+	setSelectingPlayer = (id) => {
 		this.setGameState({
-			selectingPlayer: screenName,
+			selectingPlayer: id,
 		});
+	}
+
+	endGame = () => {
+		this.setGameState({
+			currentPanel: "PostGamePanel",
+		});
+	}
+
+	followOnGame = () => {
+		// Set all game state values to initial, EXCEPT:
+		let newState = initialState;
+		// Reinstate existing players array, but revert their scores to zero
+		newState.players = this.state.players;
+		newState.players.forEach(p => p.score = 0);
+
+		this.setGameState(newState);
 	}
 
 	render = () => {
 		// render player list panel
 		let playerPanel;
-		if (this.state.detailPlayerName === "") {
+		if (this.state.detailPlayerID === "") {
 			const nonHiddenPlayers = this.state.players.filter((player) => {
 				return !player.hidden;
 			});
@@ -225,14 +273,14 @@ export default class HostConsole extends React.Component {
 					const player = playersByScore[i];
 					list.push((
 						<PlayerListing
-							onClick={this.showPlayerDetails.bind(this, player.screenName)}
+							onClick={this.showPlayerDetails.bind(this, player.id)}
 							player={player}
 							key={i}
 							answering={!$.isEmptyObject(this.state.playerAnswering) &&
-								this.state.playerAnswering.screenName === player.screenName}
+								this.state.playerAnswering.id === player.id}
 							lockedOut={!$.isEmptyObject(this.state.playerAnswering) &&
-								this.state.playerAnswering.screenName !== player.screenName}
-							selecting={this.state.selectingPlayer === player.screenName}
+								this.state.playerAnswering.id !== player.id}
+							selecting={this.state.selectingPlayer === player.id}
 							prefix={this.state.prefix}
 							suffix={this.state.suffix}/>));
 				}
@@ -242,7 +290,7 @@ export default class HostConsole extends React.Component {
 			}
 		} else {
 			const player = this.state.players.find((player) => {
-				return player.screenName === this.state.detailPlayerName;
+				return player.screenName === this.state.detailPlayerID;
 			});
 			playerPanel = (<PlayerDetailsPanel
 				player={player}
@@ -288,9 +336,8 @@ export default class HostConsole extends React.Component {
 		case "DailyDoublePanel":
 		case "OpenQuestionPanel": {
 			const selectingPlayer = this.state.players.find((player) => {
-				return player.screenName === this.state.selectingPlayer;
+				return player.id === this.state.selectingPlayer;
 			});
-			console.log(selectingPlayer);
 			mainPanel = (<OpenQuestionPanel
 				key={this.state.newPanelKey}
 				catName={this.state.rounds[this.state.currentRound]
@@ -310,6 +357,7 @@ export default class HostConsole extends React.Component {
 				clearAnsweringPlayer={this.clearAnsweringPlayer}
 				gameState={this.state}
 				setGameState={this.setGameState}
+				startBuzzingTimer={this.startBuzzingTimer}
 				prefix={this.state.prefix}
 				suffix={this.state.suffix}
 				socket={this.props.socket}/>);
@@ -327,9 +375,17 @@ export default class HostConsole extends React.Component {
 					eligiblePlayers={this.state.finalEligiblePlayers}
 					gameState={this.state}
 					setGameState={this.setGameState}
+					endGame={this.endGame}
 					prefix={this.state.prefix}
 					suffix={this.state.suffix}
 					socket={this.props.socket}/>
+			);
+			break;
+		case "PostGamePanel":
+			mainPanel = (
+				<PostGamePanel
+					key={this.state.newPanelKey}
+					callback={this.followOnGame}/>
 			);
 			break;
 		default:
@@ -338,7 +394,7 @@ export default class HostConsole extends React.Component {
 		}
 
 		return (
-			<div>
+			<div className="panel-bar-ctr">
 				<div className='main-panel'>
 					<div
 						id='player-list'

@@ -11,40 +11,12 @@ import DailyDoublePanel from "./daily-double-panel";
 import FinalJeopardyPanel from "./final-jeopardy-panel";
 import FinalJeopardyResponsePanel from "./final-jeopardy-response-panel";
 
+import initialState from "../initial-state";
+
 export default class DisplayContainer extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			currentRound: 0,
-			buzzersOpen: false,
-			rounds: [],
-			players: [],
-
-			final: {},
-			finalCategoryVisible: false,
-			finalClueVisible: false,
-			finalFocusScreenName: "",
-			finalFocusResponse: "",
-			finalFocusResponseVisible: false,
-			finalFocusWager: "",
-			finalFocusWagerVisible: false,
-
-			
-			currentPanel: "NoQuestionPanel",
-			currentCatNo: 0,
-			currentClueNo: 0,
-			currentClue: {},
-
-			playerAnswering: {},
-
-			dailyDoublePlaySound: true,
-
-			prefix: "",
-			suffix: "",
-
-			height: 0,
-			width: 0,
-		};
+		this.state = initialState;
 	}
 
 	updateDimensions = () => {
@@ -61,8 +33,6 @@ export default class DisplayContainer extends React.Component {
 				dailyDoublePlaySound: true
 			});
 		}
-		console.log("new state received");
-		console.log(state);
 		this.setState(state);
 	}
 
@@ -97,6 +67,7 @@ export default class DisplayContainer extends React.Component {
 		switch (this.state.currentPanel) {
 		case "NoQuestionPanel":
 		case "NextRoundPanel":
+		case "PostGamePanel":
 			questionPanel = <NoQuestionPanel height={boardHeight} width={this.state.width}/>;
 			break;
 		case "SelectQuestionPanel":
@@ -170,7 +141,7 @@ export default class DisplayContainer extends React.Component {
 		case "FinalJeopardyResponsePanel":
 			questionPanel = (
 				<FinalJeopardyResponsePanel
-					screenName={this.state.finalFocusPlayerName}
+					screenName={this.state.players.find(p => p.id == this.state.finalFocusPlayerID)}
 					response={this.state.finalFocusResponse}
 					responseVisible={this.state.finalFocusResponseVisible}
 					wager={this.state.finalFocusWager}
@@ -188,11 +159,11 @@ export default class DisplayContainer extends React.Component {
 
 		const list = nonHiddenPlayers.map((p,i) => {
 			// light this display up if they are answering the question
-			const answering = this.state.playerAnswering.screenName === p.screenName;
+			const answering = this.state.playerAnswering.id === p.id;
 
 			// player is "locked out" if someone ELSE is answering, so grey them out
-			const lockedOut = this.state.playerAnswering.hasOwnProperty("screenName")
-				&& this.state.playerAnswering.screenName !== p.screenName;
+			const lockedOut = this.state.playerAnswering.hasOwnProperty("id")
+				&& this.state.playerAnswering.id !== p.id;
 
 			return (<PlayerListing
 				player={p}
