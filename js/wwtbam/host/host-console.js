@@ -171,8 +171,7 @@ export default class HostConsole extends Component {
 		});
 	}
 
-	showPlayerDetails = (id, event) => {
-		console.log(`showPlayerDetails(${ id },${ event }) called`);
+	showPlayerDetails = (id) => {
 		this.setGameState({
 			detailPlayerID: id,
 		});
@@ -260,7 +259,6 @@ export default class HostConsole extends Component {
 	}
 
 	setGameState = (changedItems) => {
-		console.log("setGameState called");
 		this.setState(changedItems);
 		this.props.socket.emit("set state", changedItems);
 	}

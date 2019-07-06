@@ -2,7 +2,6 @@ const PropTypes = require("prop-types");
 const io = require("socket.io-client");
 import React, { Component } from "react";
 
-// TODO
 export default class PlayerResultsPanel extends Component {
 	constructor(props) {
 		super(props);

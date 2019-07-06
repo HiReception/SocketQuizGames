@@ -24,9 +24,6 @@ export default class MainQuestionPanel extends Component {
 	handleNewAnswer = (details) => {
 		if (this.props.gameState.ataVotesOpen && !this.props.gameState.ataVotesFinished && 
 			details.player !== "") {
-			console.log("new answer:");
-			console.log(details);
-			console.log(this);
 
 			const newATAVotes = this.props.gameState.ataVotes;
 

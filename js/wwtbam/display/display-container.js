@@ -34,8 +34,6 @@ export default class DisplayContainer extends React.Component {
 	}
 
 	onNewState = (state) => {
-		console.log("new state received");
-		console.log(state);
 		this.setState(state);
 	}
 

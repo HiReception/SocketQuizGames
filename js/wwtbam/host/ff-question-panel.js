@@ -19,9 +19,6 @@ export default class FFQuestionPanel extends Component {
 	handleNewAnswer = (details) => {
 		if (this.props.gameState.ffBuzzersOpen &&
 			details.player !== "") {
-			console.log("new answer:");
-			console.log(details);
-			console.log(this);
 
 			const newQuestions = this.props.gameState.ffQuestions;
 			newQuestions[this.props.gameState.ffCurrentQuestion].answers.push({
