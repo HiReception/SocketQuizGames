@@ -20,7 +20,6 @@ export default class QuestionDisplay extends Component {
 	}
 
 	textWidth = (text, font, size) => {
-		var textWidth;
 		var c=document.createElement("canvas");
 		var cctx=c.getContext("2d");
 		cctx.font = size + "px " + font;
@@ -80,7 +79,7 @@ export default class QuestionDisplay extends Component {
 				answer: a.text,
 				correctLit: question.correctResponse.includes(a.key) && ffFullAnswerRevealed && correctFlashOn,
 			};
-		})
+		});
 
 
 		var lineWidth = 0.005 * width;
@@ -94,7 +93,7 @@ export default class QuestionDisplay extends Component {
 		var qTextGapHeight = (qHeight - qTextHeight)/2;
 		
 		var aHeight = 0.05 * width;
-		var aWidth = (width/2) - sideWidth - aGapWidth/2
+		var aWidth = (width/2) - sideWidth - aGapWidth/2;
 		var aTextHeight = 0.8 * aHeight;
 		var aTextWidth = 0.74 * aWidth;
 		var aTextGapWidth = 0.1 * aWidth;

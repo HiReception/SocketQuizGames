@@ -6,6 +6,10 @@ import FFQuestionPanel from "./ff-question-panel";
 import NoQuestionPanel from "./no-question-panel";
 import FFQuestionResultsPanel from "./ff-question-results-panel";
 import PlayerResultsPanel from "./player-results-panel";
+import PreMainGamePanel from "./pre-main-game-panel";
+import LightsDownPanel from "./lights-down-panel";
+import MainQuestionPanel from "./main-question-panel";
+import PostMainGamePanel from "./post-main-game-panel";
 
 export default class DisplayContainer extends React.Component {
 	constructor(props) {
@@ -74,7 +78,42 @@ export default class DisplayContainer extends React.Component {
 		case "PlayerResultsPanel":
 			questionPanel = (
 				<PlayerResultsPanel
-					question={question} players={this.state.players} ffCorrectPlayersRevealed={this.state.ffCorrectPlayersRevealed} ffFastestCorrectRevealed={this.state.ffFastestCorrectRevealed}
+					question={question}
+					players={this.state.players}
+					ffCorrectPlayersRevealed={this.state.ffCorrectPlayersRevealed}
+					ffFastestCorrectRevealed={this.state.ffFastestCorrectRevealed}
+				/>
+			);
+			break;
+		case "PreMainGamePanel":
+			// TODO
+			questionPanel = (
+				<PreMainGamePanel
+					
+				/>
+			);
+			break;
+		case "LightsDownPanel":
+			// TODO
+			questionPanel = (
+				<LightsDownPanel
+
+				/>
+			);
+			break;
+		case "MainQuestionPanel":
+			// TODO
+			questionPanel = (
+				<MainQuestionPanel
+
+				/>
+			);
+			break;
+		case "PostMainGamePanel":
+			// TODO
+			questionPanel = (
+				<PostMainGamePanel
+
 				/>
 			);
 			break;

@@ -14,7 +14,7 @@ export default class FFQuestionResultsPanel extends Component {
 			backgroundImage: null,
 			panelBackgroundImage: null,
 			correctFlashOn: true,
-		}
+		};
 
 
 	}
@@ -105,7 +105,7 @@ export default class FFQuestionResultsPanel extends Component {
 				answer: a.text,
 				correctLit: question.correctResponse.includes(a.key) && ffFullAnswerRevealed && this.state.correctFlashOn,
 			};
-		})
+		});
 
 		const screenRatio = width / height;
 		const backgroundRatio = this.state.backgroundNatWidth / this.state.backgroundNatHeight;
@@ -150,7 +150,7 @@ export default class FFQuestionResultsPanel extends Component {
 
 			const answersInOrder = question.correctResponse.split("").map((k) => {
 				return answers.find((a) => a.key === k);
-			})
+			});
 
 			const recapBackgroundX = panelWidth/-2;
 
@@ -215,7 +215,7 @@ export default class FFQuestionResultsPanel extends Component {
 													scaleX={this.textScale(ans.answer, fontFamily, aTextHeight, aTextWidth)}
 													text={ans.answer}/>
 											</Group>
-										)
+										);
 										
 									}}
 									

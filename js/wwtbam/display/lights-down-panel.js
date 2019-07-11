@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import QuestionDisplay from "./question-display";
+
 import {Layer, Stage, Rect} from "react-konva";
 
 
-export default class FFQuestionPanel extends Component {
+export default class LightsDownPanel extends Component {
+	// TODO
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -30,6 +30,7 @@ export default class FFQuestionPanel extends Component {
 			});
 		};
 	}
+
 	componentDidMount = () => {
 		window.addEventListener("resize", this.updateDimensions);
 	}
@@ -40,8 +41,6 @@ export default class FFQuestionPanel extends Component {
 	render = () => {
 		var width = window.innerWidth;
 		var height = window.innerHeight;
-
-		const { question, questionVisible, answersVisible } = this.props;
 
 		const screenRatio = width / height;
 		const backgroundRatio = this.state.backgroundNatWidth / this.state.backgroundNatHeight;
@@ -59,6 +58,7 @@ export default class FFQuestionPanel extends Component {
 			backgroundScale = screenRatio > backgroundRatio ? width / this.state.backgroundNatWidth : height/this.state.backgroundNatHeight;
 		}
 
+
 		return (
 			<Stage width={width} height={height}>
 				<Layer>
@@ -66,15 +66,7 @@ export default class FFQuestionPanel extends Component {
 						fillPatternScaleX={backgroundScale} fillPatternScaleY={backgroundScale}
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
 				</Layer>
-				<QuestionDisplay question={question} questionVisible={questionVisible}
-					answersVisible={answersVisible} ffFullAnswerRevealed={false}/>
 			</Stage>
 		);
 	}
 }
-
-FFQuestionPanel.propTypes = {
-	question: PropTypes.object,
-	questionVisible: PropTypes.bool,
-	answersVisible: PropTypes.bool,
-};
