@@ -22,13 +22,13 @@ export default class PlayerResultsPanel extends Component {
 	}
 
 	iterateCorrectReveal = () => {
-		this.setState({
-			numPlayersRevealed: this.state.numPlayersRevealed + 1,
-		});
-
 		if (this.state.numPlayersRevealed + 1 >= this.props.question.answers.length) {
 			clearInterval(this.iterateCorrectReveal);
 		}
+		
+		this.setState({
+			numPlayersRevealed: this.state.numPlayersRevealed + 1,
+		});
 	}
 
 	flashFastest = () => {
@@ -49,6 +49,11 @@ export default class PlayerResultsPanel extends Component {
 	}
 	componentDidMount = () => {
 		window.addEventListener("resize", this.updateDimensions);
+
+		if (this.props.ffCorrectPlayersRevealed) {
+			setInterval(this.iterateCorrectReveal, 200);
+		}
+
 		if (this.props.ffFastestCorrectRevealed) {
 			setInterval(this.flashFastest, 250);
 		}
@@ -60,7 +65,7 @@ export default class PlayerResultsPanel extends Component {
 
 	componentWillReceiveProps = (props) => {
 		if (props.ffCorrectPlayersRevealed && !this.props.ffCorrectPlayersRevealed) {
-			setInterval(this.state.iterateCorrectReveal, 200);
+			setInterval(this.iterateCorrectReveal, 200);
 		}
 
 		if (props.ffFastestCorrectRevealed && !this.props.ffFastestCorrectRevealed) {

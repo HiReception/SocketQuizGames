@@ -97,7 +97,7 @@ export default class FFQuestionResultsPanel extends Component {
 		gradient.addColorStop(0.5,"skyblue");
 		gradient.addColorStop(1,"#4286f4");
 		
-		var fontFamily = "ConduitITC TT";
+		var fontFamily = "Conduit";
 		
 		const answers = question.options.map((a) => {
 			return {
@@ -236,8 +236,8 @@ export default class FFQuestionResultsPanel extends Component {
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
 					</Layer>
 					<QuestionDisplay
-						question={question} ffFullAnswerRevealed={ffFullAnswerRevealed}
-						questionVisible={true} answersVisible={true} correctFlashOn={this.state.correctFlashOn}/>
+						question={question} fullAnswerRevealed={ffFullAnswerRevealed}
+						questionVisible={true} numAnswersVisible={question.options.length} correctFlashOn={this.state.correctFlashOn}/>
 				</Stage>
 			);
 		}

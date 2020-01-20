@@ -1484,10 +1484,10 @@
 			"Value": 5,
 			"Q No": 9,
 			"Question": "How many players take the field in an Australian Rules football team?",
-			"A": 18,
-			"B": 11,
-			"C": 15,
-			"D": 13,
+			"A": "18",
+			"B": "11",
+			"C": "15",
+			"D": "13",
 			"Correct": "A"
 		},
 		{
@@ -1784,10 +1784,10 @@
 			"Value": 8,
 			"Q No": 9,
 			"Question": "What is the cube of the number eight?",
-			"A": 512,
-			"B": 64,
-			"C": 216,
-			"D": 16,
+			"A": "512",
+			"B": "64",
+			"C": "216",
+			"D": "16",
 			"Correct": "A"
 		},
 		{
@@ -1804,10 +1804,10 @@
 			"Value": 9,
 			"Q No": 1,
 			"Question": "In darts, how many points is the outer bull's-eye worth?",
-			"A": 20,
-			"B": 25,
-			"C": 40,
-			"D": 50,
+			"A": "20",
+			"B": "25",
+			"C": "40",
+			"D": "50",
 			"Correct": "B"
 		},
 		{
@@ -2104,10 +2104,10 @@
 			"Value": 10,
 			"Q No": 21,
 			"Question": "In which year did an earthquake cause extensive damage to the New South Wales city of Newcastle?",
-			"A": 1987,
-			"B": 1988,
-			"C": 1989,
-			"D": 1990,
+			"A": "1987",
+			"B": "1988",
+			"C": "1989",
+			"D": "1990",
 			"Correct": "C"
 		},
 		{
@@ -2364,10 +2364,10 @@
 			"Value": 10,
 			"Q No": 47,
 			"Question": "How many senators represent each state in the federal parliament?",
-			"A": 6,
-			"B": 8,
-			"C": 10,
-			"D": 12,
+			"A": "6",
+			"B": "8",
+			"C": "10",
+			"D": "12",
 			"Correct": "D"
 		},
 		{
@@ -2714,10 +2714,10 @@
 			"Value": 11,
 			"Q No": 24,
 			"Question": "The new Federal Parliament House was opened in which year?",
-			"A": 1984,
-			"B": 1986,
-			"C": 1987,
-			"D": 1988,
+			"A": "1984",
+			"B": "1986",
+			"C": "1987",
+			"D": "1988",
 			"Correct": "D"
 		},
 		{
@@ -2874,10 +2874,10 @@
 			"Value": 11,
 			"Q No": 40,
 			"Question": "Because only about 3,000 were struck, the penny of which year is the most famous rare Australian coin?",
-			"A": 1920,
-			"B": 1930,
-			"C": 1940,
-			"D": 1950,
+			"A": "1920",
+			"B": "1930",
+			"C": "1940",
+			"D": "1950",
 			"Correct": "B"
 		},
 		{
@@ -2904,10 +2904,10 @@
 			"Value": 11,
 			"Q No": 43,
 			"Question": "How many degrees are there in an 'octant'?",
-			"A": 45,
-			"B": 60,
-			"C": 75,
-			"D": 90,
+			"A": "45",
+			"B": "60",
+			"C": "75",
+			"D": "90",
 			"Correct": "A"
 		},
 		{
@@ -3444,10 +3444,10 @@
 			"Value": 13,
 			"Q No": 9,
 			"Question": "In which year was Marie Antoinette, the wife of Louis XVI of France, executed?",
-			"A": 1791,
-			"B": 1793,
-			"C": 1795,
-			"D": 1797,
+			"A": "1791",
+			"B": "1793",
+			"C": "1795",
+			"D": "1797",
 			"Correct": "B"
 		},
 		{
@@ -3764,10 +3764,10 @@
 			"Value": 14,
 			"Q No": 3,
 			"Question": "In which year were the first honours awards made under the Order of Australia?",
-			"A": 1973,
-			"B": 1974,
-			"C": 1975,
-			"D": 1976,
+			"A": "1973",
+			"B": "1974",
+			"C": "1975",
+			"D": "1976",
 			"Correct": "C"
 		},
 		{
@@ -3994,10 +3994,10 @@
 			"Value": 14,
 			"Q No": 26,
 			"Question": "Ginger Rogers won a Best Actress Oscar for the film 'Kitty Foyle', released in which year?",
-			"A": 1934,
-			"B": 1936,
-			"C": 1938,
-			"D": 1940,
+			"A": "1934",
+			"B": "1936",
+			"C": "1938",
+			"D": "1940",
 			"Correct": "D"
 		},
 		{
@@ -4134,10 +4134,10 @@
 			"Value": 15,
 			"Q No": 6,
 			"Question": "In which year was the anniversary of Australia's settlement, now called Australia Day, first celebrated as a public holiday?",
-			"A": 1818,
-			"B": 1838,
-			"C": 1888,
-			"D": 1938,
+			"A": "1818",
+			"B": "1838",
+			"C": "1888",
+			"D": "1938",
 			"Correct": "B"
 		},
 		{
@@ -4234,20 +4234,20 @@
 			"Value": 15,
 			"Q No": 16,
 			"Question": "The first regular census in New South Wales was taken in which year?",
-			"A": 1826,
-			"B": 1828,
-			"C": 1836,
-			"D": 1840,
+			"A": "1826",
+			"B": "1828",
+			"C": "1836",
+			"D": "1840",
 			"Correct": "B"
 		},
 		{
 			"Value": 15,
 			"Q No": 17,
 			"Question": "Linking the eastern states to Perth, in which year was the Trans-Australian Railway completed?",
-			"A": 1915,
-			"B": 1916,
-			"C": 1917,
-			"D": 1918,
+			"A": "1915",
+			"B": "1916",
+			"C": "1917",
+			"D": "1918",
 			"Correct": "C"
 		},
 		{
@@ -4354,10 +4354,10 @@
 			"Value": 15,
 			"Q No": 28,
 			"Question": "In which year was Mahatma Gandhi assassinated?",
-			"A": 1946,
-			"B": 1947,
-			"C": 1948,
-			"D": 1949,
+			"A": "1946",
+			"B": "1947",
+			"C": "1948",
+			"D": "1949",
 			"Correct": "C"
 		},
 		{

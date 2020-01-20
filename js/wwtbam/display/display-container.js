@@ -11,30 +11,12 @@ import LightsDownPanel from "./lights-down-panel";
 import MainQuestionPanel from "./main-question-panel";
 import PostMainGamePanel from "./post-main-game-panel";
 
+import initialState from "../initial-state";
+
 export default class DisplayContainer extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			players: [],
-			detailPlayerID: "",
-
-			ffQuestions: [],
-			ffCurrentQuestion: 0,
-			currentPanel: "NoQuestionPanel",
-			newPanelKey: 0,
-
-			ffNumAnswersRevealed: 0,
-			ffFullAnswerRevealed: false,
-
-			playerPanelHidden: false,
-
-			ffCorrectPlayersRevealed: false,
-			ffFastestCorrectRevealed: false,
-			ffFastestFlashOn: false,
-
-			ffBuzzersOpen: false,
-			playerStats: [],
-		};
+		this.state = initialState;
 	}
 
 	onNewState = (state) => {
@@ -47,6 +29,10 @@ export default class DisplayContainer extends React.Component {
 
 	componentWillUnmount = () => {
 		this.props.socket.removeHandler("new game state", this.onNewState);
+	}
+
+	formatNumber = (number) => {
+		return this.state.prefix + number.toLocaleString(this.state.locale, {minimumFractionDigits: 0}) + this.state.suffix;
 	}
 
 	render = () => {
@@ -102,18 +88,18 @@ export default class DisplayContainer extends React.Component {
 			);
 			break;
 		case "MainQuestionPanel":
-			// TODO
 			questionPanel = (
 				<MainQuestionPanel
-
+					question={this.state.mainGameQuestionStack[this.state.mainGameQuestionNo - 1]}
+					gameState={this.state}
+					formatNumber={this.formatNumber}
 				/>
 			);
 			break;
 		case "PostMainGamePanel":
-			// TODO
 			questionPanel = (
 				<PostMainGamePanel
-
+					winningsString={this.state.mainGameWinningsString}
 				/>
 			);
 			break;

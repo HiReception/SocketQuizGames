@@ -67,7 +67,7 @@ export default class FFQuestionPanel extends Component {
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
 				</Layer>
 				<QuestionDisplay question={question} questionVisible={questionVisible}
-					answersVisible={answersVisible} ffFullAnswerRevealed={false}/>
+					numAnswersVisible={answersVisible ? question.options.length : 0} fullAnswerRevealed={false}/>
 			</Stage>
 		);
 	}

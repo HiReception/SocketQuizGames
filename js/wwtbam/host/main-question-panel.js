@@ -13,7 +13,7 @@ export default class MainQuestionPanel extends Component {
 	}
 
 	componentDidMount = () => {
-		this.props.socket.emit("play sound", "read-question");
+		//this.props.socket.emit("play sound", "read-question");
 		this.props.socket.on("new answer", this.handleNewAnswer);
 	}
 
