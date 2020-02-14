@@ -75,7 +75,10 @@ export default class DisplayContainer extends React.Component {
 			// TODO
 			questionPanel = (
 				<PreMainGamePanel
-					
+					moneyTreeVisible={this.state.mainGameMoneyTreeVisible}
+					moneyTree={this.state.mainGameMoneyTree}
+					startingLifelines={this.state.mainGameStartingLifelines}
+					lifelinesAvailable={this.state.mainGameLifelinesAvailable}
 				/>
 			);
 			break;
@@ -83,7 +86,11 @@ export default class DisplayContainer extends React.Component {
 			// TODO
 			questionPanel = (
 				<LightsDownPanel
-
+					moneyTreeVisible={this.state.mainGameMoneyTreeVisible}
+					moneyTree={this.state.mainGameMoneyTree}
+					currentQuestionNo={this.state.mainGameQuestionNo}
+					startingLifelines={this.state.mainGameStartingLifelines}
+					lifelinesAvailable={this.state.mainGameLifelinesAvailable}
 				/>
 			);
 			break;

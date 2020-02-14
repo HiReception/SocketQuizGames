@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
+import PropTypes from "prop-types";
 import {Layer, Stage, Rect} from "react-konva";
+import MoneyTreePanel from "./money-tree-panel";
 
 
 export default class LightsDownPanel extends Component {
@@ -39,6 +41,8 @@ export default class LightsDownPanel extends Component {
 	}
 
 	render = () => {
+
+		var { moneyTreeVisible, moneyTree, currentQuestionNo, startingLifelines, lifelinesAvailable } = this.props;
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 
@@ -66,7 +70,22 @@ export default class LightsDownPanel extends Component {
 						fillPatternScaleX={backgroundScale} fillPatternScaleY={backgroundScale}
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
 				</Layer>
+				{moneyTreeVisible ? (
+					<MoneyTreePanel
+						moneyTree={moneyTree}
+						currentQuestionNo={currentQuestionNo}
+						startingLifelines={startingLifelines}
+						lifelinesAvailable={lifelinesAvailable} />
+				) : null}
 			</Stage>
 		);
 	}
 }
+
+LightsDownPanel.propTypes = {
+	moneyTreeVisible: PropTypes.bool,
+	moneyTree: PropTypes.array,
+	currentQuestionNo: PropTypes.number,
+	startingLifelines: PropTypes.array,
+	lifelinesAvailable: PropTypes.array,
+};

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {Layer, Stage, Rect, Text} from "react-konva";
+import {Layer, Rect, Text} from "react-konva";
 import Lozenge from "../common/lozenge";
 
 

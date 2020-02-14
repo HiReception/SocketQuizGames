@@ -1,7 +1,7 @@
 {
 	"name": "Australia Original 15Q",
 	"lifelines": [
-		"Phone A Friend", "50:50", "Ask The Audience"
+		"50:50", "Phone A Friend", "Ask The Audience"
 	],
 	"soundfolder": "classic",
 	"locale": "en-AU",

@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-
+import PropTypes from "prop-types";
 import {Layer, Stage, Rect} from "react-konva";
 
+import MoneyTreePanel from "./money-tree-panel";
 
-export default class FFQuestionPanel extends Component {
+
+export default class PreMainGamePanel extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -41,6 +43,8 @@ export default class FFQuestionPanel extends Component {
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 
+		const {moneyTreeVisible, moneyTree, startingLifelines, lifelinesAvailable} = this.props;
+
 		const screenRatio = width / height;
 		const backgroundRatio = this.state.backgroundNatWidth / this.state.backgroundNatHeight;
 
@@ -65,7 +69,21 @@ export default class FFQuestionPanel extends Component {
 						fillPatternScaleX={backgroundScale} fillPatternScaleY={backgroundScale}
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
 				</Layer>
+				{moneyTreeVisible ? (
+					<MoneyTreePanel
+						moneyTree={moneyTree}
+						currentQuestionNo={-1}
+						startingLifelines={startingLifelines}
+						lifelinesAvailable={lifelinesAvailable} />
+				) : null}
 			</Stage>
 		);
 	}
 }
+
+PreMainGamePanel.propTypes = {
+	moneyTreeVisible: PropTypes.bool,
+	moneyTree: PropTypes.array,
+	startingLifelines: PropTypes.array,
+	lifelinesAvailable: PropTypes.array,
+};
