@@ -65,7 +65,7 @@
     "grunt-env": "^0.4.4",
     "grunt-newer": "^1.2.0",
     "grunt-sass": "^2.0.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "konva": "^3.2.6",
     "matter-js": "^0.12.0",
     "nedb": "^1.8.0",
