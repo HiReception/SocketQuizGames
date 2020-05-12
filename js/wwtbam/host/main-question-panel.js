@@ -13,7 +13,7 @@ export default class MainQuestionPanel extends Component {
 	}
 
 	componentDidMount = () => {
-		//this.props.socket.emit("play sound", "read-question");
+		//this.props.socket.emit("play sound", {id: "read-question"});
 		this.props.socket.on("new answer", this.handleNewAnswer);
 	}
 
@@ -54,6 +54,10 @@ export default class MainQuestionPanel extends Component {
 	lockInAnswer = (option) => {
 		if (this.props.gameState.mainGameOptionsShown === this.props.question.options.length
 			&& !option.disabled && this.props.gameState.mainGameChosenAnswer == "" && this.props.gameState.mainGameActiveLifeline == "") {
+			this.props.socket.emit("play sound", {
+				id: `final${this.props.gameState.mainGameQuestionNo}`,
+				stopQuestionBed: this.props.gameState.mainGameMoneyTree[this.props.gameState.mainGameQuestionNo - 1].endBGMusic.includes("lock-in")
+			});
 			this.setGameState({
 				mainGameChosenAnswer: option.key,
 			});
@@ -74,6 +78,19 @@ export default class MainQuestionPanel extends Component {
 	}
 
 	revealCorrectAnswer = () => {
+		if (this.props.question.correctResponse === this.props.gameState.mainGameChosenAnswer) {
+			// play correct answer sound
+			this.props.socket.emit("play sound", {
+				id: `win${this.props.gameState.mainGameQuestionNo}`,
+				stopQuestionBed: this.props.gameState.mainGameMoneyTree[this.props.gameState.mainGameQuestionNo - 1].endBGMusic.includes("right")
+			});
+		} else if (this.props.gameState.mainGameChosenAnswer !== "Walk") {
+			// play wrong answer sound
+			this.props.socket.emit("play sound", {
+				id: `lose${this.props.gameState.mainGameQuestionNo}`,
+				stopQuestionBed: this.props.gameState.mainGameMoneyTree[this.props.gameState.mainGameQuestionNo - 1].endBGMusic.includes("wrong")
+			});
+		}
 		this.setGameState({
 			mainGameCorrectRevealed: true,
 		});
@@ -127,13 +144,26 @@ export default class MainQuestionPanel extends Component {
 	}
 
 	nextQuestion = () => {
-		this.setGameState({
-			currentPanel: "LightsDownPanel",
-			mainGameQuestionNo: this.props.gameState.mainGameQuestionNo + 1,
-			mainGameChosenAnswer: "",
-			mainGameCorrectRevealed: false,
-			mainGameOptionsShown: 0,
-		});
+		// if that was the last question on the money tree
+		if (this.props.gameState.mainGameQuestionNo == this.props.gameState.mainGameMoneyTree.length) {
+			this.concludeMainGame();
+		} else {
+			// if previous question's background music shouldn't still be going (and no even earlier ones should either)
+			if (this.props.gameState.mainGameMoneyTree[this.props.gameState.mainGameQuestionNo - 1].endBGMusic.some(event => event !== "wrong")) {
+				this.props.socket.emit("play sound", {
+					id: `letsplay${this.props.gameState.mainGameQuestionNo + 1}`
+				});
+			}
+			
+			this.setGameState({
+				currentPanel: "LightsDownPanel",
+				mainGameQuestionNo: this.props.gameState.mainGameQuestionNo + 1,
+				mainGameChosenAnswer: "",
+				mainGameCorrectRevealed: false,
+				mainGameOptionsShown: 0,
+			});
+		}
+		
 	}
 
 	showStatisticsPanel = () => {

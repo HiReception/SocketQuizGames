@@ -166,11 +166,11 @@ export default class PostMainGamePanel extends Component {
 
 		return (
 			<Stage width={width} height={height}>
-				<Layer>
+				{/* <Layer>
 					<Rect x={0} y={0} height={height} width={width} fillPatternImage={this.state.backgroundImage}
 						fillPatternScaleX={backgroundScale} fillPatternScaleY={backgroundScale}
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
-				</Layer>
+				</Layer> */}
 				<Layer>
 					<Rect x={0} y={boxStart} height={boxHeight} width={width} fillPatternImage={this.state.boxImage}
 						fillPatternScaleX={boxScale} fillPatternScaleY={boxScale}

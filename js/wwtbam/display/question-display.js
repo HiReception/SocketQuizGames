@@ -113,7 +113,7 @@ export default class QuestionDisplay extends Component {
 		var aLetterWidth = 0.09 * aWidth;
 		var aTextGapHeight = (aHeight - aTextHeight)/2;
 		var gapHeight = 0.1 * qHeight;
-		var bottomMargin = 0.1 * height;
+		var bottomMargin = 0.05 * height;
 
 		var row1Start = height - (bottomMargin + 2*gapHeight + 2*aHeight + qHeight);
 		var row2Start = row1Start + qHeight + gapHeight;

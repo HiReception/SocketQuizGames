@@ -20,7 +20,7 @@ export default class PlayerResultsPanel extends Component {
 			ffCorrectPlayersRevealed: true,
 		});
 		if (anyCorrectAnswer) {
-			this.props.socket.emit("play sound", "correct-reveal");
+			this.props.socket.emit("play sound", {id: "correct-reveal"});
 		}
 	}
 
@@ -44,7 +44,7 @@ export default class PlayerResultsPanel extends Component {
 			ffFastestCorrectPlayer: fastestCorrectPlayer,
 			ffFastestCorrectTime: fastestCorrectTime,
 		});
-		this.props.socket.emit("play sound", "fastest-reveal");
+		this.props.socket.emit("play sound", {id: "fastest-reveal"});
 	}
 
 	prepareMainGame = () => {

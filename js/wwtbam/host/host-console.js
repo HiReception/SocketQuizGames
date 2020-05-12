@@ -214,16 +214,28 @@ export default class HostConsole extends Component {
 			const availableQuestions = this.state.mainGameQuestions.filter(q => q.valueLevel == index + 1);
 			return availableQuestions[Math.floor(Math.random() * (availableQuestions.length))];
 		});
+		this.props.socket.emit("play sound", {
+			id: "letsplay1"
+		});
 		this.setGameState({
 			currentPanel: "LightsDownPanel",
 			mainGameQuestionStack: questionDeck,
 			mainGameQuestionNo: 1,
+			mainGameMoneyTreeVisible: false,
 		});
 	}
 
 	beginQuestion = () => {
+		// if previous question's background music shouldn't still be going (and no even earlier ones should either)
+		if (this.state.mainGameQuestionNo === 1 || this.state.mainGameMoneyTree[this.state.mainGameQuestionNo - 2].endBGMusic.some(event => event !== "wrong")) {
+			// play the background music for this question
+			this.props.socket.emit("play sound", {
+				id: `background${this.state.mainGameQuestionNo}`
+			});
+		}
 		this.setGameState({
 			currentPanel: "MainQuestionPanel",
+			mainGameMoneyTreeVisible: false,
 		});
 	}
 

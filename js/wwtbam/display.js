@@ -76,10 +76,85 @@ socket.on("accepted", function() {
 		soundManager.stop("order-bed");
 	}});
 	soundManager.createSound({id: "fastest-reveal", url: "./sounds/classic/fastest-reveal.mp3", autoLoad: true});
+	soundManager.createSound({id: "walkoff", url: "./sounds/classic/walkoff.mp3", autoLoad: true});
+
+	soundManager.createSound({id: "letsplay1", url: "./sounds/classic/letsplay1.mp3", autoLoad: true});
 });
 
-socket.on("play sound", function(id) {
-	if (!(id === "end-clock-early" && !clockInterruptible)) {
-		soundManager.play(id);
+function playLightsDownMusic(level) {
+	if (level > 1) {
+		soundManager.stop(`win${level - 1}`);
+	}
+
+	soundManager.play(`letsplay${level}`);
+	soundManager.createSound({id: `background${level}`, url: `./sounds/classic/background${level}.mp3`, autoLoad: true});
+}
+
+function playQuestionBed(level) {
+	soundManager.play(`background${level}`);
+	soundManager.destroySound(`letsplay${level}`);
+	soundManager.createSound({id: `final${level}`, url: `./sounds/classic/final${level}.mp3`, autoLoad: true});
+}
+
+function playLockInMusic(level, stopQuestionBed) {
+	if (stopQuestionBed) {
+		soundManager.stopAll();
+		soundManager.destroySound(`background${level}`);
+	}
+	soundManager.play(`final${level}`);
+	soundManager.createSound({id: `win${level}`, url: `./sounds/classic/win${level}.mp3`, autoLoad: true});
+	soundManager.createSound({id: `lose${level}`, url: `./sounds/classic/lose${level}.mp3`, autoLoad: true});
+}
+
+function playCorrectAnswerMusic(level, stopQuestionBed) {
+	if (stopQuestionBed) {
+		soundManager.stopAll();
+		soundManager.destroySound(`background${level}`);
+	}
+	soundManager.stop(`final${level}`);
+	
+	soundManager.play(`win${level}`);
+
+	soundManager.destroySound(`final${level}`);
+
+	soundManager.createSound({id: `letsplay${level + 1}`, url: `./sounds/classic/letsplay${level + 1}.mp3`, autoLoad: true});
+
+}
+
+function playIncorrectAnswerMusic(level, stopQuestionBed) {
+	if (stopQuestionBed) {
+		soundManager.stopAll();
+		soundManager.destroySound(`background${level}`);
+	}
+	soundManager.stop(`final${level}`);
+	soundManager.destroySound(`final${level}`);
+
+	soundManager.play(`lose${level}`);
+}
+
+socket.on("play sound", function(object) {
+	if (object.id && !(object.id === "end-clock-early" && !clockInterruptible)) {
+		var level;
+		if (/^letsplay[0-9]+$/.test(object.id)) {
+			level = parseInt(object.id.match(/^letsplay([0-9]+)$/)[1]);
+			playLightsDownMusic(level);
+		} else if (/^background[0-9]+$/.test(object.id)) {
+			level = parseInt(object.id.match(/^background([0-9]+)$/)[1]);
+			playQuestionBed(level);
+		} else if (/^final[0-9]+$/.test(object.id)) {
+			level = parseInt(object.id.match(/^final([0-9]+)$/)[1]);
+			playLockInMusic(level, object.stopQuestionBed || false);
+		} else if (/^win[0-9]+$/.test(object.id)) {
+			level = parseInt(object.id.match(/^win([0-9]+)$/)[1]);
+			playCorrectAnswerMusic(level, object.stopQuestionBed || false);
+		} else if (/^lose[0-9]+$/.test(object.id)) {
+			level = parseInt(object.id.match(/^lose([0-9]+)$/)[1]);
+			playIncorrectAnswerMusic(level, object.stopQuestionBed || false);
+		} else {
+			soundManager.play(object.id);
+		}
+		
+
+		
 	}
 });

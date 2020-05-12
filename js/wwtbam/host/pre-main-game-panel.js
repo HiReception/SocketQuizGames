@@ -24,10 +24,6 @@ export default class PostMainGamePanel extends Component {
 			</div>
 		);
 	}
-
-	componentDidMount = () => {
-		this.props.socket.emit("play sound", "walkoff");
-	}
 }
 
 PostMainGamePanel.propTypes = {

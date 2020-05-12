@@ -24,10 +24,6 @@ export default class LightsDownPanel extends Component {
 			</div>
 		);
 	}
-
-	componentDidMount = () => {
-		this.props.socket.emit("play sound", "walkoff");
-	}
 }
 
 LightsDownPanel.propTypes = {

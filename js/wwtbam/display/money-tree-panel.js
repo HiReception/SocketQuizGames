@@ -102,12 +102,12 @@ export default class MoneyTreePanel extends Component {
 		var fontFamily = "Copperplate Gothic";
 
 
-		var panelWidth = width / 2;
+		var panelWidth = width * 0.4;
 		var panelStart = width - panelWidth;
 		var panelGapHeight = height / 20;
 		var panelContentHeight = height - (2*panelGapHeight);
-		var lifelineSectionHeight = 0.2 * panelContentHeight;
-		var treeSectionHeight = 0.75 * panelContentHeight;
+		var lifelineSectionHeight = 0.15 * panelContentHeight;
+		var treeSectionHeight = 0.8 * panelContentHeight;
 		var lifelineSpacerHeight = 0.05 * panelContentHeight;
 
 		var lifelineSectionSpacingWidth = 0.05 * panelWidth;

@@ -26,7 +26,7 @@ export default class NextRoundPanel extends Component {
 	}
 
 	componentDidMount = () => {
-		this.props.socket.emit("play sound", "explainff");
+		this.props.socket.emit("play sound", {id: "explainff"});
 	}
 }
 

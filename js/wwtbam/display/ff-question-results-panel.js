@@ -158,7 +158,7 @@ export default class FFQuestionResultsPanel extends Component {
 			const panelBackgroundOffset = this.state.panelBackgroundNatWidth + (panelWidth / panelBackgroundScale);
 			return (
 				<Stage width={width} height={height}>
-					<Motion defaultStyle={{x: 0}} style={{x: spring(ffQuestionRecapped ? recapBackgroundX : 0)}}>
+					{/* <Motion defaultStyle={{x: 0}} style={{x: spring(ffQuestionRecapped ? recapBackgroundX : 0)}}>
 						{({x}) => (
 							<Layer>
 								<Rect x={x} y={0} height={height} width={width} fillPatternImage={this.state.backgroundImage}
@@ -166,7 +166,7 @@ export default class FFQuestionResultsPanel extends Component {
 								fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
 							</Layer>
 						)}
-					</Motion>
+					</Motion> */}
 
 					
 					
@@ -230,11 +230,11 @@ export default class FFQuestionResultsPanel extends Component {
 
 			return (
 				<Stage width={width} height={height}>
-					<Layer>
+					{/* <Layer>
 						<Rect x={0} y={0} height={height} width={width} fillPatternImage={this.state.backgroundImage}
 						fillPatternScaleX={backgroundScale} fillPatternScaleY={backgroundScale}
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
-					</Layer>
+					</Layer> */}
 					<QuestionDisplay
 						question={question} fullAnswerRevealed={ffFullAnswerRevealed}
 						questionVisible={true} numAnswersVisible={question.options.length} correctFlashOn={this.state.correctFlashOn}/>

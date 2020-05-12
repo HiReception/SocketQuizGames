@@ -16,13 +16,13 @@ export default class FFQuestionResultsPanel extends Component {
 					ffNumAnswersRevealed: numRevealed + 1,
 					ffFullAnswerRevealed: (numRevealed + 1 === numOptions),
 				});
-				this.props.socket.emit("play sound", "answer" + (numRevealed + 1));
+				this.props.socket.emit("play sound", {id: "answer" + (numRevealed + 1)});
 			}
 		} else {
 			this.setGameState({
 				ffFullAnswerRevealed: true,
 			});
-			this.props.socket.emit("play sound", "light-answer");
+			this.props.socket.emit("play sound", {id: "light-answer"});
 		}
 	}
 
@@ -30,7 +30,7 @@ export default class FFQuestionResultsPanel extends Component {
 		this.setGameState({
 			ffQuestionRecapped: true,
 		})
-		this.props.socket.emit("play sound", "order-bed");
+		this.props.socket.emit("play sound", {id: "order-bed"});
 	}
 
 	goToPlayerResults = () => {

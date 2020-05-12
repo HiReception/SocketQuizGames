@@ -8,7 +8,7 @@ export default class FFQuestionPanel extends Component {
 	}
 
 	componentDidMount = () => {
-		this.props.socket.emit("play sound", "read-question");
+		this.props.socket.emit("play sound", {id: "read-question"});
 		this.props.socket.on("new answer", this.handleNewAnswer);
 	}
 
@@ -38,14 +38,14 @@ export default class FFQuestionPanel extends Component {
 			ffBuzzersOpen: false,
 			currentPanel: "FFQuestionResultsPanel",
 		});
-		this.props.socket.emit("play sound", "end-clock-early");
+		this.props.socket.emit("play sound", {id: "end-clock-early"});
 	}
 
 	prepareBuzzers = () => {
 		this.setGameState({
 			ffBuzzersPending: true,
 		});
-		this.props.socket.emit("play sound", "start-clock");
+		this.props.socket.emit("play sound", {id: "start-clock"});
 		setTimeout(this.openBuzzers, 1000);
 	}
 
@@ -57,7 +57,7 @@ export default class FFQuestionPanel extends Component {
 			});
 		}
 		this.props.socket.emit("send question", this.props.question);
-		this.props.socket.emit("play sound", "clock-bed");
+		this.props.socket.emit("play sound", {id: "clock-bed"});
 	}
 
 	setGameState = (state) => {

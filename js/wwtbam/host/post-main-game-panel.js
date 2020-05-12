@@ -20,7 +20,7 @@ export default class PostMainGamePanel extends Component {
 	}
 
 	componentDidMount = () => {
-		this.props.socket.emit("play sound", "walkoff");
+		this.props.socket.emit("play sound", {id: "walkoff"});
 	}
 }
 

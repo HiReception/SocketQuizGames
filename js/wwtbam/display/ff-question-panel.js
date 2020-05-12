@@ -61,11 +61,11 @@ export default class FFQuestionPanel extends Component {
 
 		return (
 			<Stage width={width} height={height}>
-				<Layer>
+				{/* <Layer>
 					<Rect x={0} y={0} height={height} width={width} fillPatternImage={this.state.backgroundImage}
 						fillPatternScaleX={backgroundScale} fillPatternScaleY={backgroundScale}
 						fillPatternOffsetX={backgroundOffsetX} fillPatternOffsetY={backgroundOffsetY}/>
-				</Layer>
+				</Layer> */}
 				<QuestionDisplay question={question} questionVisible={questionVisible}
 					numAnswersVisible={answersVisible ? question.options.length : 0} fullAnswerRevealed={false}/>
 			</Stage>
